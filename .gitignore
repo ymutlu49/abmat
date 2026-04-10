@@ -1,0 +1,20 @@
+# Editör ve OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Node.js (ileride eklenirse)
+node_modules/
+npm-debug.log*
+
+# Ortam değişkenleri
+.env
+.env.local
+
+# Claude iş alanı
+.claude/

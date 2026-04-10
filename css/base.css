@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════════════════
+   ABMAT — Base & Reset
+   Global reset, body, tipografi, app container, view sistemi
+═══════════════════════════════════════════════════════════ */
+
+/* ── Reset ───────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html{height:100%;height:-webkit-fill-available;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--ff-body);background:#1A1A1A;color:var(--text);
+  height:100%;height:-webkit-fill-available;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--text)}
+h1{font-size:var(--t-3xl)} h2{font-size:var(--t-2xl)} h3{font-size:var(--t-xl)}
+p{margin:0;line-height:1.6}
+button,input,textarea,select{font-family:var(--ff-body)}
+button{cursor:pointer;border:none;background:none}
+
+/* ── App container ───────────────────────────────────────── */
+#app-root{
+  position:relative;width:100%;max-width:430px;margin:0 auto;
+  height:100vh;height:100dvh;height:-webkit-fill-available;
+  background:var(--bg);overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.15),0 40px 100px rgba(0,0,0,.5);
+}
+
+/* ── Views ───────────────────────────────────────────────── */
+.view{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  overflow:hidden;
+  background:var(--bg);
+}
+.view.active{
+  display:flex;
+  animation:viewEnter var(--dur-med) var(--ease) both;
+}
+@keyframes viewEnter{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:none}
+}
+.page{padding:1rem .875rem calc(5.5rem + env(safe-area-inset-bottom));width:100%;box-sizing:border-box;flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+
+/* ── Status bar boşluğu ──────────────────────────────────── */
+.status-bar-spacer{height:env(safe-area-inset-top);min-height:44px;flex-shrink:0}
+
+.view{touch-action:pan-y}
+
+/* ── Scrollbar gizle ────────────────────────────────────── */
+::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+*{scrollbar-width:none!important;-ms-overflow-style:none!important}
+
+/* ── View geçiş animasyonları ────────────────────────────── */
+#view-login.active{
+  animation:slideInRight var(--dur-med) var(--ease) both;
+}
+@keyframes slideInRight{
+  from{opacity:0;transform:translateX(20px)}
+  to{opacity:1;transform:none}
+}
+#view-splash.active{
+  animation:none;
+}
+#view-login .bottom-nav,
+#view-splash .bottom-nav,
+#view-onboarding .bottom-nav,
+#view-login ~ .bottom-nav{
+  display:none !important;
+}
+#view-dashboard.active{
+  animation:viewEnterFade var(--dur-slow) var(--ease) both;
+}
+@keyframes viewEnterFade{
+  from{opacity:0;transform:translateY(8px) scale(.99)}
+  to{opacity:1;transform:none}
+}

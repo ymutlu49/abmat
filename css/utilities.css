@@ -1,0 +1,59 @@
+/* ═══════════════════════════════════════════════════════════
+   ABMAT — Yardımcı sınıflar & Animasyonlar
+═══════════════════════════════════════════════════════════ */
+
+/* ── Yardımcılar ─────────────────────────────────────────── */
+.muted{color:var(--muted)} .center{text-align:center}
+.row{display:flex;align-items:center;gap:.5rem} .col{display:flex;flex-direction:column;gap:.5rem}
+.spacer{flex:1} .mono{font-family:var(--ff-mono)} .display{font-family:var(--ff-display)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem}
+.green{color:var(--teal-d)} .red{color:var(--danger)} .yellow{color:var(--amber)}
+.ok{color:var(--success)} .err{color:var(--danger)} .warn{color:var(--amber)}
+.done{opacity:.6} .hide-sm{display:none}
+@media(min-width:480px){.hide-sm{display:block}}
+.cur{background:var(--teal-a);border-color:var(--teal)!important;color:var(--teal)}
+.sel{background:var(--teal);color:#fff;border-color:transparent!important}
+.pdf-card{border-radius:var(--r-lg);overflow:hidden;border:0.5px solid var(--border)}
+.phone-frame{border:2.5px solid var(--text2);border-radius:28px;overflow:hidden;box-shadow:var(--sh-lg)}
+.phone-screen{overflow-y:auto;background:var(--bg)}
+
+/* ── Diskalkuli signal kartı ─────────────────────────────── */
+.dysc-signal{
+  display:flex;align-items:flex-start;gap:.65rem;
+  padding:.6rem .8rem;border-radius:var(--r-sm);
+  font-size:var(--t-sm);line-height:1.55;color:var(--text);
+  background:var(--raised);margin-bottom:.3rem;
+}
+.dysc-signal.red{background:rgba(220,38,38,.07);color:var(--text)}
+.dysc-signal.yellow{background:rgba(245,158,11,.08);color:var(--text)}
+.dysc-signal.green{background:rgba(13,148,136,.07);color:var(--text)}
+
+.skill-bar{height:5px;border-radius:99px;background:var(--raised);overflow:hidden;margin:.2rem 0}
+.skill-label{font-size:var(--t-xs);font-weight:700;color:var(--muted)}
+.confetti-piece{position:absolute;pointer-events:none;border-radius:2px;animation:confetti 1.2s var(--ease) forwards}
+
+.day-col{display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.day-emoji{font-size:1.3rem;line-height:1}
+.day-name{font-size:var(--t-xs);color:var(--muted);font-weight:700}
+.has-activity{background:var(--teal-a);border-color:var(--teal)!important}
+.today{background:var(--teal);color:#fff}
+.done-check{color:var(--teal);font-size:1.05rem}
+.fab{position:absolute;bottom:calc(5.5rem + env(safe-area-inset-bottom));right:.875rem;width:50px;height:50px;background:var(--orange);color:#fff;border-radius:50%;border:none;font-size:1.35rem;box-shadow:var(--sh-cta);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--dur-fast) var(--spring);z-index:150}
+.fab:active{transform:scale(.88)}
+
+/* ── Animasyonlar ────────────────────────────────────────── */
+@keyframes fadeIn    {from{opacity:0}to{opacity:1}}
+@keyframes fadeInFast{from{opacity:0}to{opacity:1}}
+@keyframes slideUp   {from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+@keyframes slideRight{from{transform:translateX(-14px);opacity:0}to{transform:none;opacity:1}}
+@keyframes popIn     {from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+@keyframes shimmer   {from{background-position:-600px 0}to{background-position:600px 0}}
+@keyframes float     {0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes pulse     {0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes spin      {to{transform:rotate(360deg)}}
+@keyframes notif     {0%{transform:scale(1)}30%{transform:scale(1.22)}60%{transform:scale(.92)}100%{transform:scale(1)}}
+@keyframes glowPulse {0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,.3)}50%{box-shadow:0 0 0 8px rgba(13,148,136,0)}}
+@keyframes confetti  {to{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes drawLine  {from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes countUp   {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}

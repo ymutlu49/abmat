@@ -1,0 +1,3243 @@
+/* ═══════════════════════════════════════════════════════════
+   ABMAT — MatEvdeApp (Ana koordinatör)
+   Tüm servisler, view render ve event işlemlerinin birleştiği yer.
+   Görünüm bazlı alt-kontrolcüler için bölünmeye hazır yapı.
+═══════════════════════════════════════════════════════════ */
+
+// ── Çekirdek sabitler ve müfredat ─────────────────────────
+import { AgeGroup, AnxietyLevel, ParentingStyle, Category } from './core/constants.js';
+import { TYMM } from './core/tymm.js';
+
+// ── Servisler ─────────────────────────────────────────────
+import { StorageService }        from './services/StorageService.js';
+import { ActivityRepository }    from './services/ActivityRepository.js';
+import { RecommendationEngine }  from './services/RecommendationEngine.js';
+import { BadgeEngine }           from './services/BadgeEngine.js';
+import { TeacherMessageService } from './services/TeacherMessageService.js';
+import { PlannerService }        from './services/PlannerService.js';
+import { NotificationService }   from './services/NotificationService.js';
+import { SmsService }            from './services/SmsService.js';
+import { StreakService }         from './services/StreakService.js';
+import { AnxietyTracker }        from './services/AnxietyTracker.js';
+import { AdaptiveEngine }        from './services/AdaptiveEngine.js';
+
+// ── Alt uygulama: Beceri Köprüsü ──────────────────────────
+import { createSkillBridge } from './skill-bridge/index.js';
+
+class MatEvdeApp {
+  constructor(){
+    this._storage   = new StorageService();
+    this._repo      = new ActivityRepository();
+    this._recEngine = new RecommendationEngine(this._repo);
+    this._badgeEng  = new BadgeEngine();
+    this._teacherSvc= new TeacherMessageService(this._storage);
+    this._plannerSvc= new PlannerService(this._storage, this._repo);
+    this._notifSvc  = new NotificationService(this._storage);
+    this._smsSvc    = new SmsService();
+    this._streakSvc = new StreakService(this._storage);
+    this._anxTracker= new AnxietyTracker(this._storage);
+    this._adaptEng  = new AdaptiveEngine(this._storage);
+
+    this._parent   = null;
+    this._childId  = null;
+    this._activeView = 'splash';
+
+    // Onboarding state
+    this._ob = { step:0, name:'', email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
+
+    // Filter state
+    this._filter = { category:null, anxOnly:false, spatialOnly:false, searchTerm:'' };
+
+    this._AGLabels = {
+      [AgeGroup.PRESCHOOL]:'Okul Öncesi (3-6 yaş)',
+      [AgeGroup.G1]:'1. Sınıf', [AgeGroup.G2]:'2. Sınıf',
+      [AgeGroup.G3]:'3. Sınıf', [AgeGroup.G4]:'4. Sınıf',
+    };
+    this._CatLabels = {
+    [Category.NUMBER]:'Sayı & İşlem',
+    [Category.PATTERNS]:'Örüntü & Cebir',
+    [Category.GEOMETRY]:'Geometri',
+    [Category.MEASUREMENT]:'Ölçme',
+    [Category.DAILY]:'Günlük Hayat',
+    [Category.PROBLEM]:'Problem Kurma',
+    [Category.SPATIAL]:'Uzamsal Düşünme',
+    [Category.KITCHEN]:'Mutfak Lab',
+    [Category.MARKET]:'Market Matematiği',
+    [Category.TIME]:'Zaman & Planlama',
+    [Category.GAME]:'Aile Oyunları',
+    [Category.NATURE]:'Doğa & Açık Hava',
+  };
+    this._CatEmoji = {
+    [Category.NUMBER]:'🔢',
+    [Category.PATTERNS]:'🔄',
+    [Category.GEOMETRY]:'🔺',
+    [Category.MEASUREMENT]:'📏',
+    [Category.DAILY]:'🏠',
+    [Category.PROBLEM]:'💡',
+    [Category.SPATIAL]:'🧩',
+    [Category.KITCHEN]:'🍳',
+    [Category.MARKET]:'🛒',
+    [Category.TIME]:'⏰',
+    [Category.GAME]:'🎲',
+    [Category.NATURE]:'🌿',
+  };
+    this._DAYS = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+
+    this._anxQs = [
+      // Boyut 1: Öğrenme Kaygısı (MARS-R / sMARS uyarlaması — Plake & Parker, 1982; Alexander & Martray, 1989)
+      { id:'q1', text:'Çocuğuma matematik ödevinde yardım etmem gerektiğinde kendimi gergin hissederim.', rev:false },
+      { id:'q2', text:'Bir matematik problemini çözerken takıldığımda panikleyebiliyorum.', rev:false },
+      { id:'q3', text:'Matematiği günlük hayatımda (alışveriş, fatura hesaplama vb.) rahatça kullanırım.', rev:true },
+      // Boyut 2: Değerlendirme / Aktarım Kaygısı (Maloney et al., 2015; Beilock et al., 2010)
+      { id:'q4', text:'Çocuğumun matematik konusunda başarısız olması beni çok endişelendirir.', rev:false },
+      { id:'q5', text:'Çocuğumla matematik konuşurken yanlış bir şey söyleyeceğimden çekinirim.', rev:false },
+      { id:'q6', text:'Matematiğin çocuğumun geleceği için ne kadar önemli olduğunu düşündüğümde baskı hissederim.', rev:false },
+      // Boyut 3: Öz-yeterlik / Destek Kapasitesi (Bandura, 1997; Pajares, 1996 uyarlaması)
+      { id:'q7', text:'Çocuğumun anlayamadığı bir konuyu farklı şekillerde açıklayabileceğime inanırım.', rev:true },
+      { id:'q8', text:'Matematik konusunda kendi bilgime güvenmiyorum.', rev:false },
+    ];
+    this._weekQs = [
+      { id:'wq1', text:'Bu hafta en az bir matematik etkinliği yaptık.', opts:['Evet ✓','Hayır ✗','Kısmen'] },
+      { id:'wq2', text:'Çocuğum spontan bir matematik şeyi paylaştı.', opts:['Evet','Hayır','Hatırlamıyorum'] },
+      { id:'wq3', text:'Kendi kaygım bu hafta nasıldı?', opts:['😌 Rahat','😐 Orta','😰 Gergin'] },
+    ];
+    this._wqResp = {};
+
+    this._learnModules = [
+      { id:'lm1', emoji:'💡', title:'Matematik Neden Önemli?', sub:'Günlük hayattan örnekler', dur:'8 dk', level:1, text:'Matematik çocuğunuzun dünyayı anlamlandırma biçimidir — sınav notu değil. Araştırmalar, matematiği günlük bağlamda (mutfak, market, park) deneyimleyen çocukların okul matematiğinde çok daha güçlü bir temel kurduğunu göstermektedir (Lave, 1988; Freudenthal, 1991). Ebeveynin rolü öğretmek değil, merak ortamı oluşturmaktır. "Kaç tane?" diye soran bir ebeveyn, en etkili matematik eğitimini veriyordur.' },
+      { id:'lm2', emoji:'❤️', title:'Kaygıyı Tanıyın', sub:'Sizden çocuğunuza ne geçer?', dur:'10 dk', level:1, text:'Ebeveyn matematik kaygısı çocuğa doğrudan geçmez — ama ebeveynin davranışları aracılığıyla etkiler. Beilock ve Maloney (2015), yüksek matematik kaygılı ebeveynlerin çocuklarıyla daha fazla ödev yardımı yaptıklarında çocukların daha düşük başarı gösterdiğini bulmuştur. Neden? Kaygılı ebeveyn, farkında olmadan kontrol edici ve olumsuz geri bildirim veriyor. Çözüm: Kendi kaygınızı çocuğunuza değil, bir not defterine söyleyin. "Ben de bazen matematikten çekiniyordum — ama birlikte bakalım" cümlesi, kaygıyı normalleştirir ve birlikteliği güçlendirir.' },
+      { id:'lm3', emoji:'🌱', title:'Otonomi Destekleyici Olmak', sub:'Baskı değil, keşif ortamı', dur:'12 dk', level:2, text:'Özerklik destekleyici ebeveyn, cevabı değil soruyu sunar. "Kaç tane?" yerine "Nasıl buldun?" sorusu, çocuğun düşünme sürecini görünür kılar. Pomerantz ve arkadaşları (2005) şunu bulmuştur: Cevabı veren değil, süreci sorgulayan ebeveynlerin çocukları matematik öz-yeterliği açısından çok daha güçlüdür. Deneyin: Bu hafta matematikte tek bir şey söyleyin — "Hmm, emin misin?" Geri kalan her şeyi çocuğa bırakın.' },
+      { id:'lm4', emoji:'🏠', title:'Ev Ortamı Nasıl Düzenlenmeli?', sub:'Matematik köşesi oluşturun', dur:'8 dk', level:2, text:'"Home Learning Environment" (HLE) araştırmaları, fiziksel düzenlemenin değil günlük etkileşim kalitesinin belirleyici olduğunu göstermektedir (Melhuish ve ark., 2008). Pahalı materyallere gerek yok. Sayıları günlük hayatta gösteren bir ebeveyn, özel ders veren bir ebeveynden çok daha etkilidir. Üç somut adım: (1) Sofrada takvimden gün sayın, (2) Markette fiyatları karşılaştırın, (3) Yatarken "bugün kaç tane... gördün?" diye sorun. Bu üç rutin, haftada 30 dakikada matematiksel ev ortamı oluşturur.' },
+      { id:'lm5', emoji:'🔍', title:'Diskalkuli Farkındalığı', sub:'Öğrenme güçlüğünü tanıyın', dur:'15 dk', level:3, isSpecial:'dyscalculia', text:'Diskalkuli, sayıları işlemede yaşanan nörogelişimsel bir güçlüktür. Tembellik veya dikkatsizlik değildir. Erken tanıma ve doğru destek, uzun vadede büyük fark yaratır.' },
+      { id:'lm6', emoji:'📱', title:'Teknolojiyi Akıllıca Kullanın', sub:'Uygulamalar ve sınırlılıkları', dur:'10 dk', level:2, text:'Dijital matematik oyunları destekleyici olabilir ancak ebeveyn etkileşiminin yerini tutamaz. En etkili yaklaşım: somut deneyim + ebeveyn sorulaması + isteğe bağlı dijital araç. Khan Academy Kids ve Prodigy kanıt temelli seçenekler. Kural: ekrana bakarken ebeveyn yanında sorular sorsun.' },
+      { id:'lm7', emoji:'🤝', title:'Öğretmenle İş Birliği', sub:'Köprü nasıl kurulur?', dur:'8 dk', level:2, text:'Sheldon ve Epstein (2005) aile-okul ortaklıklarının matematik başarısı üzerindeki boylamsal etkisini kanıtlamıştır. Üç somut adım: (1) Dönem başında öğretmene sorun: hangi konular zor, evde nasıl destekleyebilirim? (2) Haftalık kısa not ile iletişimi sürdürün. (3) Çocuğun başarısını değil çabasını paylaşın.' },
+      { id:'lm8', emoji:'🧭', title:'Uzamsal Düşünme Neden Önemli?', sub:'STEM başarısının gizli anahtarı', dur:'10 dk', level:2, text:'5 yaşındaki bir çocuğun zihinsel döndürme becerisi, 6 yaşındaki sayı doğrusu başarısını öngörüyor (Gunderson et al., 2012). Blok oyunu, tangram, harita çizimi — bunların hepsi uzamsal düşünceyi besler. Çocuğun "matematik zekâsı" gerçekte büyük ölçüde uzamsal zekâdır.' },
+      { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
+      { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
+      { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
+
+      { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
+      { id:'lm13', emoji:'♻️', title:'Her Bütçeye Uygun Matematik', sub:'Fırsat eşitliği ve ev ortamı', dur:'7 dk', level:1, text:'Düşük sosyoekonomik düzeyli ailelerin çocukları evde matematik desteği alınca başarı farkı kapanıyor (Verdine ve ark., 2014). Pahalı materyale gerek yok: kuru bakliyat, gazete, yumurta kartonları, kapak ve düğmeler sayma, sınıflama, örüntü ve ölçme için yeterli. En etkili materyal ebeveynin dikkatidir. 5 dakika kaliteli soru-cevap, 1 saatlik desteksiz çalışma kitabından daha etkilidir.' },
+      { id:'lm14', emoji:'🌟', title:'Başarı Hikayeleri', sub:'Gerçek ailelerden deneyimler', dur:'5 dk', level:1, text:'Araştırmacılar farklı profilden ailelerle yaptıkları çalışmalarda ortak bir örüntü bulmuştur: başarıyı getiren aktivite değil, ebeveynin tutumudur. Matematiği eğlenceli ve anlamlı olarak çerçeveleyen her aile — gelir ve eğitim düzeyinden bağımsız — çocuklarında olumlu matematik tutumu geliştirmiştir (Muir, 2012; Skwarchuk, 2009). Siz de bu hikayelerin parçasısınız.', isSpecial:'stories' },
+      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMAT etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
+
+    // ── Resimli Kitap Kütüphanesi ──────────────────────────
+    this._bookLibrary = [
+      // ── Türkçe Resimli Kitap Listesi ─────────────────────────────
+      // Kaynak: Türk çocuk edebiyatı ve matematik odaklı kitaplar
+      // Her kitapta: Türkçe yazar, Türkçe özgün/çeviri, matematik bağlantısı
+
+      // OKUL ÖNCESİ & 1. SINIF
+      { id:'b01', emoji:'🐛', title:'Çok Aç Tırtıl', author:'Eric Carle (Can Çocuk)',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
+        mathConcepts:['Sayma','Sıralı sayılar','Haftanın günleri','Toplama'],
+        mathQuestions:['Pazartesi kaç tane yedi?','Cumartesi ile Pazartesi arasında fark ne?','Hepsi toplam kaç tane yedi?'],
+        tip:'Türkiye genelinde okul kütüphanelerinde bulunan klasik. Günler ve sayma için mükemmel.' },
+
+      { id:'b02', emoji:'🐑', title:'Koyun Sayarken', author:'Mem Fox / Judy Horacek (Uçanbalık)',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
+        mathConcepts:['Sayma','10a kadar sayılar','Azalma'],
+        mathQuestions:['Kaç koyun kaldı?','Her sayfada kaç azaldı?','Başta kaç tane vardı?'],
+        tip:'Uyku vakti için ideal. Geriye sayma çıkarmanın temelini kurar.' },
+
+      { id:'b03', emoji:'🐞', title:'Bir Delikten Bakmak', author:'Aytül Akal (Altın Kitaplar)',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
+        mathConcepts:['Şekil tanıma','Geometri','Gözlem'],
+        mathQuestions:['Bu delikten ne şekil görünüyor?','Daire ve kare arasındaki fark ne?','Kaç köşesi var?'],
+        tip:'Türk yazardan geometri farkındalığı için. Gözlem ve şekil keşfi.' },
+
+      { id:'b04', emoji:'🦆', title:'Küçük Sarı Ördek', author:'Feridun Oral (Yapı Kredi)',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
+        mathConcepts:['Sayma','Renk-sayı ilişkisi','Sıralama'],
+        mathQuestions:['Kaç tane ördek var?','Sıralamayı tersine çevirsek?','En büyük hangisi?'],
+        tip:'Feridun Oral Türk çocuk edebiyatının en sevilen isimleri arasında.' },
+
+      { id:'b05', emoji:'🌙', title:'Ay Nereden Doğar?', author:'Aytül Akal (Altın Kitaplar)',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
+        mathConcepts:['Büyük/küçük','Karşılaştırma','Uzamsal ilişki'],
+        mathQuestions:['Ay mı büyük Güneş mi?','Nereden doğdu, nereye gitti?','Yukarı mı aşağı mı?'],
+        tip:'Uzamsal düşünme ve karşılaştırma kavramları için.' },
+
+      // 1. - 2. SINIF
+      { id:'b06', emoji:'🍎', title:'Elma Kurdu', author:'Nurten Arca (Tudem)',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2],
+        mathConcepts:['Bölme','Paylaşım','Kesir girişi'],
+        mathQuestions:['Elmayı eşit bölebilir miyiz?','Yarısı ne kadar?','4 kişiye nasıl paylaştırırsın?'],
+        tip:'Türk yazardan paylaşım ve bölme için somut bağlam.' },
+
+      { id:'b07', emoji:'🌻', title:'Tohumun Büyük Yolculuğu', author:'İlknur Özdemir (Can Çocuk)',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2],
+        mathConcepts:['Ölçme','Büyüme','Zaman'],
+        mathQuestions:['Kaç günde büyüdü?','Dün ne kadardı, bugün ne kadar?','Farkı hesaplayabilir misin?'],
+        tip:'Ölçme ve zaman kavramı için. Evde tohum yetiştirme etkinliğiyle birleştirilebilir.' },
+
+      { id:'b08', emoji:'🎒', title:'Okula Giden Çanta', author:'Behiç Ak (Yapı Kredi)',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2],
+        mathConcepts:['Sayma','Sınıflama','Toplama'],
+        mathQuestions:['Çantada kaç eşya var?','Hangi eşyalar aynı türden?','Toplam ağırlığı ne olabilir?'],
+        tip:'Behiç Ak Türk çocuk edebiyatının klasiği.' },
+
+      // 2. - 3. SINIF
+      { id:'b09', emoji:'🏪', title:'Recep Ustanın Dükkanı', author:'Aytül Akal (Altın Kitaplar)',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Para hesabı','Toplama-çıkarma','Gerçek hayat matematiği'],
+        mathQuestions:['Kaç lira verdi?','Para üstü ne kadar?','Toplam ne kadar ödemeli?'],
+        tip:'Market ve para matematiği için mükemmel Türkçe kaynak.' },
+
+      { id:'b10', emoji:'🌈', title:'Renklerin Savaşı', author:'Feridun Oral (Yapı Kredi)',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Sınıflama','Veri','Grafik'],
+        mathQuestions:['Hangi renk en çok var?','Grafiğe döksek nasıl görünür?','Azdan çoğa sırala'],
+        tip:'Veri toplama ve grafik oluşturma için yaratıcı bağlam.' },
+
+      { id:'b11', emoji:'🗺️', title:'Meraklı Çocuklar Dünyayı Keşfediyor', author:'Ömer Seyfettin uyarlaması',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Ölçek','Mesafe','Koordinat'],
+        mathQuestions:['Haritada bu yer nerede?','Gerçekte ne kadar uzak?','Ölçek ne anlama geliyor?'],
+        tip:'Koordinat ve harita ölçeği için. Uzamsal düşünme.' },
+
+      // 3. - 4. SINIF
+      { id:'b12', emoji:'🔢', title:'Sayıların Gizemli Dünyası', author:'Yılmaz Özdil (Remzi)',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Büyük sayılar','Örüntü','Sayı tarihi'],
+        mathQuestions:['Milyar kaç sıfırdır?','Bu sayı örüntüsü nereye gidiyor?','En büyük sayı var mı?'],
+        tip:'Sayı tarihi ve örüntü farkındalığı için. 3-4. sınıfa uygun.' },
+
+      { id:'b13', emoji:'⏰', title:'Zamanın Sırrı', author:'Müge İplikçi (Altın Kitaplar)',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Zaman','Saatler','Hesaplama'],
+        mathQuestions:['Kaç saat geçti?','Toplantı ne zaman bitiyor?','2 saat 45 dakika sonra saat kaç?'],
+        tip:'Zaman ve saat hesabı için hikaye bağlamı.' },
+    ];
+
+    // ── Sayı Sohbeti Konuşma Kartları ──────────────────────────
+    this._sayiSohbetiKartlari = [
+      { id:'mt01', context:'🚗 Araçta', prompt:'Kaç tane kırmızı araba geçti?', concept:'Sayma & Dikkat', ageMin: AgeGroup.PRESCHOOL },
+      { id:'mt02', context:'🛒 Markette', prompt:'Hangi kutu daha ağır? Nasıl anlarsın?', concept:'Ölçme tahmini', ageMin: AgeGroup.PRESCHOOL },
+      { id:'mt03', context:'🍽️ Yemekte', prompt:'Herkes için kaçar tabak lazım?', concept:'Çarpmanın temeli', ageMin: AgeGroup.G1 },
+      { id:'mt04', context:'⏰ Günlük', prompt:'Okula kaç dakika kaldı?', concept:'Zaman & Çıkarma', ageMin: AgeGroup.G1 },
+      { id:'mt05', context:'🌡️ Hava', prompt:'Dün 15°C, bugün 22°C. Ne kadar ısındı?', concept:'Fark hesaplama', ageMin: AgeGroup.G2 },
+      { id:'mt06', context:'🧺 Çamaşır', prompt:'Bu çoraplar kaç çift?', concept:'Eşleştirme & çift', ageMin: AgeGroup.PRESCHOOL },
+      { id:'mt07', context:'🏗️ Etraf', prompt:'Bu pencere kaç tuğla geniş?', concept:'Ölçme & birim', ageMin: AgeGroup.G1 },
+      { id:'mt08', context:'🌙 Yatmadan', prompt:'Bugün kaç farklı şey saydın?', concept:'Serbest sayma', ageMin: AgeGroup.PRESCHOOL },
+      { id:'mt09', context:'🍕 Yemekte', prompt:'Bu pizzayı 4 kişiye nasıl böleriz?', concept:'Kesirler & paylaşım', ageMin: AgeGroup.G1 },
+      { id:'mt10', context:'📦 Paket', prompt:'Bu kutu içine kaç elma sığar sence?', concept:'Tahmin & uzamsal', ageMin: AgeGroup.PRESCHOOL },
+    ];
+
+    // ── Kaygı Nefes Seansı ──────────────────────────────────
+    this._breathingSteps = [
+      { icon:'🫁', label:'Nefes al', duration:4, instruction:'Burnunuzdan yavaşça nefes alın… 1… 2… 3… 4…' },
+      { icon:'⏸️', label:'Tut', duration:4, instruction:'Nefesinizi tutun… 1… 2… 3… 4…' },
+      { icon:'💨', label:'Nefes ver', duration:6, instruction:'Ağzınızdan yavaşça verin… 1… 2… 3… 4… 5… 6…' },
+    ];
+  }
+
+  /* ── ROUTING ───────────────────────────────────── */
+
+  show(name, opts={}){
+    // Navigation history stack — geri butonunu güçlendir
+    const historyExclude = new Set(['splash','onboarding']);
+    if(this._activeView && this._activeView !== name && !historyExclude.has(this._activeView)){
+      if(!opts.isBack){
+        this._navHistory = this._navHistory || [];
+        // Yineleme engeli
+        if(this._navHistory[this._navHistory.length-1] !== this._activeView){
+          this._navHistory.push(this._activeView);
+          if(this._navHistory.length > 15) this._navHistory.shift();
+        }
+      }
+    }
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const el = document.getElementById(`view-${name}`);
+    if(el){
+      el.classList.add('active');
+      this._activeView=name;
+      el.style.animation='none';
+      requestAnimationFrame(()=>{
+        el.style.animation='';
+      });
+      // Sayfayı en başa kaydır
+      el.querySelector('.page')?.scrollTo?.(0,0);
+      el.scrollTo?.(0,0);
+      // Sayfa başlığını güncelle
+      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler'};
+      if(titles[name]) document.title = titles[name];
+    }
+    const renders = {
+      dashboard:()=>this._renderDash(),
+      activities:()=>this._renderActs(),
+      learn:()=>this._renderLearn(),
+      profile:()=>this._renderProfile(),
+      teacher:()=>this._renderTeacher(),
+      planner:()=>this._renderPlanner(),
+      progress:()=>this._renderProgress(),
+      dyscalculia:()=>this._renderDysc(),
+      sms:()=>this._renderSms(),
+      offline:()=>this._renderOffline(),
+      notifications:()=>this._renderNotifs(),
+      books:()=>this._renderBooks(),
+      tymm:()=>this._renderTymm(),
+      stories:()=>this._renderStories(),
+      skill:()=>this._renderSkill(),
+      mathtalk:()=>this._renderSayiSohbeti(),
+      breathing:()=>this._renderBreathing(),
+      spatial:()=>this._renderSpatialModule(),
+    };
+    renders[name]?.();
+    this._updateBnavs(name);
+    this._updateNotifDot();
+  }
+
+  back(){
+    if(this._ob && this._ob.step > 0){ this._ob.step--; this._renderOb(); return; }
+    this._navHistory = this._navHistory || [];
+    if(this._navHistory.length > 0){
+      const prev = this._navHistory.pop();
+      this.show(prev, { isBack: true });
+    } else {
+      this.show('dashboard', { isBack: true });
+    }
+  }
+
+  /* ── BOOT ──────────────────────────────────────── */
+
+  start(){
+    /* Kayıtlı kullanıcı var mı? → Giriş paneli */
+    const users = this._eGetUsers();
+    const hasRealUsers = users.some(u=>u.active&&u.username!=='yonetici');
+    const saved = this._storage.get('parent');
+    if(hasRealUsers && !saved?.onboardingComplete){
+      this._showLogin(); return;
+    }
+    if(saved?.onboardingComplete){
+      this._parent = saved;
+      this._childId = saved.children?.[0]?.id||null;
+      this.show('dashboard');
+    } else {
+      this._ob = { step:0, name:'', email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
+      this.show('onboarding');
+      this._renderOb();
+    }
+  }
+
+  demo(){
+    const id = 'demo';
+    const cid = 'demo-child';
+    this._parent = {
+      id, name:'Zeynep', email:'', onboardingComplete:true,
+      children:[{ id:cid, name:'Ali', ageGroup:AgeGroup.G2, completedActivities:['a01','a02','a03'], badges:[] }],
+      anxietyProfile:{ level:AnxietyLevel.MEDIUM, score:54, assessedAt:new Date() },
+      parentingStyle:ParentingStyle.AUTONOMY,
+      weeklyCheckIns:[],
+      badges:[{ id:'first', emoji:'🌱', label:'İlk Adım', earnedAt:new Date() }],
+      teacherMessages:[], weeklyPlans:[{ date:new Date() }],
+      dyscModuleDone:false,
+    };
+    this._childId = cid;
+    this._storage.set('parent', this._parent);
+    // Demo streak verisi
+    this._streakSvc._s.set('streak', { count:3, lastDate:new Date().toDateString(), longestStreak:5, todayDone:true });
+    this._notifSvc.addNotif({ emoji:'🤝', title:'Öğretmenden Not', text:'Bu hafta kesirler konusunu işliyoruz. Evde "Pizzayı Paylaş" etkinliğini deneyebilirsiniz.' });
+    this.show('dashboard');
+    this._toast('Demo modda hoşgeldin! 👋');
+  }
+
+  /* ══════════════════════════════════════════════
+     ONBOARDING
+  ══════════════════════════════════════════════ */
+
+  _renderOb(){
+    const total = 4;
+    document.getElementById('ob-steps').innerHTML =
+      Array.from({length:total},(_,i)=>`<div class="step-dot ${i<this._ob.step?'done':i===this._ob.step?'cur':''}"></div>`).join('');
+    const body = document.getElementById('ob-body');
+    const steps = [
+      ()=>this._obStep0(body), ()=>this._obStep1(body),
+      ()=>this._obStep2(body), ()=>this._obStep3(body),
+    ];
+    steps[this._ob.step]?.();
+  }
+
+  _obStep0(el){
+    el.innerHTML=`<div style="padding:2.5rem 1.5rem 2rem;display:flex;flex-direction:column;gap:1.4rem;max-width:100%;margin:0 auto">
+      <div style="text-align:center;margin-bottom:.5rem">
+        <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;box-shadow:0 8px 24px rgba(13,148,136,.3);font-size:2rem">🏡</div>
+        <h2 style="font-size:var(--t-2xl);font-weight:900;letter-spacing:-.02em">Hoş Geldiniz!</h2>
+        <p style="color:var(--muted);margin-top:.4rem;font-size:var(--t-md);line-height:1.6;max-width:280px;margin-inline:auto">Çocuğunuzun matematiğini evde keyifle destekleyin. Başlamak için adınızı öğrenelim.</p>
+      </div>
+      <div class="field">
+        <label>Adınız</label>
+        <input class="input" id="ob-name" placeholder="Örn: Zeynep" value="${this._ob.name}" style="font-size:var(--t-lg)">
+      </div>
+      <div class="field">
+        <label>E-posta <span style="font-weight:400;color:var(--muted)">(isteğe bağlı)</span></label>
+        <input class="input" id="ob-email" type="email" placeholder="ornek@mail.com" value="${this._ob.email}">
+      </div>
+      <div style="background:var(--teal-a);border-radius:var(--r-md);padding:.7rem .9rem;display:flex;align-items:center;gap:.6rem">
+        <span style="font-size:1.1rem">🔒</span>
+        <p style="font-size:var(--t-xs);color:var(--teal-d);line-height:1.55">Tüm verileriniz yalnızca bu cihazda saklanır. Hiçbir sunucuya gönderilmez.</p>
+      </div>
+      <button class="btn btn-primary btn-block" style="font-size:var(--t-lg);padding:.88rem" onclick="App._obNext()">Devam →</button>
+    </div>`;
+  }
+
+  _obStep1(el){
+    el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
+      <h2>Matematik ile Aranız</h2>
+      <p class="muted" style="margin:.35rem 0 1.3rem;font-size:var(--t-md)">Her ifadeyi şu anki durumunuza göre değerlendirin. Doğru ya da yanlış yanıt yoktur. Bu ölçek; size özel etkinlik önerileri ve destek stratejileri oluşturmak için kullanılır.</p>
+      <p style="font-size:var(--t-xs);color:var(--muted);background:var(--raised);border-radius:var(--r-sm);padding:.5rem .75rem;margin-bottom:1rem;line-height:1.6">📚 <em>Bu ölçek MARS-R (Plake & Parker, 1982), sMARS (Alexander & Martray, 1989) ve ebeveyn matematik kaygısı literatüründen (Maloney ve ark., 2015; Beilock ve ark., 2010) uyarlanmıştır.</em></p>
+      <div style="display:flex;flex-direction:column;gap:1.1rem">
+        ${this._anxQs.map((q,i)=>`
+          <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:1rem">
+            <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.65rem">${i+1}. ${q.text}</p>
+            <div class="likert">${[1,2,3,4,5].map(v=>`<button class="likert-btn ${this._ob.anxiety[q.id]===v?'sel':''}" onclick="App._anxSel('${q.id}',${v})">${v}</button>`).join('')}</div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-top:.3rem"><span>Hiç katılmıyorum</span><span>Tamamen katılıyorum</span></div>
+          </div>`).join('')}
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:1.4rem" onclick="App._obNext()">Devam →</button>
+    </div>`;
+  }
+
+  _obStep2(el){
+    el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
+      <div class="center" style="margin-bottom:1.4rem"><div style="font-size:3rem">👧🏻</div><h2 style="margin-top:.5rem">Çocuğunuzu Tanıyalım</h2></div>
+      <div class="field" style="margin-bottom:1.2rem"><label>Çocuğunuzun Adı</label><input class="input" id="ob-cname" placeholder="Örn: Ali" value="${this._ob.childName}"></div>
+      <div class="field"><label>Sınıf / Yaş Grubu</label>
+        <div style="display:flex;flex-direction:column;gap:.55rem;margin-top:.25rem">
+          ${Object.entries(this._AGLabels).map(([k,v])=>`
+            <div style="display:flex;align-items:center;gap:.8rem;padding:.82rem 1rem;border:2px solid ${this._ob.ageGroup===k?'var(--teal)':'var(--border)'};border-radius:var(--r-md);cursor:pointer;transition:var(--t);background:${this._ob.ageGroup===k?'var(--teal-a)':'var(--surface)'}" onclick="App._agSel('${k}')">
+              <span style="font-size:1.35rem">${k===AgeGroup.PRESCHOOL?'🎒':k===AgeGroup.G1?'1️⃣':k===AgeGroup.G2?'2️⃣':k===AgeGroup.G3?'3️⃣':'4️⃣'}</span>
+              <strong style="font-size:var(--t-lg)">${v}</strong>
+              ${this._ob.ageGroup===k?'<span style="margin-left:auto;color:var(--teal);font-weight:900">✓</span>':''}
+            </div>`).join('')}
+        </div>
+      </div>
+      <!-- SES: Evde mevcut kaynaklar -->
+      <div style="margin-top:1.2rem">
+        <label style="font-size:var(--t-md);font-weight:700;display:block;margin-bottom:.5rem">Evde genellikle neler bulunur?</label>
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.65rem">Bu bilgi, etkinlik önerilerini evinize uyarlamak için kullanılır.</p>
+        <div style="display:flex;flex-direction:column;gap:.45rem">
+          ${[
+            {k:'basic', label:'🥄 Temel mutfak malzemeleri (kaşık, kase, bakliyat...)'},
+            {k:'craft',  label:'✂️ Kağıt, kalem, makas, karton'},
+            {k:'toys',   label:'🧩 Tahta oyuncak, lego veya bloklar'},
+            {k:'digital',label:'📱 Tablet veya akıllı telefon'},
+          ].map(r=>`<label style="display:flex;align-items:center;gap:.65rem;padding:.6rem .85rem;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer;background:var(--surface)">
+            <input type="checkbox" id="res-${r.k}" style="width:16px;height:16px;accent-color:var(--teal)" ${(this._ob.resources||[]).includes(r.k)?'checked':''} onchange="App._resSel('${r.k}',this.checked)">
+            <span style="font-size:var(--t-md)">${r.label}</span>
+          </label>`).join('')}
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:1.4rem" onclick="App._obNext()">Devam →</button>
+    </div>`;
+  }
+
+  _obStep3(el){
+    // Teorik çerçeve: Self-Determination Theory (Deci & Ryan, 2000)
+    // Özerklik destekleyici ebeveynlik: Grolnick & Ryan (1989)
+    // Matematik bağlamı: Soenens & Vansteenkiste (2010), Pomerantz ve ark. (2005)
+    const opts = [
+      {
+        k:'autonomy',
+        emoji:'🌱',
+        label:'Özerklik Destekleyici',
+        subtitle:'(Önerilen yaklaşım)',
+        desc:'Çocuğun kendi çözümünü bulmasına alan açarım. Soruyu sunarım, cevabı değil. Hata, öğrenmenin parçasıdır.',
+        research:'Araştırma: Bu yaklaşım çocukların içsel motivasyonunu ve matematik öz-yeterliğini artırır (Grolnick & Ryan, 1989; Pomerantz ve ark., 2005).',
+        highlight: true,
+      },
+      {
+        k:'controlling',
+        emoji:'📋',
+        label:'Yönlendirici',
+        subtitle:'',
+        desc:'Adım adım rehberlik ederim. Yanlış yolda olunca müdahale ederim. Doğru sonuca ulaşmak önceliğimdir.',
+        research:'Not: Yüksek yönlendirici tarz, çocukta bağımlılık yaratabilir ve matematik kaygısını artırabilir.',
+        highlight: false,
+      },
+      {
+        k:'mixed',
+        emoji:'⚖️',
+        label:'Duruma Göre',
+        subtitle:'',
+        desc:'Bazen alan tanırım, bazen adım adım yönlendiririm. Çocuğun ihtiyacına göre değişirim.',
+        research:'',
+        highlight: false,
+      },
+    ];
+    el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
+      <h2>Destek Tarzınız</h2>
+      <p class="muted" style="margin:.35rem 0 .6rem;font-size:var(--t-md)">Şu anki yaklaşımınızı seçin. ABMAT, özerklik destekleyici yaklaşımı temel alır ve tüm etkinlikler bu felsefeyle tasarlanmıştır.</p>
+      <p style="font-size:var(--t-xs);color:var(--muted);background:var(--raised);border-radius:var(--r-sm);padding:.5rem .75rem;margin-bottom:1.1rem;line-height:1.6">📚 <em>Kaynak: Deci & Ryan (2000) Öz-Belirleme Kuramı · Grolnick & Ryan (1989) · Soenens & Vansteenkiste (2010)</em></p>
+      <div style="display:flex;flex-direction:column;gap:.85rem">
+        ${opts.map(o=>`
+          <div style="padding:1.15rem;border:2.5px solid ${this._ob.style===o.k?'var(--teal)':o.highlight?'var(--teal-d)':'var(--border)'};border-radius:var(--r-lg);cursor:pointer;transition:var(--t);background:${this._ob.style===o.k?'var(--teal-a)':o.highlight?'rgba(45,106,79,.05)':'var(--surface)'}" onclick="App._styleSel('${o.k}')">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.25rem">
+              <span style="font-size:1.7rem">${o.emoji}</span>
+              <div style="flex:1">
+                <strong>${o.label}</strong>
+                ${o.subtitle?`<span style="font-size:var(--t-xs);color:var(--teal-d);font-weight:700;margin-left:.4rem">${o.subtitle}</span>`:''}
+              </div>
+              ${this._ob.style===o.k?'<span style="color:var(--teal);font-size:1.2rem">✓</span>':''}
+            </div>
+            <p style="font-size:var(--t-md);color:var(--muted);margin-bottom:.3rem">${o.desc}</p>
+            ${o.research?`<p style="font-size:var(--t-xs);color:${o.highlight?'var(--teal-d)':'var(--amber)'};font-style:italic;line-height:1.5">${o.research}</p>`:''}
+          </div>`).join('')}
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:1.4rem" onclick="App._obFinish()">Başlayalım! 🚀</button>
+    </div>`;
+  }
+
+  _anxSel(qid, val){
+    this._ob.anxiety[qid]=val;
+    document.querySelectorAll(`[onclick*="_anxSel('${qid}'"]`).forEach(b=>{
+      b.classList.toggle('sel', parseInt(b.textContent)===val);
+    });
+  }
+  _agSel(k){ this._ob.ageGroup=k; this._obStep2(document.getElementById('ob-body')); }
+  _styleSel(k){ this._ob.style=k; this._obStep3(document.getElementById('ob-body')); }
+  _resSel(k, checked){
+    if(!this._ob.resources) this._ob.resources=[];
+    if(checked){ if(!this._ob.resources.includes(k)) this._ob.resources.push(k); }
+    else { this._ob.resources=this._ob.resources.filter(r=>r!==k); }
+  }
+
+  _obNext(){
+    const {step}=this._ob;
+    if(step===0){
+      const n=document.getElementById('ob-name')?.value.trim();
+      if(!n){ this._toast('Adınızı girin','err'); return; }
+      this._ob.name=n;
+      this._ob.email=document.getElementById('ob-email')?.value.trim()||'';
+    }
+    if(step===1){
+      if(Object.keys(this._ob.anxiety).length<this._anxQs.length){ this._toast('Tüm soruları yanıtlayın','err'); return; }
+    }
+    if(step===2){
+      const n=document.getElementById('ob-cname')?.value.trim();
+      if(!n){ this._toast('Çocuğunuzun adını girin','err'); return; }
+      if(!this._ob.ageGroup){ this._toast('Yaş grubunu seçin','err'); return; }
+      this._ob.childName=n;
+    }
+    this._ob.step++;
+    this._renderOb();
+  }
+
+  _obFinish(){
+    if(!this._ob.style){ this._toast('Bir stil seçin','err'); return; }
+
+    // Compute anxiety
+    const resp = this._anxQs.map(q=>({
+      value: this._ob.anxiety[q.id]||3, rev:q.rev
+    }));
+    const norm = resp.map(r=>r.rev ? 6-r.value : r.value);
+    const pct  = Math.round(norm.reduce((s,v)=>s+v,0) / (resp.length*5) * 100);
+    const level = pct<35 ? AnxietyLevel.LOW : pct<65 ? AnxietyLevel.MEDIUM : AnxietyLevel.HIGH;
+
+    const cid = crypto.randomUUID();
+    this._parent = {
+      id: crypto.randomUUID(),
+      name: this._ob.name, email: this._ob.email,
+      onboardingComplete: true,
+      children:[{ id:cid, name:this._ob.childName, ageGroup:this._ob.ageGroup, completedActivities:[], badges:[] }],
+      anxietyProfile:{ level, score:pct, assessedAt:new Date() },
+      parentingStyle: this._ob.style,
+      resources: this._ob.resources||['basic','craft'],
+      weeklyCheckIns:[], badges:[], teacherMessages:[], weeklyPlans:[],
+    };
+    this._childId = cid;
+    this._storage.set('parent', this._parent);
+
+    // Kullanıcıyı login sistemine de kaydet
+    const existingUsers = this._eGetUsers();
+    const username = (this._ob.name||'kullanici').toLowerCase()
+      .replace(/\s+/g,'_')
+      .replace(/[^a-z0-9_]/g,'')
+      .substring(0,20) || 'kullanici';
+    // Aynı username yoksa ekle
+    if(!existingUsers.find(u=>u.username===username)){
+      existingUsers.push({
+        id: this._parent.id,
+        name: this._parent.name,
+        username: username,
+        email: this._parent.email||'',
+        pwdHash: '',
+        role: 'admin',
+        active: true,
+        createdAt: new Date().toISOString(),
+      });
+      this._eSaveUsers(existingUsers);
+    }
+
+    this.show('dashboard');
+    setTimeout(()=>this._toast(`Hoş geldin, ${this._parent.name}! 🎉`,'ok'), 400);
+
+    // Berkowitz ve ark. (2015): "time to first value" tutmayı doğrudan etkiler.
+    // Onboarding biter bitmez yaşa uygun bir başlangıç etkinliği öner.
+    setTimeout(()=>{
+      const p = this._parent; const c = this._getChild();
+      if(!p || !c) return;
+      const starter = this._recEngine.recommend(p, c, 1, null)[0];
+      if(!starter) return;
+      this._openModal(`
+        <div style="text-align:center;padding:.5rem 0 .5rem">
+          <div style="font-size:2.8rem;margin-bottom:.4rem">👋</div>
+          <h3 style="margin-bottom:.25rem">İlk etkinliğini dene!</h3>
+          <p class="muted" style="font-size:var(--t-md);margin-bottom:1.1rem;line-height:1.6">
+            Araştırmalar haftada <strong>yalnızca bir kez</strong> bile yapılan kaliteli etkileşimin fark yarattığını gösteriyor.
+            <span style="font-size:var(--t-xs);display:block;margin-top:.3rem;font-style:italic">Berkowitz ve ark., 2015 — Science dergisi</span>
+          </p>
+          <div class="card card-sm" style="text-align:left;margin-bottom:1rem;cursor:default">
+            <div class="card-body">
+              <div style="display:flex;gap:.8rem;align-items:center">
+                <span style="font-size:2rem">${starter.emoji}</span>
+                <div>
+                  <strong style="font-size:var(--t-lg)">${starter.title}</strong>
+                  <p class="muted" style="font-size:var(--t-sm);margin-top:.1rem">${starter.desc}</p>
+                  <span class="chip chip-orange" style="font-size:var(--t-xs);margin-top:.35rem;display:inline-block">⏱ ${starter.dur} dk</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:.65rem">
+            <button class="btn btn-soft btn-block" style="flex:.8" onclick="App._closeModal()">Sonra</button>
+            <button class="btn btn-primary btn-block" style="flex:1.2" onclick="App._closeModal();App._openActivity('${starter.id}')">Şimdi Başla →</button>
+          </div>
+        </div>
+      `);
+    }, 1800);
+  }
+
+  /* ══════════════════════════════════════════════
+     DASHBOARD
+  ══════════════════════════════════════════════ */
+
+  _renderDash(){
+    const p=this._parent; if(!p) return;
+    const c=this._getChild(); if(!c) return;
+    const rec = this._recEngine.recommend(p, c, 3, this._adaptEng);
+    const done = (c.completedActivities||[]).length;
+    const anxLevel=p.anxietyProfile?.level;
+    const anxScore=p.anxietyProfile?.score||0;
+    const anxColor = anxLevel===AnxietyLevel.LOW?'var(--success)':anxLevel===AnxietyLevel.MEDIUM?'var(--amber)':'var(--danger)';
+    const anxEmoji = anxLevel===AnxietyLevel.LOW?'😌':anxLevel===AnxietyLevel.MEDIUM?'🤔':'😰';
+    const hour=new Date().getHours();
+    const greet = hour<12?'Günaydın':hour<18?'İyi günler':'İyi akşamlar';
+    const planCount = Object.keys(this._plannerSvc.getWeekPlan()).length;
+
+    // Streak
+    const streak = this._streakSvc.checkExpiry();
+    const todayDone = this._streakSvc.isTodayDone();
+    const streakFlame = streak.count >= 7 ? '🔥🔥' : streak.count >= 3 ? '🔥' : '⭕';
+    const streakColor = streak.count >= 3 ? 'var(--danger)' : streak.count >= 1 ? 'var(--amber)' : 'var(--muted)';
+
+    // Kaygı trendi
+    const anxTrend = this._anxTracker.getTrend();
+    const trendLabel = anxTrend==='improving' ? '📉 İyileşiyor' : anxTrend==='worsening' ? '📈 Yükseliyor' : '➡️ Stabil';
+    const trendColor = anxTrend==='improving' ? 'var(--success)' : anxTrend==='worsening' ? 'var(--danger)' : 'var(--muted)';
+
+    document.getElementById('dash-body').innerHTML=`
+      <!-- Greeting -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.1rem;padding-top:.25rem">
+        <div>
+          <p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">${greet}</p>
+          <h2 style="font-size:1.4375rem;font-weight:900;color:var(--text);margin:.15rem 0 0;line-height:1.15;letter-spacing:-.02em">${p.name}</h2>
+          <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.2rem;font-weight:600">${c.name} · ${this._AGLabels[c.ageGroup]}</p>
+        </div>
+        <button onclick="App.show('notifications')" style="width:38px;height:38px;border-radius:11px;background:var(--surface);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:1rem" ontouchstart="this.style.opacity='.6'" ontouchend="this.style.opacity=''">
+          🔔<span id="notif-dot" class="nav-dot" style="display:none"></span>
+        </button>
+      </div>
+
+      <!-- Streak -->
+      <div style="background:${streak.count>=1?'linear-gradient(135deg,var(--teal),var(--teal-d))':'var(--surface)'};border-radius:var(--r-xl);padding:.9rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;${streak.count>=1?'color:#fff':'border:0.5px solid var(--border)'};box-shadow:${streak.count>=1?'var(--sh-btn)':'var(--sh-xs)'}">
+        <div style="font-size:1.75rem;line-height:1;flex-shrink:0">${streakFlame}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--t-md);font-weight:800">${streak.count} günlük seri${streak.count===0?' — Bugün başla!':''}</div>
+          <p style="font-size:var(--t-xs);opacity:${streak.count>=1?.8:1};margin-top:.06rem;color:${streak.count>=1?'rgba(255,255,255,.8)':'var(--muted)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            ${todayDone?'✓ Bugün tamamlandı':'Bugün bir etkinlik tamamla!'}${streak.longestStreak>0?' · En uzun: '+streak.longestStreak+' gün':''}
+          </p>
+        </div>
+        ${!todayDone?`<button class="btn btn-sm" style="background:${streak.count>=1?'rgba(255,255,255,.2)':'var(--teal)'};color:#fff;border:none;flex-shrink:0" onclick="App.show('activities')">Başla</button>`:`<span style="font-size:1.2rem">✅</span>`}
+      </div>
+
+      <!-- Hızlı erişim — yatay kaydırmalı -->
+      <div style="display:flex;gap:.45rem;overflow-x:auto;padding-bottom:.2rem;margin-bottom:1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+        ${[
+          {icon:'🎲',label:'Etkinlik',view:'activities'},
+          {icon:'⭐',label:'Beceri',view:'skill'},
+          {icon:'📚',label:'Akademi',view:'learn'},
+          {icon:'💬',label:'Sohbet',view:'mathtalk'},
+          {icon:'📖',label:'Kitap',view:'books'},
+          {icon:'📅',label:'Plan',view:'planner'},
+          {icon:'🌿',label:'Nefes',view:'breathing'},
+        ].map(q=>`<button onclick="App.show('${q.view}')" style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.5rem .6rem;background:var(--surface);border:0.5px solid var(--border);border-radius:12px;cursor:pointer;min-width:54px;-webkit-tap-highlight-color:transparent" ontouchstart="this.style.opacity='.6';this.style.transform='scale(.92)'" ontouchend="this.style.opacity='';this.style.transform=''">
+          <span style="font-size:1.35rem;line-height:1">${q.icon}</span>
+          <span style="font-size:.58rem;font-weight:700;color:var(--muted);white-space:nowrap">${q.label}</span>
+        </button>`).join('')}
+      </div>
+
+      <!-- Bugün için öneriler -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+        <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Bugün için Öneriler</span>
+        <button onclick="App.show('activities')" style="font-size:var(--t-xs);font-weight:700;color:var(--teal);background:none;border:none;cursor:pointer;padding:.2rem .4rem">Tümü →</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.55rem;margin-bottom:1rem">
+        ${rec.map(a=>this._actCard(a)).join('')}
+      </div>
+
+      <!-- Kaygı profili — kompakt -->
+      ${anxLevel!==undefined?`
+      <div style="background:var(--surface);border-radius:var(--r-lg);padding:.875rem 1rem;border:0.5px solid var(--border);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;cursor:pointer" onclick="App.show('progress')">
+        <div style="width:40px;height:40px;border-radius:50%;background:${anxColor};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;opacity:.9">${anxEmoji}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--t-sm);font-weight:800;color:var(--text)">Matematik Kaygısı: ${anxLevel===AnxietyLevel.LOW?'Düşük':anxLevel===AnxietyLevel.MEDIUM?'Orta':'Yüksek'}</div>
+          <div style="background:var(--raised);border-radius:99px;height:3px;margin-top:.35rem;overflow:hidden">
+            <div style="height:100%;width:${anxScore}%;background:${anxColor};border-radius:99px"></div>
+          </div>
+        </div>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--hint)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>`:''}
+
+      <!-- Berkowitz — sadece ilk açılışta -->
+      ${streak.count===0?`
+      <div style="background:rgba(13,148,136,.06);border-radius:var(--r-md);padding:.8rem .9rem;border:0.5px solid rgba(13,148,136,.15);display:flex;gap:.6rem;align-items:flex-start;margin-bottom:1rem">
+        <span style="font-size:1rem;flex-shrink:0">📊</span>
+        <div>
+          <p style="font-size:var(--t-sm);font-weight:700;color:var(--teal)">Haftada bir kez bile yeter.</p>
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.55"><em>Berkowitz ve ark., 2015 — Science</em></p>
+        </div>
+      </div>`:''}
+    `  }
+
+
+
+
+  _saveNote(id, text){
+    const notes = this._storage.get('obs_notes') || {};
+    notes[id] = text;
+    this._storage.set('obs_notes', notes);
+  }
+  _getNote(id){
+    const notes = this._storage.get('obs_notes') || {};
+    return notes[id] || '';
+  }
+
+  _buildTymmModal(a){
+    const hasOO = a.tymm_oo?.length > 0;
+    const hasIL = a.tymm_il?.length > 0 || a.tymm_t?.length > 0;
+    if(!hasOO && !hasIL) return '';
+    let html = `<div style="background:linear-gradient(135deg,rgba(17,138,178,.08),rgba(17,138,178,.02));border:1.5px solid rgba(17,138,178,.22);border-radius:var(--r-md);padding:.95rem 1rem;margin-bottom:1rem">
+      <p style="font-size:var(--t-xs);font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">🎓 TYMM Müfredat Uyumu</p>`;
+    if(hasOO){
+      html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin-bottom:.4rem">OKUL ÖNCESİ — Alan Becerileri (OÖEP 2024)</p>`;
+      html += `<div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem">`;
+      (a.tymm_oo||[]).forEach(k => {
+        const b = TYMM.OO[k]; if(!b) return;
+        html += `<div style="background:var(--surface);border:1px solid rgba(17,138,178,.18);border-radius:var(--r-sm);padding:.55rem .75rem">
+          <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.2rem">
+            <span style="background:var(--blue);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.12rem .4rem;border-radius:3px">${b.kod}</span>
+            <strong style="font-size:var(--t-sm)">${b.ad}</strong>
+          </div>
+          <p style="font-size:var(--t-sm);color:var(--muted);line-height:1.5">${b.aciklama}</p>
+          <div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-top:.3rem">${b.surec.map(s=>`<span style="font-size:var(--t-xs);background:rgba(17,138,178,.08);color:var(--blue);padding:.1rem .32rem;border-radius:3px">${s}</span>`).join('')}</div>
+        </div>`;
+      });
+      html += `</div>`;
+      if(a.tymm_yas?.length) html += `<p style="font-size:var(--t-xs);color:var(--muted);margin-bottom:.4rem"><strong>Yaş:</strong> ${a.tymm_yas.map(y=>y+' ay').join(' · ')}</p>`;
+    }
+    if(hasIL){
+      html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin-bottom:.4rem${hasOO?';margin-top:.5rem':''}">İLKOKUL — Matematik Dersi Öğretim Programı (1–4. Sınıf, 2024)</p>`;
+      if(a.tymm_t?.length){
+        html += `<div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.45rem">`;
+        (a.tymm_t||[]).forEach(k => {
+          const t = TYMM.IL_TEMA[k]; if(!t) return;
+          html += `<div style="background:var(--surface);border:1px solid rgba(45,106,79,.2);border-radius:var(--r-sm);padding:.55rem .75rem">
+            <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.2rem">
+              <span style="background:var(--teal-d);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.12rem .4rem;border-radius:3px">${t.kod}</span>
+              <strong style="font-size:var(--t-sm)">${t.ad}</strong>
+            </div>
+            <p style="font-size:var(--t-sm);color:var(--muted);line-height:1.5">${t.aciklama}</p>
+            <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.2rem">${t.siniflar.map(s=>s+'. Sınıf').join(' · ')}</p>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+      if(a.tymm_il?.length){
+        html += `<div style="display:flex;gap:.3rem;flex-wrap:wrap">`;
+        (a.tymm_il||[]).forEach(k => {
+          const b = TYMM.IL_MAB[k]; if(!b) return;
+          html += `<span title="${b.aciklama}" style="font-size:var(--t-xs);background:rgba(45,106,79,.1);color:var(--teal-d);border-radius:3px;padding:.18rem .45rem;font-weight:700">${b.kod}: ${b.ad}</span>`;
+        });
+        html += `</div>`;
+      }
+    }
+    html += `<p style="font-size:var(--t-xs);color:var(--muted);margin-top:.6rem;opacity:.7">Kaynak: MEB TEGM OÖEP 2024 · MEB TYMM İlkokul Mat. Prog. 2024</p></div>`;
+    return html;
+  }
+
+  _renderTeacherBanner(){
+    const note = this._teacherSvc.getWeeklyNote();
+    if(!note) return '';
+    return `<div style="background:linear-gradient(135deg,var(--blue) 0%,#0e6e8c 100%);border-radius:var(--r-lg);padding:1.1rem 1.3rem;margin-bottom:1.3rem;color:#fff;cursor:pointer;box-shadow:0 6px 20px rgba(17,138,178,.3)" onclick="App.show('teacher')">
+      <div style="font-size:var(--t-xs);font-weight:800;opacity:.75;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem">📋 ÖĞRETMENDEN HAFTALIK NOT</div>
+      <p style="font-size:var(--t-lg);line-height:1.5;opacity:.95">${note.text}</p>
+      <p style="font-size:var(--t-xs);opacity:.65;margin-top:.4rem">Öğretmen köprüsüne git →</p>
+    </div>`;
+  }
+
+  _renderSmsBanner(){
+    const task = this._smsSvc.getCurrentTask();
+    return `<div style="background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:var(--s-md) var(--s-lg);margin-bottom:1.3rem;cursor:pointer" onclick="App.show('sms')">
+      <div style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem">📱 BU HAFTALIK GÖREV</div>
+      <p style="font-size:var(--t-md);line-height:1.5;color:var(--text2)">${task.text}</p>
+    </div>`;
+  }
+
+  /* ══════════════════════════════════════════════
+     ACTIVITIES VIEW
+  ══════════════════════════════════════════════ */
+
+  _renderActs(){
+    this._showSkeleton('act-body', 4);
+    const c = this._getChild();
+    const all = c ? this._repo.byAgeGroup(c.ageGroup) : this._repo.all();
+    const done = new Set(c?.completedActivities||[]);
+
+    let filtered = all;
+    if(this._filter.category) filtered = filtered.filter(a=>a.category===this._filter.category);
+    if(this._filter.anxOnly)  filtered = filtered.filter(a=>a.anxFriendly);
+    if(this._filter.spatialOnly) filtered = filtered.filter(a=>a.category===Category.SPATIAL);
+    if(this._filter.searchTerm) {
+      const t = this._filter.searchTerm.toLowerCase();
+      filtered = filtered.filter(a=>a.title.toLowerCase().includes(t)||a.tags.some(g=>g.includes(t)));
+    }
+
+    document.getElementById('act-body').innerHTML=`
+      <!-- Search -->
+      <div style="margin-bottom:1rem">
+        <input class="input" placeholder="🔍 Etkinlik ara…" value="${this._filter.searchTerm}" oninput="App._search(this.value)" style="padding:.7rem 1rem;font-size:var(--t-lg)">
+      </div>
+      <!-- Active filters -->
+      ${this._filter.category||this._filter.anxOnly||this._filter.spatialOnly?`
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem">
+        ${this._filter.category?`<span class="chip chip-orange">${this._CatEmoji[this._filter.category]} ${this._CatLabels[this._filter.category]} <button onclick="App._clearCatFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+        ${this._filter.anxOnly?`<span class="chip chip-orange">💛 Kaygı Dostu <button onclick="App._clearAnxFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+        ${this._filter.spatialOnly?`<span class="chip chip-blue">🧭 Uzamsal <button onclick="App._clearSpatialFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+      </div>`:''}
+      <!-- Count -->
+      <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem">${filtered.length} etkinlik</p>
+      <!-- List -->
+      <div style="display:flex;flex-direction:column;gap:.75rem">
+        ${filtered.length?filtered.map(a=>this._actCard(a, done.has(a.id))).join(''):'<p class="muted center" style="padding:2rem">Etkinlik bulunamadı.</p>'}
+      </div>
+    `;
+
+    // Filter panel
+    document.getElementById('act-filter-panel').innerHTML=`
+      <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:.55rem">KATEGORİ</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem">
+        ${Object.entries(this._CatLabels).map(([k,v])=>`
+          <button class="chip ${this._filter.category===k?'chip-orange':'chip-muted'}" onclick="App._setCatFilter('${k}')" style="cursor:pointer;border:none;padding:.4rem .8rem">${this._CatEmoji[k]} ${v}</button>`).join('')}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <label style="display:flex;align-items:center;gap:.6rem;font-size:var(--t-md);font-weight:700;cursor:pointer">
+          <input type="checkbox" ${this._filter.anxOnly?'checked':''} onchange="App._toggleAnxFilter()" style="width:16px;height:16px;accent-color:var(--teal)">
+          💛 Yalnızca Kaygı Dostu Etkinlikler
+        </label>
+        <label style="display:flex;align-items:center;gap:.6rem;font-size:var(--t-md);font-weight:700;cursor:pointer">
+          <input type="checkbox" ${this._filter.spatialOnly?'checked':''} onchange="App._toggleSpatialFilter()" style="width:16px;height:16px;accent-color:var(--blue)">
+          🧭 Yalnızca Uzamsal Düşünme
+        </label>
+      </div>
+    `;
+  }
+
+  _clearSpatialFilter(){ this._filter.spatialOnly=false; this._renderActs(); }
+  _toggleSpatialFilter(){ this._filter.spatialOnly=!this._filter.spatialOnly; this._renderActs(); }
+
+  /* ══════════════════════════════════════════════
+     UZAMSAL DÜŞÜNME MODÜLÜ
+  ══════════════════════════════════════════════ */
+
+
+  /* ══════════════════════════════════════════════
+     TYMM MÜFREDAт UYUM MODÜLÜ
+  ══════════════════════════════════════════════ */
+
+
+  /* ══════════════════════════════════════════════
+     BECERİ KÖPRÜSÜ — Koordinatör
+  ══════════════════════════════════════════════ */
+  _renderSkill(){
+    this._renderBreadcrumb('skill-body', [{label:'Akademi',view:'learn'},{label:'Beceri Köprüsü'}]);
+    const el = document.getElementById('skill-body');
+    if (!el) return;
+    // SkillBridgeApp yalnızca bir kez oluşturulur
+    if (!this._skillApp) {
+      this._skillApp = createSkillBridge({
+        containerEl: el,
+        storage:     localStorage,
+        namespace:   'matevde',
+      });
+    }
+    this._skillApp.mount();
+  }
+
+
+  /* ── Breadcrumb ────────────────────────────────────────────
+     Sub-view'larda üst konumu gösterir.
+     path: [{ label, view? }] — sonuncusu aktif (tıklanamaz)
+  ──────────────────────────────────────────────────────────── */
+  _renderBreadcrumb(containerId, path){
+    const el = document.getElementById(containerId);
+    if(!el) return;
+    const bc = document.createElement('div');
+    bc.className = 'breadcrumb';
+    bc.innerHTML = path.map((p, i) => {
+      const isLast = i === path.length - 1;
+      const sep = i > 0 ? `<span class="breadcrumb-sep">›</span>` : '';
+      return isLast
+        ? `${sep}<span class="breadcrumb-item">${p.label}</span>`
+        : `${sep}<button class="breadcrumb-item" onclick="App.show('${p.view}')">${p.label}</button>`;
+    }).join('');
+    el.prepend(bc);
+  }
+
+  _renderStories(){
+    this._renderBreadcrumb('stories-body', [{label:'Akademi',view:'learn'},{label:'Başarı Hikayeleri'}]);
+    const el = document.getElementById('stories-body'); if(!el) return;
+    // Başarı hikayeleri — Muir (2012), Skwarchuk (2009), Knapp ve ark. (2017)'den uyarlandı
+    const stories = [
+      { emoji:'👩\u200d🍳', family:"Erzurum — 2 çocuk", age:"36-48 ay", label:"Sabırlı Başlangıç",
+        story:"Mutfakta pirinç tanelerini sayarken başladık. İlk hafta 5e kadar sayabiliyordu. Üç ay sonra 30a kadar kolayca sayıyor, beni sınıflandırma hakkında sorularla bunaltıyor.",
+        lesson:"Küçük, tekrarlayan anlar büyük farklılık yaratır.",
+        tag:"Sayma ve Günlük Hayat" },
+      { emoji:'👨\u200d🔧', family:"Ankara — 1 çocuk", age:"2. Sınıf", label:"Market Keşfi",
+        story:"Fişleri birlikte kontrol etmeye başladık. Bir gün marketten 3 TL hata buldu. O günden beri aile muhasebecimiz oldu. Matematik dersindeki tutumu tamamen değişti.",
+        lesson:"Gerçek bağlam içsel motivasyonu besler.",
+        tag:"Market Matematiği" },
+      { emoji:'👩\u200d🎓', family:"İzmir — 3 çocuk", age:"48-60 ay", label:"Farklı Hızlar",
+        story:"Üç çocuğum var, üçü de farklı hızda öğreniyor. Ölçme etkinliklerinde herkes aynı masada farklı şeyler keşfetti. En küçüğü kardeşini izleyerek öğrendi.",
+        lesson:"Karma yaş etkinlikleri herkese kazandırır.",
+        tag:"Ölçme ve Aile" },
+      { emoji:'👨\u200d👩\u200d👧', family:"Konya — Düşük bütçe", age:"1. Sınıf", label:"Malzeme Değil, Dikkat",
+        story:"Tahta oyuncaklar yoktu. Kuru fasulyeyle saydık, gazete kesimleriyle şekil yaptık. En etkili materyal ebeveynin dikkatidir.",
+        lesson:"Pahalı araca gerek yok — merak her evde var.",
+        tag:"Her Bütçeye Uygun" },
+      { emoji:'👩\u200d💼', family:"İstanbul — Çalışan ebeveyn", age:"3. Sınıf", label:"5 Dakika Yeter",
+        story:"Sabah 5 dakikam vardı. Takvime baktık, haftaya kaç gün kaldı. Akşam 5 dakika: fişi kontrol ettik. Haftada 10 toplam dakika. Bir dönem sonra matematik notu 60dan 85e çıktı.",
+        lesson:"Rutinin süresi değil, kalitesi belirler.",
+        tag:"Zaman Yönetimi" },
+      { emoji:'👴', family:"Trabzon — Büyükbaba", age:"Okul öncesi", label:"Kuşaklar Arası",
+        story:"Torunumla bahçede sebze yetiştirdik. Büyüme günlüğü tuttuk, her gün cetvel koyduk. Ben matematik bilmiyorum ama sayıları ve ölçmeyi öğrettim. İkimiz de öğrendik.",
+        lesson:"Matematiği bilmek zorunda değilsiniz — merak etmeniz yeterli.",
+        tag:"Doğa ve Nesil" },
+      { emoji:'👩‍👦', family:"Diyarbakır — 2 çocuk", age:"1. ve 3. Sınıf", label:"Dil Köprüsü",
+        story:"Evde Kürtçe konuşuyoruz, okulda Türkçe matematik öğreniyorlar. Sayıları her iki dilde birlikte saydık. Mutfakta ölçerken iki dilli konuştuk. Matematik dili ne olursa olsun aynı — bu bizi çok rahatlattı.",
+        lesson:"Matematik evrensel bir dil — anadil ne olursa desteklemek mümkün.",
+        tag:"Çok Dilli Aile" },
+      { emoji:'👨‍👩‍👦‍👦', family:"Van — 4 çocuk", age:"Okul öncesi ve 2. Sınıf", label:"Kış Matematiği",
+        story:"Van'ın kışı uzun, çok dışarı çıkamıyoruz. Pencereden kar tanelerini saydık, sobanın odunlarını grupladık, yemek tariflerini ölçeklendirdik. Ev zaten bir matematik laboratuvarıymış.",
+        lesson:"Her koşulda, her evde matematik var — görmek yeterli.",
+        tag:"Ev Ortamı" },
+    ];
+;
+
+    el.innerHTML = '<div style="padding-bottom:2rem">' +
+      '<div style="background:linear-gradient(135deg,rgba(255,209,102,.15),rgba(255,107,53,.08));border-radius:var(--r-lg);padding:var(--s-lg) 1.3rem;margin-bottom:1.5rem;border:1.5px solid rgba(255,209,102,.3)">' +
+        '<h3 style="color:var(--teal);margin-bottom:.35rem">🌟 Başarı Hikayeleri</h3>' +
+        '<p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Araştırmalar şunu gösteriyor: başarıyı getiren aktivite değil, ebeveynin tutumudur. Bu aileler farklı koşullarda, aynı merakla başladı.</p>' +
+        '<p style="font-size:var(--t-xs);color:var(--muted);margin-top:.4rem;font-style:italic">Kaynak: Muir (2012), Skwarchuk (2009), Knapp ve ark. (2017) — uyarlanmış örnekler</p>' +
+      '</div>' +
+      stories.map(s => '<div class="card" style="margin-bottom:.85rem"><div class="card-body">' +
+        '<div style="display:flex;align-items:flex-start;gap:.85rem">' +
+          '<div style="font-size:2.2rem;flex-shrink:0">' + s.emoji + '</div>' +
+          '<div style="flex:1">' +
+            '<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem">' +
+              '<strong style="font-size:var(--t-lg)">' + s.label + '</strong>' +
+              '<span style="font-size:var(--t-xs);background:rgba(255,107,53,.1);color:var(--teal);padding:.1rem .4rem;border-radius:3px;font-weight:700">' + s.tag + '</span>' +
+            '</div>' +
+            '<p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.5rem">' + s.family + ' · ' + s.age + '</p>' +
+            '<p style="font-size:var(--t-md);line-height:1.6;color:var(--text2);font-style:italic;margin-bottom:.5rem">"' + s.story + '"</p>' +
+            '<div style="background:rgba(45,106,79,.08);border-radius:var(--r-sm);padding:.5rem .75rem">' +
+              '<p style="font-size:var(--t-sm);color:var(--teal-d);font-weight:700">💡 ' + s.lesson + '</p>' +
+            '</div>' +
+            this._editBar(stories.indexOf(s).toString(),'story') +
+          '</div>' +
+        '</div>' +
+      '</div></div>').join('') +
+      '<div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);text-align:center;border:1.5px dashed var(--border)">' +
+        '<p style="font-size:var(--t-md);font-weight:700;margin-bottom:.3rem">Siz de paylaşın 💬</p>' +
+        '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55">ABMAT ile yaşadığınız güzel bir anı gözlem notunuza ekleyin. Her etkinliğin altında not alanı var.</p>' +
+      '</div>' +
+    '</div>';
+  }
+
+  _renderTymm(){
+    const el = document.getElementById('tymm-body'); if(!el) return;
+    const child = this._getChild();
+    const isOO = child?.ageGroup === AgeGroup.PRESCHOOL;
+    const allActs = child ? this._repo.byAgeGroup(child.ageGroup) : this._repo.all();
+    const done = new Set(child?.completedActivities||[]);
+
+    // Her beceri/tema için toplam ve tamamlanan etkinlik sayısı
+    const countOO={}, countIL={};
+    const doneOO={}, doneIL={};
+    allActs.forEach(a => {
+      (a.tymm_oo||[]).forEach(k => { countOO[k]=(countOO[k]||0)+1; if(done.has(a.id)) doneOO[k]=(doneOO[k]||0)+1; });
+      (a.tymm_t||[]).forEach(k => { countIL[k]=(countIL[k]||0)+1; if(done.has(a.id)) doneIL[k]=(doneIL[k]||0)+1; });
+    });
+
+    el.innerHTML = `
+      <!-- Başlık -->
+      <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.03));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.5rem;border:1.5px solid rgba(17,138,178,.25)">
+        <h3 style="color:var(--blue);margin-bottom:.4rem">🎓 TYMM Müfredat Çerçevesi</h3>
+        <p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Türkiye Yüzyılı Maarif Modeli 2024 beceri çerçevesiyle ABMAT etkinliklerinin hizası. Tüm veriler resmi MEB belgelerinden doğrulanmıştır.</p>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem">
+          <span class="chip chip-blue">OÖEP 2024</span>
+          <span class="chip chip-green">İlkokul Mat. Prog. 2024</span>
+          <span class="chip chip-muted">tymm.meb.gov.tr</span>
+        </div>
+      </div>
+
+      <!-- OKUL ÖNCESİ MAB'LER -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header">
+          <span class="sec-title">Okul Öncesi Matematik Alan Becerileri (36-72 ay)</span>
+        </div>
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: OÖEP 2024 Bölüm 4.2 + tymm.meb.gov.tr aylık planlar (doğrulanmış)</p>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          ${Object.entries(TYMM.OO).map(([k,b])=>{
+            const tot=countOO[k]||0, don=doneOO[k]||0;
+            const pct=tot>0?Math.round(don/tot*100):0;
+            return `<div data-lm-id="${m.id}"
+        onclick="App._openLearn('${m.id}')"
+        style="display:flex;align-items:center;gap:.7rem;
+          padding:.65rem .85rem;
+          background:var(--surface);
+          border:1.5px solid var(--border);
+          border-radius:var(--r-sm);
+          cursor:pointer;transition:var(--t);
+          -webkit-tap-highlight-color:transparent"
+        onmousedown="this.style.transform='scale(.985)'"
+        onmouseup="this.style.transform=''">
+        <div style="width:36px;height:36px;border-radius:var(--r-sm);
+          background:var(--raised);
+          display:flex;align-items:center;justify-content:center;
+          font-size:1.25rem;flex-shrink:0">${m.emoji}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--fs-md);font-weight:700;
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.title}</div>
+          <div style="font-size:var(--fs-xs);color:var(--muted);margin-top:.1rem">${m.sub} · ${m.dur}</div>
+        </div>
+        <svg viewBox="0 0 8 12" width="7" style="flex-shrink:0;opacity:.3">
+          <polyline points="1,1 7,6 1,11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>`;
+      }).join('')}
+        </div>
+      </div>
+
+      <!-- İLKOKUL TEMALAR -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header">
+          <span class="sec-title">İlkokul Matematik Temaları (1–4. Sınıf)</span>
+        </div>
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: İlkokul Matematik Dersi Öğretim Programı 2024, s.9 ve 12–18</p>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          ${Object.entries(TYMM.IL_TEMA).map(([k,t])=>{
+            const tot=countIL[k]||0, don=doneIL[k]||0;
+            const pct=tot>0?Math.round(don/tot*100):0;
+            return `<div class="card card-sm"><div class="card-body">
+              <div style="display:flex;align-items:flex-start;gap:.7rem">
+                <span style="background:var(--teal-d);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.2rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem">${t.kod}</span>
+                <div style="flex:1">
+                  <strong style="font-size:var(--t-lg)">${t.ad}</strong>
+                  <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.15rem;line-height:1.5">${t.aciklama}</p>
+                  <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.25rem">${t.siniflar.map(s=>s+'. Sınıf').join(' · ')}</p>
+                  ${tot>0?`<div style="margin-top:.5rem">
+                    <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-bottom:.2rem">
+                      <span>Destekleyen etkinlikler</span>
+                      <span style="color:${pct>=70?'var(--success)':pct>=30?'var(--amber)':'var(--muted)'};font-weight:700">${don}/${tot}</span>
+                    </div>
+                    <div class="progress"><div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--teal-d),#4ade80)"></div></div>
+                  </div>`:''}
+                </div>
+              </div>
+            </div></div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- İLKOKUL ALAN BECERİLERİ -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header">
+          <span class="sec-title">İlkokul Matematik Alan Becerileri</span>
+        </div>
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: tymm.meb.gov.tr/beceriler/matematik-alan-becerileri (doğrulanmış)</p>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          ${Object.entries(TYMM.IL_MAB).map(([k,b])=>`
+            <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:var(--s-sm) var(--s-md)">
+              <div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem">
+                <span style="background:var(--teal-l);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.18rem .42rem;border-radius:4px">${b.kod}</span>
+                <strong style="font-size:var(--t-md)">${b.ad}</strong>
+              </div>
+              <p style="font-size:var(--t-sm);color:var(--muted);line-height:1.5;margin-bottom:.3rem">${b.aciklama}</p>
+              <div style="display:flex;gap:.25rem;flex-wrap:wrap">
+                ${b.surec.map(s=>`<span style="font-size:var(--t-xs);background:rgba(45,106,79,.08);color:var(--teal-d);padding:.12rem .35rem;border-radius:3px">${s}</span>`).join('')}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- PROGRAMLAR ARASI BİLEŞENLER -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header">
+          <span class="sec-title">Programlar Arası Bileşenler</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.55rem">
+          ${Object.entries(TYMM.PAB).map(([k,b])=>`
+            <div style="display:flex;gap:.7rem;align-items:center;padding:.7rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md)">
+              <span style="background:var(--purple);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.18rem .42rem;border-radius:4px;flex-shrink:0">${k}</span>
+              <div>
+                <strong style="font-size:var(--t-md)">${b.ad}</strong>
+                <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.1rem">${b.aciklama}</p>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Kaynaklar -->
+      <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-md);border:1.5px solid var(--border)">
+        <strong style="font-size:var(--t-sm)">📎 Resmi Kaynaklar</strong>
+        <div style="font-size:var(--t-sm);color:var(--muted);margin-top:.4rem;line-height:1.8">
+          <p>• MEB TEGM (2024). <em>TYMM Okul Öncesi Eğitim Programı</em> — tegm.meb.gov.tr</p>
+          <p>• MEB TYMM (2024). <em>İlkokul Matematik Dersi Öğretim Programı (1–4. Sınıf)</em> — tymm.meb.gov.tr</p>
+          <p>• Doğrulama: tymm.meb.gov.tr/okul-oncesi/unite/* (aylık planlar)</p>
+          <p>• Doğrulama: tymm.meb.gov.tr/beceriler/matematik-alan-becerileri</p>
+        </div>
+      </div>
+    `;
+  }
+
+  _renderSpatialModule(){
+    const el = document.getElementById('spatial-body'); if(!el) return;
+    const c = this._getChild();
+    const spatialActs = this._repo.byCategory(Category.SPATIAL).filter(a=>
+      !c || a.ageGroups.includes(c.ageGroup)
+    );
+    const done = new Set(c?.completedActivities||[]);
+
+    el.innerHTML=`
+      <!-- Intro -->
+      <div style="background:linear-gradient(135deg,rgba(123,45,139,.08),rgba(123,45,139,.03));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.4rem;border:1.5px solid rgba(123,45,139,.2)">
+        <h3 style="color:var(--purple);margin-bottom:.5rem">🧭 Uzamsal Düşünme Nedir?</h3>
+        <p style="font-size:var(--t-lg);line-height:1.65">Nesnelerin uzaydaki konumunu, ilişkilerini ve dönüşümlerini zihinsel olarak işleme yeteneğidir. 5 yaşındaki bir çocuğun blok yapısını kopyalama becerisi, 6 yaşındaki sayı doğrusu başarısını öngörüyor. Tüm STEM alanlarıyla güçlü bağlantısı var.</p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem">
+          <span class="chip chip-blue">🔬 Royal Society, 2024</span>
+          <span class="chip chip-green">✓ Öğretilebilir beceri</span>
+          <span class="chip chip-orange">⭐ STEM anahtarı</span>
+        </div>
+      </div>
+
+      <!-- Neden önemli? -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">Neden bu kadar önemli?</span></div>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          ${[
+            {icon:'🧠', text:'5 yaşında zihinsel döndürme → 6 yaşında sayı doğrusu başarısı (Gunderson et al., 2012)'},
+            {icon:'🎓', text:'Uzamsal beceri tüm STEM alanlarında başarıyı öngörüyor (Wai et al., 2009)'},
+            {icon:'🌱', text:'Düşük gelirli ailelerden çocuklar eğitimle en büyük ilerlemeyi gösteriyor (Verdine, 2014)'},
+            {icon:'🔄', text:'Uzamsal beceri öğretilebilir — blok oyunu, bulmaca, harita çizimi etkili (Uttal et al., 2013)'},
+          ].map(i=>`
+            <div style="display:flex;gap:.75rem;align-items:flex-start;padding:.75rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md)">
+              <span style="font-size:1.4rem;flex-shrink:0">${i.icon}</span>
+              <p style="font-size:var(--t-md);line-height:1.55">${i.text}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Uzamsal etkinlikler -->
+      <div>
+        <div class="sec-header">
+          <span class="sec-title">🧭 Uzamsal Düşünme Etkinlikleri</span>
+          <span class="chip chip-blue">${spatialActs.length} etkinlik</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          ${spatialActs.map(a=>this._actCard(a, done.has(a.id))).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  /* ══════════════════════════════════════════════
+     RESIMLI KİTAP VIEW
+  ══════════════════════════════════════════════ */
+
+  _renderBooks(){
+    this._renderBreadcrumb('books-body', [{label:'Akademi',view:'learn'},{label:'Kitap & Sayı Sohbeti'}]);
+    const el = document.getElementById('books-body'); if(!el) return;
+    const child = this._getChild();
+    const books = child
+      ? this._bookLibrary.filter(b=>b.ageGroups.includes(child.ageGroup))
+      : this._bookLibrary;
+
+    el.innerHTML=`
+      <!-- Intro -->
+      <div style="background:rgba(255,209,102,.15);border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1rem;border:1.5px solid rgba(255,209,102,.3)">
+        <h3 style="color:#92600A;margin-bottom:.4rem">📚 Okurken Matematik Konuşun</h3>
+        <p style="font-size:var(--t-md);line-height:1.6">Türkçe resimli kitap okurken doğal matematik sohbetleri açılır. Purpura ve arkadaşlarının 2021 çalışması, matematik dilli kitap okuma müdahalesinin çocukların sayı dili gelişimini anlamlı biçimde artırdığını gösterdi.</p>
+        <p style="font-size:var(--t-sm);color:#92600A;margin-top:.5rem;font-weight:700">Tüm kitaplar Türkçe — çoğu yerel yayınevlerinde ve okul kütüphanelerinde bulunur.</p>
+      </div>
+
+      ${!child ? '' : `<p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem">
+        ${child.name} için yaş grubuna uygun kitaplar gösteriliyor.
+        <button class="btn btn-soft btn-xs" onclick="App._renderAllBooks()">Tümünü gör</button>
+      </p>`}
+
+      <!-- Books -->
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        ${books.map(b=>`
+          <div class="card">
+            <div class="card-body">
+              <div style="display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.75rem">
+                <div style="font-size:2.5rem;flex-shrink:0;line-height:1">${b.emoji}</div>
+                <div style="flex:1">
+                  <strong style="font-size:var(--t-lg)">${b.title}</strong>
+                  <p class="muted" style="font-size:var(--t-sm);margin-top:.1rem">${b.author}</p>
+                  <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem">
+                    ${b.mathConcepts.map(c=>`<span class="chip chip-orange" style="font-size:var(--t-xs)">${c}</span>`).join('')}
+                  </div>
+                  ${b.tip ? `<p style="font-size:var(--t-sm);color:var(--muted);margin-top:.4rem;font-style:italic">💡 ${b.tip}</p>` : ''}
+                </div>
+              </div>
+              <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-sm)">
+                <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.55rem">Okurken sorabileceğiniz sorular:</p>
+                <div style="display:flex;flex-direction:column;gap:.4rem">
+                  ${b.mathQuestions.map((q,i)=>`
+                    <div style="display:flex;gap:.5rem;align-items:flex-start">
+                      <span style="width:18px;height:18px;border-radius:50%;background:var(--teal);color:#fff;font-size:var(--t-xs);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">${i+1}</span>
+                      <p style="font-size:var(--t-md);line-height:1.5;font-style:italic">"${q}"</p>
+                    </div>`).join('')}
+                </div>
+              </div>
+              ${this._editBar(b.id,'book')}
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <!-- Math talk tip -->
+      <div style="margin-top:1.4rem;background:rgba(17,138,178,.08);border-radius:var(--r-lg);padding:var(--s-lg);border:1.5px solid rgba(17,138,178,.2)">
+        <strong style="color:var(--blue);font-size:var(--t-lg)">💡 Sayı Sohbeti İpucu</strong>
+        <p style="font-size:var(--t-md);line-height:1.6;margin-top:.4rem">Soru sorduktan sonra bekleyin. Çocuğa düşünme süresi tanıyın. Cevabı siz vermeyin — sessizlik öğrenmenin parçasıdır.</p>
+      </div>
+    `;
+  }
+
+  _renderAllBooks(){
+    const el = document.getElementById('books-body'); if(!el) return;
+    const books = this._bookLibrary;
+    // Geçici olarak tüm kitapları göster
+    const savedChild = this._getChild();
+    // Tüm gruplara göre ayır
+    const groups = {
+      'Okul Öncesi & 1. Sınıf': books.filter(b=>b.ageGroups.includes(AgeGroup.PRESCHOOL)||b.ageGroups.includes(AgeGroup.G1)),
+      '2. - 3. Sınıf': books.filter(b=>b.ageGroups.includes(AgeGroup.G2)||b.ageGroups.includes(AgeGroup.G3)),
+      '3. - 4. Sınıf': books.filter(b=>b.ageGroups.includes(AgeGroup.G3)||b.ageGroups.includes(AgeGroup.G4)),
+    };
+    el.innerHTML = Object.entries(groups).map(([label, bks]) =>
+      bks.length ? `<div class="sec-header" style="margin-top:1rem"><span class="sec-title">${label}</span></div>
+      <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:.5rem">
+        ${bks.map(b=>`<div class="card card-sm" onclick="" style="cursor:default"><div class="card-body">
+          <div style="display:flex;gap:.7rem;align-items:center">
+            <span style="font-size:1.8rem">${b.emoji}</span>
+            <div><strong style="font-size:var(--t-lg)">${b.title}</strong>
+            <p class="muted" style="font-size:var(--t-sm)">${b.author}</p></div>
+          </div>
+        </div></div>`).join('')}
+      </div>` : ''
+    ).join('') + `<button class="btn btn-soft btn-block" style="margin-top:1rem" onclick="App._renderBooks()">← Yaşa uygun görünüm</button>`;
+  }
+
+
+
+  /* ══════════════════════════════════════════════
+     MATH TALK KARTLARI VIEW
+  ══════════════════════════════════════════════ */
+
+  _renderSayiSohbeti(){
+    this._renderBreadcrumb('mathtalk-body', [{label:'Akademi',view:'learn'},{label:'Sayı Sohbeti Kartları'}]);
+    const el = document.getElementById('mathtalk-body'); if(!el) return;
+    const child = this._getChild();
+    const today = new Date();
+    // Her gün farklı bir kart öne çıkar
+    const featuredIdx = today.getDate() % this._sayiSohbetiKartlari.length;
+    const featured = this._sayiSohbetiKartlari[featuredIdx];
+
+    el.innerHTML=`
+      <!-- Intro -->
+      <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);border-radius:var(--r-lg);padding:1.4rem;margin-bottom:1.4rem;color:#fff">
+        <p style="font-size:var(--t-xs);font-weight:800;opacity:.75;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem">💬 BUGÜNÜN KARTI</p>
+        <div style="font-size:1.6rem;margin-bottom:.4rem">${featured.context}</div>
+        <p style="font-size:var(--t-xl);font-weight:700;line-height:1.4">"${featured.prompt}"</p>
+        <p style="font-size:var(--t-sm);opacity:.8;margin-top:.5rem">Kavram: ${featured.concept}</p>
+          ${this._editBar(m.id,'mt')}
+      </div>
+
+      <!-- Neden işe yarıyor? -->
+      <div style="background:rgba(255,209,102,.15);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);margin-bottom:1.4rem;border:1.5px solid rgba(255,209,102,.3)">
+        <p style="font-size:var(--t-md);line-height:1.6;color:var(--text2)"><strong>Araştırma bulgusu:</strong> Yüksek SES ailelerinin günlük matematik konuşma sıklığı düşük SES ailelerine kıyasla 3 kat fazla. Bu fark okul başarısında erken ayrışmaya yol açıyor. Kısa sohbetler bu açığı kapatıyor (Lu et al., Child Dev., 2025).</p>
+      </div>
+
+      <!-- Tüm kartlar -->
+      <div class="sec-header"><span class="sec-title">Tüm Sohbet Kartları</span></div>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        ${this._sayiSohbetiKartlari.map((c,i)=>`
+          <div style="display:flex;gap:.85rem;align-items:flex-start;padding:1rem;background:var(--surface);border:${i===featuredIdx?'2px solid var(--teal)':'1.5px solid var(--border)'};border-radius:var(--r-md)">
+            <div style="font-size:1.5rem;flex-shrink:0;min-width:2.5rem;text-align:center">${c.context.split(' ')[0]}</div>
+            <div style="flex:1">
+              <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted)">${c.context}</p>
+              <p style="font-size:var(--t-lg);font-weight:700;margin:.2rem 0;font-style:italic">"${c.prompt}"</p>
+              <span class="chip chip-blue" style="font-size:var(--t-xs)">${c.concept}</span>
+            </div>
+            ${i===featuredIdx?`<span class="chip chip-orange" style="flex-shrink:0">Bugün</span>`:''}
+          </div>`).join('')}
+      </div>
+
+      <!-- Uygulama notu -->
+      <div style="margin-top:1.4rem;background:var(--raised);border-radius:var(--r-md);padding:1rem;border:1.5px solid var(--border)">
+        <strong style="font-size:var(--t-md)">📌 Nasıl kullanılır?</strong>
+        <p style="font-size:var(--t-md);color:var(--muted);margin-top:.35rem;line-height:1.55">Günde 1 kart yeterli. Soru sorduktan sonra <strong>bekleyin</strong>. Cevap "yanlış" olursa "Hmm, nasıl buldun?" sorun. Düzeltmeyin — keşfettirin.</p>
+      </div>
+
+      <!-- Sayı Sohbeti kullandım butonu -->
+      <button class="btn btn-primary btn-block" style="margin-top:1.2rem" onclick="App._markSayiSohbetiUsed()">
+        💬 Bugün bir kart kullandım!
+      </button>
+    `;
+  }
+
+  _markSayiSohbetiUsed(){
+    const p = this._parent; if(!p) return;
+    if(p.mathTalkUsed){ this._toast('Zaten kayıtlı ✓','ok'); return; }
+    this._parent = {...p, mathTalkUsed:true};
+    this._storage.set('parent', this._parent);
+    const child = this._getChild();
+    if(child){
+      const newBadges = this._badgeEng.evaluate(this._parent, child);
+      if(newBadges.length){
+        this._parent = {...this._parent, badges:[...(this._parent.badges||[]),...newBadges]};
+        this._storage.set('parent', this._parent);
+        this._confetti();
+        setTimeout(()=>this._badgeModal(newBadges[0]), 350);
+        return;
+      }
+    }
+    this._toast('Harika! Sayı Sohbeti başladı 💬','ok');
+  }
+
+  /* ══════════════════════════════════════════════
+     NEFES EGZERSİZİ VIEW
+  ══════════════════════════════════════════════ */
+
+  _renderBreathing(){
+    const el = document.getElementById('breathing-body'); if(!el) return;
+    const anxHistory = this._anxTracker.getHistory();
+    const trend = this._anxTracker.getTrend();
+    const p = this._parent;
+    const score = p?.anxietyProfile?.score || 0;
+
+    el.innerHTML=`
+      <!-- Kaygı durumu -->
+      <div style="background:${score<35?'rgba(34,197,94,.08)':score<65?'rgba(245,158,11,.08)':'rgba(239,68,68,.08)'};border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.4rem;border:1.5px solid ${score<35?'rgba(34,197,94,.25)':score<65?'rgba(245,158,11,.25)':'rgba(239,68,68,.25)'}">
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div style="font-size:2.5rem">${score<35?'😌':score<65?'🤔':'😰'}</div>
+          <div>
+            <h3>Kaygı Skoru: ${score}%</h3>
+            <p class="muted" style="font-size:var(--t-md);margin-top:.2rem">
+              Trend: ${trend==='improving'?'📉 İyileşiyor':trend==='worsening'?'📈 Yükseliyor':'➡️ Stabil'}
+              ${anxHistory.length<2?' (Henüz yeterli veri yok)':''}
+            </p>
+          </div>
+        </div>
+        ${anxHistory.length >= 2 ? `
+        <div style="margin-top:.9rem">
+          <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:.4rem">Son ${anxHistory.length} ölçüm</p>
+          <div style="display:flex;gap:.25rem;align-items:flex-end;height:36px">
+            ${anxHistory.map(h=>`
+              <div style="flex:1;background:${h.score<35?'var(--success)':h.score<65?'var(--amber)':'var(--danger)'};border-radius:3px 3px 0 0;height:${Math.round(h.score*36/100)}px;opacity:.75" title="${h.score}%"></div>
+            `).join('')}
+          </div>
+        </div>` : ''}
+      </div>
+
+      <!-- Nefes egzersizi -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">🧘 4-4-6 Nefes Tekniği</span></div>
+        <div class="card">
+          <div class="card-body" style="text-align:center;padding:1.5rem">
+            <div id="breath-icon" style="font-size:4rem;margin-bottom:.5rem;transition:transform .5s ease">🫁</div>
+            <h3 id="breath-label" style="font-size:1.2rem;margin-bottom:.4rem">Hazır mısınız?</h3>
+            <p id="breath-instruction" class="muted" style="font-size:var(--t-lg);line-height:1.55;min-height:3rem">Bu egzersiz matematik stresi sırasında zihni sakinleştirmek için tasarlanmıştır.</p>
+            <div id="breath-progress" style="margin:.9rem 0">
+              <div class="progress" style="height:6px"><div class="progress-fill" id="breath-bar" style="width:0%;transition:width linear"></div></div>
+            </div>
+            <div id="breath-phase" class="muted" style="font-size:var(--t-sm);margin-bottom:1rem">3 tekrar · ~42 saniye</div>
+            <button id="breath-btn" class="btn btn-primary" onclick="App._startBreathing()" style="min-width:160px">Başlat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Araştırma notu -->
+      <div style="background:rgba(255,209,102,.15);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);border:1.5px solid rgba(255,209,102,.3);margin-bottom:1.4rem">
+        <strong style="font-size:var(--t-md);color:#92600A">💡 Neden işe yarıyor?</strong>
+        <p style="font-size:var(--t-md);line-height:1.6;margin-top:.35rem;color:var(--text2)">Cosso ve arkadaşları (2023): Ebeveyn kaygısı azaltılmadan ev matematik ortamının etkisi sınırlı kalıyor. Çocuğunuza yardım etmeden önce kendi zihinsel durumunuzu yönetmek en kritik adımdır.</p>
+      </div>
+
+      <!-- Kaygı haftalık check-in bağlantısı -->
+      <div style="background:linear-gradient(135deg,var(--teal-d) 0%,var(--teal-l) 100%);border-radius:var(--r-lg);padding:1.1rem 1.3rem;color:#fff;display:flex;align-items:center;gap:.9rem;cursor:pointer" onclick="App._openCheckIn()">
+        <div style="font-size:1.8rem">📋</div>
+        <div style="flex:1">
+          <strong style="display:block">Haftalık kaygı takibi</strong>
+          <p style="font-size:var(--t-sm);opacity:.85;margin-top:.1rem">Check-in yaparak kaygı grafiğinizi güncel tutun</p>
+        </div>
+        <span style="font-size:1.2rem;opacity:.8">→</span>
+      </div>
+    `;
+  }
+
+  _startBreathing(){
+    const steps = this._breathingSteps;
+    const totalRounds = 3;
+    let round = 0;
+    let stepIdx = 0;
+
+    const btn = document.getElementById('breath-btn');
+    if(btn) btn.style.display = 'none';
+
+    const runStep = () => {
+      if(round >= totalRounds){
+        const icon = document.getElementById('breath-icon');
+        const label = document.getElementById('breath-label');
+        const inst = document.getElementById('breath-instruction');
+        const phase = document.getElementById('breath-phase');
+        const bar = document.getElementById('breath-bar');
+        if(icon) icon.textContent = '✅';
+        if(label) label.textContent = 'Tamamlandı!';
+        if(inst) inst.textContent = 'Harika iş çıkardınız. Şimdi biraz daha sakin hissedeceksiniz.';
+        if(phase) phase.textContent = `${totalRounds} tekrar tamamlandı`;
+        if(bar){ bar.style.transition='none'; bar.style.width='100%'; }
+        if(btn){ btn.style.display='block'; btn.textContent='Tekrar Yap'; btn.onclick=()=>App._renderBreathing(); }
+
+        // Rozet ve profil güncelle
+        const p = this._parent;
+        if(p && !p.breathingDone){
+          this._parent = {...p, breathingDone:true};
+          this._storage.set('parent', this._parent);
+          const child = this._getChild();
+          if(child){
+            const newBadges = this._badgeEng.evaluate(this._parent, child);
+            if(newBadges.length){
+              this._parent = {...this._parent, badges:[...(this._parent.badges||[]),...newBadges]};
+              this._storage.set('parent', this._parent);
+              setTimeout(()=>this._badgeModal(newBadges[0]), 600);
+            }
+          }
+        }
+        return;
+      }
+
+      const step = steps[stepIdx];
+      const icon = document.getElementById('breath-icon');
+      const label = document.getElementById('breath-label');
+      const inst = document.getElementById('breath-instruction');
+      const phase = document.getElementById('breath-phase');
+      const bar = document.getElementById('breath-bar');
+
+      if(icon){ icon.textContent = step.icon; icon.style.transform = stepIdx===0?'scale(1.3)':stepIdx===1?'scale(1.3)':'scale(0.9)'; }
+      if(label) label.textContent = step.label;
+      if(inst) inst.textContent = step.instruction;
+      if(phase) phase.textContent = `Tekrar ${round+1}/${totalRounds} · Adım ${stepIdx+1}/${steps.length}`;
+      if(bar){ bar.style.transition=`width ${step.duration}s linear`; bar.style.width='100%'; setTimeout(()=>{ if(bar){ bar.style.transition='none'; bar.style.width='0%'; }}, 50); }
+
+      setTimeout(()=>{
+        stepIdx++;
+        if(stepIdx >= steps.length){ stepIdx=0; round++; }
+        runStep();
+      }, step.duration * 1000);
+    };
+
+    runStep();
+  }
+
+
+  toggleFilter(){
+    const p = document.getElementById('act-filter-panel');
+    const btn = document.getElementById('act-filter-btn');
+    const open = p.style.display === 'none' || !p.style.display;
+    p.style.display = open ? 'block' : 'none';
+    btn.textContent = open ? '🔼 Filtre' : '🔽 Filtre';
+    if(open) this._renderActs();
+  }
+
+  _setCatFilter(cat){
+    this._filter.category = this._filter.category===cat ? null : cat;
+    this._renderActs();
+  }
+  _clearCatFilter(){ this._filter.category=null; this._renderActs(); }
+  _toggleAnxFilter(){ this._filter.anxOnly=!this._filter.anxOnly; this._renderActs(); }
+  _clearAnxFilter(){ this._filter.anxOnly=false; this._renderActs(); }
+  _setAnxFilter(){ this._filter.anxOnly=true; this.show('activities'); }
+  _search(v){ this._filter.searchTerm=v; this._renderActs(); }
+
+  _actCard(activity, isDone){
+    if(isDone===undefined){ const c=this._getChild(); isDone=(c?.completedActivities||[]).includes(activity.id); }
+    const child = this._getChild();
+    const isOO = child?.ageGroup === AgeGroup.PRESCHOOL;
+    // TYMM mini etiket — okul öncesi için MAB kodu, ilkokul için Tema kodu
+    const tymmCodes = isOO ? (activity.tymm_oo||[]) : (activity.tymm_t||[]);
+    const tymmChips = tymmCodes.slice(0,2).map(k => {
+      const b = isOO ? TYMM.OO[k] : TYMM.IL_TEMA[k];
+      return b ? `<span style="font-size:var(--t-xs);background:rgba(17,138,178,.1);color:var(--blue);border-radius:3px;padding:.1rem .35rem;font-weight:700">${b.kod}</span>` : '';
+    }).join('');
+    return `<div class="card card-interactive${isDone?' card-green':''}" onclick="App._openActivity('${activity.id}')" style="${isDone?'opacity:.72':''}">
+      <div class="card-body">
+        <div style="display:flex;align-items:flex-start;gap:.875rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--raised);display:flex;align-items:center;justify-content:center;font-size:1.75rem;flex-shrink:0;line-height:1">${activity.emoji}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.2rem">
+              <span style="font-size:var(--t-xl);font-weight:800;color:var(--text);line-height:1.25;letter-spacing:-.02em">${activity.title}</span>
+              <span style="color:var(--muted);font-size:1.1rem;flex-shrink:0;margin-top:.1rem">›</span>
+            </div>
+            <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.5rem;line-height:1.55">${activity.desc}</p>
+            <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+              <span style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r-full);padding:.15rem .5rem;font-size:var(--t-xs);font-weight:700;color:var(--muted)">⏱ ${activity.dur} dk</span>
+              <span style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r-full);padding:.15rem .5rem;font-size:var(--t-xs);font-weight:700;color:var(--muted)">${this._CatEmoji[activity.category]} ${this._CatLabels[activity.category]}</span>
+              ${isDone?`<span class="chip chip-green">✓ Tamam</span>`:''}
+              ${activity.anxFriendly&&!isDone?`<span class="chip chip-yellow">💛 Kaygısız</span>`:''}
+              ${activity.dysc?`<span class="chip chip-blue">💙</span>`:''}
+              ${tymmChips}
+            </div>
+          </div>
+        </div>
+      </div>
+      ${this._editBar(activity.id,'activity')}
+    </div>`;
+  }
+
+  _openActivity(id){
+    const a = this._repo.byId(id); if(!a) return;
+    const c = this._getChild();
+    const done = (c?.completedActivities||[]).includes(id);
+
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <div class="center" style="margin-bottom:1.2rem">
+        <div style="font-size:3.5rem;margin-bottom:.3rem">${a.emoji}</div>
+        <h2 style="line-height:1.2">${a.title}</h2>
+        <div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin-top:.5rem">
+          <span class="chip chip-orange">⏱ ${a.dur} dk</span>
+          <span class="chip chip-blue">${this._CatLabels[a.category]}</span>
+          ${a.anxFriendly?`<span class="chip chip-yellow">💛 Kaygı Dostu</span>`:''}
+          ${a.dysc?`<span class="chip chip-blue">💙 Diskalkuli</span>`:''}
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:var(--t-lg);margin-bottom:1.2rem">${a.desc}</p>
+      ${a.materials.length?`
+        <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem">MALZEME</p>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem">
+          ${a.materials.map(m=>`<span class="chip chip-orange">${m}</span>`).join('')}
+        </div>`:''}
+      <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.7rem">NASIL YAPILIR?</p>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.2rem">
+        ${a.steps.map((s,i)=>`
+          <li style="display:flex;gap:.75rem;align-items:flex-start">
+            <span style="width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-size:var(--t-sm);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">${i+1}</span>
+            <p style="font-size:var(--t-lg);line-height:1.55;flex:1">${s}</p>
+          </li>`).join('')}
+      </ol>
+      <div style="background:rgba(255,209,102,.18);border-left:4px solid var(--amber);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.9rem 1.1rem;margin-bottom:${a.sesAlt?'.6rem':'1rem'}">
+        <strong style="font-size:var(--t-md)">💡 Pedagojik İpucu</strong>
+        <p style="font-size:var(--t-md);margin-top:.3rem;line-height:1.55">${a.tip}</p>
+      </div>
+      ${a.sesAlt?`<div style="background:rgba(45,106,79,.07);border-left:4px solid var(--teal-d);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.75rem 1rem;margin-bottom:1rem">
+        <strong style="font-size:var(--t-sm)">♻️ Alternatif Malzeme (Her Bütçeye Uygun)</strong>
+        <p style="font-size:var(--t-sm);margin-top:.25rem;line-height:1.5;color:var(--muted)">${a.sesAlt}</p>
+      </div>`:''}
+      ${this._buildTymmModal(a)}
+      <div style="margin-bottom:1rem">
+        <label style="font-size:var(--t-sm);font-weight:700;display:block;margin-bottom:.4rem">📝 Gözlem Notu <span style="font-weight:400;color:var(--muted)">(isteğe bağlı)</span></label>
+        <textarea placeholder="Nasıl geçti? Ne fark ettin? Çocuğun ne söyledi?..." style="width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:var(--r-md);font-family:var(--ff-body);font-size:var(--t-md);resize:none;height:70px;background:var(--surface);color:var(--text);box-sizing:border-box" oninput="App._saveNote('${id}',this.value)">${App._getNote('${id}')}</textarea>
+      </div>
+      <div style="position:sticky;bottom:0;background:var(--surface);padding:.75rem 0 calc(.5rem + env(safe-area-inset-bottom));margin-top:.75rem;border-top:0.5px solid var(--border)">
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-ghost" onclick="App._closeModal()" style="flex:1;font-size:.875rem;padding:.8rem">
+            Kapat
+          </button>
+          ${done
+            ?`<div style="flex:2;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.8rem;background:rgba(13,148,136,.1);border-radius:14px;border:1px solid rgba(13,148,136,.2)">
+                <span style="color:var(--teal)">✓</span>
+                <span style="font-size:.9rem;font-weight:700;color:var(--teal)">Tamamlandı</span>
+              </div>`
+            :`<button class="btn btn-primary" onclick="App._complete('${id}')" style="flex:2;font-size:.9375rem;padding:.8rem">
+                ✓ Tamamladım
+              </button>`
+          }
+        </div>
+      </div>
+    `);
+  }
+
+  _complete(id){
+    const p=this._parent; if(!p) return;
+    const child=this._getChild(); if(!child) return;
+    if((child.completedActivities||[]).includes(id)) return;
+
+    const updChild = {...child, completedActivities:[...(child.completedActivities||[]), id]};
+    const updParent = {...p, children:p.children.map(c=>c.id===child.id?updChild:c)};
+    this._parent = updParent;
+
+    // Badges
+    const newBadges = this._badgeEng.evaluate(updParent, updChild);
+    if(newBadges.length){
+      this._parent = {...updParent, badges:[...(updParent.badges||[]), ...newBadges]};
+    }
+    this._storage.set('parent', this._parent);
+
+    // Streak kaydı
+    const streakData = this._streakSvc.recordActivity();
+
+    this._closeModal();
+
+    if(newBadges.length){
+      this._confetti();
+      setTimeout(()=>this._badgeModal(newBadges[0]), 350);
+    } else if(streakData.count > 1 && !streakData.prevDone){
+      this._toast(`🔥 ${streakData.count} günlük seri! Devam et!`, 'ok');
+    } else {
+      this._toast('Harika! Etkinlik tamamlandı 🎉','ok');
+    }
+
+    // Zorluk geri bildirimi iste (3. etkinlikten sonra, her 3'te bir)
+    const totalDone = updChild.completedActivities.length;
+    if(totalDone >= 2 && totalDone % 3 === 0){
+      setTimeout(()=>this._askDifficulty(id), 1200);
+    }
+
+    if(this._activeView==='dashboard') this._renderDash();
+    if(this._activeView==='activities') this._renderActs();
+    if(this._activeView==='progress') this._renderProgress();
+  }
+
+  _askDifficulty(actId){
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <div class="center" style="margin-bottom:1rem">
+        <div style="font-size:2.5rem;margin-bottom:.4rem">🎯</div>
+        <h3>Bu etkinlik nasıldı?</h3>
+        <p class="muted" style="font-size:var(--t-md);margin-top:.3rem">Cevabınız bir sonraki öneriyi kişiselleştirmek için kullanılır.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.6rem">
+        ${[
+          {key:'easy', emoji:'😊', label:'Çok kolaydı, daha zorunu deneyelim'},
+          {key:'ok',   emoji:'👍', label:'Tam uygundu, böyle devam'},
+          {key:'hard', emoji:'😅', label:'Biraz zorlandık, daha kolay olsun'},
+        ].map(o=>`
+          <button style="display:flex;align-items:center;gap:.9rem;padding:.9rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;transition:var(--t);text-align:left;width:100%"
+            onmouseover="this.style.borderColor='var(--teal)'"
+            onmouseout="this.style.borderColor='var(--border)'"
+            onclick="App._saveDifficulty('${actId}','${o.key}')">
+            <span style="font-size:1.6rem">${o.emoji}</span>
+            <span style="font-size:var(--t-md);font-weight:700">${o.label}</span>
+          </button>`).join('')}
+      </div>
+    `);
+  }
+
+  _saveDifficulty(actId, difficulty){
+    this._adaptEng.recordFeedback(actId, difficulty);
+    this._closeModal();
+    const msgs = {
+      easy:'Anladık! Bir sonraki önerimiz daha zorlayıcı olacak 💪',
+      ok:'Mükemmel denge! Aynı seviyeye devam 🎯',
+      hard:'Tamam, tempo biraz düşürelim 🌱',
+    };
+    this._toast(msgs[difficulty]||'Kaydedildi ✓','ok');
+  }
+
+  /* ══════════════════════════════════════════════
+     TEACHER BRIDGE (Faz 2)
+  ══════════════════════════════════════════════ */
+
+  _renderTeacher(){
+    const msgs = this._teacherSvc.getMessages();
+    const prog = this._teacherSvc.getSubjectProgress();
+
+    document.getElementById('teacher-body').innerHTML=`
+      <!-- Progress map -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header"><span class="sec-title">📊 Konu İlerleme Haritası</span></div>
+        <div class="card">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:1rem">
+            ${prog.map(p=>`
+              <div class="skill-bar">
+                <div class="skill-label"><span>${p.subject}</span><span style="color:var(--teal)">${p.pct}%</span></div>
+                <div class="progress"><div class="progress-fill" style="width:${p.pct}%"></div></div>
+              </div>`).join('')}
+            <p class="muted" style="font-size:var(--t-sm);margin-top:.3rem">* Öğretmen tarafından güncellenen veriler</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly note input -->
+      <div style="margin-bottom:1.5rem">
+        <div class="sec-header"><span class="sec-title">📋 Bu Haftanın Konusu</span></div>
+        <div class="card">
+          <div class="card-body">
+            ${this._teacherSvc.getWeeklyNote()?
+              `<div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-sm);font-size:var(--t-lg);margin-bottom:.8rem;line-height:1.55">${this._teacherSvc.getWeeklyNote().text}</div>`:
+              `<p class="muted" style="font-size:var(--t-md);margin-bottom:.8rem">Öğretmenin bu haftaki notu henüz yok.</p>`}
+            <textarea class="input" id="teacher-note-inp" placeholder="Öğretmenin notu (simülasyon — gerçek uygulamada öğretmen girer)…" style="font-size:var(--t-md)"></textarea>
+            <button class="btn btn-blue btn-sm btn-block" style="margin-top:.6rem" onclick="App._saveTeacherNote()">Notu Kaydet</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message thread -->
+      <div style="margin-bottom:1.2rem">
+        <div class="sec-header"><span class="sec-title">💬 Mesajlaşma</span></div>
+        <div class="card">
+          <div style="max-height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.55rem" id="msg-thread">
+            ${msgs.length?msgs.map(m=>`
+              <div style="display:flex;flex-direction:column;${m.isTeacher?'align-items:flex-start':'align-items:flex-end'}">
+                <div class="msg-bubble ${m.isTeacher?'msg-in':'msg-out'}">${m.text}</div>
+                <span class="msg-time">${m.isTeacher?'👩‍🏫 Öğretmen':'👤 Siz'} · ${this._relTime(m.date)}</span>
+              </div>`).join('')
+              :`<p class="muted center" style="padding:.5rem;font-size:var(--t-md)">Henüz mesaj yok. İlk mesajı siz gönderin!</p>`}
+          </div>
+          <!-- Input -->
+          <div style="border-top:1.5px solid var(--border);padding:var(--s-sm) var(--s-sm) 1rem;display:flex;gap:.6rem">
+            <input class="input" id="msg-inp" placeholder="Mesajınızı yazın…" style="flex:1;padding:.65rem .9rem;font-size:var(--t-lg)" onkeydown="event.key==='Enter'&&App._sendMsg()">
+            <button class="btn btn-primary btn-sm" onclick="App._sendMsg()">Gönder</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulate teacher reply -->
+      <button class="btn btn-ghost btn-sm btn-block" onclick="App._teacherReply()">
+        🤖 Öğretmen Yanıtını Simüle Et
+      </button>
+    `;
+  }
+
+  _saveTeacherNote(){
+    const text = document.getElementById('teacher-note-inp')?.value.trim();
+    if(!text){ this._toast('Not boş olamaz','err'); return; }
+    this._teacherSvc.setWeeklyNote(text);
+    this._toast('Not kaydedildi ✓','ok');
+    this._renderTeacher();
+  }
+
+  _sendMsg(){
+    const inp=document.getElementById('msg-inp'); if(!inp) return;
+    const text=inp.value.trim(); if(!text) return;
+    this._teacherSvc.addMessage(text, false);
+    inp.value='';
+    // Badge check
+    const p=this._parent;
+    if(p){
+      const msgs=this._teacherSvc.getMessages();
+      if(msgs.filter(m=>!m.isTeacher).length===1){
+        this._parent={...p,teacherMessages:[...(p.teacherMessages||[]),{date:new Date()}]};
+        this._storage.set('parent',this._parent);
+        const badges=this._badgeEng.evaluate(this._parent, this._getChild());
+        if(badges.length){ this._parent={...this._parent,badges:[...(this._parent.badges||[]),...badges]}; this._storage.set('parent',this._parent); setTimeout(()=>this._badgeModal(badges[0]),600); }
+      }
+    }
+    this._renderTeacher();
+  }
+
+  _teacherReply(){
+    const replies=[
+      'Merhaba! Bu hafta kesirler konusunu işliyoruz. Evde somut materyallerle alıştırma yapabilirsiniz.',
+      'Ali bu hafta geometri konusunda çok güzel sorular sordu, tebrikler! 🌟',
+      'Toplama işlemlerinde hız artıyor. Günlük pratik çok faydalı olacaktır.',
+      'Bu haftaki ev etkinliği için teşekkürler, Ali sınıfta paylaştı 😊',
+    ];
+    const text=replies[Math.floor(Math.random()*replies.length)];
+    this._teacherSvc.addMessage(text, true);
+    this._notifSvc.addNotif({ emoji:'👩‍🏫', title:'Öğretmenden Yanıt', text });
+    this._toast('Öğretmen yanıt verdi!','ok');
+    this._renderTeacher();
+    this._updateNotifDot();
+  }
+
+  /* ══════════════════════════════════════════════
+     WEEKLY PLANNER (Faz 2)
+  ══════════════════════════════════════════════ */
+
+  _renderPlanner(){
+    const plan=this._plannerSvc.getWeekPlan();
+    const child=this._getChild();
+    const today=new Date().getDay(); // 0=Sun
+    const todayIdx=(today+6)%7; // Mon=0
+
+    document.getElementById('planner-body').innerHTML=`
+      <p class="muted" style="font-size:var(--t-md);margin-bottom:1.2rem">Haftanın hangi günleri etkinlik yapacaksınız? Güne dokunarak etkinlik atayın.</p>
+      <!-- Day grid -->
+      <div class="grid-3" style="margin-bottom:1.4rem;grid-template-columns:repeat(7,1fr);gap:.4rem">
+        ${this._DAYS.map((d,i)=>{
+          const aid=plan[i];
+          const act=aid?this._repo.byId(aid):null;
+          const isToday=i===todayIdx;
+          return `<div class="day-col ${aid?'has-activity':''} ${isToday?'today':''}" onclick="App._planDayClick(${i})">
+            <div class="day-name" style="${isToday?'color:var(--teal-d)':''}">${d}</div>
+            <div class="day-emoji">${act?act.emoji:isToday?'📍':'+'}</div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <!-- Plan summary -->
+      <div class="sec-header"><span class="sec-title">Bu Haftanın Planı</span></div>
+      <div style="display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.2rem">
+        ${Object.entries(plan).length?
+          Object.entries(plan).map(([dayIdx,actId])=>{
+            const act=this._repo.byId(actId);
+            if(!act) return '';
+            return `<div class="card card-sm" style="cursor:pointer" onclick="App._openActivity('${actId}')">
+              <div class="card-body" style="display:flex;align-items:center;gap:.85rem;padding:var(--s-sm) var(--s-sm) 1rem">
+                <div style="font-size:1.7rem">${act.emoji}</div>
+                <div style="flex:1">
+                  <strong style="font-size:var(--t-lg)">${this._DAYS[dayIdx]}</strong>
+                  <p style="font-size:var(--t-md);color:var(--muted)">${act.title}</p>
+                </div>
+                <button onclick="event.stopPropagation();App._removeFromPlan(${dayIdx})" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:var(--t-xl);padding:.2rem .4rem" title="Kaldır">×</button>
+              </div>
+            </div>`;
+          }).join('')
+          :`<p class="muted center" style="padding:1.5rem;font-size:var(--t-md)">Henüz planlı etkinlik yok. "Otomatik Plan" butonunu deneyin!</p>`}
+      </div>
+
+      <!-- Progress this week -->
+      <div class="card" style="margin-top:.5rem">
+        <div class="card-body">
+          <strong style="font-size:var(--t-lg)">Haftalık İlerleme</strong>
+          <div style="margin-top:.7rem">
+            <div style="display:flex;justify-content:space-between;font-size:var(--t-md);margin-bottom:.3rem">
+              <span>Tamamlanan</span>
+              <span style="color:var(--teal)">${Object.keys(plan).filter(d=>child&&(child.completedActivities||[]).includes(plan[d])).length} / ${Object.keys(plan).length} planlı</span>
+            </div>
+            <div class="progress">
+              <div class="progress-fill" style="width:${Object.keys(plan).length?Math.round(Object.keys(plan).filter(d=>child&&(child.completedActivities||[]).includes(plan[d])).length/Object.keys(plan).length*100):0}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  _planDayClick(dayIdx){
+    const c=this._getChild(); if(!c) return;
+    const acts=this._repo.byAgeGroup(c.ageGroup);
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <h3 style="margin-bottom:1rem">${this._DAYS[dayIdx]} için etkinlik seç</h3>
+      <div style="display:flex;flex-direction:column;gap:.55rem;max-height:55vh;overflow-y:auto">
+        ${acts.map(a=>`
+          <div style="display:flex;align-items:center;gap:.8rem;padding:.75rem;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer" onclick="App._assignToPlan(${dayIdx},'${a.id}')">
+            <span style="font-size:1.6rem">${a.emoji}</span>
+            <div><strong style="font-size:var(--t-lg)">${a.title}</strong><p class="muted" style="font-size:var(--t-sm)">⏱ ${a.dur} dk · ${this._CatLabels[a.category]}</p></div>
+          </div>`).join('')}
+      </div>
+      <button class="btn btn-ghost btn-sm btn-block" style="margin-top:1rem" onclick="App._closeModal()">İptal</button>
+    `);
+  }
+
+  _assignToPlan(dayIdx, actId){
+    this._plannerSvc.setDayActivity(dayIdx, actId);
+    const p=this._parent;
+    if(p&&!(p.weeklyPlans||[]).length){ this._parent={...p,weeklyPlans:[{date:new Date()}]}; this._storage.set('parent',this._parent); }
+    this._closeModal();
+    this._toast('Plana eklendi ✓','ok');
+    this._renderPlanner();
+  }
+
+  _removeFromPlan(dayIdx){ this._plannerSvc.clearDay(dayIdx); this._renderPlanner(); }
+
+  autoplan(){
+    const c=this._getChild(); if(!c) return;
+    this._plannerSvc.autoGenerate(c);
+    this._toast('Otomatik plan oluşturuldu ✨','ok');
+    this._renderPlanner();
+  }
+
+  /* ══════════════════════════════════════════════
+     PROGRESS (Faz 3)
+  ══════════════════════════════════════════════ */
+
+  _renderProgress(){
+    const p=this._parent; if(!p) return;
+    const c=this._getChild(); if(!c) return;
+    const done=c.completedActivities||[];
+    const allActs = this._repo.byAgeGroup(c.ageGroup);
+    const total=allActs.length;
+    const pct=Math.round(done.length/total*100)||0;
+
+    // Category breakdown
+    const catDone={};
+    done.forEach(id=>{ const a=this._repo.byId(id); if(a) catDone[a.category]=(catDone[a.category]||0)+1; });
+    const catTotal={};
+    allActs.forEach(a=>catTotal[a.category]=(catTotal[a.category]||0)+1);
+
+    // Streak
+    const streak = this._streakSvc.getData();
+
+    // Kaygı profili — eksik değişkenler
+    const anxLevel = p.anxietyProfile?.level;
+    const anxScore = p.anxietyProfile?.score||0;
+    const anxColor = anxLevel===AnxietyLevel.LOW?'var(--success)':anxLevel===AnxietyLevel.MEDIUM?'var(--amber)':'var(--danger)';
+    const anxEmoji = anxLevel===AnxietyLevel.LOW?'😌':anxLevel===AnxietyLevel.MEDIUM?'🤔':'😰';
+    const anxLabel = anxLevel===AnxietyLevel.LOW?'Düşük':anxLevel===AnxietyLevel.MEDIUM?'Orta':'Yüksek';
+
+    document.getElementById('prog-body').innerHTML=`
+      <!-- Genel İlerleme -->
+      <div style="background:var(--surface);border-radius:var(--r-xl);border:0.5px solid var(--border);padding:1.1rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem">
+        <div style="position:relative;width:68px;height:68px;flex-shrink:0">
+          <svg viewBox="0 0 36 36" width="68" height="68" style="transform:rotate(-90deg)">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--raised)" stroke-width="3"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--teal)" stroke-width="3"
+              stroke-dasharray="${pct} ${100-pct}" stroke-linecap="round"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9375rem;font-family:var(--ff-mono);color:var(--teal)">${pct}%</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:1.0625rem;font-weight:800;color:var(--text)">${c.name}</div>
+          <div style="font-size:var(--t-sm);color:var(--muted);margin-top:.12rem">${done.length} / ${total} etkinlik</div>
+          <div style="margin-top:.5rem;background:var(--raised);border-radius:99px;height:4px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--teal-l),var(--teal));border-radius:99px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrikler -->
+      <div class="metric-row" style="margin-bottom:1rem">
+        <div class="metric-cell">
+          <div class="metric-icon">🎯</div>
+          <div class="metric-val">${done.length}</div>
+          <div class="metric-label">Etkinlik</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-icon">${anxEmoji}</div>
+          <div class="metric-val" style="font-size:1.25rem;color:${anxColor}">${anxScore}%</div>
+          <div class="metric-label">Kaygı</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-icon">🔥</div>
+          <div class="metric-val">${streak.count}</div>
+          <div class="metric-label">Seri</div>
+        </div>
+      </div>
+
+      <!-- Beceri Analizi -->
+      <div class="sec-header" style="margin-bottom:.6rem"><span class="sec-title">Beceri Analizi</span></div>
+      <div style="background:var(--surface);border-radius:var(--r-lg);border:0.5px solid var(--border);overflow:hidden;margin-bottom:1rem">
+        <div style="padding:.875rem .9rem;display:flex;flex-direction:column;gap:.75rem">
+          ${Object.entries(this._CatLabels).map(([cat,label])=>{
+            const d=catDone[cat]||0; const t=catTotal[cat]||0;
+            if(t===0) return '';
+            const cp=Math.round(d/t*100);
+            const bc=cp>=70?'var(--teal)':cp>=40?'var(--amber)':'var(--danger)';
+            return '<div>'
+              +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.25rem">'
+              +'<span style="font-size:var(--t-sm);font-weight:700;color:var(--text)">'+this._CatEmoji[cat]+' '+label+'</span>'
+              +'<span style="font-size:var(--t-xs);font-weight:800;color:'+bc+';font-family:var(--ff-mono)">'+d+'/'+t+'</span>'
+              +'</div>'
+              +'<div style="background:var(--raised);border-radius:99px;height:5px;overflow:hidden">'
+              +'<div style="height:100%;width:'+cp+'%;background:'+bc+';border-radius:99px;transition:width .6s"></div>'
+              +'</div></div>';
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Tamamlanan etkinlikler -->
+      <div class="sec-header" style="margin-bottom:.6rem"><span class="sec-title">Tamamlanan Etkinlikler</span></div>
+      ${done.length===0
+        ?'<div class="empty-state"><div class="empty-state-icon">🌱</div><p style="font-size:var(--t-md);font-weight:700;margin-bottom:.3rem">Henüz tamamlanan etkinlik yok.</p><p style="font-size:var(--t-sm);color:var(--muted)">Etkinlikler sekmesinden başlayın.</p></div>'
+        :'<div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem">'
+          +done.slice().reverse().slice(0,8).map(id=>{
+            const a=this._repo.byId(id);
+            if(!a) return '';
+            return '<div style="display:flex;align-items:center;gap:.75rem;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-md);padding:.65rem .875rem">'
+              +'<span style="font-size:1.25rem;flex-shrink:0">'+a.emoji+'</span>'
+              +'<div style="flex:1;min-width:0">'
+              +'<div style="font-size:var(--t-sm);font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+a.title+'</div>'
+              +'<div style="font-size:var(--t-xs);color:var(--muted)">'+this._CatLabels[a.category]+' · '+a.dur+' dk</div>'
+              +'</div>'
+              +'<span style="color:var(--teal)">✓</span></div>';
+          }).join('')
+          +(done.length>8?'<p style="text-align:center;font-size:var(--t-xs);color:var(--muted);margin-top:.3rem">+'+(done.length-8)+' etkinlik daha</p>':'')
+          +'</div>'
+      }
+
+      <!-- Zhao 2023 -->
+      <div style="background:var(--teal-a);border-radius:var(--r-md);padding:.875rem;border:0.5px solid var(--border);margin-bottom:1rem">
+        <p style="font-size:var(--t-sm);color:var(--text2);line-height:1.65;font-style:italic">
+          "Gözlem notu yazan ebeveynler çocuklarındaki ilerlemeyi daha net görüyor" — <em style="color:var(--muted)">Zhao ve ark., 2023</em>
+        </p>
+      </div>
+    `  }
+
+
+  showShareProgress(){
+    this._toast('Paylaşım özelliği yakında! 📤');
+  }
+
+  /* ══════════════════════════════════════════════
+     DYSCALCULIA MODULE (Faz 3)
+  ══════════════════════════════════════════════ */
+
+  _renderDysc(){
+    const signals=[
+      { level:'red',  text:'Sayı sırasını sık sık karıştırıyor (5, 3, 7 yerine 5, 7, 3)' },
+      { level:'red',  text:'Parmak saymayı ilerlemiş yaşta da bırakmıyor' },
+      { level:'red',  text:'Benzer rakamları (6-9, 2-5) sık sık karıştırıyor' },
+      { level:'yellow',text:'Basit toplama/çıkarma işlemlerinde diğer çocuklardan belirgin yavaş' },
+      { level:'yellow',text:'Saati, takvimi kavramakta güçlük çekiyor' },
+      { level:'yellow',text:'Para işlemlerinde çok zorlanıyor' },
+      { level:'green', text:'Sözel problem çözebiliyor ama sembolik işlemde zorlanıyor' },
+      { level:'green', text:'Geometri ve görsel-uzamsal becerilerde güçlü' },
+    ];
+    const emojiMap={ red:'🔴', yellow:'🟡', green:'🟢' };
+    const strategies=[
+      { emoji:'🖐️', title:'Somut Nesnelerle Çalışın', desc:'Fasulye, taş, küp gibi nesneler soyut rakamların köprüsüdür. Çoklu duyusal yol (görsel+dokunsal) en etkili müdahaledir.' },
+      { emoji:'🎵', title:'Ritim ve Müzik Kullanın', desc:'Sayı şarkıları ve ritmik sayma, zayıf hafıza izlerini güçlendirir. Müzik eğitimi sayı sıralama becerisini artırıyor (EDSense, 2025).' },
+      { emoji:'⏱️', title:'Zaman Baskısını Kaldırın', desc:'Diskalkuli olan çocuklar baskı altında çok daha kötü performans gösterir. Süre vermeden çalışın.' },
+      { emoji:'📐', title:'Görsel Temsil Kullanın', desc:'Sayı doğrusu, onluk bloklar ve renk kodlaması etkilidir. Sayıyı renkle ve konumla ilişkilendirin.' },
+      { emoji:'🔄', title:'Tekrar ve Rutinle Pekiştirin', desc:'20 dakikalık bireysel seanslar uzun grup çalışmalarından daha etkili (MDPI Derleme, 2025).' },
+      { emoji:'💬', title:'Öğretmenle İş Birliği Yapın', desc:'Okul ve ev desteğinin koordineli olması kritiktir. Öğretmenden hangi alt becerinin eksik olduğunu sorun.' },
+    ];
+
+    const el = document.getElementById('dysc-body'); if(!el) return;
+    el.innerHTML=`
+      <!-- Intro -->
+      <div style="background:linear-gradient(135deg,rgba(17,138,178,.08) 0%,rgba(17,138,178,.03) 100%);border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.4rem;border:1.5px solid rgba(17,138,178,.2)">
+        <h3 style="color:var(--blue);margin-bottom:.5rem">💙 Diskalkuli Nedir?</h3>
+        <p style="font-size:var(--t-lg);line-height:1.65">Diskalkuli, sayıları işlemede ve matematiksel hesaplarda yaşanan nörogelişimsel bir güçlüktür. Tembellik, dikkatsizlik veya zekâ düzeyiyle ilgisi yoktur. Okul çağı çocuklarının %5-7'sini etkiliyor — disleziyle aynı oran. Erken tanıma ve doğru destekle büyük fark yaratılabilir.</p>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem">
+          <span class="chip chip-blue">%5-7 çocuk etkileniyor</span>
+          <span class="chip chip-green">Erken tanıma kritik</span>
+          <span class="chip chip-orange">3 yaşından tarama mümkün</span>
+        </div>
+      </div>
+
+      <!-- MİNİ TARAMA OYUNU -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">🔍 Alt Tip Rehberi</span></div>
+        <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem;line-height:1.6">Diskalkuli homojen değil — alt tipler farklı yaklaşımlar gerektiriyor. <em style="font-size:var(--t-xs)">(Butterworth, 2019)</em></p>
+        <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1rem">
+          ${[
+            { icon:'🔢', baslik:'Sayı Hissi Açığı', renk:'var(--blue)',
+              belirtiler:'Nesneleri saymakta güçlük, büyüklük karşılaştırmasında tutarsızlık.',
+              yaklasim:'Beşlik/onluk kart, sayı doğrusu, subitizing (şipşak sayma) egzersizleri.' },
+            { icon:'⚡', baslik:'Olgu Hatırlama Güçlüğü', renk:'var(--teal)',
+              belirtiler:'4+3 gibi basit toplama olgularını her seferinde sayarak çözüyor.',
+              yaklasim:'Ezberleme değil strateji: katlar, 10\'a tamamlama, sayı ailesi oyunları.' },
+            { icon:'🧠', baslik:'Çalışma Belleği Sorunları', renk:'var(--purple)',
+              belirtiler:'Adım adım işlemlerde ara sonuçları unutuyor, "ne soruluyordu?" diyor.',
+              yaklasim:'Görsel destekler — kağıda yaz, adımları parçala, tek anda tek işlem.' },
+            { icon:'📍', baslik:'Uzamsal Sayı Temsili', renk:'var(--teal-d)',
+              belirtiler:'Sayı doğrusunda sayıların konumunu karıştırıyor, rakamları ters yazıyor.',
+              yaklasim:'Yere büyük sayı doğrusu çiz, sayıları hareketle ilişkilendir.' },
+          ].map(t=>`
+            <div style="border:1.5px solid var(--border);border-radius:var(--r-md);overflow:hidden">
+              <div style="padding:.6rem .9rem;background:${t.renk}15;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem">
+                <span style="font-size:1.2rem">${t.icon}</span>
+                <strong style="font-size:var(--t-md);color:${t.renk}">${t.baslik}</strong>
+              </div>
+              <div style="padding:.65rem .9rem">
+                <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.3rem"><strong style="color:var(--text)">Belirtiler:</strong> ${t.belirtiler}</p>
+                <p style="font-size:var(--t-sm);line-height:1.55"><strong>Ne yapın:</strong> ${t.yaklasim}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="background:rgba(255,209,102,.12);border-radius:var(--r-md);padding:.75rem .9rem;border:1px solid rgba(255,209,102,.35);margin-bottom:1.4rem">
+          <p style="font-size:var(--t-sm);line-height:1.65">⚠️ <strong>Önemli:</strong> Diskalkuli tanısı yalnızca eğitim psikoloğu veya RAM tarafından konulabilir. Bu rehber bilgilendirme amaçlıdır — ciddi güçlük gözlemlenirse okul rehber öğretmenine başvurun.</p>
+        </div>
+      </div>
+
+      <!-- MİNİ TARAMA OYUNU -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">🎮 Mini Gözlem Oyunu (3+ yaş)</span></div>
+        <div class="card">
+          <div class="card-body" style="padding:var(--s-lg)">
+            <p style="font-size:var(--t-md);line-height:1.55;color:var(--muted);margin-bottom:1rem">Bu oyunu <strong>çocuğunuzla birlikte</strong> oynayın. Gözlemlerinizi işaretleyin. Bu bir tanı aracı değil — uzman görüşüne yönlendirecek erken sinyaller verir.</p>
+            <div id="dysc-game-container">
+              <div id="dysc-game-step-0" style="display:block">
+                <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.04));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:.9rem;text-align:center">
+                  <div style="font-size:3rem;margin-bottom:.5rem">●  ●  ●</div>
+                  <p style="font-weight:700;margin-bottom:.3rem">Kaç nokta var?</p>
+                  <p class="muted" style="font-size:var(--t-md)">Çocuğunuza sorun. Görmeden saymasını istemeden "kaç?" deyin.</p>
+                </div>
+                <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.6rem">Çocuğunuz ne yaptı?</p>
+                <div style="display:flex;flex-direction:column;gap:.5rem" id="dysc-opts-0">
+                  ${[
+                    {v:'ok', label:'Hemen "3" dedi (subitizing ✓)'},
+                    {v:'count', label:'Tek tek saydı (normal okul öncesi)'},
+                    {v:'wrong', label:'Yanlış söyledi veya çok zorlandı'},
+                  ].map(o=>`<button style="display:flex;align-items:center;gap:.75rem;padding:var(--s-sm) var(--s-md);border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;text-align:left;width:100%;transition:var(--t)" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'" onclick="App._dyscGameNext(0,'${o.v}')">
+                    <span style="font-size:1.3rem">${o.v==='ok'?'😊':o.v==='count'?'🤔':'⚠️'}</span>
+                    <span style="font-size:var(--t-md)">${o.label}</span>
+                  </button>`).join('')}
+                </div>
+              </div>
+
+              <div id="dysc-game-step-1" style="display:none">
+                <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.04));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:.9rem;text-align:center">
+                  <div style="font-size:1.8rem;letter-spacing:.3rem;font-weight:900">6  9</div>
+                  <p style="font-weight:700;margin-top:.5rem;margin-bottom:.3rem">Hangi rakam daha büyük?</p>
+                  <p class="muted" style="font-size:var(--t-md)">Gösterin, birlikte bakın.</p>
+                </div>
+                <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.6rem">Çocuğunuz ne yaptı?</p>
+                <div style="display:flex;flex-direction:column;gap:.5rem">
+                  ${[
+                    {v:'ok',    label:'Hızlıca doğru cevap verdi'},
+                    {v:'slow',  label:'Doğru ama uzun sürdü / emin olamadı'},
+                    {v:'wrong', label:'6 ve 9\'u karıştırdı veya yanlış seçti'},
+                  ].map(o=>`<button style="display:flex;align-items:center;gap:.75rem;padding:var(--s-sm) var(--s-md);border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;text-align:left;width:100%;transition:var(--t)" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'" onclick="App._dyscGameNext(1,'${o.v}')">
+                    <span style="font-size:1.3rem">${o.v==='ok'?'😊':o.v==='slow'?'🤔':'⚠️'}</span>
+                    <span style="font-size:var(--t-md)">${o.label}</span>
+                  </button>`).join('')}
+                </div>
+              </div>
+
+              <div id="dysc-game-step-2" style="display:none">
+                <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.04));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:.9rem;text-align:center">
+                  <p style="font-size:1.3rem;font-weight:900">3 + 2 = ?</p>
+                  <p class="muted" style="font-size:var(--t-md);margin-top:.4rem">Kafadan söyleyin. Parmak kullanmasına izin verin.</p>
+                </div>
+                <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.6rem">Çocuğunuz ne yaptı?</p>
+                <div style="display:flex;flex-direction:column;gap:.5rem">
+                  ${[
+                    {v:'ok',    label:'Hızlı / parmak kullanmadan doğru'},
+                    {v:'count', label:'Parmak sayarak buldu (yaşa göre normal)'},
+                    {v:'wrong', label:'Parmak saymasına rağmen yanlış / çok uzun sürdü'},
+                  ].map(o=>`<button style="display:flex;align-items:center;gap:.75rem;padding:var(--s-sm) var(--s-md);border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;text-align:left;width:100%;transition:var(--t)" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--border)'" onclick="App._dyscGameNext(2,'${o.v}')">
+                    <span style="font-size:1.3rem">${o.v==='ok'?'😊':o.v==='count'?'🤔':'⚠️'}</span>
+                    <span style="font-size:var(--t-md)">${o.label}</span>
+                  </button>`).join('')}
+                </div>
+              </div>
+
+              <div id="dysc-game-result" style="display:none;text-align:center;padding:var(--s-lg)">
+                <div id="dysc-result-icon" style="font-size:3.5rem;margin-bottom:.5rem"></div>
+                <h3 id="dysc-result-title" style="margin-bottom:.5rem"></h3>
+                <p id="dysc-result-text" style="font-size:var(--t-md);line-height:1.65;color:var(--muted)"></p>
+                <button class="btn btn-ghost btn-sm" style="margin-top:.9rem" onclick="App._resetDyscGame()">Tekrar Oyna</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning signals -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">⚠️ İşaret Sinyalleri</span></div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          ${signals.map(s=>'<div class="dysc-signal '+s.level+'">'
+            +'<span style="font-size:.9rem;flex-shrink:0;margin-top:.05rem">'+emojiMap[s.level]+'</span>'
+            +'<span>'+s.text+'</span>'
+            +'</div>').join('')}
+        </div>
+        <p class="muted" style="font-size:var(--t-sm);margin-top:.7rem">🟢 Tek başına anlamlı değil · 🟡 Takip edin · 🔴 Uzman görüşü alın</p>
+      </div>
+
+      <!-- Strategies -->
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">🛠️ Ev Destek Stratejileri</span></div>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          ${strategies.map(s=>`<div class="card card-sm">
+            <div class="card-body" style="display:flex;gap:.9rem;align-items:flex-start">
+              <span style="font-size:1.8rem;flex-shrink:0">${s.emoji}</span>
+              <div><strong style="font-size:var(--t-lg)">${s.title}</strong><p style="font-size:var(--t-md);color:var(--muted);margin-top:.2rem;line-height:1.55">${s.desc}</p></div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Diskalkuli activities -->
+      <div>
+        <div class="sec-header"><span class="sec-title">💙 Diskalkuli Dostu Etkinlikler</span></div>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          ${this._repo.forDyscalculia().map(a=>this._actCard(a)).join('')}
+        </div>
+      </div>
+
+      <!-- Modül tamamla butonu -->
+      <button class="btn btn-blue btn-block" style="margin-top:1.4rem" onclick="App._completeDyscModule()">
+        💙 Modülü Tamamladım
+      </button>
+    `;
+    // Oyun state sıfırla
+    this._dyscGameAnswers = [];
+  }
+
+  _dyscGameNext(stepIdx, answer){
+    if(!this._dyscGameAnswers) this._dyscGameAnswers = [];
+    this._dyscGameAnswers.push(answer);
+
+    const nextStep = stepIdx + 1;
+    const current = document.getElementById(`dysc-game-step-${stepIdx}`);
+    if(current) current.style.display = 'none';
+
+    if(nextStep <= 2){
+      const next = document.getElementById(`dysc-game-step-${nextStep}`);
+      if(next) next.style.display = 'block';
+    } else {
+      // Sonucu hesapla
+      const warningCount = this._dyscGameAnswers.filter(a=>a==='wrong').length;
+      const slowCount = this._dyscGameAnswers.filter(a=>a==='slow' || a==='count').length;
+      const resultEl = document.getElementById('dysc-game-result');
+      const iconEl = document.getElementById('dysc-result-icon');
+      const titleEl = document.getElementById('dysc-result-title');
+      const textEl = document.getElementById('dysc-result-text');
+
+      if(resultEl) resultEl.style.display = 'block';
+
+      if(warningCount === 0){
+        if(iconEl) iconEl.textContent = '🌟';
+        if(titleEl) titleEl.textContent = 'Harika işaretler!';
+        if(textEl) textEl.textContent = 'Çocuğunuz bu gözlemde güçlü performans gösterdi. Rutin destekle devam edin. Zamanla değişim gözlemlenirse yeniden deneyin.';
+      } else if(warningCount === 1 || slowCount >= 2){
+        if(iconEl) iconEl.textContent = '🟡';
+        if(titleEl) titleEl.textContent = 'Bazı sinyaller var';
+        if(textEl) textEl.textContent = 'Birkaç dikkat çeken nokta var. Öğretmeninizle paylaşın. Ev destek stratejilerini uygulayın ve birkaç ay sonra tekrar deneyin.';
+      } else {
+        if(iconEl) iconEl.textContent = '💙';
+        if(titleEl) titleEl.textContent = 'Uzman görüşü öneriliyor';
+        if(textEl) textEl.textContent = 'Birden fazla güçlü sinyal gözlemlendi. Bir gelişim uzmanına veya eğitim psikologuna danışmanızı öneririz. Erken müdahale büyük fark yaratır.';
+      }
+    }
+  }
+
+  _resetDyscGame(){
+    this._dyscGameAnswers = [];
+    ['step-0','step-1','step-2'].forEach((s,i)=>{
+      const el = document.getElementById(`dysc-game-${s}`);
+      if(el) el.style.display = i===0?'block':'none';
+    });
+    const result = document.getElementById('dysc-game-result');
+    if(result) result.style.display = 'none';
+  }
+
+  _dyscCheck(){
+    // Artık oyun tabanlı _dyscGameNext kullanıyor — eski metod geriye dönük uyumluluk için kaldı
+    this._toast('Mini tarama oyununu deneyin ↑','ok');
+  }
+
+  _setSpatialFilter(){
+    this._filter.spatialOnly = true;
+    this._filter.category = null;
+    this.show('activities');
+  }
+
+  _completeDyscModule(){
+    const p=this._parent; if(!p) return;
+    this._parent = {...p, dyscModuleDone:true};
+    this._storage.set('parent', this._parent);
+    const badges = this._badgeEng.evaluate(this._parent, this._getChild());
+    if(badges.length){ this._parent={...this._parent,badges:[...(this._parent.badges||[]),...badges]}; this._storage.set('parent',this._parent); this._badgeModal(badges[0]); }
+    else this._toast('Diskalkuli modülü tamamlandı! 💙','ok');
+  }
+
+  /* ══════════════════════════════════════════════
+     SMS BRIDGE (Faz 4)
+  ══════════════════════════════════════════════ */
+
+  _renderSms(){
+    const task = this._smsSvc.getCurrentTask();
+    const allTasks = SmsService.WEEKLY_TASKS;
+
+    document.getElementById('sms-body').innerHTML=`
+      <p class="muted" style="font-size:var(--t-md);margin-bottom:1.3rem">İnternetsiz ebeveynler için her hafta kısa bir görev SMS olarak gönderilebilir. Bu özellik uygulama entegrasyonu ile hayata geçirilir.</p>
+
+      <!-- Phone mockup -->
+      <div class="phone-frame" style="margin-bottom:1.4rem">
+        <div class="phone-screen">
+          <div class="sms-header">📱 ABMAT Görevi</div>
+          <div class="sms-body">
+            <div class="sms-msg" style="background:#e8e8ed">${task.text}</div>
+            <div class="sms-msg out" style="margin-top:.3rem">Teşekkürler! Bugün deneyeceğiz 🎉</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All SMS tasks -->
+      <div class="sec-header"><span class="sec-title">📋 SMS Görev Bankası (5 Haftalık)</span></div>
+      <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.3rem">
+        ${allTasks.map((t,i)=>`
+          <div style="background:var(--surface);border:1.5px solid ${i===allTasks.indexOf(task)?'var(--teal)':'var(--border)'};border-radius:var(--r-md);padding:var(--s-sm) var(--s-sm) 1rem;position:relative">
+            ${i===allTasks.indexOf(task)?`<span class="chip chip-orange" style="position:absolute;top:.6rem;right:.7rem">Bu Hafta</span>`:''}
+            <p style="font-size:var(--t-md);line-height:1.5;padding-right:${i===allTasks.indexOf(task)?'5.5rem':'0'}">${t.text}</p>
+          </div>`).join('')}
+      </div>
+
+      <!-- Simulate send -->
+      <div class="card">
+        <div class="card-body">
+          <h3 style="margin-bottom:.6rem">Telefon Numarası Ekle</h3>
+          <p class="muted" style="font-size:var(--t-md);margin-bottom:.8rem">Gerçek uygulamada görevler her pazartesi otomatik gönderilir.</p>
+          <div style="display:flex;gap:.6rem">
+            <input class="input" placeholder="+90 5XX XXX XX XX" style="flex:1">
+            <button class="btn btn-primary" onclick="App._simulateSms()">Gönder</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  _simulateSms(){ this._toast('SMS simüle edildi! Gerçek uygulamada gönderilirdi 📱','ok'); }
+
+  /* ══════════════════════════════════════════════
+     OFFLINE CARDS (Faz 4)
+  ══════════════════════════════════════════════ */
+
+  _renderOffline(){
+    const child=this._getChild();
+    const packs=[
+      { id:'op1', emoji:'📚', title:'Okul Öncesi Başlangıç Paketi', count:8, desc:'Sayma, şekil ve örüntü etkinlikleri. Materyal gerekmez.', forAg:[AgeGroup.PRESCHOOL] },
+      { id:'op2', emoji:'🔢', title:'1. Sınıf Sayı Hissi', count:6, desc:'Toplama, çıkarma ve sayı örüntüleri.', forAg:[AgeGroup.G1] },
+      { id:'op3', emoji:'📐', title:'Geometri Kartları (Tüm Seviyeler)', count:5, desc:'Şekil avı, tangram ve geometri yürüyüşü.', forAg:Object.values(AgeGroup) },
+      { id:'op4', emoji:'💙', title:'Diskalkuli Destek Kartları', count:7, desc:'Somut nesne odaklı, adım adım yönlendirmeli kartlar.', forAg:Object.values(AgeGroup) },
+      { id:'op5', emoji:'🏠', title:'Günlük Hayat Matematik', count:10, desc:'Mutfak, alışveriş ve takvim etkinlikleri.', forAg:Object.values(AgeGroup) },
+    ];
+
+    document.getElementById('offline-body').innerHTML=`
+      <p class="muted" style="font-size:var(--t-md);margin-bottom:1.2rem">İnternet bağlantısı olmayan aileler için yazdırılabilir etkinlik kartları. Her kart A5 boyutunda, siyah-beyaz baskıya uygun tasarlanmıştır.</p>
+
+      <div style="display:flex;flex-direction:column;gap:.85rem">
+        ${packs.map(pk=>{
+          const fits = !child || pk.forAg.includes(child.ageGroup);
+          return `<div class="pdf-card ${!fits?'opacity:.5':''}" onclick="App._downloadPack('${pk.id}')">
+            <div style="font-size:2.5rem;margin-bottom:.5rem">${pk.emoji}</div>
+            <h3 style="margin-bottom:.3rem">${pk.title}</h3>
+            <p class="muted" style="font-size:var(--t-md);margin-bottom:.5rem">${pk.desc}</p>
+            <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:var(--t-sm);font-weight:700;color:var(--teal)">
+              <span>📄 ${pk.count} kart</span>
+              <span>·</span>
+              <span>⬇ İndir / Yazdır</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);margin-top:1.3rem;border:1.5px solid var(--border)">
+        <strong style="font-size:var(--t-md)">📌 Nasıl Kullanılır?</strong>
+        <ol style="font-size:var(--t-md);color:var(--muted);margin-top:.4rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:.3rem;line-height:1.5">
+          <li>İlgili paketi indirin</li>
+          <li>A5 veya A4 kâğıda yazdırın</li>
+          <li>Kartları kesin ve saklamak için lamine yapın</li>
+          <li>Haftalık plan kutusuna yerleştirin</li>
+        </ol>
+      </div>
+    `;
+  }
+
+  _downloadPack(id){ this._toast('PDF hazırlanıyor… (Demo modda simüle edildi) 📄','ok'); }
+
+  /* ══════════════════════════════════════════════
+     LEARN
+  ══════════════════════════════════════════════ */
+
+  _renderLearn(){
+    document.getElementById('learn-body').innerHTML=`
+      <p class="muted" style="font-size:var(--t-md);margin-bottom:1.2rem">Araştırma temelli kısa eğitimler. Her modül 5–15 dakika.</p>
+      <div style="display:flex;flex-direction:column;gap:.8rem">
+        ${this._learnModules.map(m=>`
+          <div class="card" style="cursor:pointer" data-lm-id="${m.id}" onclick="App._openLearn('${m.id}')">
+            <div class="card-body" style="display:flex;align-items:center;gap:.9rem">
+              <div style="font-size:2.3rem;flex-shrink:0">${m.emoji}</div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.2rem">
+                  <strong>${m.title}</strong>
+                  <span class="chip ${m.level===1?'chip-green':m.level===2?'chip-blue':'chip-orange'}">Seviye ${m.level}</span>
+                  ${m.isSpecial?`<span class="chip chip-blue">💙 Özel</span>`:''}
+                </div>
+                <p class="muted" style="font-size:var(--t-sm)">${m.sub}</p>
+                <p class="muted" style="font-size:var(--t-sm);margin-top:.15rem">⏱ ${m.dur}</p>
+              </div>
+              <span style="color:var(--muted);font-size:1.2rem">›</span>
+            </div>
+            ${this._editBar(m.id,'lm')}
+          </div>`).join('')}
+      </div>`;
+  }
+
+
+
+  /* ── Loading Skeleton ─────────────────────────────────────
+     İçerik yüklenmeden önce kısa süre skeleton göster
+  ──────────────────────────────────────────────────────────── */
+
+  /* ── Kaygı Rehberi Modal ───────────────────────────────────
+     Maloney ve ark. (2015) bulgularına dayalı pratik rehber
+  ──────────────────────────────────────────────────────────── */
+  _showAnxGuide(){
+    const items = [
+      { ok:true,  text:'Soru sorun ve bekleyin — "Peki sen ne düşünüyorsun?"' },
+      { ok:true,  text:'Hata olursa "Hmmm, emin misin?" deyin — düzeltmeyin.' },
+      { ok:true,  text:'Sessizliği bozmayın. Çocuğun düşünmesine yer açın.' },
+      { ok:false, text:'"Ben de matematiği sevmezdim" demeyin — bu mesaj geçer.' },
+      { ok:false, text:'Cevabı göstermeyin — süreç sonuçtan önemlidir.' },
+      { ok:false, text:'Aceleci olmayın — yavaşlık öğrenmenin işaretidir.' },
+    ];
+    const rows = items.map(i => {
+      const bg     = i.ok ? 'rgba(45,106,79,.07)'   : 'rgba(239,68,68,.06)';
+      const border = i.ok ? 'var(--teal-d)'         : 'var(--danger)';
+      const color  = i.ok ? 'var(--teal-d)'         : 'var(--danger)';
+      const emoji  = i.ok ? '✅' : '❌';
+      const label  = i.ok ? 'Yapın' : 'Yapmayın';
+      return '<div style="display:flex;gap:.75rem;align-items:flex-start;padding:.65rem .85rem;' +
+             'background:' + bg + ';border-radius:var(--r-md);border-left:3px solid ' + border + '">' +
+             '<span style="font-size:var(--t-xl);flex-shrink:0">' + emoji + '</span>' +
+             '<div><strong style="font-size:var(--t-sm);color:' + color + '">' + label + '</strong>' +
+             '<p style="font-size:var(--t-md);margin:.1rem 0 0;line-height:1.5">' + i.text + '</p></div></div>';
+    }).join('');
+
+    this._openModal(
+      '<div style="padding:.3rem 0">' +
+      '<h3 style="margin-bottom:.75rem">💛 "Siz İzleyin, Çocuğunuz Yapsın"</h3>' +
+      '<p style="font-size:var(--t-md);color:var(--muted);line-height:1.65;margin-bottom:1rem">' +
+      'Araştırmalar, matematik kaygısı yüksek ebeveynlerin çocuğa ne sıklıkla yardım ettiğinden çok ' +
+      '<strong>nasıl yardım ettiğinin</strong> belirleyici olduğunu gösteriyor.' +
+      '<em style="display:block;margin-top:.3rem;font-size:var(--t-sm)">(Maloney ve ark., 2015 — Psychological Science)</em>' +
+      '</p>' +
+      '<div style="display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.1rem">' + rows + '</div>' +
+      '<button class="btn btn-primary btn-block" onclick="App._closeModal();App.show(\'activities\')">Etkinliklere Git →</button>' +
+      '</div>'
+    );
+  }
+
+  _showSkeleton(containerId, rows=3){
+    const el = document.getElementById(containerId);
+    if(!el) return;
+    el.innerHTML = Array.from({length:rows}, ()=>`
+      <div style="display:flex;gap:.85rem;padding:.95rem 1rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);margin-bottom:.7rem">
+        <div class="skeleton" style="width:48px;height:48px;border-radius:50%;flex-shrink:0"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:.45rem;padding-top:.2rem">
+          <div class="skeleton" style="height:14px;border-radius:6px;width:60%"></div>
+          <div class="skeleton" style="height:12px;border-radius:6px;width:85%"></div>
+          <div class="skeleton" style="height:10px;border-radius:6px;width:40%"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  _searchLearn(term){
+    const t = term.toLowerCase().trim();
+    const el = document.getElementById('learn-modules');
+    if(!el) return;
+    el.querySelectorAll('[data-lm-id]').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = (!t || text.includes(t)) ? '' : 'none';
+    });
+    // Boş section başlıklarını gizle
+    el.querySelectorAll('.sec-header').forEach(h => {
+      const next = h.nextElementSibling;
+      const hasVisible = next && [...next.querySelectorAll('[data-lm-id]')].some(c=>c.style.display!=='none');
+      h.style.display = (!t || hasVisible) ? '' : 'none';
+    });
+  }
+
+  _openLearn(id){
+    const m=this._learnModules.find(x=>x.id===id); if(!m) return;
+    if(m.isSpecial==='dyscalculia'){ this.show('dyscalculia'); return; }
+    if(m.isSpecial==='books')     { this.show('books');       return; }
+    if(m.isSpecial==='mathtalk')  { this.show('mathtalk');    return; }
+    if(m.isSpecial==='breathing') { this.show('breathing');   return; }
+    if(m.isSpecial==='tymm')      { this.show('tymm');        return; }
+    if(m.isSpecial==='stories')   { this.show('stories');     return; }
+    if(m.isSpecial==='skill')     { this.show('skill');       return; }
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <div class="center" style="margin-bottom:1.2rem">
+        <div style="font-size:3rem;margin-bottom:.3rem">${m.emoji}</div>
+        <h2>${m.title}</h2>
+        <p class="muted" style="margin-top:.3rem">${m.sub}</p>
+      </div>
+      <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-lg);line-height:1.7;font-size:var(--t-lg);margin-bottom:1.1rem">${m.text}</div>
+      <div style="background:rgba(255,209,102,.18);border-left:4px solid var(--amber);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:var(--s-sm) var(--s-sm) 1rem;margin-bottom:1.2rem">
+        <strong style="font-size:var(--t-sm)">💡 Araştırma Notu</strong>
+        <p style="font-size:var(--t-sm);margin-top:.2rem;line-height:1.55">Bu içerik ebeveyn katılımı ve matematik eğitimi alan yazınına dayanmaktadır.</p>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="App._closeModal()">Anladım ✓</button>
+    `);
+  }
+
+  /* ══════════════════════════════════════════════
+     NOTIFICATIONS
+  ══════════════════════════════════════════════ */
+
+  _renderNotifs(){
+    const notifs = this._notifSvc.getAll();
+    this._notifSvc.markAllRead();
+    this._updateNotifDot();
+
+    document.getElementById('notif-body').innerHTML=`
+      ${notifs.length?notifs.map(n=>`
+        <div style="background:var(--surface);border:1.5px solid ${n.read?'var(--border)':'var(--teal)'};border-radius:var(--r-md);padding:.9rem 1.1rem;margin-bottom:.6rem;display:flex;gap:.75rem;animation:slideRight .25s ease">
+          <div style="font-size:1.8rem;flex-shrink:0">${n.emoji}</div>
+          <div style="flex:1">
+            <strong style="font-size:var(--t-lg)">${n.title}</strong>
+            <p style="font-size:var(--t-md);color:var(--muted);margin-top:.2rem;line-height:1.5">${n.text}</p>
+            <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.3rem">${this._relTime(n.date)}</p>
+          </div>
+          ${!n.read?`<div style="width:8px;height:8px;background:var(--teal);border-radius:50%;margin-top:.4rem;flex-shrink:0"></div>`:''}
+        </div>`).join('')
+      :`<p class="muted center" style="padding:2rem">Bildirim yok.</p>`}
+    `;
+  }
+
+  _updateNotifDot(){
+    const count = this._notifSvc.unreadCount();
+    const dot = document.getElementById('notif-dot');
+    if(dot) dot.style.display = count>0 ? 'block' : 'none';
+  }
+
+  /* ══════════════════════════════════════════════
+     PROFILE
+  ══════════════════════════════════════════════ */
+
+  _renderProfile(){
+    const p=this._parent; if(!p) return;
+    const c=this._getChild();
+    const anxLevel=p.anxietyProfile?.level;
+    const anxScore=p.anxietyProfile?.score||0;
+    const anxColor=anxLevel===AnxietyLevel.LOW?'#22c55e':anxLevel===AnxietyLevel.MEDIUM?'#f59e0b':'#ef4444';
+    const styleInfo={
+      autonomy:{label:'Özerklik Destekleyici 🌱',color:'var(--teal-d)',
+        desc:'Soruyu sunuyorsunuz, cevabı değil. SDT araştırmaları bu yaklaşımın içsel motivasyonu ve matematik öz-yeterliğini en güçlü biçimde beslediğini gösteriyor.'},
+      controlling:{label:'Yönlendirici 📋',color:'var(--blue)',
+        desc:'Yapılandırılmış destek veriyorsunuz. Özerkliği artırmak için: bazen "nasıl yapardın?" diye sorup bekleyin.'},
+      mixed:{label:'Duruma Göre ⚖️',color:'var(--amber)',
+        desc:'Esnek yaklaşımınız var. Zor anlarda özerklik destekleyici ipuçlarını deneyin.'},
+      mixed:{label:'Karma ⚖️',color:'var(--purple)'},
+      unknown:{label:'Belirsiz',color:'var(--muted)'},
+    };
+    const si=styleInfo[p.parentingStyle]||styleInfo.unknown;
+
+    document.getElementById('prof-body').innerHTML=`
+      <!-- Header -->
+      <div style="background:linear-gradient(145deg,var(--teal) 0%,var(--teal-d) 100%);padding:2.2rem 1.4rem 2rem;border-radius:0 0 var(--r-xl) var(--r-xl);margin-bottom:1.4rem;box-shadow:var(--sh-btn)">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.9rem;border:3px solid rgba(255,255,255,.4)">${p.name?.[0]?.toUpperCase()||'?'}</div>
+          <div>
+            <h2 style="color:#fff;margin:0">${p.name}</h2>
+            <p style="color:rgba(255,255,255,.75);font-size:var(--t-md);margin-top:.1rem">${(c?.completedActivities||[]).length} etkinlik tamamlandı</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <span style="background:rgba(255,255,255,.2);color:#fff;padding:.3rem .75rem;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700">${si.label}</span>
+          <span style="background:rgba(255,255,255,.2);color:#fff;padding:.3rem .75rem;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700">${this._AGLabels[c?.ageGroup]||'—'}</span>
+        </div>
+      </div>
+
+      <div style="padding:0 1.25rem 7rem;display:flex;flex-direction:column;gap:1.1rem">
+
+        <!-- Anxiety -->
+        <div class="card">
+          <div class="card-body">
+            <h3 style="margin-bottom:.9rem">Matematik Kaygı Profili</h3>
+            <div style="display:flex;align-items:center;gap:1.1rem">
+              <div style="position:relative;width:78px;height:78px;flex-shrink:0">
+                <svg viewBox="0 0 36 36" style="width:78px;height:78px;transform:rotate(-90deg)">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="2.5"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="${anxColor}" stroke-width="2.5"
+                    stroke-dasharray="${anxScore} ${100-anxScore}" stroke-linecap="round"/>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:var(--t-xl);color:${anxColor}">${anxScore}%</div>
+              </div>
+              <div>
+                <p style="font-weight:700">${anxLevel===AnxietyLevel.LOW?'Düşük Kaygı':anxLevel===AnxietyLevel.MEDIUM?'Orta Kaygı':'Yüksek Kaygı'}</p>
+                <p style="font-size:var(--t-md);color:var(--muted);margin-top:.25rem;line-height:1.5">
+                  ${anxLevel===AnxietyLevel.LOW?'Harika! Düşük kaygı ile çok etkili destek verebilirsiniz.':anxLevel===AnxietyLevel.MEDIUM?'Orta düzey kaygı, farkındalıkla yönetilebilir.':'Yüksek kaygı. Önce kendinize karşı nazik olun.'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges earned -->
+        <div class="card">
+          <div class="card-body">
+            <h3 style="margin-bottom:.8rem">Rozetlerim 🏅</h3>
+            ${(p.badges||[]).length===0
+              ?`<p class="muted" style="font-size:var(--t-md)">Henüz rozet kazanılmadı. İlk etkinliği tamamla!</p>`
+              :`<div style="display:flex;flex-wrap:wrap;gap:.6rem">
+                ${p.badges.map(b=>`<div style="text-align:center;padding:.6rem .8rem;background:linear-gradient(135deg,rgba(255,209,102,.25),rgba(244,162,97,.2));border-radius:var(--r-md);border:1.5px solid rgba(255,209,102,.5)">
+                  <div style="font-size:1.8rem">${b.emoji}</div>
+                  <div style="font-size:var(--t-xs);font-weight:700;margin-top:.15rem">${b.label}</div>
+                </div>`).join('')}
+              </div>`}
+          </div>
+        </div>
+
+        <!-- App info -->
+        <div class="card card-sm">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Versiyon</span><span class="mono" style="font-size:var(--t-sm)">ABMAT v1.0</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Etkinlik bankası</span><span>${this._repo.all().length} etkinlik</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Kategoriler</span><span>${Object.keys(this._CatLabels).length} kategori</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Rozet sistemi</span><span>${BadgeEngine.DEFS.length} rozet</span></div>
+            <div style="border-top:1px solid var(--border);margin-top:.2rem;padding-top:.5rem;display:flex;justify-content:space-between;font-size:var(--t-md)"><span class="muted">Geliştirici</span><span style="font-weight:700">Prof. Dr. Yılmaz Mutlu</span></div>
+          </div>
+        </div>
+
+        ${this._canEdit()?`
+        <div style="margin-bottom:.75rem">
+          <button onclick="App._toggleEditMode()" class="btn btn-block"
+            style="background:${this._isEditMode()?'var(--teal)':'var(--raised)'};
+              color:${this._isEditMode()?'#fff':'var(--text)'};
+              border:1.5px solid ${this._isEditMode()?'var(--teal)':'var(--border)'};
+              font-size:var(--t-md)">
+            ${this._isEditMode()?'✏️ Düzenleme Aktif — Kapat':'✏️ Düzenleme Modunu Aç'}
+          </button>
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.35rem;text-align:center">
+            ${this._isEditMode()?'Tüm sayfalarda kartların altında düzenle/sil butonları var.':'Etkinlik, akademi, kitap, hikaye ve sayı sohbeti kartlarını düzenleyin.'}
+          </p>
+        </div>
+        ${this._renderUserMgmt()}
+        `:''}        
+        <button class="btn btn-soft btn-block" onclick="App._logout()" style="margin-bottom:.5rem">Çıkış Yap</button><button class="btn btn-ghost btn-block" style="color:var(--muted);border-color:var(--muted)" onclick="App._confirmReset()">⚙ Sıfırla &amp; Yeniden Başla</button>
+      </div>
+    `;
+  }
+
+  /* ══════════════════════════════════════════════
+     WEEKLY CHECK-IN
+  ══════════════════════════════════════════════ */
+
+  _shouldCheckIn(){
+    const p=this._parent;
+    if(!p?.weeklyCheckIns?.length) return true;
+    const last=p.weeklyCheckIns[p.weeklyCheckIns.length-1];
+    return (Date.now()-new Date(last.date).getTime()) > 6*86400000;
+  }
+
+  _openCheckIn(){
+    this._wqResp={};
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <h2 style="margin-bottom:.3rem">Haftalık Check-In 📋</h2>
+      <p class="muted" style="font-size:var(--t-md);margin-bottom:1.2rem">3 soru, 2 dakika.</p>
+      <div style="display:flex;flex-direction:column;gap:.9rem">
+        ${this._weekQs.map(q=>`
+          <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-md)">
+            <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.6rem">${q.text}</p>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              ${q.opts.map(o=>`<button id="ci-${q.id}-${o.replace(/\s/g,'_')}" class="checkin-opt chip chip-muted" onclick="App._ciSel('${q.id}','${o}')" style="padding:.42rem .85rem;cursor:pointer;border:1.5px solid var(--border)">${o}</button>`).join('')}
+            </div>
+          </div>`).join('')}
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top:1.2rem" onclick="App._submitCheckIn()">Kaydet ✓</button>
+    `);
+  }
+
+  _ciSel(qid, val){
+    this._wqResp[qid]=val;
+    document.querySelectorAll(`[id^="ci-${qid}-"]`).forEach(b=>{
+      const isSelected = b.textContent.trim()===val;
+      b.style.background = isSelected ? 'var(--teal)' : '';
+      b.style.color = isSelected ? '#fff' : '';
+      b.style.borderColor = isSelected ? 'var(--teal)' : 'var(--border)';
+    });
+  }
+
+  _submitCheckIn(){
+    if(Object.keys(this._wqResp).length<this._weekQs.length){ this._toast('Tüm soruları yanıtlayın','err'); return; }
+    const ci={date:new Date(), responses:this._wqResp};
+    this._parent={...this._parent, weeklyCheckIns:[...(this._parent.weeklyCheckIns||[]),ci]};
+    this._storage.set('parent',this._parent);
+
+    // Kaygı seviyelini takip et
+    const anxResp = this._wqResp['wq3'] || '';
+    const newAnxScore = anxResp.includes('Rahat') ? 25 :
+                        anxResp.includes('Orta')  ? 55 : 80;
+    const newLevel = newAnxScore < 35 ? AnxietyLevel.LOW :
+                     newAnxScore < 65 ? AnxietyLevel.MEDIUM : AnxietyLevel.HIGH;
+    this._anxTracker.record(newAnxScore, newLevel);
+
+    // Ebeveyn profilindeki kaygı skorunu güncelle
+    this._parent = {
+      ...this._parent,
+      anxietyProfile: { level:newLevel, score:newAnxScore, assessedAt:new Date() }
+    };
+    this._storage.set('parent', this._parent);
+
+    this._closeModal();
+    this._toast('Check-in kaydedildi! 🌿','ok');
+    if(this._activeView==='dashboard') this._renderDash();
+  }
+
+  /* ══════════════════════════════════════════════
+     BADGE MODAL + CONFETTI
+  ══════════════════════════════════════════════ */
+
+  _badgeModal(badge){
+    this._openModal(`
+      <div style="text-align:center;padding:1rem">
+        <div class="modal-handle"></div>
+        <div style="font-size:5rem;animation:popIn .5s var(--spring);margin-bottom:.5rem">${badge.emoji}</div>
+        <h2 style="color:var(--teal)">Rozet Kazandın!</h2>
+        <h3 style="margin:.4rem 0">${badge.label}</h3>
+        <p class="muted" style="font-size:var(--t-md)">Harika iş çıkardın! Devam et 💪</p>
+        <button class="btn btn-primary btn-lg" style="margin-top:1.3rem" onclick="App._closeModal()">Teşekkürler 🎉</button>
+      </div>
+    `);
+  }
+
+  _confetti(){
+    const colors=['#FF6B35','#FFD166','#06D6A0','#118AB2','#7B2D8B','#F4845F'];
+    const container=document.body;
+    for(let i=0;i<28;i++){
+      const p=document.createElement('div');
+      p.className='confetti-piece';
+      p.style.cssText=`
+        left:${Math.random()*100}vw;top:-20px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        transform:rotate(${Math.random()*360}deg);
+        animation-delay:${Math.random()*0.5}s;
+        animation-duration:${1.2+Math.random()*0.6}s;
+        width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;
+      `;
+      container.appendChild(p);
+      setTimeout(()=>p.remove(), 2000);
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     BOTTOM NAV
+  ══════════════════════════════════════════════ */
+
+  _updateBnavs(active){
+    // Sub-view'lar için aktif nav item tespiti
+    const navMap = {
+      'tymm':'learn','stories':'learn',
+      'books':'learn','mathtalk':'learn','dyscalculia':'learn',
+      'spatial':'learn','breathing':'learn',
+      'teacher':'planner','sms':'planner',
+      'notifications':'dashboard',
+    };
+    const activeNav = navMap[active] || active;
+    const items=[
+      {
+        id:'dashboard', label:'Anasayfa',
+        svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+        svgFill:`<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`
+      },
+      {
+        id:'activities', label:'Etkinlikler',
+        svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>`,
+        svgFill:`<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>`
+      },
+      {
+        id:'skill', label:'Beceri',
+        svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+        svgFill:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+      },
+      {
+        id:'learn', label:'Akademi',
+        svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+        svgFill:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18V17h14v-5.82L23 9zm6 12H6v-4.73L12 13l6-2.73V15zm1-8.19L12 7.1 5 10.81V9l7-4 7 4z"/></svg>`
+      },
+      {
+        id:'progress', label:'Gelişim',
+        svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+        svgFill:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14H8v-2h4v2zm0-4H8v-2h4v2zm0-4H8V7h4v2zm4 8h-2V7h2v10z"/></svg>`
+      },
+    ];
+    const html = items.map(n=>`<button class="nav-btn ${n.id===activeNav?'active':''}" onclick="App.show('${n.id}')" aria-label="${n.label}" title="${n.label}">
+      <div class="nav-icon">${n.id===activeNav?n.svgFill||n.svg:n.svg}</div>
+      <span>${n.label}</span>
+    </button>`).join('');
+    const noNavViews = new Set(['splash','login','onboarding']);
+    if(noNavViews.has(active)) return;
+    ['bnav-1','bnav-2','bnav-3','bnav-4','bnav-5','bnav-6','bnav-7'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.innerHTML=html;
+    });
+  }
+
+  /* ══════════════════════════════════════════════
+     MODAL + TOAST
+  ══════════════════════════════════════════════ */
+
+  _openModal(html){
+    document.getElementById('modals').innerHTML=`
+      <div class="modal-overlay" onclick="if(event.target===this)App._closeModal()">
+        <div class="modal">
+          <div class="modal-handle" style="flex-shrink:0"></div>
+          <div class="modal-body">${html}</div>
+        </div>
+      </div>`;
+  }
+
+  _bdClick(e){ if(e.target.classList.contains('backdrop')) this._closeModal(); }
+  _closeModal(){ document.getElementById('modals').innerHTML=''; }
+
+  _toast(msg, type=''){
+    const t=document.createElement('div');
+    t.className=`toast ${type}`;
+    t.textContent=msg;
+    document.getElementById('toasts').appendChild(t);
+    t.addEventListener('animationend',()=>t.remove());
+  }
+
+  /* ══════════════════════════════════════════════
+     HELPERS
+  ══════════════════════════════════════════════ */
+
+  _getChild(){
+    const p=this._parent; if(!p?.children?.length) return null;
+    return p.children.find(c=>c.id===this._childId)||p.children[0];
+  }
+
+  _relTime(isoStr){
+    const d=new Date(isoStr);
+    const mins=Math.round((Date.now()-d)/60000);
+    if(mins<1) return 'şimdi';
+    if(mins<60) return `${mins} dk önce`;
+    if(mins<1440) return `${Math.round(mins/60)} saat önce`;
+    return d.toLocaleDateString('tr-TR');
+  }
+
+  _confirmReset(){
+    this._openModal(`
+      <div class="modal-handle"></div>
+      <div class="center">
+        <div style="font-size:3rem;margin-bottom:.5rem">⚠️</div>
+        <h2>Sıfırla?</h2>
+        <p class="muted" style="margin:.6rem auto 1.3rem;max-width:260px">Tüm veriler silinir. Bu işlem geri alınamaz.</p>
+        <div style="display:flex;gap:.8rem">
+          <button class="btn btn-ghost" style="flex:1" onclick="App._closeModal()">İptal</button>
+          <button class="btn btn-danger" style="flex:1" onclick="App._reset()">Sıfırla</button>
+        </div>
+      </div>
+    `);
+  }
+
+  _reset(){
+    this._storage.clear();
+    this._parent=null; this._childId=null;
+    this._closeModal();
+    this.show('splash');
+  }
+
+
+  /* ══════════════════════════════════════════════════════════
+     ABMAT — INLINE DÜZENLEME SİSTEMİ
+     Profil → "✏️ Düzenleme Modunu Aç" → kart altında ✏️/🗑 çıkar
+  ══════════════════════════════════════════════════════════ */
+
+  /* ══════════════════════════════════════════════════════════
+     GİRİŞ SİSTEMİ
+  ══════════════════════════════════════════════════════════ */
+
+  _showLogin(){
+    this.show('login');
+    this._renderLoginUsers();
+  }
+
+  _renderLoginUsers(){
+    const el = document.getElementById('login-user-list');
+    if(!el) return;
+    // Varsayılan 'yonetici' hesabını ve şifresiz single-user flow'u gizle
+    const users = this._eGetUsers().filter(u=>
+      u.active && u.username!=='yonetici'
+    );
+    const divider = document.getElementById('login-divider');
+    if(users.length===0){
+      el.innerHTML='<div style="background:var(--raised);border-radius:var(--r-md);padding:.75rem;margin-bottom:.75rem;text-align:center">'
+        +'<p style="font-size:var(--t-sm);color:var(--muted)">Kayıtlı hesap bulunamadı.</p>'
+        +'<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.2rem">E-posta ile giriş yapın veya yeni hesap oluşturun.</p>'
+        +'</div>';
+      if(divider) divider.style.display='none';
+      return;
+    }
+    if(divider) divider.style.display='flex';
+    el.innerHTML = '<p style="font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 .6rem;letter-spacing:.05em;text-transform:uppercase">Hesaplar</p>'
+      + users.map(u=>`<button onclick="App._loginAsUser('${u.username}')"
+        style="width:100%;display:flex;align-items:center;gap:.8rem;padding:.7rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:var(--ff-body);margin-bottom:.4rem;-webkit-tap-highlight-color:transparent;text-align:left;box-shadow:0 1px 3px rgba(0,0,0,.05);box-sizing:border-box"
+        ontouchstart="this.style.background='var(--raised)'" ontouchend="this.style.background='var(--surface)'">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0D9488,#0F766E);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0">
+          ${u.name.charAt(0).toUpperCase()}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.9375rem;font-weight:700;color:var(--text)">${this._admEsc(u.name)}</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:.05rem">@${u.username}</div>
+        </div>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>`).join('');
+  }
+
+  _loginAsUser(username){
+    const users = this._eGetUsers();
+    const u = users.find(x=>x.username===username);
+    if(!u||!u.active) return;
+    if(u.pwdHash===''){
+      /* Şifresi yok — doğrudan giriş (ilk kayıt) */
+      this._loginSuccess(u); return;
+    }
+    /* Şifre varsa input'a odaklan */
+    document.getElementById('login-email').value = username;
+    document.getElementById('login-pwd').focus();
+  }
+
+  _loginSubmit(){
+    const emailInput = document.getElementById('login-email');
+    const pwdInput   = document.getElementById('login-pwd');
+    if(!emailInput||!pwdInput) return;
+    const identifier = emailInput.value.trim().toLowerCase();
+    const pwd        = pwdInput.value;
+
+    const users  = this._eGetUsers();
+    const u      = users.find(x=>
+      (x.username===identifier||x.email===identifier) && x.active
+    );
+
+    if(!u){
+      document.getElementById('login-email-err').style.display='block';
+      emailInput.style.borderColor='#DC2626'; return;
+    }
+
+    if(u.pwdHash && u.pwdHash!==this._eHashPwd(pwd)){
+      document.getElementById('login-pwd-err').style.display='block';
+      pwdInput.style.borderColor='#DC2626';
+      pwdInput.value=''; pwdInput.focus(); return;
+    }
+
+    this._loginSuccess(u);
+  }
+
+  _logout(){
+    this._parent = null; this._childId = null;
+    this._toast('Çıkış yapıldı');
+    setTimeout(()=>this.show('splash'),300);
+  }
+
+    _loginSuccess(u){
+    /* Kullanıcıyı _parent'a bağla — localStorage'dan veriyi yükle */
+    const saved = this._storage.get('parent_'+u.id) || this._storage.get('parent');
+    if(saved?.onboardingComplete){
+      this._parent = saved;
+      this._childId = saved.children?.[0]?.id||null;
+      this.show('dashboard');
+      setTimeout(()=>this._toast('Hoş geldiniz, '+saved.name+'! 👋','ok'), 400);
+    } else {
+      /* Bu kullanıcı için onboarding */
+      this._ob = {step:0,name:u.name,email:u.email||'',childName:'',ageGroup:'',style:'autonomy',anxiety:{},resources:[]};
+      this.show('onboarding');
+      this._renderOb();
+    }
+  }
+
+
+  _canEdit(){ const r=this._parent?.role; return r==='admin'||r==='editor'; }
+  _isAdmin(){ return this._parent?.role==='admin'; }
+  _isEditMode(){ return this._canEdit()&&sessionStorage.getItem('abmat_em')==='1'; }
+  _toggleEditMode(){
+    if(this._isEditMode()) sessionStorage.removeItem('abmat_em');
+    else sessionStorage.setItem('abmat_em','1');
+    const v=this._activeView; if(v) this.show(v);
+    this._renderProfile();
+  }
+
+  _editBar(id, type){
+    if(!this._isEditMode()) return '';
+    return '<div class="edit-bar" onclick="event.stopPropagation()">'
+      +'<button class="edit-bar-btn" onclick="App._inlineEdit(\''+type+'\',\''+id+'\')">✏️ Düzenle</button>'
+      +(this._isAdmin()?'<button class="edit-bar-del" onclick="App._inlineDel(\''+type+'\',\''+id+'\')">🗑</button>':'')
+      +'</div>';
+  }
+
+  _inlineEdit(type,id){
+    if(type==='activity') this._editActivity(id);
+    else if(type==='lm')  this._editLM(id);
+    else if(type==='book')this._editBook(id);
+    else if(type==='story')this._editStory(id);
+    else if(type==='mt')  this._editMT(id);
+  }
+  _inlineDel(type,id){
+    const L={activity:'etkinlik',lm:'modül',book:'kitap',story:'hikaye',mt:'kart'};
+    if(!confirm('Bu '+(L[type]||'öğe')+' silinsin mi?')) return;
+    if(type==='activity'){ const i=this._repo._data.findIndex(a=>a.id===id); if(i>=0)this._repo._data.splice(i,1); }
+    else if(type==='lm')   this._learnModules=this._learnModules.filter(m=>m.id!==id);
+    else if(type==='book') this._bookLibrary=this._bookLibrary.filter(b=>b.id!==id);
+    else if(type==='story'){ if(!this._stories)this._stories=[]; this._stories.splice(parseInt(id),1); }
+    else if(type==='mt')   this._sayiSohbetiKartlari=this._sayiSohbetiKartlari.filter(m=>m.id!==id);
+    this.show(this._activeView); this._toast('Silindi');
+  }
+
+  /* ── Form yardımcıları ──────────────────────────────── */
+  _ef(id){ return document.getElementById('ef-'+id)?.value?.trim()||''; }
+  _echk(nm){ return [...document.querySelectorAll('[name="'+nm+'"]:checked')].map(c=>c.value); }
+  _eF(lbl,html){ return '<div style="margin-bottom:.6rem"><div style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">'+lbl+'</div>'+html+'</div>'; }
+  _eI(id,v,t,ro){
+    t=t||'text'; ro=ro||''; v=this._eesc(v||'');
+    return '<input id="ef-'+id+'" type="'+t+'" value="'+v+'" '+ro+' style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem">';
+  }
+  _eT(id,v,h){
+    h=h||80; v=this._eesc(v||'');
+    return '<textarea id="ef-'+id+'" style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem;resize:vertical;min-height:'+h+'px">'+v+'</textarea>';
+  }
+  _eS(id,opts,val){
+    return '<select id="ef-'+id+'" style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem">'
+      +Object.entries(opts).map(function(e){return '<option value="'+e[0]+'"'+(val==e[0]?' selected':'')+'>'+e[1]+'</option>';}).join('')+'</select>';
+  }
+  _eAge(sel){
+    sel=sel||[];
+    var A={PRESCHOOL:'OK.Ö.',G1:'1.S',G2:'2.S',G3:'3.S',G4:'4.S'};
+    return Object.entries(A).map(function(e){
+      var k=e[0],v=e[1],s=sel.includes(k);
+      return '<label style="display:inline-flex;align-items:center;gap:.25rem;'
+        +'background:'+(s?'var(--teal-a)':'var(--raised)')+';'
+        +'border:1.5px solid '+(s?'var(--teal)':'var(--border)')+';'
+        +'border-radius:99px;padding:.16rem .5rem;font-size:var(--t-xs);cursor:pointer;color:var(--muted);margin:.12rem;transition:var(--t)">'
+        +'<input type="checkbox" name="eAge" value="'+k+'" '+(s?'checked':'')+' style="display:none">'+v+'</label>';
+    }).join('');
+  }
+  _eBtns(fn){ return '<div style="display:flex;gap:.5rem;margin-top:.75rem"><button class="btn btn-soft btn-block" onclick="App._closeModal()">İptal</button><button class="btn btn-primary btn-block" onclick="'+fn+'">Kaydet ✓</button></div>'; }
+  _eesc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* ── Etkinlik ───────────────────────────────────────── */
+  _editActivity(id){
+    var a=this._repo.byId(id); if(!a) return;
+    var C={NUMBER:'Sayı',PATTERNS:'Örüntü',GEOMETRY:'Geometri',MEASUREMENT:'Ölçme',DAILY:'Günlük',PROBLEM:'Problem',SPATIAL:'Uzamsal',KITCHEN:'Mutfak',MARKET:'Market',TIME:'Zaman',GAME:'Oyun',NATURE:'Doğa'};
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Etkinlik Düzenle</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji',a.emoji))
+      +this._eF('Süre (dk)',this._eI('dur',String(a.dur),'number'))
+      +'</div>'
+      +this._eF('Başlık',this._eI('title',a.title))
+      +this._eF('Açıklama',this._eI('desc',a.desc))
+      +this._eF('Kategori',this._eS('cat',C,a.category))
+      +this._eF('Yaş Grupları','<div style="margin-top:.25rem">'+this._eAge(a.ageGroups)+'</div>')
+      +this._eF('Malzemeler (virgülle)',this._eI('mat',(a.materials||[]).join(', ')))
+      +this._eF('Adımlar (her satır bir adım)',this._eT('steps',(a.steps||[]).join('\n'),85))
+      +this._eF('İpucu',this._eT('tip',a.tip||'',55))
+      +'<div style="display:flex;gap:1rem;margin-bottom:.5rem">'
+      +'<label style="display:flex;align-items:center;gap:.3rem;font-size:var(--t-sm);cursor:pointer">'
+      +'<input type="checkbox" id="ef-anx" '+(a.anxFriendly?'checked':'')+' style="accent-color:var(--teal);width:14px;height:14px"> Kaygı Dostu</label>'
+      +'<label style="display:flex;align-items:center;gap:.3rem;font-size:var(--t-sm);cursor:pointer">'
+      +'<input type="checkbox" id="ef-dysc" '+(a.dysc?'checked':'')+' style="accent-color:var(--teal);width:14px;height:14px"> Diskalkuli</label>'
+      +'</div>'
+      +this._eBtns('App._saveActivity(\''+id+'\')')
+    );
+  }
+  _saveActivity(id){
+    var a=this._repo.byId(id); if(!a) return;
+    a.emoji=this._ef('emoji')||a.emoji; a.title=this._ef('title')||a.title;
+    a.desc=this._ef('desc'); a.category=this._ef('cat');
+    a.dur=parseInt(this._ef('dur'))||a.dur;
+    var ag=this._echk('eAge'); if(ag.length) a.ageGroups=ag;
+    a.materials=this._ef('mat').split(',').map(function(s){return s.trim();}).filter(Boolean);
+    a.steps=this._ef('steps').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+    a.tip=this._ef('tip');
+    a.anxFriendly=!!document.getElementById('ef-anx')?.checked;
+    a.dysc=!!document.getElementById('ef-dysc')?.checked;
+    this._closeModal(); this.show(this._activeView); this._toast('Etkinlik güncellendi ✓','ok');
+  }
+
+  /* ── Akademi Modülü ─────────────────────────────────── */
+  _editLM(id){
+    var m=this._learnModules.find(function(x){return x.id===id;}); if(!m) return;
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Modül Düzenle</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji',m.emoji))
+      +this._eF('Süre',this._eI('dur',m.dur))+'</div>'
+      +this._eF('Başlık',this._eI('title',m.title))
+      +this._eF('Alt Başlık',this._eI('sub',m.sub||''))
+      +this._eF('Seviye',this._eS('level',{'1':'Başlangıç','2':'Orta','3':'İleri'},String(m.level)))
+      +this._eF('İçerik',this._eT('text',m.text||'',110))
+      +this._eBtns('App._saveLM(\''+id+'\')')
+    );
+  }
+  _saveLM(id){
+    var m=this._learnModules.find(function(x){return x.id===id;}); if(!m) return;
+    m.emoji=this._ef('emoji')||m.emoji; m.title=this._ef('title')||m.title;
+    m.sub=this._ef('sub'); m.dur=this._ef('dur')||m.dur;
+    m.level=parseInt(this._ef('level'))||m.level; m.text=this._ef('text');
+    this._closeModal(); this.show(this._activeView); this._toast('Modül güncellendi ✓','ok');
+  }
+
+  /* ── Kitap ──────────────────────────────────────────── */
+  _editBook(id){
+    var b=this._bookLibrary.find(function(x){return x.id===id;}); if(!b) return;
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kitap Düzenle</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji',b.emoji))
+      +this._eF('ID',this._eI('bid',b.id,'text','readonly'))+'</div>'
+      +this._eF('Başlık',this._eI('title',b.title))
+      +this._eF('Yazar / Yayınevi',this._eI('author',b.author||''))
+      +this._eF('Yaş Grupları','<div style="margin-top:.25rem">'+this._eAge(b.ageGroups||[])+'</div>')
+      +this._eF('Matematik Kavramları (virgülle)',this._eI('conc',(b.mathConcepts||[]).join(', ')))
+      +this._eF('Sorular (her satır bir soru)',this._eT('qs',(b.mathQuestions||[]).join('\n'),75))
+      +this._eF('Pedagojik Not',this._eI('tip',b.tip||''))
+      +this._eBtns('App._saveBook(\''+id+'\')')
+    );
+  }
+  _saveBook(id){
+    var b=this._bookLibrary.find(function(x){return x.id===id;}); if(!b) return;
+    b.emoji=this._ef('emoji')||b.emoji; b.title=this._ef('title')||b.title;
+    b.author=this._ef('author');
+    var ag=this._echk('eAge'); if(ag.length) b.ageGroups=ag;
+    b.mathConcepts=this._ef('conc').split(',').map(function(s){return s.trim();}).filter(Boolean);
+    b.mathQuestions=this._ef('qs').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+    b.tip=this._ef('tip');
+    this._closeModal(); this.show(this._activeView); this._toast('Kitap güncellendi ✓','ok');
+  }
+
+  /* ── Başarı Hikayesi ────────────────────────────────── */
+  _editStory(idx){
+    if(!this._stories) this._stories=[];
+    var s=this._stories[parseInt(idx)]; if(!s) return;
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Hikaye Düzenle</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji',s.emoji||'🌟'))
+      +this._eF('Etiket',this._eI('label',s.label||''))+'</div>'
+      +this._eF('Aile / Şehir',this._eI('family',s.family||''))
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Yaş Grubu',this._eI('age',s.age||''))
+      +this._eF('Konu',this._eI('tag',s.tag||''))+'</div>'
+      +this._eF('Hikaye Metni',this._eT('story',s.story||'',90))
+      +this._eF('Ders / Mesaj',this._eI('lesson',s.lesson||''))
+      +this._eBtns('App._saveStory('+idx+')')
+    );
+  }
+  _saveStory(i){
+    if(!this._stories) return; var s=this._stories[i]; if(!s) return;
+    s.emoji=this._ef('emoji')||s.emoji; s.label=this._ef('label')||s.label;
+    s.family=this._ef('family'); s.age=this._ef('age');
+    s.story=this._ef('story'); s.lesson=this._ef('lesson'); s.tag=this._ef('tag');
+    this._closeModal(); this.show(this._activeView); this._toast('Hikaye güncellendi ✓','ok');
+  }
+
+  /* ── Sayı Sohbeti Kartı ─────────────────────────────── */
+  _editMT(id){
+    var A={PRESCHOOL:'Okul Öncesi',G1:'1.Sınıf',G2:'2.Sınıf',G3:'3.Sınıf',G4:'4.Sınıf'};
+    var m=this._sayiSohbetiKartlari.find(function(x){return x.id===id;}); if(!m) return;
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kart Düzenle</h3>'
+      +this._eF('Bağlam (🚗 Araçta)',this._eI('ctx',m.context||''))
+      +this._eF('Soru / İpucu',this._eI('prompt',m.prompt||''))
+      +this._eF('Matematik Kavramı',this._eI('conc',m.concept||''))
+      +this._eF('Min. Yaş',this._eS('ageMin',A,m.ageMin||'PRESCHOOL'))
+      +this._eBtns('App._saveMT(\''+id+'\')')
+    );
+  }
+  _saveMT(id){
+    var m=this._sayiSohbetiKartlari.find(function(x){return x.id===id;}); if(!m) return;
+    m.context=this._ef('ctx')||m.context; m.prompt=this._ef('prompt')||m.prompt;
+    m.concept=this._ef('conc'); m.ageMin=this._ef('ageMin')||m.ageMin;
+    this._closeModal(); this.show(this._activeView); this._toast('Kart güncellendi ✓','ok');
+  }
+
+  /* ── Kullanıcı Yönetimi (sadece admin) ──────────────── */
+  _eHashPwd(s){ var h=0; for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h.toString(36); }
+  _eGetUsers(){
+    var r=localStorage.getItem('abmat_users');
+    if(r) try{return JSON.parse(r);}catch{}
+    var u=[{id:'u1',name:this._parent?.name||'Yönetici',
+      username:this._parent?.username||'yonetici',
+      pwdHash:'',role:'admin',active:true,createdAt:new Date().toISOString()}];
+    this._eSaveUsers(u); return u;
+  }
+  _eSaveUsers(u){ localStorage.setItem('abmat_users',JSON.stringify(u)); }
+
+  _renderUserMgmt(){
+    if(!this._isAdmin()) return '';
+    var users=this._eGetUsers();
+    var self=this;
+    var rows=users.map(function(u,i){
+      return '<div style="display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;'
+        +'background:var(--surface);border:1.5px solid var(--border);'
+        +'border-radius:var(--r-md);margin-bottom:.4rem">'
+        +'<span style="font-size:1.1rem">'+(u.role==='admin'?'👑':'✍️')+'</span>'
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="font-size:var(--t-md);font-weight:700">'+self._eesc(u.name)+'</div>'
+        +'<div style="font-size:var(--t-xs);color:var(--muted)">@'+u.username+' · '+(u.role==='admin'?'Yönetici':'İçerik Üretici')
+        +(u.active?'':'<span style="color:var(--danger)"> · Pasif</span>')+'</div></div>'
+        +'<div style="display:flex;gap:.3rem">'
+        +'<button onclick="App._editUserModal('+i+')" class="btn btn-soft btn-sm">✏️</button>'
+        +(u.username!==self._parent?.username
+          ?'<button onclick="App._toggleUser('+i+')" class="btn btn-sm" style="background:'
+            +(u.active?'rgba(229,62,62,.1)':'var(--teal-a)')
+            +';color:'+(u.active?'var(--danger)':'var(--teal-d)')
+            +';border:none;font-size:.7rem">'+(u.active?'Pasifleştir':'Aktifleştir')+'</button>'
+          :'<span style="font-size:var(--t-xs);color:var(--muted);padding:.3rem">Siz</span>')
+        +'</div></div>';
+    }).join('');
+    return '<div style="margin-top:1.1rem">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem">'
+      +'<div style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Kullanıcılar</div>'
+      +'<button onclick="App._openNewUserModal()" class="btn btn-soft btn-sm">+ Ekle</button></div>'
+      +rows+'</div>';
+  }
+  _openNewUserModal(){
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">👤 Yeni Kullanıcı</h3>'
+      +this._eF('Ad Soyad',this._eI('name',''))
+      +this._eF('Kullanıcı Adı',this._eI('uname',''))
+      +this._eF('Şifre',this._eI('pwd','','password'))
+      +this._eF('Rol',this._eS('role',{editor:'İçerik Üretici',admin:'Yönetici'},'editor'))
+      +this._eBtns('App._createUser()')
+    );
+  }
+  _createUser(){
+    var name=this._ef('name');
+    var uname=this._ef('uname').toLowerCase().replace(/\s+/g,'_');
+    var pwd=document.getElementById('ef-pwd')?.value;
+    var role=this._ef('role');
+    if(!name||!uname||!pwd){this._toast('Tüm alanlar zorunlu','err');return;}
+    if(pwd.length<6){this._toast('Şifre en az 6 karakter','err');return;}
+    var users=this._eGetUsers();
+    if(users.find(function(u){return u.username===uname;})){this._toast('Bu kullanıcı adı alınmış','err');return;}
+    users.push({id:'u'+Date.now(),name:name,username:uname,
+      pwdHash:this._eHashPwd(pwd),role:role,active:true,createdAt:new Date().toISOString()});
+    this._eSaveUsers(users); this._closeModal(); this.show('profile');
+    this._toast('Kullanıcı oluşturuldu ✓','ok');
+  }
+  _editUserModal(i){
+    var u=this._eGetUsers()[i]; if(!u) return;
+    this._openModal(
+      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kullanıcı Düzenle</h3>'
+      +this._eF('Ad Soyad',this._eI('name',u.name))
+      +this._eF('Yeni Şifre (boş = değişmez)',this._eI('pwd','','password'))
+      +this._eF('Rol',this._eS('role',{editor:'İçerik Üretici',admin:'Yönetici'},u.role))
+      +this._eBtns('App._saveUser('+i+')')
+    );
+  }
+  _saveUser(i){
+    var users=this._eGetUsers(); var u=users[i]; if(!u) return;
+    var name=this._ef('name'); var pwd=document.getElementById('ef-pwd')?.value; var role=this._ef('role');
+    if(name) u.name=name; if(role) u.role=role;
+    if(pwd){if(pwd.length<6){this._toast('Şifre en az 6 karakter','err');return;} u.pwdHash=this._eHashPwd(pwd);}
+    this._eSaveUsers(users); this._closeModal(); this.show('profile');
+    this._toast('Güncellendi ✓','ok');
+  }
+  _toggleUser(i){
+    var users=this._eGetUsers(); users[i].active=!users[i].active;
+    this._eSaveUsers(users); this.show('profile');
+    this._toast(users[i].active?'Kullanıcı aktifleştirildi':'Pasifleştirildi');
+  }
+
+  _admEsc(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+
+}
+
+export { MatEvdeApp, createSkillBridge };

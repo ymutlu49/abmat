@@ -1,0 +1,50 @@
+/* ═══════════════════════════════════════════════════════════
+   ABMAT — Design Tokens
+   Renkler, boşluklar, tipografi, gölgeler, animasyonlar
+═══════════════════════════════════════════════════════════ */
+
+:root {
+  --teal:     #0D9488; --teal-d:#0F766E; --teal-l:#2DD4BF; --teal-a:rgba(13,148,136,.1);
+  --orange:   #F4622A; --orange-d:#C24A1A; --orange-a:rgba(244,98,42,.1);
+  --blue:     #1A7FA6; --blue-a:rgba(26,127,166,.1);
+  --amber:    #D97706; --amber-a:rgba(245,158,11,.1);
+  --purple:   #7C3D9F; --purple-a:rgba(124,61,159,.1);
+  --danger:   #DC2626; --success:#16A34A;
+  /* Yüzeyler */
+  --bg:       #F2F8F7; --surface:#FFFFFF; --raised:#E8F5F3; --overlay:rgba(0,0,0,.5);
+  /* Metin */
+  --text:     #111F1E; --text2:#2D4844; --muted:#6B8F8B; --hint:#9DB8B5;
+  /* Kenarlık */
+  --border:   rgba(13,148,136,.15); --border2:rgba(13,148,136,.25);
+  /* Aynı adlar — eski token uyumu */
+  --c-primary:var(--teal); --c-primary-d:var(--teal-d); --c-primary-l:var(--teal-l);
+  --c-primary-a:var(--teal-a); --c-orange:var(--orange); --c-orange-d:var(--orange-d);
+  --c-orange-a:var(--orange-a); --c-blue:var(--blue); --c-blue-a:var(--blue-a);
+  --c-yellow:var(--amber); --c-yellow-a:var(--amber-a); --c-purple:var(--purple);
+  --c-purple-a:var(--purple-a); --c-danger:var(--danger); --c-success:var(--success);
+  --c-green:var(--teal-d); --c-green-l:var(--teal-l); --c-green-a:var(--teal-a);
+  --c-bg:var(--bg); --c-surface:var(--surface); --c-raised:var(--raised);
+  --c-text:var(--text); --c-text-2:var(--text2); --c-muted:var(--muted);
+  --c-border:var(--border); --c-coral:#E8735A; --c-warn:var(--amber);
+  --c-surface-2:#EDF8F6;
+  /* Radius */
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-full:999px;
+  /* Spacing */
+  --s-xs:.25rem; --s-sm:.5rem; --s-md:.875rem; --s-lg:1.25rem; --s-xl:2rem;
+  --sp-xs:var(--s-xs);--sp-sm:var(--s-sm);--sp-md:var(--s-md);--sp-lg:var(--s-lg);--sp-xl:var(--s-xl);
+  /* Type scale */
+  --t-xs:.6875rem; --t-sm:.8125rem; --t-md:.9375rem; --t-lg:1.0625rem;
+  --t-xl:1.1875rem; --t-2xl:1.4375rem; --t-3xl:1.875rem; --t-num:2.25rem;
+  --fs-xs:var(--t-xs);--fs-sm:var(--t-sm);--fs-md:var(--t-md);--fs-lg:var(--t-lg);
+  --fs-xl:var(--t-xl);--fs-2xl:var(--t-2xl);--fs-num:var(--t-num);
+  /* Fonts */
+  --ff-body:'Nunito',system-ui,sans-serif; --ff-display:'Caveat',cursive;
+  --ff-mono:'DM Mono',monospace;
+  /* Motion */
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.34,1.56,.64,1);
+  --t:all .16s var(--ease); --dur-fast:.12s; --dur-med:.2s; --dur-slow:.35s;
+  /* Shadows */
+  --sh-xs:0 1px 3px rgba(0,0,0,.06); --sh-sm:0 2px 8px rgba(0,0,0,.08);
+  --sh-md:0 4px 16px rgba(0,0,0,.1); --sh-lg:0 8px 32px rgba(0,0,0,.14);
+  --sh-btn:0 4px 12px rgba(13,148,136,.3); --sh-cta:0 4px 14px rgba(244,98,42,.3);
+}
