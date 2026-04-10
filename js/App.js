@@ -347,13 +347,17 @@ class MatEvdeApp {
   ══════════════════════════════════════════════ */
 
   _renderOb(){
-    const total = 4;
+    // R6 — Onboarding'i 3 adıma indirgedik. Kaygı ölçeği (eski adım 1) kaldırıldı;
+    // dashboard üzerinden opsiyonel olarak sonra sunuluyor. Mevcut adım sayısı:
+    // 0: İsim  ·  1: Çocuk + yaş + SES  ·  2: Ebeveynlik stili
+    const total = 3;
     document.getElementById('ob-steps').innerHTML =
       Array.from({length:total},(_,i)=>`<div class="step-dot ${i<this._ob.step?'done':i===this._ob.step?'cur':''}"></div>`).join('');
     const body = document.getElementById('ob-body');
     const steps = [
-      ()=>this._obStep0(body), ()=>this._obStep1(body),
-      ()=>this._obStep2(body), ()=>this._obStep3(body),
+      ()=>this._obStep0(body),
+      ()=>this._obStep2(body),  // Çocuk bilgileri artık 2. adım (eski 3. adımdı)
+      ()=>this._obStep3(body),  // Ebeveynlik stili son adım
     ];
     steps[this._ob.step]?.();
   }
@@ -503,6 +507,7 @@ class MatEvdeApp {
   }
 
   _obNext(){
+    // R6 — 3 adımlı onboarding: 0=İsim · 1=Çocuk · 2=Stil
     const {step}=this._ob;
     if(step===0){
       const n=document.getElementById('ob-name')?.value.trim();
@@ -511,9 +516,6 @@ class MatEvdeApp {
       this._ob.email=document.getElementById('ob-email')?.value.trim()||'';
     }
     if(step===1){
-      if(Object.keys(this._ob.anxiety).length<this._anxQs.length){ this._toast('Tüm soruları yanıtlayın','err'); return; }
-    }
-    if(step===2){
       const n=document.getElementById('ob-cname')?.value.trim();
       if(!n){ this._toast('Çocuğunuzun adını girin','err'); return; }
       if(!this._ob.ageGroup){ this._toast('Yaş grubunu seçin','err'); return; }
@@ -526,13 +528,22 @@ class MatEvdeApp {
   _obFinish(){
     if(!this._ob.style){ this._toast('Bir stil seçin','err'); return; }
 
-    // Compute anxiety
-    const resp = this._anxQs.map(q=>({
-      value: this._ob.anxiety[q.id]||3, rev:q.rev
-    }));
-    const norm = resp.map(r=>r.rev ? 6-r.value : r.value);
-    const pct  = Math.round(norm.reduce((s,v)=>s+v,0) / (resp.length*5) * 100);
-    const level = pct<35 ? AnxietyLevel.LOW : pct<65 ? AnxietyLevel.MEDIUM : AnxietyLevel.HIGH;
+    // R6 — Kaygı ölçeği artık onboarding'de yok. Eğer kullanıcı dashboard'dan
+    // ölçeği daha sonra doldurursa yanıtlar this._ob.anxiety'e gelir.
+    // Bu adımda ölçek doldurulmamışsa değerlendirmeyi "yapılmadı" olarak işaretliyoruz.
+    const hasAnxAnswers = Object.keys(this._ob.anxiety || {}).length >= this._anxQs.length;
+    let anxietyProfile;
+    if(hasAnxAnswers){
+      const resp = this._anxQs.map(q=>({
+        value: this._ob.anxiety[q.id]||3, rev:q.rev
+      }));
+      const norm = resp.map(r=>r.rev ? 6-r.value : r.value);
+      const pct  = Math.round(norm.reduce((s,v)=>s+v,0) / (resp.length*5) * 100);
+      const level = pct<35 ? AnxietyLevel.LOW : pct<65 ? AnxietyLevel.MEDIUM : AnxietyLevel.HIGH;
+      anxietyProfile = { level, score:pct, assessedAt:new Date(), assessed:true };
+    } else {
+      anxietyProfile = { level: AnxietyLevel.MEDIUM, score: 50, assessedAt: null, assessed: false };
+    }
 
     const cid = crypto.randomUUID();
     this._parent = {
@@ -540,7 +551,7 @@ class MatEvdeApp {
       name: this._ob.name, email: this._ob.email,
       onboardingComplete: true,
       children:[{ id:cid, name:this._ob.childName, ageGroup:this._ob.ageGroup, completedActivities:[], badges:[] }],
-      anxietyProfile:{ level, score:pct, assessedAt:new Date() },
+      anxietyProfile,
       parentingStyle: this._ob.style,
       resources: this._ob.resources||['basic','craft'],
       weeklyCheckIns:[], badges:[], teacherMessages:[], weeklyPlans:[],
@@ -625,11 +636,11 @@ class MatEvdeApp {
     const greet = hour<12?'Günaydın':hour<18?'İyi günler':'İyi akşamlar';
     const planCount = Object.keys(this._plannerSvc.getWeekPlan()).length;
 
-    // Streak
+    // R5 — Haftalık ritim (streak yerine)
+    const rhythm = this._streakSvc.getWeeklyProgress();
+    const todayDone = rhythm.todayDone;
+    // Geri uyum — eski kartlarda kullanılabilir
     const streak = this._streakSvc.checkExpiry();
-    const todayDone = this._streakSvc.isTodayDone();
-    const streakFlame = streak.count >= 7 ? '🔥🔥' : streak.count >= 3 ? '🔥' : '⭕';
-    const streakColor = streak.count >= 3 ? 'var(--danger)' : streak.count >= 1 ? 'var(--amber)' : 'var(--muted)';
 
     // Kaygı trendi
     const anxTrend = this._anxTracker.getTrend();
@@ -649,17 +660,8 @@ class MatEvdeApp {
         </button>
       </div>
 
-      <!-- Streak -->
-      <div style="background:${streak.count>=1?'linear-gradient(135deg,var(--teal),var(--teal-d))':'var(--surface)'};border-radius:var(--r-xl);padding:.9rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;${streak.count>=1?'color:#fff':'border:0.5px solid var(--border)'};box-shadow:${streak.count>=1?'var(--sh-btn)':'var(--sh-xs)'}">
-        <div style="font-size:1.75rem;line-height:1;flex-shrink:0">${streakFlame}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:var(--t-md);font-weight:800">${streak.count} günlük seri${streak.count===0?' — Bugün başla!':''}</div>
-          <p style="font-size:var(--t-xs);opacity:${streak.count>=1?.8:1};margin-top:.06rem;color:${streak.count>=1?'rgba(255,255,255,.8)':'var(--muted)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-            ${todayDone?'✓ Bugün tamamlandı':'Bugün bir etkinlik tamamla!'}${streak.longestStreak>0?' · En uzun: '+streak.longestStreak+' gün':''}
-          </p>
-        </div>
-        ${!todayDone?`<button class="btn btn-sm" style="background:${streak.count>=1?'rgba(255,255,255,.2)':'var(--teal)'};color:#fff;border:none;flex-shrink:0" onclick="App.show('activities')">Başla</button>`:`<span style="font-size:1.2rem">✅</span>`}
-      </div>
+      <!-- R5 — Haftalık ritim kartı (streak yerine, guilt-trip YOK) -->
+      ${this._renderWeeklyRhythmCard(rhythm)}
 
       <!-- Hızlı erişim — yatay kaydırmalı -->
       <div style="display:flex;gap:.45rem;overflow-x:auto;padding-bottom:.2rem;margin-bottom:1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch">
@@ -677,6 +679,9 @@ class MatEvdeApp {
         </button>`).join('')}
       </div>
 
+      <!-- Günün Problemi (R1 — Bedtime Math tarzı, 5 dk commitment) -->
+      ${this._renderDailyProblemCard()}
+
       <!-- Bugün için öneriler -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
         <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Bugün için Öneriler</span>
@@ -686,8 +691,18 @@ class MatEvdeApp {
         ${rec.map(a=>this._actCard(a)).join('')}
       </div>
 
-      <!-- Kaygı profili — kompakt -->
-      ${anxLevel!==undefined?`
+      <!-- Kaygı profili — kompakt / R6: Henüz değerlendirilmediyse CTA -->
+      ${(p.anxietyProfile?.assessed===false)?`
+      <div style="background:linear-gradient(135deg,rgba(124,61,159,.08),rgba(124,61,159,.03));border:1.5px solid rgba(124,61,159,.25);border-radius:var(--r-lg);padding:.95rem 1rem;margin-bottom:1rem;cursor:pointer" onclick="App._openAnxAssessment()">
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <div style="width:38px;height:38px;border-radius:10px;background:var(--purple-a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📊</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:var(--t-sm);font-weight:800;color:var(--purple)">Kısa değerlendirme (2 dk)</div>
+            <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">8 soruluk matematik tutumu ölçeği — etkinlik önerilerimiz size özel hale gelir.</p>
+          </div>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--hint)" stroke-width="2" style="flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>`:(anxLevel!==undefined)?`
       <div style="background:var(--surface);border-radius:var(--r-lg);padding:.875rem 1rem;border:0.5px solid var(--border);display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;cursor:pointer" onclick="App.show('progress')">
         <div style="width:40px;height:40px;border-radius:50%;background:${anxColor};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;opacity:.9">${anxEmoji}</div>
         <div style="flex:1;min-width:0">
@@ -709,6 +724,435 @@ class MatEvdeApp {
         </div>
       </div>`:''}
     `  }
+
+  /* ══════════════════════════════════════════════
+     R1 — GÜNÜN PROBLEMİ (Bedtime Math tarzı)
+     Her gün sabit, determinstik seçilmiş 1 etkinlik.
+     Kanıt: Schaeffer et al. 2018, d=0.82 (kaygılı ebeveynlerin çocuklarında)
+  ══════════════════════════════════════════════ */
+
+  // Bugün için seçilen etkinliği deterministik olarak döndürür.
+  // Aynı ebeveyn aynı günde hep aynı etkinliği görür.
+  _getDailyProblem(){
+    const c = this._getChild(); if(!c) return null;
+    const pool = this._repo.byAgeGroup(c.ageGroup);
+    if(!pool.length) return null;
+    // Günün indeksi: Unix-epoch gün sayısı mod havuz uzunluğu
+    const dayIndex = Math.floor(Date.now() / 86400000);
+    return pool[dayIndex % pool.length];
+  }
+
+  _renderDailyProblemCard(){
+    const a = this._getDailyProblem();
+    if(!a) return '';
+    const c = this._getChild();
+    const isDone = (c?.completedActivities||[]).includes(a.id);
+    // 3 yaş seviyesi — Bedtime Math Wee/Little/Big modeli
+    // Adımlardan ilk 3'ünü farklı zorluk olarak sun
+    const levels = [
+      { emoji:'🐣', label:'Küçük', step: a.steps[0] || '' },
+      { emoji:'🧒', label:'Orta',  step: a.steps[Math.min(1, a.steps.length-1)] || '' },
+      { emoji:'👦', label:'Büyük', step: a.steps[a.steps.length-1] || '' },
+    ];
+    return `
+      <div style="background:linear-gradient(135deg,#FFF7ED 0%,#FEF3E7 100%);border:1.5px solid rgba(244,98,42,.25);border-radius:var(--r-xl);padding:1rem 1.05rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(244,98,42,.08);cursor:pointer" onclick="App._openActivity('${a.id}')">
+        <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.55rem">
+          <span style="font-size:.65rem;font-weight:900;color:var(--orange-d);text-transform:uppercase;letter-spacing:.1em;background:rgba(244,98,42,.15);padding:.15rem .45rem;border-radius:99px">⭐ Günün Problemi</span>
+          <span style="font-size:.58rem;font-weight:700;color:var(--muted);margin-left:auto">≈5 dk</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.6rem">
+          <span style="font-size:2.2rem;line-height:1;flex-shrink:0">${a.emoji}</span>
+          <div style="flex:1;min-width:0">
+            <strong style="font-size:var(--t-lg);color:var(--text);display:block;line-height:1.2">${a.title}</strong>
+            <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.4">${a.desc}</p>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.65rem">
+          ${levels.map(l=>`
+            <div style="display:flex;align-items:flex-start;gap:.55rem;font-size:var(--t-xs);color:var(--text2);line-height:1.45">
+              <span style="font-size:.95rem;flex-shrink:0;line-height:1.3">${l.emoji}</span>
+              <span style="flex:1"><strong style="color:var(--orange-d)">${l.label}:</strong> ${l.step}</span>
+            </div>
+          `).join('')}
+        </div>
+        <button class="btn btn-sm" style="width:100%;background:${isDone?'var(--teal-a)':'var(--orange)'};color:${isDone?'var(--teal-d)':'#fff'};border:none;font-weight:800" onclick="event.stopPropagation();App._openActivity('${a.id}')">
+          ${isDone ? '✓ Bugün tamamlandı — yine de aç' : 'Bugün bunu dene →'}
+        </button>
+      </div>
+    `;
+  }
+
+  /* ══════════════════════════════════════════════
+     R6 — Kaygı değerlendirmesi (ertelenmiş, onboarding sonrası)
+     Kullanıcıya bir modal üzerinden 8 maddeli ölçek sunar; sonucu
+     parent.anxietyProfile'a işler.
+  ══════════════════════════════════════════════ */
+
+  _openAnxAssessment(){
+    // Modal içi yerel durum — ob state'ini kirletme
+    this._anxModalState = {};
+    const qs = this._anxQs;
+    const body = `
+      <div style="padding:.2rem 0 .2rem">
+        <h3 style="margin-bottom:.4rem">📊 Matematik ile Aranız</h3>
+        <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem;line-height:1.55">Her ifadeyi şu anki durumunuza göre değerlendirin. Doğru ya da yanlış yanıt yoktur. Bu ölçek, etkinlik önerilerinizi kişiselleştirmek için kullanılır.</p>
+        <p style="font-size:var(--t-xs);color:var(--muted);background:var(--raised);border-radius:var(--r-sm);padding:.5rem .75rem;margin-bottom:1rem;line-height:1.55">📚 <em>MARS-R (Plake & Parker, 1982) · sMARS (Alexander & Martray, 1989) · Maloney ve ark. (2015)</em></p>
+        <div style="display:flex;flex-direction:column;gap:.9rem" id="anx-modal-qs">
+          ${qs.map((q,i)=>`
+            <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);padding:.85rem">
+              <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.55rem">${i+1}. ${q.text}</p>
+              <div class="likert" id="anx-m-${q.id}">
+                ${[1,2,3,4,5].map(v=>`<button class="likert-btn" onclick="App._anxModalSel('${q.id}',${v})">${v}</button>`).join('')}
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-top:.3rem"><span>Hiç katılmıyorum</span><span>Tamamen katılıyorum</span></div>
+            </div>`).join('')}
+        </div>
+      </div>
+    `;
+    const footer = `
+      <div class="modal-footer-row">
+        <button class="btn btn-ghost" onclick="App._closeModal()">Sonra</button>
+        <button class="btn btn-primary" onclick="App._submitAnxAssessment()">Değerlendir</button>
+      </div>
+    `;
+    this._openModal(body, footer);
+  }
+
+  _anxModalSel(qid, val){
+    if(!this._anxModalState) this._anxModalState = {};
+    this._anxModalState[qid] = val;
+    const group = document.getElementById(`anx-m-${qid}`);
+    if(group){
+      group.querySelectorAll('.likert-btn').forEach(b => {
+        b.classList.toggle('sel', parseInt(b.textContent,10) === val);
+      });
+    }
+  }
+
+  _submitAnxAssessment(){
+    const state = this._anxModalState || {};
+    if(Object.keys(state).length < this._anxQs.length){
+      this._toast('Lütfen tüm soruları yanıtlayın','err');
+      return;
+    }
+    const resp = this._anxQs.map(q=>({ value: state[q.id]||3, rev:q.rev }));
+    const norm = resp.map(r=>r.rev ? 6-r.value : r.value);
+    const pct  = Math.round(norm.reduce((s,v)=>s+v,0) / (resp.length*5) * 100);
+    const level = pct<35 ? AnxietyLevel.LOW : pct<65 ? AnxietyLevel.MEDIUM : AnxietyLevel.HIGH;
+
+    // Kaygı trendini kaydet
+    this._anxTracker.record(pct, level);
+
+    this._parent = {
+      ...this._parent,
+      anxietyProfile: { level, score:pct, assessedAt:new Date(), assessed:true },
+    };
+    this._storage.set('parent', this._parent);
+    this._closeModal();
+
+    const levelText = level===AnxietyLevel.LOW?'Düşük':level===AnxietyLevel.MEDIUM?'Orta':'Yüksek';
+    this._toast(`Teşekkürler! Kaygı düzeyiniz: ${levelText}`, 'ok');
+    if(this._activeView==='dashboard') this._renderDash();
+  }
+
+  /* ══════════════════════════════════════════════
+     R5 — Haftalık ritim kartı (streak değil)
+     Kaygılı ebeveyn kitlesinde Duolingo-tarzı guilt-trip kontra-prodüktif.
+     "Bu hafta X / Y etkinlik" normalize edici çerçeveleme.
+  ══════════════════════════════════════════════ */
+
+  _renderWeeklyRhythmCard(rhythm){
+    const { thisWeekCount, goal, todayDone, completedWeeks, bestWeek } = rhythm;
+    const pct = Math.min(100, Math.round((thisWeekCount / goal) * 100));
+    const isGoalMet = thisWeekCount >= goal;
+
+    // Hafta günleri — bugünün konumu vurgulu
+    const todayIdx = (new Date().getDay() + 6) % 7; // Pzt=0
+    const days = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+
+    const headline = isGoalMet
+      ? `Bu hafta hedefi aştınız 🎉`
+      : `Bu hafta ${thisWeekCount}/${goal} etkinlik`;
+
+    const sub = isGoalMet
+      ? (bestWeek > thisWeekCount ? `En iyi haftanız ${bestWeek} etkinlikti.` : 'Bu haftaki rekorunuz!')
+      : (todayDone
+          ? 'Bugünü tamamladınız — hafta sonuna kadar zamanınız var.'
+          : 'Haftanızı tamamlamak için ufak bir an yeter.');
+
+    return `
+      <div style="background:${isGoalMet?'linear-gradient(135deg,var(--teal),var(--teal-d))':'var(--surface)'};color:${isGoalMet?'#fff':'var(--text)'};border-radius:var(--r-xl);padding:1rem 1.1rem;margin-bottom:1rem;border:${isGoalMet?'none':'0.5px solid var(--border)'};box-shadow:${isGoalMet?'var(--sh-btn)':'var(--sh-xs)'}">
+        <div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem">
+          <span style="font-size:1.3rem;line-height:1;flex-shrink:0">${isGoalMet?'🌟':'📅'}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:var(--t-md);font-weight:800;line-height:1.2">${headline}</div>
+            <p style="font-size:var(--t-xs);opacity:${isGoalMet?.9:.75};margin-top:.1rem;color:${isGoalMet?'rgba(255,255,255,.9)':'var(--muted)'}">${sub}</p>
+          </div>
+          ${!isGoalMet
+            ? `<button class="btn btn-sm" style="background:var(--teal);color:#fff;border:none;flex-shrink:0" onclick="App.show('activities')">Başla</button>`
+            : `<span style="font-size:1.2rem">✅</span>`
+          }
+        </div>
+        <!-- Hafta şeridi — 7 gün -->
+        <div style="display:flex;gap:.25rem;margin-top:.3rem">
+          ${days.map((d,i)=>{
+            const isToday = i === todayIdx;
+            const isPast  = i < todayIdx;
+            const bg = isGoalMet
+              ? (i<=todayIdx?'rgba(255,255,255,.85)':'rgba(255,255,255,.25)')
+              : (isPast?'var(--raised)':isToday?'var(--teal)':'var(--border)');
+            const fg = isGoalMet ? (i<=todayIdx?'var(--teal-d)':'rgba(255,255,255,.7)')
+                                 : (isToday?'#fff':'var(--muted)');
+            return `<div style="flex:1;text-align:center;padding:.3rem .1rem;background:${bg};color:${fg};border-radius:6px;font-size:.58rem;font-weight:800">${d}</div>`;
+          }).join('')}
+        </div>
+        ${completedWeeks >= 1 && !isGoalMet ? `
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.55rem;line-height:1.5">✓ Şimdiye kadar <strong>${completedWeeks}</strong> haftayı tamamladınız — ortalama ailenin üstündesiniz.</p>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  /* ══════════════════════════════════════════════
+     R2 — FACT / TIP / GROWTH şablonu
+     Ready4K formatı: Neden? (FACT) + Nasıl? (TIP, zaten var) + Ne değişti? (GROWTH)
+     Kanıt: York, Loeb, Doss 2014 — SMS kanıtı
+  ══════════════════════════════════════════════ */
+
+  // Kategoriye göre "Neden işe yarar?" mesajı (brain science — Vroom tarzı)
+  _factFor(a){
+    const facts = {
+      [Category.NUMBER]:
+        'Bu etkinlik çocuğun <strong>sayı hissini</strong> (number sense) destekler — sayıyı bir isim olarak değil miktar olarak kavraması. Erken sayı hissi, ilkokul matematiği için en güçlü yordayıcıdır (Jordan et al., 2009).',
+      [Category.PATTERNS]:
+        'Örüntü fark etme, <strong>cebirsel düşünmenin</strong> temelidir. Çocuk "sıradaki ne?" sorusunu yanıtlamayı öğrenirken beyni ileride değişken, fonksiyon ve denklemi kavrayacak nöral yolları kuruyor.',
+      [Category.GEOMETRY]:
+        'Şekil ve uzay farkındalığı, <strong>uzamsal akıl yürütmeyi</strong> güçlendirir — bu, STEM başarısının gizli anahtarıdır. 5 yaşındaki uzamsal beceri, 6 yaşındaki sayı doğrusu başarısını öngörüyor (Gunderson et al., 2012).',
+      [Category.MEASUREMENT]:
+        'Ölçme, <strong>sayı ile gerçek dünyayı bağlayan köprüdür</strong>. Standart olmayan birimlerle başlamak (karış, adım), çocuğun ölçme kavramını sezgisel olarak kavramasını sağlar (Freudenthal, 1991).',
+      [Category.PROBLEM]:
+        'Problem kurma becerisi, problem çözme becerisinden <strong>daha üst düzey bir matematiksel düşünmedir</strong>. Kendi sorularını üreten çocuklar, daha karmaşık problemleri çözmeye daha hazır olur (Silver, 1994).',
+      [Category.DAILY]:
+        'Günlük hayatta matematik, çocuğun "matematik = okul işi" ayrımını ortadan kaldırır. Bağlamlı öğrenme, transfer için en güçlü mekanizmadır (Lave, 1988).',
+      [Category.SPATIAL]:
+        'Uzamsal eğitim, matematik performansına <strong>anlamlı transfer</strong> üretir: Hawes ve ark. (2022) meta-analizi 29 çalışmada ortalama etki g=0.28. Fiziksel materyaller dijital olanlardan daha güçlü.',
+      [Category.KITCHEN]:
+        'Mutfak, <strong>kesir, oran ve ölçme kavramlarının doğal laboratuvarıdır</strong>. "Yarım bardak un" somut olarak deneyimlenir — soyut sembolden çok daha güçlüdür.',
+      [Category.MARKET]:
+        'Gerçek para ve gerçek fiyatlar, çocuğun matematik motivasyonu için en güçlü bağlamdır. Bedtime Math RCT: kaygılı ebeveynlerin çocuklarında d=0.82 etki (Schaeffer et al., 2018).',
+      [Category.TIME]:
+        'Zaman kavramı, <strong>sayı doğrusu sezgisini</strong> besler. "Kaç gün kaldı?" sorusu, çıkarma işleminin en doğal halidir ve motivasyon otomatiktir.',
+      [Category.GAME]:
+        'Oyun sırasında öğrenme, <strong>içsel motivasyonu korur</strong>. Kamii (1985): rekabet değil, "ne fark ettin?" sorusu çocuğun matematiksel düşünmesini derinleştirir.',
+      [Category.NATURE]:
+        'Doğada sayma, sınıflama ve örüntü arama, <strong>bedenlenmiş öğrenmenin</strong> (embodied learning) en saf halidir. Çocuk yalnızca zihniyle değil duyularıyla öğrenir.',
+    };
+    return facts[a.category] ||
+      'Bu etkinlik çocuğun matematik becerilerini gerçek bir bağlamda destekler — ezberden çok daha güçlü bir öğrenme biçimidir.';
+  }
+
+  // Tamamlamadan sonra "Ne değişti?" mesajı
+  _growthFor(a){
+    const growths = {
+      [Category.NUMBER]:
+        'Çocuğunuz bugün sayıları sadece isim olarak değil, <strong>miktar</strong> olarak deneyimledi. Bu deneyim birikir — 3 hafta sonra yeniden deneyin, fark edilir ilerlemeyi göreceksiniz.',
+      [Category.PATTERNS]:
+        'Örüntü fark etme kası bugün çalıştı. Birkaç haftaya, çocuğunuz sizin fark etmediğiniz örüntüleri size gösterecek — bu algebraic düşünmenin ilk işaretidir.',
+      [Category.GEOMETRY]:
+        'Uzamsal dil ("kenar", "köşe", "yüz") bugün çocuğunuzun aktif kelime dağarcığına eklendi. Bir hafta sonra sokakta bir şekil görünce adlandıracaktır.',
+      [Category.MEASUREMENT]:
+        'Bugün çocuğunuz tahmin etti ve ölçtü — bu iki adım, bilimsel düşünmenin temelidir. Bir dahaki sefere tahminleri daha yakın olacak.',
+      [Category.PROBLEM]:
+        'Çocuğunuz bugün kendi sorusunu kurdu — bu, matematik öz-yeterliği için büyük bir adımdır. Soruyu kuran, çözebileceğine de inanır.',
+      [Category.DAILY]:
+        'Bugünkü etkinlik, çocuğunuza "matematik her yerde" mesajını verdi. Bu mesaj, okul matematiğine karşı direnci anlamlı biçimde azaltır.',
+      [Category.SPATIAL]:
+        'Uzamsal düşünme — matematik başarısının en güçlü öngörücülerinden biri — bugün çalıştı. Haftada 2-3 uzamsal etkinlik, ilkokul aritmetiğini bile destekliyor.',
+      [Category.KITCHEN]:
+        'Mutfakta geçirilen 15 dakika, test kitabındaki 30 dakikadan daha etkilidir. Kesir ve ölçü kavramı bugün duyularla pekişti.',
+      [Category.MARKET]:
+        'Gerçek para ile deneyim, soyut sayılardan çok daha güçlü. Çocuğunuz bugün "fiyat" kavramıyla aktif olarak çalıştı.',
+      [Category.TIME]:
+        'Zaman kavramı bugün somutlaştı. Bu deneyim, ileride takvim, saat ve süre hesaplarını çok daha kolay kılacak.',
+      [Category.GAME]:
+        'Oyun sırasında matematik yapmak, çocuğun matematik tutumunu olumlu yönde etkiler — ki bu, başarıdan daha uzun vadede önemli bir çıktıdır.',
+      [Category.NATURE]:
+        'Doğada yapılan matematik, hafızada daha uzun kalır. Bedenlenmiş öğrenme teorisi bunu açıklıyor.',
+    };
+    return growths[a.category] ||
+      'Çocuğunuz bugün matematikle keyifli bir etkileşim yaşadı — bu tekrar ettikçe matematik tutumu olumluya döner.';
+  }
+
+  /* ══════════════════════════════════════════════
+     R3 — Soru taksonomisi: "Nasıl soracağım?"
+     Her etkinlik için 3 soru: açık uçlu + kapalı uçlu + yansıtıcı
+     Kanıt: DREME 2021 — açık uçlu sorular daha uzun sayı konuşmaları tetikler
+  ══════════════════════════════════════════════ */
+
+  // Son adım tipik olarak yansıtıcı sorudur — onu kullan; değilse kategoriye göre üret
+  _renderQuestionPrompts(a){
+    // Mevcut etkinlik adımlarından yansıtıcı soruyu çek (sonuncu adım genelde öyle)
+    const lastStep = a.steps[a.steps.length - 1] || '';
+    const isReflective = /\?/.test(lastStep);
+    const reflective = isReflective ? lastStep : this._defaultReflectiveQ(a);
+
+    // Kategoriye göre örnek açık & kapalı sorular
+    const prompts = this._questionPromptsFor(a);
+
+    return `
+      <div style="background:rgba(124,61,159,.06);border:1px solid rgba(124,61,159,.2);border-radius:var(--r-md);padding:.85rem 1rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.55rem">
+          <span style="font-size:.95rem">💬</span>
+          <strong style="font-size:var(--t-sm);color:var(--purple);text-transform:uppercase;letter-spacing:.05em">Nasıl soracağım?</strong>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <div style="display:flex;gap:.55rem;align-items:flex-start">
+            <span style="font-size:.6rem;font-weight:900;background:var(--teal);color:#fff;padding:.15rem .4rem;border-radius:3px;flex-shrink:0;margin-top:.12rem">AÇIK</span>
+            <p style="font-size:var(--t-sm);line-height:1.5;flex:1">${prompts.open}</p>
+          </div>
+          <div style="display:flex;gap:.55rem;align-items:flex-start">
+            <span style="font-size:.6rem;font-weight:900;background:var(--blue);color:#fff;padding:.15rem .4rem;border-radius:3px;flex-shrink:0;margin-top:.12rem">KAPALI</span>
+            <p style="font-size:var(--t-sm);line-height:1.5;flex:1">${prompts.closed}</p>
+          </div>
+          <div style="display:flex;gap:.55rem;align-items:flex-start">
+            <span style="font-size:.6rem;font-weight:900;background:var(--purple);color:#fff;padding:.15rem .4rem;border-radius:3px;flex-shrink:0;margin-top:.12rem">YANSITICI</span>
+            <p style="font-size:var(--t-sm);line-height:1.5;flex:1">${reflective}</p>
+          </div>
+        </div>
+        <div style="margin-top:.65rem;padding-top:.55rem;border-top:1px dashed rgba(124,61,159,.2);font-size:var(--t-xs);color:var(--muted);line-height:1.5">
+          <strong style="color:var(--purple)">3W:</strong> Sor (<em>Wonder</em>) → 3 saniye bekle (<em>Wait</em>) → genişlet (<em>Widen</em>). Cevabı siz vermeyin.
+        </div>
+      </div>
+    `;
+  }
+
+  // Kategoriye göre jenerik açık/kapalı soru şablonları
+  _questionPromptsFor(a){
+    const generic = {
+      [Category.NUMBER]:     { open:'Nasıl saydın? Başka hangi yolla sayabilirsin?',       closed:'Kaç tane var?' },
+      [Category.PATTERNS]:   { open:'Bu örüntüde ne fark ettin?',                           closed:'Sıradaki ne olur?' },
+      [Category.GEOMETRY]:   { open:'Bu şekil sana neyi hatırlatıyor?',                     closed:'Kaç kenarı var?' },
+      [Category.MEASUREMENT]:{ open:'Başka ne ile ölçebilirdik? Neden farklı çıkar?',       closed:'Hangisi daha uzun?' },
+      [Category.PROBLEM]:    { open:'Sence en iyi yol hangisi? Başka nasıl çözebiliriz?',   closed:'Cevap kaç?' },
+      [Category.DAILY]:      { open:'Bunu evde nerede daha görüyorsun?',                    closed:'Kaç tane / ne kadar?' },
+      [Category.SPATIAL]:    { open:'Tersine döndürsek nasıl görünür?',                      closed:'Hangisi sağda?' },
+      [Category.KITCHEN]:    { open:'Eğer 2 kat daha yapsak, neler değişir?',                closed:'Kaç kaşık gerekiyor?' },
+      [Category.MARKET]:     { open:'Bu fiyat sana pahalı mı ucuz mu? Neden?',               closed:'Toplam ne kadar?' },
+      [Category.TIME]:       { open:'Bekleme hissi nasıl — uzun mu kısa mı geldi?',          closed:'Kaç dakika sürdü?' },
+      [Category.GAME]:       { open:'Bu oyunda ne keşfettin?',                                closed:'Kim kaç puan aldı?' },
+      [Category.NATURE]:     { open:'Bunu daha önce başka yerde gördün mü?',                 closed:'Kaç tane saydın?' },
+    };
+    return generic[a.category] || { open:'Nasıl buldun?', closed:'Kaç tane?' };
+  }
+
+  _defaultReflectiveQ(a){
+    return 'Bir dahaki sefere farklı ne deneyebiliriz?';
+  }
+
+  /* ══════════════════════════════════════════════
+     R4 — Yaş-bazlı diskalkuli kontrol listesi
+     Mutlu (2017) "multiple filter" modelinin ebeveyn versiyonu.
+     Kanıt: Mutlu & Akgün, dyscalculia screening model
+  ══════════════════════════════════════════════ */
+
+  _renderDyscChecklist(){
+    const c = this._getChild();
+    const ag = c?.ageGroup || AgeGroup.G1;
+
+    // Yaş grubuna göre kırmızı bayraklar
+    const byAge = {
+      [AgeGroup.PRESCHOOL]: [
+        '1–5 arasındaki sayıları sırayla söylemekte tutarsız',
+        '3 nesneyi görünce saymadan "3" diyemiyor (subitizing yok)',
+        '"Hangisi daha çok?" sorusuna sık yanlış cevap veriyor',
+        'Parmaklarını saymada hiç kullanmıyor veya tersini sayıyor',
+        'Sayı şarkılarını ezberliyor ama saymaya bağlamıyor',
+        'Aynı yaştaki çocuklara göre belirgin biçimde geride',
+      ],
+      [AgeGroup.G1]: [
+        '1–20 arasındaki sayıları sık sık karıştırıyor (12/21, 13/31)',
+        'Parmak saymayı başka çocuklara göre fazla sürdürüyor',
+        '"3+2" gibi tek haneli toplamayı ezberleyemiyor, her seferinde sayıyor',
+        'Sayı büyüklüğü hakkında (hangi daha fazla) sık hata yapıyor',
+        'Rakamları aynada yansımış gibi yazıyor (6↔9, 2↔5)',
+        'Matematik deyince belirgin biçimde kaçınıyor ya da ağlıyor',
+      ],
+      [AgeGroup.G2]: [
+        'Basamak değerini (onlar/birler) kavramakta zorlanıyor',
+        'Ezberleyemeyen tek çocuk olduğu hissi — toplama olgularını her seferinde parmakla sayıyor',
+        'Sözlü problem çözebiliyor ama aynı problemi yazılı göremiyor',
+        'Sayı doğrusunda sayıların yerini bulamıyor',
+        '"Kaç tane kaldı?" (çıkarma) sorusunu çok zor algılıyor',
+        'Saat ve takvim kavramları yaşına göre çok geride',
+      ],
+      [AgeGroup.G3]: [
+        'Çarpım tablosunu 2\'nin katları ötesinde öğrenemiyor',
+        'Uzun bölmede adımları takip edemiyor',
+        'Problem çözmede "ne sorulduğunu" ayırt edemiyor',
+        'Para, zaman, ölçü birimleri arasında dönüşüm yapamıyor',
+        'Aynı yaştaki okul arkadaşlarının gerisinde en az 1 yıl',
+        'Matematik ödevi karşısında belirgin kaygı (ağlama, kaçınma)',
+      ],
+      [AgeGroup.G4]: [
+        'Basit kesirleri (1/2, 1/4) kavramakta çok zorlanıyor',
+        'Dört işlem becerilerinde akıcılık eksik, sürekli yavaş',
+        'Sözel problemlerde "hangi işlem?" kararını veremiyor',
+        'Ondalık gösterim ve virgül kavramı yok',
+        'Zaman ve süre hesaplarında ciddi güçlük',
+        'Matematik dersinden kaçınma davranışı artıyor',
+      ],
+    };
+    const items = byAge[ag] || byAge[AgeGroup.G1];
+    const ageLabel = this._AGLabels[ag] || 'Çocuğunuz';
+
+    return `
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">📋 Yaş-Bazlı Kontrol Listesi</span></div>
+        <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem;line-height:1.6">
+          <strong>${ageLabel}</strong> için gözlem maddeleri. Son 2 ayda düzenli olarak gözlemlediklerinizi işaretleyin.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:.45rem;margin-bottom:.85rem">
+          ${items.map((t,i)=>`
+            <label style="display:flex;align-items:flex-start;gap:.65rem;padding:.6rem .85rem;border:1px solid var(--border);border-radius:var(--r-sm);cursor:pointer;background:var(--surface)">
+              <input type="checkbox" id="dysc-chk-${i}" style="width:16px;height:16px;accent-color:var(--danger);flex-shrink:0;margin-top:.15rem" onchange="App._updateDyscChecklistCount()">
+              <span style="font-size:var(--t-sm);line-height:1.5;color:var(--text2)">${t}</span>
+            </label>
+          `).join('')}
+        </div>
+        <div id="dysc-chk-result" style="display:none;padding:.75rem .9rem;border-radius:var(--r-md);font-size:var(--t-sm);line-height:1.55"></div>
+      </div>
+    `;
+  }
+
+  // Kontrol listesi değiştiğinde aşağıdaki sonuç kartını günceller
+  _updateDyscChecklistCount(){
+    const total = 6;
+    let checked = 0;
+    for(let i=0; i<total; i++){
+      const cb = document.getElementById(`dysc-chk-${i}`);
+      if(cb && cb.checked) checked++;
+    }
+    const el = document.getElementById('dysc-chk-result');
+    if(!el) return;
+    if(checked === 0){
+      el.style.display = 'none';
+      return;
+    }
+    el.style.display = 'block';
+    if(checked <= 1){
+      el.style.background = 'rgba(22,163,74,.08)';
+      el.style.border = '1px solid rgba(22,163,74,.25)';
+      el.innerHTML = `<strong style="color:var(--success)">🟢 1 işaret:</strong> Tek başına anlamlı değil — çocuklar zaman zaman zorlanabilir. Gözlem sürdür.`;
+    } else if(checked <= 3){
+      el.style.background = 'rgba(245,158,11,.08)';
+      el.style.border = '1px solid rgba(245,158,11,.3)';
+      el.innerHTML = `<strong style="color:var(--amber)">🟡 ${checked} işaret:</strong> Dikkat çekici. Öğretmenle paylaşın, evde destek stratejilerini uygulayın ve 2-3 ay sonra tekrar değerlendirin.`;
+    } else {
+      el.style.background = 'rgba(220,38,38,.07)';
+      el.style.border = '1px solid rgba(220,38,38,.3)';
+      el.innerHTML = `<strong style="color:var(--danger)">🔴 ${checked} işaret:</strong> Uzman değerlendirmesi öneriyoruz. Aşağıdaki <strong>RAM başvurusu</strong> adımlarını izleyin — süreç ücretsizdir ve erken müdahale büyük fark yaratır.`;
+    }
+  }
 
 
 
@@ -1542,7 +1986,17 @@ class MatEvdeApp {
           ${a.dysc?`<span class="chip chip-blue">💙 Diskalkuli</span>`:''}
         </div>
       </div>
-      <p style="color:var(--muted);font-size:var(--t-lg);margin-bottom:1.2rem">${a.desc}</p>
+      <p style="color:var(--muted);font-size:var(--t-lg);margin-bottom:1rem">${a.desc}</p>
+
+      <!-- R2 FACT — Neden işe yarar? (brain science) -->
+      <div style="background:rgba(26,127,166,.08);border-left:4px solid var(--blue);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem">
+          <span style="font-size:.95rem">🧠</span>
+          <strong style="font-size:var(--t-sm);color:var(--blue);text-transform:uppercase;letter-spacing:.05em">Neden işe yarar?</strong>
+        </div>
+        <p style="font-size:var(--t-sm);line-height:1.55;color:var(--text2)">${this._factFor(a)}</p>
+      </div>
+
       ${a.materials.length?`
         <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem">MALZEME</p>
         <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem">
@@ -1556,10 +2010,28 @@ class MatEvdeApp {
             <p style="font-size:var(--t-lg);line-height:1.55;flex:1">${s}</p>
           </li>`).join('')}
       </ol>
+
+      <!-- R3 SORULAR — Nasıl soracağım? (question taxonomy) -->
+      ${this._renderQuestionPrompts(a)}
+
+      <!-- R2 TIP — Pedagojik ipucu -->
       <div style="background:rgba(255,209,102,.18);border-left:4px solid var(--amber);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.9rem 1.1rem;margin-bottom:${a.sesAlt?'.6rem':'1rem'}">
-        <strong style="font-size:var(--t-md)">💡 Pedagojik İpucu</strong>
-        <p style="font-size:var(--t-md);margin-top:.3rem;line-height:1.55">${a.tip}</p>
+        <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem">
+          <span style="font-size:.95rem">💡</span>
+          <strong style="font-size:var(--t-sm);color:#92400E;text-transform:uppercase;letter-spacing:.05em">Nasıl iyi yaparım?</strong>
+        </div>
+        <p style="font-size:var(--t-md);line-height:1.55">${a.tip}</p>
       </div>
+
+      <!-- R2 GROWTH — Tamamladıktan sonra ne bekleyebilirsiniz? -->
+      ${done ? `
+      <div style="background:var(--teal-a);border-left:4px solid var(--teal);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem">
+          <span style="font-size:.95rem">🌱</span>
+          <strong style="font-size:var(--t-sm);color:var(--teal-d);text-transform:uppercase;letter-spacing:.05em">Ne değişti?</strong>
+        </div>
+        <p style="font-size:var(--t-sm);line-height:1.55;color:var(--text2)">${this._growthFor(a)}</p>
+      </div>` : ''}
       ${a.sesAlt?`<div style="background:rgba(45,106,79,.07);border-left:4px solid var(--teal-d);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.75rem 1rem;margin-bottom:1rem">
         <strong style="font-size:var(--t-sm)">♻️ Alternatif Malzeme (Her Bütçeye Uygun)</strong>
         <p style="font-size:var(--t-sm);margin-top:.25rem;line-height:1.5;color:var(--muted)">${a.sesAlt}</p>
@@ -1600,18 +2072,20 @@ class MatEvdeApp {
     }
     this._storage.set('parent', this._parent);
 
-    // Streak kaydı
-    const streakData = this._streakSvc.recordActivity();
+    // R5 — Haftalık ritim kaydı (streak yerine)
+    const rhythm = this._streakSvc.recordActivity();
 
     this._closeModal();
 
     if(newBadges.length){
       this._confetti();
       setTimeout(()=>this._badgeModal(newBadges[0]), 350);
-    } else if(streakData.count > 1 && !streakData.prevDone){
-      this._toast(`🔥 ${streakData.count} günlük seri! Devam et!`, 'ok');
+    } else if(rhythm.thisWeekCount >= rhythm.goal){
+      this._toast(`🌟 Bu hafta hedefi aştınız! (${rhythm.thisWeekCount}/${rhythm.goal})`, 'ok');
+    } else if(rhythm.thisWeekCount === rhythm.goal - 1){
+      this._toast(`Harika! Hedefe 1 etkinlik kaldı 💪`, 'ok');
     } else {
-      this._toast('Harika! Etkinlik tamamlandı 🎉','ok');
+      this._toast(`Etkinlik tamamlandı 🎉 (${rhythm.thisWeekCount}/${rhythm.goal} bu hafta)`, 'ok');
     }
 
     // Zorluk geri bildirimi iste (3. etkinlikten sonra, her 3'te bir)
@@ -2144,6 +2618,37 @@ class MatEvdeApp {
             +'</div>').join('')}
         </div>
         <p class="muted" style="font-size:var(--t-sm);margin-top:.7rem">🟢 Tek başına anlamlı değil · 🟡 Takip edin · 🔴 Uzman görüşü alın</p>
+      </div>
+
+      <!-- R4 — Yaş-bazlı kontrol listesi (Mutlu multiple filter model uyarlaması) -->
+      ${this._renderDyscChecklist()}
+
+      <!-- R4 — RAMDEVU e-Devlet yönlendirmesi -->
+      <div style="background:linear-gradient(135deg,rgba(26,127,166,.1),rgba(26,127,166,.04));border:1.5px solid rgba(26,127,166,.25);border-radius:var(--r-lg);padding:1rem 1.1rem;margin-bottom:1.4rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+          <span style="font-size:1.3rem">🏛️</span>
+          <strong style="font-size:var(--t-lg);color:var(--blue)">RAM'e Başvuru</strong>
+        </div>
+        <p style="font-size:var(--t-sm);line-height:1.55;color:var(--text2);margin-bottom:.8rem">
+          Yukarıdaki kontrol listesinde birden fazla "evet" işaretlediyseniz, <strong>Rehberlik ve Araştırma Merkezi (RAM)</strong> eğitsel değerlendirme için başvuru yapabilirsiniz. Süreç ücretsizdir ve e-Devlet üzerinden randevu alınır. Değerlendirme 60 gün içinde tamamlanır.
+        </p>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:.65rem .8rem;margin-bottom:.8rem">
+          <p style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem">📋 SÜREÇ</p>
+          <ol style="font-size:var(--t-sm);line-height:1.6;padding-left:1.1rem;color:var(--text2);margin:0">
+            <li>e-Devlet "RAMDEVU" üzerinden randevu al</li>
+            <li>Öğretmenden kısa gözlem notu iste</li>
+            <li>RAM'de Özel Eğitim Değerlendirme Kurulu değerlendirir</li>
+            <li>Rapor + varsa destek eğitimi hakkı verilir</li>
+          </ol>
+        </div>
+        <a href="https://www.turkiye.gov.tr/meb-ramdevu-sistemi" target="_blank" rel="noopener"
+           class="btn btn-blue btn-block"
+           style="text-decoration:none;font-size:var(--t-md)">
+          🔗 e-Devlet RAMDEVU'ya Git
+        </a>
+        <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.55rem;line-height:1.5">
+          ⚠️ <strong>Not:</strong> Bu uygulama tanı koymaz. RAM, MEB'e bağlı resmi bir değerlendirme kurumudur. Başvuru zorunlu değildir — gözleminiz ağır basıyorsa önerilir.
+        </p>
       </div>
 
       <!-- Strategies -->
