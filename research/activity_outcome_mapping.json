@@ -1040,7 +1040,193 @@
       ],
       "confidence": "high",
       "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "q01": {
+      "title": "Tren Sırası",
+      "ageGroups": [
+        "PRESCHOOL",
+        "G1"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.1.3",
+        "MAT.1.1.4"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q02": {
+      "title": "Boncuk Örüntü Atölyesi",
+      "ageGroups": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.1.6",
+        "MAT.2.1.5",
+        "MAT.3.1.7",
+        "MAT.4.1.5"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q03": {
+      "title": "İkiz Bulma",
+      "ageGroups": [
+        "PRESCHOOL",
+        "G1",
+        "G2"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.3.2",
+        "MAT.2.3.7"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q04": {
+      "title": "Ölçümde Kavga!",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.2.1.10",
+        "MAT.2.1.11",
+        "MAT.2.3.5",
+        "MAT.3.3.5"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q05": {
+      "title": "Eş Arkadaşlar",
+      "ageGroups": [
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.1.5",
+        "MAT.3.1.6"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q06": {
+      "title": "Alışveriş Talimatları",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.2.5",
+        "MAT.4.2.6"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q07": {
+      "title": "Market Matematiği 2: Toplam-Para Üstü",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.2.2",
+        "MAT.4.2.2"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q08": {
+      "title": "Çubuk Geometri",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.3.2",
+        "MAT.3.3.8"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q09": {
+      "title": "Şekerin Yarısı Kimin?",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.1.10"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q10": {
+      "title": "Pasta Savaşları",
+      "ageGroups": [
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.1.11",
+        "MAT.4.1.12"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q11": {
+      "title": "Ölçü Dönüşüm Yolculuğu",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.1.15",
+        "MAT.4.1.13"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q12": {
+      "title": "Tahmin Çarpması",
+      "ageGroups": [
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.2.3",
+        "MAT.4.2.4"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q13": {
+      "title": "İki Kalemle Açı",
+      "ageGroups": [
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.3.6"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
+    },
+    "q14": {
+      "title": "Izgara Sanatçısı",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.3.10"
+      ],
+      "confidence": "high",
+      "reason": "v3 — kapsam kalite turu; kalan tek-kapsamlı kazanımları ≥2'ye çıkarmak için çoklu-hedefli."
     }
   },
-  "last_updated": "2026-04-10 (v2)"
+  "last_updated": "2026-04-10 (v3)"
 }

@@ -54,7 +54,7 @@ class MatEvdeApp {
     this._ob = { step:0, name:'', email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
 
     // Filter state
-    this._filter = { category:null, anxOnly:false, spatialOnly:false, searchTerm:'' };
+    this._filter = { category:null, anxOnly:false, spatialOnly:false, context:null, difficulty:null, searchTerm:'' };
 
     this._AGLabels = {
       [AgeGroup.PRESCHOOL]:'Okul Öncesi (3-6 yaş)',
@@ -690,6 +690,12 @@ class MatEvdeApp {
       <!-- Günün Problemi (R1 — Bedtime Math tarzı, 5 dk commitment) -->
       ${this._renderDailyProblemCard()}
 
+      <!-- Haftanın Kazanımları (TYMM sınıf-bazlı hedef) -->
+      ${this._renderWeeklyOutcomesCard()}
+
+      <!-- Şu an neredesiniz? — bağlam bazlı etkinlik seçici (DREME Family Math) -->
+      ${this._renderContextPickerCard()}
+
       <!-- Bugün için öneriler -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
         <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Bugün için Öneriler</span>
@@ -732,6 +738,147 @@ class MatEvdeApp {
         </div>
       </div>`:''}
     `  }
+
+  /* ══════════════════════════════════════════════
+     BAĞLAM SEÇİCİ (DREME Family Math — "Nerede bulduğunuz?"
+     modeli). Dashboard'da "Şu an neredesiniz?" kartı.
+  ══════════════════════════════════════════════ */
+
+  _renderContextPickerCard(){
+    const c = this._getChild();
+    if(!c) return '';
+    const contexts = [
+      { k:'kitchen', icon:'🍳', label:'Mutfakta' },
+      { k:'indoor',  icon:'🏠', label:'Ev İçi' },
+      { k:'outdoor', icon:'🌳', label:'Dışarı' },
+      { k:'commute', icon:'🚗', label:'Yolda' },
+      { k:'bedtime', icon:'🌙', label:'Uyku Öncesi' },
+      { k:'game',    icon:'🎲', label:'Oyun Zamanı' },
+    ];
+    // Kaç aktivite var her bağlamda (yaş grubuna göre filtrelenmiş)
+    const byCtx = {};
+    this._repo.byAgeGroup(c.ageGroup).forEach(a => {
+      (a.context || []).forEach(ctx => {
+        byCtx[ctx] = (byCtx[ctx] || 0) + 1;
+      });
+    });
+    return `
+      <div style="margin-bottom:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+          <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Şu an neredesiniz?</span>
+          <span style="font-size:.6rem;color:var(--hint)">bağlama göre etkinlik bul</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem">
+          ${contexts.map(ctx => `
+            <button onclick="App._selectContext('${ctx.k}')"
+              style="display:flex;flex-direction:column;align-items:center;gap:.2rem;
+                padding:.65rem .3rem;background:var(--surface);border:1px solid var(--border);
+                border-radius:var(--r-md);cursor:pointer;
+                -webkit-tap-highlight-color:transparent;transition:all var(--dur-fast)"
+              ontouchstart="this.style.transform='scale(.96)';this.style.background='var(--raised)'"
+              ontouchend="this.style.transform='';this.style.background='var(--surface)'">
+              <span style="font-size:1.35rem;line-height:1">${ctx.icon}</span>
+              <span style="font-size:.62rem;font-weight:800;color:var(--text2);line-height:1.2">${ctx.label}</span>
+              <span style="font-size:.55rem;color:var(--hint);font-weight:700">${byCtx[ctx.k] || 0} etkinlik</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  _selectContext(ctx){
+    // Activities sayfasına git, context filtresi ile
+    this._filter.context = ctx;
+    this._filter.category = null;
+    this._filter.anxOnly = false;
+    this._filter.spatialOnly = false;
+    this.show('activities');
+  }
+
+  /* ══════════════════════════════════════════════
+     HAFTANIN KAZANIMLARI (Dashboard sınıf-bazlı hedef)
+     Çocuğun sınıfına göre her hafta deterministik olarak
+     3 TYMM kazanımı seçer ve her biri için en uygun
+     etkinliği önerir.
+  ══════════════════════════════════════════════ */
+
+  _getWeeklyOutcomesForChild(){
+    const c = this._getChild();
+    if(!c) return null;
+    const gradeMap = { [AgeGroup.G1]:1, [AgeGroup.G2]:2, [AgeGroup.G3]:3, [AgeGroup.G4]:4 };
+    const grade = gradeMap[c.ageGroup];
+    if(!grade) return null; // Okul öncesi için bu akış yok
+
+    const gradeOutcomes = getOutcomesByGrade(grade);
+    if(!gradeOutcomes.length) return null;
+
+    // Hafta indeksi (ISO hafta yaklaşımı — Unix haftası)
+    const weekIdx = Math.floor(Date.now() / (7 * 86400000));
+    // 3 kazanım seçiyoruz — determinstik ama hafta değiştikçe değişiyor
+    const selected = [];
+    for(let i = 0; i < 3; i++){
+      const idx = (weekIdx * 3 + i) % gradeOutcomes.length;
+      selected.push(gradeOutcomes[idx]);
+    }
+
+    // Her kazanım için o kazanımı kapsayan en kısa süreli (kolay) etkinliği bul
+    const allActs = this._repo.byAgeGroup(c.ageGroup);
+    const results = selected.map(o => {
+      const candidates = allActs.filter(a => (a.tymm_outcomes||[]).includes(o.code));
+      if(!candidates.length) return { outcome: o, activity: null };
+      // En kısa süreli olan, zorluk kolay tercihi
+      candidates.sort((a,b) => {
+        const ap = (a.difficulty==='easy'?0:a.difficulty==='medium'?1:2);
+        const bp = (b.difficulty==='easy'?0:b.difficulty==='medium'?1:2);
+        if(ap !== bp) return ap - bp;
+        return (a.dur||0) - (b.dur||0);
+      });
+      return { outcome: o, activity: candidates[0] };
+    });
+    return { grade, results };
+  }
+
+  _renderWeeklyOutcomesCard(){
+    const data = this._getWeeklyOutcomesForChild();
+    if(!data) return '';  // Okul öncesi için gösterme
+    const { grade, results } = data;
+    const doneSet = new Set(this._getChild()?.completedActivities || []);
+
+    return `
+      <div style="margin-bottom:1rem;background:linear-gradient(135deg,rgba(17,138,178,.08),rgba(17,138,178,.02));border:1px solid rgba(17,138,178,.2);border-radius:var(--r-lg);padding:.9rem 1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <span style="font-size:1rem">🎯</span>
+            <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--blue)">Bu Haftanın ${grade}. Sınıf Kazanımları</span>
+          </div>
+          <button onclick="App.show('tymm')" style="font-size:.6rem;font-weight:700;color:var(--blue);background:none;border:none;cursor:pointer;padding:.2rem .4rem">Tümü →</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          ${results.map(r => {
+            const o = r.outcome;
+            const a = r.activity;
+            const isDone = a && doneSet.has(a.id);
+            return `
+              <div style="background:var(--surface);border-radius:var(--r-md);padding:.55rem .7rem;border:1px solid rgba(17,138,178,.15)${isDone?';opacity:.72':''}">
+                <div style="display:flex;align-items:flex-start;gap:.4rem;margin-bottom:.3rem">
+                  <span style="background:var(--blue);color:#fff;font-size:.55rem;font-weight:800;padding:.12rem .35rem;border-radius:3px;flex-shrink:0;margin-top:.1rem">${o.code}</span>
+                  <p style="font-size:.68rem;font-weight:700;line-height:1.4;flex:1;color:var(--text2)">${o.title}</p>
+                </div>
+                ${a ? `
+                  <div onclick="App._openActivity('${a.id}')" style="display:flex;align-items:center;gap:.5rem;padding:.4rem .55rem;background:var(--raised);border-radius:var(--r-sm);cursor:pointer;margin-top:.3rem">
+                    <span style="font-size:1.1rem;line-height:1">${a.emoji}</span>
+                    <span style="flex:1;font-size:var(--t-xs);font-weight:700">${a.title}</span>
+                    ${isDone ? '<span style="color:var(--success);font-size:.8rem">✓</span>' : '<span style="color:var(--muted);font-size:.7rem">›</span>'}
+                  </div>
+                ` : `<p style="font-size:.6rem;color:var(--hint);font-style:italic">Uygun etkinlik yok</p>`}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
 
   /* ══════════════════════════════════════════════
      R1 — GÜNÜN PROBLEMİ (Bedtime Math tarzı)
@@ -1287,10 +1434,18 @@ class MatEvdeApp {
     if(this._filter.category) filtered = filtered.filter(a=>a.category===this._filter.category);
     if(this._filter.anxOnly)  filtered = filtered.filter(a=>a.anxFriendly);
     if(this._filter.spatialOnly) filtered = filtered.filter(a=>a.category===Category.SPATIAL);
+    if(this._filter.context)  filtered = filtered.filter(a=>(a.context||[]).includes(this._filter.context));
+    if(this._filter.difficulty) filtered = filtered.filter(a=>a.difficulty===this._filter.difficulty);
     if(this._filter.searchTerm) {
       const t = this._filter.searchTerm.toLowerCase();
       filtered = filtered.filter(a=>a.title.toLowerCase().includes(t)||a.tags.some(g=>g.includes(t)));
     }
+
+    // Bağlam etiketi label'ları
+    const ctxLabels = {
+      kitchen:'🍳 Mutfak', indoor:'🏠 Ev İçi', outdoor:'🌳 Dışarı',
+      commute:'🚗 Yolda',  bedtime:'🌙 Uyku Öncesi', game:'🎲 Oyun',
+    };
 
     document.getElementById('act-body').innerHTML=`
       <!-- Search -->
@@ -1298,11 +1453,13 @@ class MatEvdeApp {
         <input class="input" placeholder="🔍 Etkinlik ara…" value="${this._filter.searchTerm}" oninput="App._search(this.value)" style="padding:.7rem 1rem;font-size:var(--t-lg)">
       </div>
       <!-- Active filters -->
-      ${this._filter.category||this._filter.anxOnly||this._filter.spatialOnly?`
+      ${this._filter.category||this._filter.anxOnly||this._filter.spatialOnly||this._filter.context||this._filter.difficulty?`
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem">
         ${this._filter.category?`<span class="chip chip-orange">${this._CatEmoji[this._filter.category]} ${this._CatLabels[this._filter.category]} <button onclick="App._clearCatFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.anxOnly?`<span class="chip chip-orange">💛 Kaygı Dostu <button onclick="App._clearAnxFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.spatialOnly?`<span class="chip chip-blue">🧭 Uzamsal <button onclick="App._clearSpatialFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+        ${this._filter.context?`<span class="chip chip-green">${ctxLabels[this._filter.context]||this._filter.context} <button onclick="App._clearContextFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+        ${this._filter.difficulty?`<span class="chip chip-muted">${this._filter.difficulty==='easy'?'🟢 Kolay':this._filter.difficulty==='medium'?'🟡 Orta':'🔴 İleri'} <button onclick="App._clearDifficultyFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
       </div>`:''}
       <!-- Count -->
       <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem">${filtered.length} etkinlik</p>
@@ -1319,6 +1476,14 @@ class MatEvdeApp {
         ${Object.entries(this._CatLabels).map(([k,v])=>`
           <button class="chip ${this._filter.category===k?'chip-orange':'chip-muted'}" onclick="App._setCatFilter('${k}')" style="cursor:pointer;border:none;padding:.4rem .8rem">${this._CatEmoji[k]} ${v}</button>`).join('')}
       </div>
+      <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;margin:.8rem 0 .55rem">ZORLUK</p>
+      <div style="display:flex;gap:.35rem;margin-bottom:.8rem">
+        ${[
+          {k:'easy',   label:'🟢 Kolay'},
+          {k:'medium', label:'🟡 Orta'},
+          {k:'hard',   label:'🔴 İleri'},
+        ].map(d => `<button onclick="App._setDifficultyFilter('${d.k}')" class="chip ${this._filter.difficulty===d.k?'chip-orange':'chip-muted'}" style="cursor:pointer;border:none;padding:.4rem .8rem;flex:1">${d.label}</button>`).join('')}
+      </div>
       <div style="display:flex;flex-direction:column;gap:.5rem">
         <label style="display:flex;align-items:center;gap:.6rem;font-size:var(--t-md);font-weight:700;cursor:pointer">
           <input type="checkbox" ${this._filter.anxOnly?'checked':''} onchange="App._toggleAnxFilter()" style="width:16px;height:16px;accent-color:var(--teal)">
@@ -1334,6 +1499,23 @@ class MatEvdeApp {
 
   _clearSpatialFilter(){ this._filter.spatialOnly=false; this._renderActs(); }
   _toggleSpatialFilter(){ this._filter.spatialOnly=!this._filter.spatialOnly; this._renderActs(); }
+  _clearContextFilter(){ this._filter.context=null; this._renderActs(); }
+
+  _setDifficultyFilter(d){
+    this._filter.difficulty = (this._filter.difficulty === d) ? null : d;
+    this._renderActs();
+  }
+  _clearDifficultyFilter(){ this._filter.difficulty=null; this._renderActs(); }
+
+  _difficultyChip(d){
+    const meta = {
+      easy:   { label:'Kolay',  bg:'rgba(22,163,74,.1)',   fg:'var(--success)',  icon:'🟢' },
+      medium: { label:'Orta',   bg:'rgba(245,158,11,.1)',  fg:'var(--amber)',    icon:'🟡' },
+      hard:   { label:'İleri',  bg:'rgba(220,38,38,.08)',  fg:'var(--danger)',   icon:'🔴' },
+    }[d];
+    if(!meta) return '';
+    return `<span style="background:${meta.bg};color:${meta.fg};border-radius:var(--r-full);padding:.15rem .5rem;font-size:var(--t-xs);font-weight:700">${meta.icon} ${meta.label}</span>`;
+  }
 
   /* ══════════════════════════════════════════════
      UZAMSAL DÜŞÜNME MODÜLÜ
@@ -2038,6 +2220,7 @@ class MatEvdeApp {
             <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
               <span style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r-full);padding:.15rem .5rem;font-size:var(--t-xs);font-weight:700;color:var(--muted)">⏱ ${activity.dur} dk</span>
               <span style="background:var(--raised);border:1px solid var(--border);border-radius:var(--r-full);padding:.15rem .5rem;font-size:var(--t-xs);font-weight:700;color:var(--muted)">${this._CatEmoji[activity.category]} ${this._CatLabels[activity.category]}</span>
+              ${activity.difficulty?this._difficultyChip(activity.difficulty):''}
               ${isDone?`<span class="chip chip-green">✓ Tamam</span>`:''}
               ${activity.anxFriendly&&!isDone?`<span class="chip chip-yellow">💛 Kaygısız</span>`:''}
               ${activity.dysc?`<span class="chip chip-blue">💙</span>`:''}
@@ -2747,6 +2930,9 @@ class MatEvdeApp {
       <!-- Dijital Subitizing Oyunu (Dehaene Number Race ilhamlı) -->
       ${this._renderSubitizingGame()}
 
+      <!-- Sayı Doğrusu Tahmin Oyunu (Siegler linear number line) -->
+      ${this._renderNumberLineGame()}
+
       <!-- Diskalkuli activities -->
       <div>
         <div class="sec-header"><span class="sec-title">💙 Diskalkuli Dostu Etkinlikler</span></div>
@@ -3027,6 +3213,176 @@ class MatEvdeApp {
       const el = document.getElementById(id);
       if(el) el.textContent = '0';
     });
+  }
+
+  /* ══════════════════════════════════════════════
+     SAYI DOĞRUSU TAHMİN OYUNU (Siegler, 2004; Ramani & Siegler, 2008)
+     Kanıt: Lineer sayı çizgisi oyunları düşük-SES çocukların
+     matematik başarısını 9 hafta sonra bile koruyor.
+     Bu oyun: 0-100 arası bir sayı verilir, çocuk tıklayarak
+     yerini tahmin eder; gerçek konumla karşılaştırılır.
+  ══════════════════════════════════════════════ */
+
+  _renderNumberLineGame(){
+    return `
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">📏 Sayı Doğrusu Oyunu</span></div>
+        <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem;line-height:1.6">
+          Bir sayı verilir — <strong>hangi noktada</strong> olduğunu sayı doğrusunda tahmin edin.
+          Sayı doğrusu tahmini, sayı hissinin en güçlü yordayıcılarından biridir.
+          <em>(Siegler &amp; Booth, 2004)</em>
+        </p>
+        <div class="card">
+          <div class="card-body" style="text-align:center">
+            <div id="nl-score" style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.6rem">
+              Tur: <strong id="nl-turn">0</strong> · Ortalama sapma: <strong id="nl-avg">-</strong>
+            </div>
+            <div id="nl-question" style="font-size:var(--t-2xl);font-weight:900;color:var(--teal-d);margin-bottom:.6rem;min-height:2.6rem;line-height:1.2">
+              Başlamak için düğmeye basın
+            </div>
+            <!-- Sayı doğrusu: clickable container -->
+            <div id="nl-line-wrapper" style="position:relative;margin:1rem .5rem .8rem;padding:1.2rem 0 1.5rem">
+              <!-- Ana çizgi -->
+              <div style="position:relative;height:4px;background:var(--border2);border-radius:2px">
+                <!-- 0 ve 100 etiketi -->
+                <div style="position:absolute;left:0;top:-24px;font-size:var(--t-sm);font-weight:800;color:var(--muted)">0</div>
+                <div style="position:absolute;right:0;top:-24px;font-size:var(--t-sm);font-weight:800;color:var(--muted)">100</div>
+                <!-- Tık alanı — çizgi üstünde geniş bant -->
+                <div id="nl-line" onclick="App._nlClick(event)"
+                  style="position:absolute;left:0;right:0;top:-20px;bottom:-20px;cursor:crosshair"></div>
+                <!-- Kullanıcı marker -->
+                <div id="nl-guess-marker" style="display:none;position:absolute;top:-10px;width:3px;height:24px;background:var(--orange);border-radius:2px;transform:translateX(-50%)"></div>
+                <!-- Doğru cevap marker -->
+                <div id="nl-answer-marker" style="display:none;position:absolute;top:-10px;width:3px;height:24px;background:var(--teal);border-radius:2px;transform:translateX(-50%)"></div>
+              </div>
+            </div>
+            <div id="nl-feedback" style="font-size:var(--t-sm);font-weight:700;min-height:1.5rem;color:var(--muted)"></div>
+            <div style="display:flex;gap:.45rem;justify-content:center;margin-top:.75rem">
+              <button id="nl-start-btn" class="btn btn-primary btn-sm" onclick="App._nlStart()">Başla →</button>
+              <button id="nl-reset-btn" class="btn btn-ghost btn-sm" onclick="App._nlReset()" style="display:none">Sıfırla</button>
+            </div>
+            <p class="muted" style="font-size:.65rem;margin-top:.55rem;line-height:1.5">
+              💡 İpucu: Çocuğunuza "yarısı 50, yarının yarısı 25" gibi referansları hatırlatın.
+              Zamanla sapma azalacaktır.
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  _nlStart(){
+    this._nl = { turn:0, errors:[], target:null, maxTurns:6 };
+    document.getElementById('nl-start-btn').style.display = 'none';
+    document.getElementById('nl-reset-btn').style.display = 'inline-flex';
+    this._nlNextRound();
+  }
+
+  _nlNextRound(){
+    if(this._nl.turn >= this._nl.maxTurns){
+      this._nlFinish();
+      return;
+    }
+    this._nl.turn++;
+    // Rastgele hedef (2-98 arası, daha ilginç)
+    this._nl.target = 2 + Math.floor(Math.random() * 97);
+    // HUD güncelle
+    const t = document.getElementById('nl-turn');
+    if(t) t.textContent = this._nl.turn;
+    const q = document.getElementById('nl-question');
+    if(q) q.innerHTML = `<span style="color:var(--orange)">${this._nl.target}</span> nerede?`;
+    // Marker'ları gizle
+    const gm = document.getElementById('nl-guess-marker');
+    const am = document.getElementById('nl-answer-marker');
+    if(gm) gm.style.display = 'none';
+    if(am) am.style.display = 'none';
+    const fb = document.getElementById('nl-feedback');
+    if(fb){ fb.textContent = 'Sayı doğrusuna tıklayın'; fb.style.color = 'var(--muted)'; }
+  }
+
+  _nlClick(event){
+    if(!this._nl || this._nl.target === null) return;
+    const line = document.getElementById('nl-line');
+    if(!line) return;
+    const rect = line.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const pct = Math.max(0, Math.min(100, (clickX / rect.width) * 100));
+    const guess = Math.round(pct);
+    const error = Math.abs(guess - this._nl.target);
+    this._nl.errors.push(error);
+
+    // Marker göster
+    const gm = document.getElementById('nl-guess-marker');
+    const am = document.getElementById('nl-answer-marker');
+    if(gm){ gm.style.display = 'block'; gm.style.left = guess + '%'; }
+    if(am){ am.style.display = 'block'; am.style.left = this._nl.target + '%'; }
+
+    // Ortalama sapma
+    const avg = Math.round(this._nl.errors.reduce((s,v)=>s+v,0) / this._nl.errors.length);
+    const avgEl = document.getElementById('nl-avg');
+    if(avgEl) avgEl.textContent = avg;
+
+    // Feedback
+    const fb = document.getElementById('nl-feedback');
+    if(fb){
+      if(error <= 5){
+        fb.textContent = `🎯 Harika! Sadece ${error} sapma.`;
+        fb.style.color = 'var(--success)';
+      } else if(error <= 15){
+        fb.textContent = `👍 İyi! Sapma: ${error}`;
+        fb.style.color = 'var(--teal-d)';
+      } else {
+        fb.textContent = `Tahmin: ${guess} · Doğru: ${this._nl.target} · Sapma: ${error}`;
+        fb.style.color = 'var(--muted)';
+      }
+    }
+    // Sonraki tur
+    setTimeout(() => this._nlNextRound(), 1400);
+  }
+
+  _nlFinish(){
+    const errors = this._nl.errors;
+    const avg = Math.round(errors.reduce((s,v)=>s+v,0) / errors.length);
+    const q = document.getElementById('nl-question');
+    let msg, emoji;
+    if(avg <= 8){
+      msg = 'Mükemmel sayı hissi!';
+      emoji = '🌟';
+    } else if(avg <= 15){
+      msg = 'İyi gidiyorsunuz — pratikle daha da iyi olacak.';
+      emoji = '👍';
+    } else {
+      msg = 'Sayı çizgisi pratiği işe yarar — düzenli tekrar edin.';
+      emoji = '💪';
+    }
+    if(q){
+      q.innerHTML = `<div style="font-size:var(--t-xl)">${emoji} ${msg}</div>`;
+    }
+    const fb = document.getElementById('nl-feedback');
+    if(fb){
+      fb.innerHTML = `Ortalama sapma: <strong>${avg}</strong> · Toplam: ${errors.length} tur`;
+      fb.style.color = 'var(--text2)';
+    }
+  }
+
+  _nlReset(){
+    this._nl = null;
+    const q = document.getElementById('nl-question');
+    if(q) q.textContent = 'Başlamak için düğmeye basın';
+    const t = document.getElementById('nl-turn');
+    if(t) t.textContent = '0';
+    const avg = document.getElementById('nl-avg');
+    if(avg) avg.textContent = '-';
+    const gm = document.getElementById('nl-guess-marker');
+    const am = document.getElementById('nl-answer-marker');
+    if(gm) gm.style.display = 'none';
+    if(am) am.style.display = 'none';
+    const fb = document.getElementById('nl-feedback');
+    if(fb){ fb.textContent = ''; fb.style.color = 'var(--muted)'; }
+    const s = document.getElementById('nl-start-btn');
+    if(s) s.style.display = 'inline-flex';
+    const r = document.getElementById('nl-reset-btn');
+    if(r) r.style.display = 'none';
   }
 
   _setSpatialFilter(){

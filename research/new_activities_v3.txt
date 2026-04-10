@@ -1,0 +1,201 @@
+/*
+ * v3 — kalan 29 tek-kapsamlı kazanımı derinleştirme.
+ * Çoklu-hedefli etkinlikler (her biri 3-5 kazanımı birden)
+ * id prefix: 'q' (quality-depth) + 2 haneli numara
+ */
+
+// ─────────────────────────────────────────────────────────────
+// q01: 1. sınıf sıra sayıları + büyüklük karşılaştırma
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q01', emoji:'🚂', title:'Tren Sırası',
+  desc:'Oyuncakları/kutuları tren gibi sıralayın; sıra numarası ve büyüklük kavramlarını birlikte kullanın.',
+  ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.NUMBER, dur:12,
+  materials:['5-10 oyuncak, kutu veya nesne'],
+  steps:['Nesneleri üst üste değil yan yana dizin — bir tren','Çocuğa: "En önde hangisi? Birinci." "İkinci, üçüncü..." her biri söylesin','"Sondaki kaçıncı?" — en büyük sıra','"En uzun vagonu göster" — boyut','"Birinci vagon ikinciden daha mı kısa, daha mı uzun?" karşılaştırma'],
+  tip:'Sıra sayıları (1., 2., 3.) ve miktar sayıları (1, 2, 3) farklı kavramlardır — çocuklar zaman zaman bunu karıştırır. Yarış/tren/sıra gibi görsel bağlamlarda sıra sayısı anlamı pekişir. Büyüklük karşılaştırması (daha çok/az, daha uzun/kısa) da aynı oyun içinde öğrenilir.',
+  anxFriendly:true, dysc:true, tags:['sıra sayısı','karşılaştırma','tren'],
+  sesAlt:'Oyuncak yoksa: bardak, kaşık, kitap, kalem — ne varsa.',
+  tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.3','MAT.1.1.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// q02: Örüntü ile ileri seviye (1, 2, 3, 4. sınıf aynı anda)
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q02', emoji:'🎨', title:'Boncuk Örüntü Atölyesi',
+  desc:'Renkli boncuk, düğme veya makarna ile artan/azalan örüntüler kurup kuralı keşfedin.',
+  ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.PATTERNS, dur:18,
+  materials:['Boncuk, düğme, renkli makarna veya kağıt parçaları','İp (opsiyonel)'],
+  steps:['Basit tekrar: "kırmızı-mavi-kırmızı-mavi..." — çocuk devam ettirsin','Artan: "1 kırmızı, 2 mavi, 3 kırmızı, 4 mavi..." — sıradaki kaç?','Kural: 2\'şer artan, geriye doğru da 2\'şer azalan deneyin','Çocuk kendi kuralını bulsun ve kurssun — siz tahmin edin','"Bu kural bitmez, devam ederse 10. adım kaç olur?" — genelleme'],
+  tip:'Örüntü, cebirsel düşüncenin temelidir. 1-2. sınıfta tekrar eden örüntülerle başlanır; 3-4. sınıfta kural genelleme eklenir ("n\'inci adım kaç?"). Farklı yaş grupları için aynı etkinlik farklı zorluk seviyelerinde oynanabilir. Kaynak: NRICH Patterns (nrich.maths.org/10491).',
+  anxFriendly:true, dysc:true, tags:['örüntü','kural','genelleme'],
+  sesAlt:'Boncuk yoksa: fasulye, mercimek, kağıt parçaları — her evde.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.1.6','MAT.2.1.5','MAT.3.1.7','MAT.4.1.5'] },
+
+// ─────────────────────────────────────────────────────────────
+// q03: Eşlik + simetri sezgisi
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q03', emoji:'🪞', title:'İkiz Bulma',
+  desc:'Evdeki nesnelerin ikizlerini (eş ve simetrik) bulun.',
+  ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2], category:Category.GEOMETRY, dur:12,
+  materials:['Evdeki çeşitli nesneler'],
+  steps:['"Eş" nedir? Birebir aynı — örneğin iki aynı bardak','Çocuk 3 çift eş nesne bulsun (çoraplar, bardaklar, ayakkabılar)','"Simetrik" nedir? Yarıları birbirine benziyor — elleriniz gibi','Çocuk 3 simetrik nesne bulsun (kaşık, yaprak, yüz)','"Eş ve simetrik farklı mı?" — kendi sözleriyle açıklasın'],
+  tip:'Eşlik ve simetri birbirine karıştırılabilecek kavramlardır. Eşlik = iki nesnenin ayrı ama birebir aynı olması; simetri = bir nesnenin kendi içinde dengelenmesi. Çocuğun kendi kelimeleriyle ayırt etmesi kavramı pekiştirir.',
+  anxFriendly:true, dysc:true, tags:['eşlik','simetri','karşılaştırma'],
+  sesAlt:'Ek materyal gerekmez — evdeki her şey örnektir.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.2','MAT.2.3.7'] },
+
+// ─────────────────────────────────────────────────────────────
+// q04: 2-3. sınıf standart ölçü ihtiyacı (cm/m/g/kg)
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q04', emoji:'📏', title:'Ölçümde Kavga!',
+  desc:'Aynı nesneyi farklı birimlerle ölçün — standart ölçü neden gerekli?',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.MEASUREMENT, dur:18,
+  materials:['Bir nesne (kalem, kitap, masa)','Farklı ölçüm araçları: karış, kaşık, cetvel, mezura'],
+  steps:['Masanın uzunluğunu siz karışla ölçün — kaç karış?','Çocuk da kendi karışıyla ölçün — aynı mı?','"Neden farklı?" tartışın — çünkü elimiz farklı','Aynı masayı cetvelle ölçün — herkes aynı sayıyı bulur','"Demek ki standart birim gerekli" — kendi keşfetsin'],
+  tip:'Freudenthal (1991) "Gerçekçi Matematik Eğitimi": Standart olmayan birimlerle başlamak, standart birim ihtiyacını çocuğun kendisi keşfetmesini sağlar. Dayatılan bir kural değil — doğal bir gereksinim. Kütle için de aynı şey: kaşık ile kilogram, kaç kaşık kaşıkta aynı olur? Aynı soruyu su ile de yapabilirsiniz.',
+  anxFriendly:true, dysc:true, tags:['ölçü','standart','birim'],
+  sesAlt:'Cetvel yoksa adım, karış, kibrit çöpü — farklı birim ne olursa.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.10','MAT.2.1.11','MAT.2.3.5','MAT.3.3.5'] },
+
+// ─────────────────────────────────────────────────────────────
+// q05: Tek-çift + toplama özelliği
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q05', emoji:'👫', title:'Eş Arkadaşlar',
+  desc:'Nesne gruplarını ikili gruplayarak tek-çift ve toplam özelliklerini keşfedin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3], category:Category.NUMBER, dur:12,
+  materials:['Küçük nesneler (boncuk, nohut, düğme)'],
+  steps:['6 nesne önünüze koyun — ikili gruplayın: 3 çift, eşsiz yok → çift','7 nesne ile aynı: 3 çift + 1 eşsiz → tek','"Tek+tek = ?" — 3+5 nesneleri ikili grupla → 4 çift, eşsiz yok → çift','"Çift+çift = ?" — 2+4 gruplayın → çift','"Tek+çift = ?" — 3+4 gruplayın → eşsiz var → tek'],
+  tip:'Tek-çift sayıları ikili gruplama ile somutlaştırmak, soyut kuralı ezberden değil keşiften öğretir. "Tek+tek=çift" gibi özellikleri çocuk kendi keşfederse kural kalıcı olur. Bu 3. sınıfın önemli bir muhakeme kazanımıdır.',
+  anxFriendly:true, dysc:true, tags:['tek-çift','toplama','gruplama'],
+  sesAlt:'Herhangi 15-20 nesne yeterli.',
+  tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.5','MAT.3.1.6'] },
+
+// ─────────────────────────────────────────────────────────────
+// q06: Dört işlem problemi — yönergeli, gerçek bağlamlı
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q06', emoji:'🛍️', title:'Alışveriş Talimatları',
+  desc:'Hazır bir yönerge seti (alışveriş listesi gibi) takip edip hesap yapma oyunu.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.PROBLEM, dur:15,
+  materials:['Kağıt','Kalem'],
+  steps:['Siz bir "görev listesi" yazın: "3 ekmek × 5 TL, 2 süt × 12 TL, 1 peynir × 30 TL"','Çocuk sırayla her satırı hesaplasın','Sonunda toplamı bulsun','"50 TL verdiysek, üstü ne kadar?" — çıkarma','"Bütçemiz 100 TL olsaydı, daha neler alabilirdik?" — açık uçlu'],
+  tip:'Dört işlemi (çarpma/toplama/çıkarma/bölme) tek yönerge içinde izleyebilmek 3-4. sınıf kazanımıdır. Gerçek yaşam bağlamı (alışveriş) motivasyonu yüksek tutar. "Yönergeyi takip etme" becerisi, ileride algoritmik düşünmeye köprüdür.',
+  anxFriendly:true, dysc:false, tags:['dört işlem','yönerge','alışveriş'],
+  sesAlt:'Kağıtsız: sözlü olarak yapabilirsiniz, araba yolculuğunda ideal.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.5','MAT.4.2.6'] },
+
+// ─────────────────────────────────────────────────────────────
+// q07: 3. sınıf toplama-çıkarma derinleşme
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q07', emoji:'🧾', title:'Market Matematiği 2: Toplam-Para Üstü',
+  desc:'Gerçek bir fiş ile toplam hesabı ve para üstü pratiği.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.MARKET, dur:15,
+  materials:['Eski bir market fişi veya hayali liste','Kağıt','Kalem'],
+  steps:['Fişe bakın: 5-6 kalem var','Çocuk toplamı tek tek toplasın — fiştekiyle karşılaştırın','"100 TL ödediysek, üstü ne olurdu?" — 3 basamaklı çıkarma','"1000 TL ödediysek?" — 4 basamaklı','Çocuk kendi fişini uydursun, siz hesaplayın'],
+  tip:'4 basamaklı toplama-çıkarma işlemleri 4. sınıfın temel kazanımıdır. Gerçek fiş ile yapılan pratik, kuralsız çalışma kağıdından çok daha motive edicidir ve hata yakalama becerisi gelişir (Schaeffer et al., 2018 — Bedtime Math etkisi).',
+  anxFriendly:false, dysc:false, tags:['toplama','çıkarma','fiş','4 basamak'],
+  sesAlt:'Fiş yoksa hayali liste yazın — aynı işe yarar.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.2','MAT.4.2.2'] },
+
+// ─────────────────────────────────────────────────────────────
+// q08: Kenar sayısına göre geometrik sınıflama + yapılandırma
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q08', emoji:'🔷', title:'Çubuk Geometri',
+  desc:'Kibrit çöpü veya kürdanla çokgenler yapıp kenar sayısına göre sınıflandırın.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:18,
+  materials:['15-20 kibrit çöpü veya kürdan','(Opsiyonel) oyun hamuru köşeleri için'],
+  steps:['3 kibrit çöpüyle bir üçgen yapın','"4 çöple ne yaparsın?" — kare','5 çöp → beşgen, 6 → altıgen','Her şekilde köşe ve kenar sayısını sayın','"8 çöple bir şekil yap" — çocuk kendi keşfetsin (sekizgen? veya iki kare?)'],
+  tip:'Kenar sayısının artmasıyla şekillerin nasıl değiştiğini gözlemlemek, 3. sınıf sınıflama kazanımının temelidir. Parmakla inşa etmek, sadece çizmekten daha kalıcıdır (Hawes ve ark. 2022 — fiziksel manipülatif avantajı).',
+  anxFriendly:true, dysc:true, tags:['geometri','kenar','sınıflama'],
+  sesAlt:'Kibrit yoksa kürdan, pipet, kalem.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.3.2','MAT.3.3.8'] },
+
+// ─────────────────────────────────────────────────────────────
+// q09: Kesir çokluk kesir kadarı
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q09', emoji:'🍬', title:'Şekerin Yarısı Kimin?',
+  desc:'Bir çokluğun basit kesir kadarını hesaplayıp eşit paylaştırın.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['12-20 adet küçük nesne (şeker, boncuk, düğme)'],
+  steps:['12 şekerin "yarısı" ne? — 6','"1/4\'ü ne?" — 3','"3/4\'ü ne?" — 9 (açıkla: 3 tane 1/4)','Ters soru: "Ahmet 4 şeker aldı, bu hepsinin 1/3\'ü. Toplam?" — 12','Kendi kesir bilmecelerini kursun'],
+  tip:'Bir çokluğun kesir kadarı ve kesir kadarı verilen çokluğun tamamını bulma 4. sınıfın temel kazanımlarındandır. Somut nesnelerle başlamak, soyut "a/b × n" formülüne ezbersiz temel hazırlar.',
+  anxFriendly:true, dysc:true, tags:['kesir','bölüştürme','oran'],
+  sesAlt:'Şeker yoksa boncuk, düğme, fasulye — her 12\'lik grup.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.4.1.10'] },
+
+// ─────────────────────────────────────────────────────────────
+// q10: Kesirlerle toplama-çıkarma
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q10', emoji:'🎂', title:'Pasta Savaşları',
+  desc:'Aynı paydalı kesirlerle toplama/çıkarma — gerçek pasta veya kağıt ile.',
+  ageGroups:[AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['Yuvarlak kağıt veya gerçek yassı bir nesne','Kalem'],
+  steps:['Kağıt pastayı 8 eşit dilime bölün','"Anne 3/8 aldı, baba 2/8 aldı — birlikte kaç dilim?" — 5/8','"Geriye kaç kaldı?" — 8/8 - 5/8 = 3/8','"Ben 1/8 daha aldım — şimdi ne kadar kaldı?" — zincirleme','Problem kurma: "Ben önce yarım yedim, sonra 1/4 daha..."'],
+  tip:'Paydaları eşit kesirler basit görünür ama 4. sınıfta tam anlaşılması gerekir. Gerçek bir pasta (veya kağıt model) üzerinde yapılan işlemler, sembolik 3/8 + 2/8 = 5/8 formülünden çok daha anlamlıdır.',
+  anxFriendly:true, dysc:false, tags:['kesir','toplama','çıkarma'],
+  sesAlt:'Kağıt daire yeterli — gerçek pasta gerekmez.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.4.1.11','MAT.4.1.12'] },
+
+// ─────────────────────────────────────────────────────────────
+// q11: Ölçü dönüşümü cm/m/mm + kg/g
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q11', emoji:'⚖️', title:'Ölçü Dönüşüm Yolculuğu',
+  desc:'Uzunluk ve kütle birimleri arasında geçiş yapmanın pratik yolu.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.MEASUREMENT, dur:15,
+  materials:['Cetvel veya mezura','Mutfak terazisi (opsiyonel)'],
+  steps:['Cetvelle 1 metre = 100 cm görün — elle doğrulayın','"Boyun kaç cm?" ölçün — metreye çevirin','"10 cm = ? mm" (100) — parmak boyunu ölçün','Mutfakta: "1 kg un = 1000 g" — terazide gösterin','"Yarım kg kaç g?" (500) — paketleri inceleyin'],
+  tip:'Metrik sistem dönüşümü "100 ile çarp / böl" kuralı olarak ezberletilmemelidir. Çocuk 1 m\'yi fiziksel olarak 100 kez 1 cm\'ye bölerek görmelidir. Bu 3-4. sınıfın önemli kazanımıdır.',
+  anxFriendly:true, dysc:true, tags:['ölçü','dönüşüm','metrik'],
+  sesAlt:'Terazi yoksa 1 kg\'lık paketleri incelemek yeterli.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T1','T3'], tymm_yas:[], tymm_outcomes:['MAT.3.1.15','MAT.4.1.13'] },
+
+// ─────────────────────────────────────────────────────────────
+// q12: Çarpma tahmin + kısa yollar
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q12', emoji:'🔢', title:'Tahmin Çarpması',
+  desc:'İki basamaklı çarpmanın sonucunu önce tahmin edip sonra hesaplama.',
+  ageGroups:[AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['Kağıt','Kalem'],
+  steps:['"23 × 4 aşağı yukarı ne olur?" — tahmin yazsın','İpucu: 20 × 4 = 80, 25 × 4 = 100 → arada olmalı','Sonra gerçek hesap: 23 × 4 = 92','"Tahminin ne kadar yakındı?" — değerlendirin','Başka örnekler: 49 × 5 (≈50×5=250), 98 ÷ 2 (≈100÷2=50)'],
+  tip:'Tahmin becerisi matematik öz-yeterliğinin temelidir. Çocuk "yaklaşık 90\'lı bir sayı" diye tahmin edip sonucu 92 bulursa, stratejisinin işe yaradığını görür. "Yuvarla ve kontrol et" 4. sınıfta resmi kazanımdır.',
+  anxFriendly:true, dysc:false, tags:['çarpma','tahmin','yuvarlak'],
+  sesAlt:'Sözel yapabilirsiniz — özellikle araba yolculuğunda.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.4.2.3','MAT.4.2.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// q13: Açı ölçümü standart araç
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q13', emoji:'📐', title:'İki Kalemle Açı',
+  desc:'İki kalem ve kağıtla açıları karşılaştırıp gerçek ölçü ihtiyacını keşfedin.',
+  ageGroups:[AgeGroup.G4], category:Category.GEOMETRY, dur:12,
+  materials:['2 kalem','Kağıt'],
+  steps:['İki kalemi "V" şeklinde tutun — bu bir açı','"Daha dar/geniş nasıl yapılır?" deneyin','Bir açıyı kağıda iz bırakacak şekilde çizin — bu açı ne kadar?','"Kaç derece?" — "Bilmiyoruz çünkü araç yok"','"Demek ki iletki (gönye) gerekliymiş" — standart araç ihtiyacı'],
+  tip:'Açının "kaçlık" olduğunu sayısal ifade edebilmek için iletki (gönye) gerekir. Bunu çocuğun kendi keşfetmesi, öğretmen/ebeveynin "iletki alın" demesinden daha güçlüdür. Freudenthal yaklaşımı.',
+  anxFriendly:true, dysc:false, tags:['açı','ölçme','standart'],
+  sesAlt:'Sadece 2 kalem ve 1 kağıt — çok ucuz.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.6'] },
+
+// ─────────────────────────────────────────────────────────────
+// q14: Kodlama / ızgara çizimi
+// ─────────────────────────────────────────────────────────────
+
+{ id:'q14', emoji:'🟦', title:'Izgara Sanatçısı',
+  desc:'Kareli kağıtta renk kodlarıyla bir desen oluşturup algoritmik düşünün.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.SPATIAL, dur:18,
+  materials:['Kareli kağıt','Renkli kalemler'],
+  steps:['5x5 ızgara çizin','Siz bir yönerge okuyun: "(1,1) kırmızı, (2,1) mavi, (1,2) mavi..."','Çocuk yönergeye göre boyasın','Ortaya ne çıktı? — tahmin etsin (basit bir desen)','Şimdi çocuk kendi deseni yapsın, size yönerge yazsın'],
+  tip:'Koordinat ve yönergeyle çalışma, ızgara kodlamasının özüdür. Kodlama ekran gerektirmez — kareli kağıt yeterli. "Kendi kuralını yaz, başkasına takip ettir" süreci algoritmik düşünmedir. Kaynak: Kodable Unplugged Coding (kodable.com/learn/unplugged-coding-activities).',
+  anxFriendly:true, dysc:true, tags:['ızgara','kodlama','koordinat'],
+  sesAlt:'Kareli defter her evde vardır.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.10'] },

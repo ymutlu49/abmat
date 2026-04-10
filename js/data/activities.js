@@ -11,7 +11,7 @@ export const ACTIVITIES = [
         tip:'Hata yaptığında düzeltme yapmayın. "Hmm, emin misin?" sorusu çocuğun kendi düşünme sürecini tetikler. Bu, özerklik destekleyici iskele kurmanın temelidir (Vygotsky, 1978; Pomerantz ve ark., 2005).',
         anxFriendly:true, dysc:true, tags:['sayma','mutfak'],
         sesAlt:'Her evde mutfak malzemesi var. Boncuk, düğme, fasulye de olur.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.1', 'MAT.1.1.2', 'MAT.1.1.7'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.1', 'MAT.1.1.2', 'MAT.1.1.7'], context:['kitchen', 'indoor', 'game'], difficulty:'medium' },
 
       { id:'a02', emoji:'🧦', title:'Çorapları Eşleştir',
         desc:'Çamaşırları renk ve desene göre eşleştirin.',
@@ -21,7 +21,7 @@ export const ACTIVITIES = [
         tip:'Doğru eşleştirmeyi söylemeyin; "Bu ikisi neden birlikte olabilir?" diye sorun. Çocuğun kendi mantığını kurmasına alan tanımak içsel motivasyonu besler (Deci & Ryan, 2000).',
         anxFriendly:true, dysc:false, tags:['örüntü','sınıflama'],
         sesAlt:'Çamaşır sepeti yoksa: renkli kağıt parçaları yeterli.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:['36-48','48-60'], tymm_outcomes:[] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:['36-48','48-60'], tymm_outcomes:[], context:['indoor', 'game'], difficulty:'easy' },
 
       { id:'a03', emoji:'📏', title:'Kim Daha Uzun?',
         desc:'Nesneleri elle, karışla veya adımla ölçün.',
@@ -31,7 +31,7 @@ export const ACTIVITIES = [
         tip:'Ölçüm sonuçları farklı çıksa bile düzeltme yapmayın. "Peki hangi el daha doğru ölçer?" diye sorun. Standart olmayan birimler, ölçme kavramının sezgisel anlaşılmasını sağlar (Freudenthal, 1991).',
         anxFriendly:true, dysc:true, tags:['ölçme','beden'],
         sesAlt:'İp, ayakkabı, kalem — her şey ölçü birimi olabilir.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.8'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.8'], context:['indoor'], difficulty:'medium' },
 
       { id:'a04', emoji:'🛒', title:'Market Oyunu',
         desc:'Evde küçük bir market kurup alışveriş yapın.',
@@ -41,7 +41,7 @@ export const ACTIVITIES = [
         tip:'"Kontrol eder misin?" deyin — düzeltme değil, doğrulama fırsatı sunun. Çocuğun kendi hatasını bulması, dışarıdan düzeltme yapılmasından çok daha güçlü bir öğrenme deneyimidir.',
         anxFriendly:false, dysc:false, tags:['toplama','para'],
         sesAlt:'Karton para yoksa: küçük kağıtlara rakam yaz.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.1.1.9', 'MAT.1.2.1', 'MAT.1.2.2', 'MAT.2.1.8', 'MAT.2.2.1', 'MAT.2.2.2'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.1.1.9', 'MAT.1.2.1', 'MAT.1.2.2', 'MAT.2.1.8', 'MAT.2.2.1', 'MAT.2.2.2'], context:['outdoor', 'indoor', 'bedtime', 'game'], difficulty:'hard' },
 
       { id:'a05', emoji:'🍕', title:'Pizzayı Paylaş',
         desc:'Oyun hamuru ile kesir kavramını keşfedin.',
@@ -51,7 +51,7 @@ export const ACTIVITIES = [
         tip:'Kesmeyi çocuk yapsın; siz sadece "eşit mi?" diye sorun. Somut işlem soyut kesir sembolüne köprü kurar. Piaget somut işlemler döneminde bu tür deneyimleri ön görür.',
         anxFriendly:true, dysc:false, tags:['kesir','somut'],
         sesAlt:'Hamur yoksa: elmayı veya ekmeği gerçekten bölerek de yapılabilir.',
-        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.7', 'MAT.3.1.9', 'MAT.3.1.10'] },
+        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.7', 'MAT.3.1.9', 'MAT.3.1.10'], context:['kitchen', 'game'], difficulty:'medium' },
 
       { id:'a06', emoji:'🔺', title:'Geometri Yürüyüşü',
         desc:'Ev veya parkta şekil avına çıkın.',
@@ -61,7 +61,7 @@ export const ACTIVITIES = [
         tip:'Şekilleri adlandırmaya zorlamayın. "Bu sana neyi hatırlatıyor?" sorusu daha güçlüdür. Çocuğun kendi gözlemi, etiketin önüne geçmelidir (Gerçekçi Matematik Eğitimi, Freudenthal, 1991).',
         anxFriendly:true, dysc:false, tags:['geometri','gözlem'],
         sesAlt:'Fotoğraf çekmek zorunda değilsiniz — deftere çizin.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.3', 'MAT.1.3.4', 'MAT.1.3.5', 'MAT.2.3.1'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.3', 'MAT.1.3.4', 'MAT.1.3.5', 'MAT.2.3.1'], context:['outdoor', 'indoor'], difficulty:'medium' },
 
       { id:'a07', emoji:'📖', title:'Hikâyeden Soru Yaz',
         desc:'Sevilen bir hikâyeden matematik sorusu üretin.',
@@ -71,7 +71,7 @@ export const ACTIVITIES = [
         tip:'Soruyu çocuğun kurmasına izin verin — cevabı değil, soruyu üretmek üst düzey matematiksel düşünmedir. Problem kurma becerisi, problem çözme becerisini destekler (Silver, 1994).',
         anxFriendly:false, dysc:false, tags:['problem','yaratıcılık'],
         sesAlt:'Hikaye kitabı yoksa: çizgi film karakterleriyle de oluşturulabilir.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.6', 'MAT.3.2.7', 'MAT.4.2.7', 'MAT.4.2.8'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.6', 'MAT.3.2.7', 'MAT.4.2.7', 'MAT.4.2.8'], context:['indoor', 'bedtime'], difficulty:'medium' },
 
       { id:'a08', emoji:'📅', title:'Takvim Matematiği',
         desc:'Günlük takvim rutinini matematiğe dönüştürün.',
@@ -81,7 +81,7 @@ export const ACTIVITIES = [
         tip:'Cevabı söylemeyin. "Nasıl buldun?" sorusu, çocuğun kendi stratejisinin farkına varmasını sağlar. Yansıtıcı düşünme matematiksel olgunluğun göstergesidir (Schoenfeld, 1992).',
         anxFriendly:true, dysc:true, tags:['takvim','rutin'],
         sesAlt:'Takvim yoksa: kağıda 7 kutu çizin, günleri yazın.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.2.1', 'MAT.2.1.9', 'MAT.2.1.4'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.2.1', 'MAT.2.1.9', 'MAT.2.1.4'], context:['indoor'], difficulty:'medium' },
 
       { id:'a09', emoji:'🎲', title:'Zar Oyunu',
         desc:'Zarları toplayarak veya çarparak işlem pratiği yapın.',
@@ -91,7 +91,7 @@ export const ACTIVITIES = [
         tip:'"Kim kazandı?" yerine "Ne fark ettin?" diye sorun. Rekabet değil, fark etme ve merak odaklı oyunlar içsel motivasyonu korur (Kamii, 1985).',
         anxFriendly:true, dysc:true, tags:['toplama','çarpma','oyun'],
         sesAlt:'Zar yoksa: kağıda 1-6 yaz, karıştır, çek.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.1.2.2', 'MAT.2.2.1', 'MAT.2.2.2', 'MAT.2.2.4', 'MAT.2.2.5', 'MAT.3.2.1', 'MAT.3.2.3'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.1.2.2', 'MAT.2.2.1', 'MAT.2.2.2', 'MAT.2.2.4', 'MAT.2.2.5', 'MAT.3.2.1', 'MAT.3.2.3'], context:['indoor', 'game'], difficulty:'hard' },
 
       { id:'a10', emoji:'🌡️', title:'Hava Grafiği',
         desc:'Bir hafta boyunca günlük sıcaklığı kaydedin ve grafiğe dökün.',
@@ -101,7 +101,7 @@ export const ACTIVITIES = [
         tip:'Grafik çizmeyi çocuğa bırakın, siz sadece soruları sorun: "En yüksek hangisi? Neden öyle olmuş olabilir?" Veri yorumlama, matematiksel akıl yürütmenin gerçek yaşam zeminidir.',
         anxFriendly:false, dysc:false, tags:['grafik','veri','gözlem'],
         sesAlt:'Grafik kağıdı yoksa: defterde kareli sayfaya çizin.',
-        tymm_oo:['MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.4.1', 'MAT.3.4.1', 'MAT.4.4.2'] },
+        tymm_oo:['MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.4.1', 'MAT.3.4.1', 'MAT.4.4.2'], context:['game'], difficulty:'medium' },
 
       { id:'a11', emoji:'🧩', title:'Tangram Ailesi',
         desc:'7 parçalı tangramla şekiller oluşturun.',
@@ -111,7 +111,7 @@ export const ACTIVITIES = [
         tip:'Çözemezse ipucu vermekten önce bekleyin. Hayal kırıklığı toleransı, zorluğa dayanıklılık geliştirir. Başarısız deneme, başarılı öğrenmeden önce gelir (Kapur, 2016 — Productive Failure).',
         anxFriendly:true, dysc:false, tags:['geometri','uzam','yaratıcılık'],
         sesAlt:'Tangram yoksa: kartondan kendi tangram parçalarını kesin.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.5', 'MAT.2.3.3'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.5', 'MAT.2.3.3'], context:['game'], difficulty:'hard' },
 
       { id:'a12', emoji:'🍫', title:'Çikolata Paylaşımı',
         desc:'Kare çikolatayı eşit bölerek bölme ve kesirleri öğrenin.',
@@ -121,7 +121,7 @@ export const ACTIVITIES = [
         tip:'Artayı "haksızlık" değil "problem" olarak çerçeveleyin: "Şimdi ne yapabiliriz?" Çocuğun çözüm üretmesine zemin açın.',
         anxFriendly:true, dysc:true, tags:['bölme','kesir','eğlence'],
         sesAlt:'Çikolata yoksa: kağıda dikdörtgen çizip bölün.',
-        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.2.1.7', 'MAT.2.2.4', 'MAT.2.2.5'] },
+        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.2.1.7', 'MAT.2.2.4', 'MAT.2.2.5'], context:['kitchen', 'indoor'], difficulty:'medium' },
 
       { id:'a13', emoji:'🏗️', title:'Lego Mimarı',
         desc:'Belirli sayıda blokla köprü veya kule inşa edin.',
@@ -131,7 +131,7 @@ export const ACTIVITIES = [
         tip:'"Yanlış yaptın" değil, "Peki bu köprü gerçekten taşır mı?" deyin. Mühendislik düşüncesi test etme ve revize etme döngüsüne dayanır.',
         anxFriendly:true, dysc:false, tags:['geometri','mühendislik','3b'],
         sesAlt:'Lego yoksa: kitaplar, tahta kalemler, küpler — her şey olur.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.3', 'MAT.2.3.2'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.3', 'MAT.2.3.2'], context:['outdoor', 'indoor', 'commute', 'game'], difficulty:'hard' },
 
       { id:'a14', emoji:'🌿', title:'Bahçe Matematiği',
         desc:'Tohum ekerken sayma, ölçme ve sıra kavramlarını pekiştirin.',
@@ -141,7 +141,7 @@ export const ACTIVITIES = [
         tip:'Büyümeyi birlikte takip edin — kontrol değil, gözlem yapın. "Dün kaç taneydi, bugün kaç tane?" sorusu, verideki değişimi çocuğun görmesini sağlar.',
         anxFriendly:true, dysc:true, tags:['sayma','ölçme','doğa'],
         sesAlt:'Toprak/saksı yoksa: ıslak kağıt havluyla da çimlendirilebilir.',
-        tymm_oo:['MAB6','MAB1','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T3','T4'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.2', 'MAT.1.1.8', 'MAT.1.4.1'] },
+        tymm_oo:['MAB6','MAB1','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T3','T4'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.2', 'MAT.1.1.8', 'MAT.1.4.1'], context:['outdoor', 'bedtime'], difficulty:'hard' },
 
       { id:'a15', emoji:'🎵', title:'Ritim Sayma',
         desc:'Alkış ve ritimle sayı örüntüleri oluşturun.',
@@ -151,7 +151,7 @@ export const ACTIVITIES = [
         tip:'Hata yapınca durmayın, devam edin. Ritim oyunlarında hata toleransı yüksektir — bu, kaygısız matematik deneyiminin kapısıdır.',
         anxFriendly:true, dysc:true, tags:['ritim','örüntü','müzik'],
         sesAlt:'Sadece el — başka hiçbir şey gerekmez.',
-        tymm_oo:['MAB6','MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:['36-48','48-60'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.1.6'] },
+        tymm_oo:['MAB6','MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:['36-48','48-60'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.1.6'], context:['indoor', 'game'], difficulty:'easy' },
 
       { id:'a16', emoji:'🗺️', title:'Hazine Haritası',
         desc:'Evde gizlenmiş "hazineye" yön ve mesafe talimatlarıyla ulaşın.',
@@ -161,7 +161,7 @@ export const ACTIVITIES = [
         tip:'Haritayı çocuğun çizmesine izin verin — mükemmel olmak zorunda değil. Yön ve konum dili, uzamsal düşünmenin kalbindedir (Verdine ve ark., 2017).',
         anxFriendly:false, dysc:false, tags:['yön','koordinat','oyun'],
         sesAlt:'Kağıt yoksa: sözlü talimat verin.',
-        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.1', 'MAT.2.3.6'] },
+        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.1', 'MAT.2.3.6'], context:['outdoor', 'indoor', 'commute', 'game'], difficulty:'hard' },
 
       // ── UZAMSAL DÜŞÜNME ───────────────────────────────────────────────
       { id:'s01', emoji:'🧱', title:'Blok Kopya',
@@ -172,7 +172,7 @@ export const ACTIVITIES = [
         tip:'Yanlış yerleştirirse hemen düzeltme yapmayın. "Bu doğru mu sence?" sorusu, çocuğun kendi gözlem sürecini tetikler. Uzamsal zihinsel döndürme, matematiksel başarıyı yordayan en güçlü bilişsel becerilerden biridir.',
         anxFriendly:true, dysc:true, tags:['uzamsal','blok','kopyalama'],
         sesAlt:'Lego yoksa: kitaplar, kutular, sarılı nesneler kullanılabilir.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.2.3.2', 'MAT.2.3.4'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.2.3.2', 'MAT.2.3.4'], context:['game'], difficulty:'medium' },
 
       { id:'s02', emoji:'🗺️', title:'Evimizi Haritala',
         desc:'Evin basit bir planını birlikte çizin; odaları, kapıları işaretleyin.',
@@ -182,7 +182,7 @@ export const ACTIVITIES = [
         tip:'Haritada hata olsa bile "Peki ben salondan mutfağa nasıl gidebilirim?" diye sorun. Çocuğun kendi haritasını sorgulaması, uzamsal akıl yürütmeyi derinleştirir.',
         anxFriendly:true, dysc:false, tags:['harita','konum','yön'],
         sesAlt:'Cetvel yoksa: adım veya el ölçüsüyle yapılabilir.',
-        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.1', 'MAT.2.3.6'] },
+        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.1', 'MAT.2.3.6'], context:['outdoor', 'indoor'], difficulty:'hard' },
 
       { id:'s03', emoji:'🪞', title:'Ayna Oyunu',
         desc:'Bir nesnenin simetrisini vücut ve kâğıt üzerinde keşfedin.',
@@ -192,7 +192,7 @@ export const ACTIVITIES = [
         tip:'Simetri "mükemmel" olmak zorunda değil. "Bu taraf diğerine benziyor mu?" sorusu yeterli. Süreç, sonuçtan daha değerlidir (Kamii, 1985).',
         anxFriendly:true, dysc:false, tags:['simetri','uzamsal','yansıma'],
         sesAlt:'Ayna yoksa: kağıdı katlayıp kesmek de simetri gösterir.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.2.3.7'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.2.3.7'], context:['game'], difficulty:'medium' },
 
       { id:'s04', emoji:'🤸', title:'Vücut Koordinatları',
         desc:'Yön talimatlarını vücutla uygulayın: ileri, geri, sağ, sol, üst, alt.',
@@ -202,7 +202,7 @@ export const ACTIVITIES = [
         tip:'Yavaş olsun, eğlenceli olsun. Komut vermekten zevk alan çocuk, aynı zamanda matematiksel dil öğreniyor. Rol değişimi (çocuğun komut vermesi) özerklik hissini pekiştirir.',
         anxFriendly:true, dysc:true, tags:['yön','hareket','koordinat'],
         sesAlt:'Açık alan gerekmez — bir oda yeterli.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.1'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.1'], context:['indoor'], difficulty:'easy' },
 
       { id:'s05', emoji:'🧩', title:'Şekil Parçalama',
         desc:'Bir şekli alt parçalara bölün ve yeniden birleştirin.',
@@ -212,7 +212,7 @@ export const ACTIVITIES = [
         tip:'Yeniden birleştirirken zorlanırsa hemen ipucu vermeyin. Kapur (2016) zorlanarak bulunan çözümün kalıcı öğrenmeyi desteklediğini göstermektedir.',
         anxFriendly:true, dysc:false, tags:['parçalama','bütünleştirme','geometri'],
         sesAlt:'Makas yoksa: elle yırtın — pürüzsüzlük önemli değil.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T1','T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.5', 'MAT.2.3.3', 'MAT.3.3.2'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T1','T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.5', 'MAT.2.3.3', 'MAT.3.3.2'], context:['game'], difficulty:'medium' },
 
       { id:'s06', emoji:'👀', title:'Farklı Açılardan Bak',
         desc:'Aynı nesneyi farklı pozisyonlardan çizerek perspektif keşfedin.',
@@ -221,7 +221,7 @@ export const ACTIVITIES = [
         steps:['Nesneyi masanın ortasına koyun','Önden çizin','Yana geçip tekrar çizin','Yukarıdan bakarak çizin'],
         tip:'Her çizim "yanlış" görünebilir — farklı bakış açıları farklı doğrular üretir. "Sen nereden bakıyordun?" sorusu, perspektif almanın matematiksel temelidir.',
         anxFriendly:false, dysc:false, tags:['perspektif','3b','gözlem'],
-        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.3.4', 'MAT.4.3.1'] },
+        tymm_oo:['MAB1'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.3.4', 'MAT.4.3.1'], context:['kitchen', 'indoor', 'game'], difficulty:'medium' },
 
       // ── BELGELERDEN EKLENEN YENİ ETKİNLİKLER ─────────────────────────
       // Kaynak: Evde.docx · İÇİNDEKİLER.docx · Mutfakta_Matematik_Etkinlikleri.docx
@@ -235,7 +235,7 @@ export const ACTIVITIES = [
         tip:'Kesir ve oran bu kadar somut hiçbir yerde yok. Hata yapılırsa "peki nasıl düzeltebiliriz?" deyin, siz düzeltmeyin.',
         anxFriendly:true, dysc:false, tags:['kesir','oran','mutfak'],
         sesAlt:'Tarif yoksa: "4 bardak suya 2 kaşık şeker koyduk, 6 bardak için kaç kaşık?" sorusu yeterli.',
-        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.1.9', 'MAT.3.2.6', 'MAT.4.1.6', 'MAT.4.2.7'] },
+        tymm_oo:['MAB2','MAB3'], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.1.9', 'MAT.3.2.6', 'MAT.4.1.6', 'MAT.4.2.7'], context:['kitchen', 'bedtime'], difficulty:'medium' },
 
       { id:'k02', emoji:'⏱', title:'Pişirme Süresi Tahmini',
         desc:'Yemek pişerken zaman tahmini yapın ve gerçeği karşılaştırın.',
@@ -245,7 +245,7 @@ export const ACTIVITIES = [
         tip:'Zaman kavramı en somut haliyle burada. Yanılmak da veri — "neden daha uzun sürdü?" sorusu muhakemeyi geliştirir.',
         anxFriendly:true, dysc:true, tags:['zaman','tahmin','mutfak'],
         sesAlt:'Saat yoksa: su kaynarken parmakla sayın. Materyal gerekmez.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.2.1.9'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.2.1.9'], context:['kitchen'], difficulty:'easy' },
 
       { id:'k03', emoji:'🧂', title:'Mutfak Birim Turu',
         desc:'Kaşık, karış ve bardakla standart olmayan ölçüm yapın.',
@@ -255,7 +255,7 @@ export const ACTIVITIES = [
         tip:'Standart olmayan ölçüm, standart birim ihtiyacını çocuğun kendisi keşfetmesini sağlar. Freudenthal Gerçekçi Matematik yaklaşımının özüdür.',
         anxFriendly:true, dysc:true, tags:['ölçme','standart olmayan','mutfak'],
         sesAlt:'Her evde kaşık ve el var. Hiç ek materyal gerekmez.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.8'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB3'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.8'], context:['kitchen', 'indoor'], difficulty:'medium' },
 
       // 🛒 MARKET MATEMATİĞİ
       { id:'m01', emoji:'🧾', title:'Fiş Dedektifi',
@@ -266,7 +266,7 @@ export const ACTIVITIES = [
         tip:'Gerçek veriler en güçlü motivatördür. "Seni aldatmışlar!" eğlenceli bir problem çerçevesidir.',
         anxFriendly:false, dysc:false, tags:['toplama','gerçek bağlam','market'],
         sesAlt:'Fiş yoksa: alışveriş listesine hayali fiyatlar yazın.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.2.1.8', 'MAT.2.2.1', 'MAT.2.2.2', 'MAT.3.1.16', 'MAT.3.2.1', 'MAT.3.2.2', 'MAT.4.2.1', 'MAT.4.2.2'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.2.1.8', 'MAT.2.2.1', 'MAT.2.2.2', 'MAT.3.1.16', 'MAT.3.2.1', 'MAT.3.2.2', 'MAT.4.2.1', 'MAT.4.2.2'], context:['kitchen', 'indoor', 'bedtime'], difficulty:'hard' },
 
       { id:'m02', emoji:'📊', title:'Birim Fiyat Yarışması',
         desc:'Hangi paket daha ekonomik? Hesaplayın ve karar verin.',
@@ -276,7 +276,7 @@ export const ACTIVITIES = [
         tip:'Bölme işlemi burada gerçek anlam kazanır. Üst düzey düşünmeyi tetikleyen en iyi gerçek bağlam budur.',
         anxFriendly:false, dysc:false, tags:['bölme','birim fiyat','karar verme'],
         sesAlt:'Market yoksa: "500g = 15 TL, 1 kilo = 25 TL — hangisi ucuz?" sorusu yeterli.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB4'], tymm_t:['T1','T4'], tymm_yas:[], tymm_outcomes:['MAT.3.1.16', 'MAT.3.2.4', 'MAT.4.2.5', 'MAT.4.2.7'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB4'], tymm_t:['T1','T4'], tymm_yas:[], tymm_outcomes:['MAT.3.1.16', 'MAT.3.2.4', 'MAT.4.2.5', 'MAT.4.2.7'], context:['bedtime', 'game'], difficulty:'medium' },
 
       { id:'m03', emoji:'💰', title:'50 TL Bütçe Oyunu',
         desc:'Haftalık meyve-sebze alışverişini belirli bütçeyle planlayın.',
@@ -286,7 +286,7 @@ export const ACTIVITIES = [
         tip:'Bütçe kısıtı, soyut toplama-çıkarmayı gerçek karar vermeye bağlar. Doğru cevap yok — savunulabilir bir seçim yeterli.',
         anxFriendly:true, dysc:false, tags:['toplama','bütçe','karar verme'],
         sesAlt:'Broşür yoksa hayali fiyatlar yazın. Gerçek para kullanmak zorunda değilsiniz.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.2.1.8', 'MAT.2.2.1', 'MAT.3.1.16', 'MAT.3.2.6'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.2.1.8', 'MAT.2.2.1', 'MAT.3.1.16', 'MAT.3.2.6'], context:['indoor', 'bedtime', 'game'], difficulty:'hard' },
 
       // ⏰ ZAMAN VE PLANLAMA
       { id:'t01', emoji:'📋', title:'Günlük Program Tasarımı',
@@ -297,7 +297,7 @@ export const ACTIVITIES = [
         tip:'Zaman çizelgesi, toplamanın ve düzenlemenin en görsel biçimidir. Planın değişmesi normaldir — "nasıl düzeltiriz?" sorusu yeter.',
         anxFriendly:true, dysc:true, tags:['zaman','planlama','toplama'],
         sesAlt:'Kağıt yoksa sesli planlayın: sabah ne var, öğleden sonra ne var?',
-        tymm_oo:['MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.9', 'MAT.2.2.1', 'MAT.3.1.12', 'MAT.3.1.13', 'MAT.3.1.14'] },
+        tymm_oo:['MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.9', 'MAT.2.2.1', 'MAT.3.1.12', 'MAT.3.1.13', 'MAT.3.1.14'], context:['indoor'], difficulty:'hard' },
 
       { id:'t02', emoji:'🗓', title:'Kaç Gün Kaldı?',
         desc:'Bir etkinliğe veya tatile kaç gün kaldığını birlikte hesaplayın.',
@@ -307,7 +307,7 @@ export const ACTIVITIES = [
         tip:'Takvim sayma, çıkarmanın en doğal halidir. Motivasyon otomatik — çocuk kendi istediği şeyi sayıyor.',
         anxFriendly:true, dysc:true, tags:['takvim','çıkarma','zaman'],
         sesAlt:'Takvim yoksa: parmaklarla sayın veya kağıda günleri çizin.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.2.1', 'MAT.2.1.9'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.5', 'MAT.1.2.1', 'MAT.2.1.9'], context:['outdoor', 'game'], difficulty:'medium' },
 
       // 🎲 AİLE OYUNLARI
       { id:'g01', emoji:'🎯', title:'Puan Tablosu Analizi',
@@ -318,7 +318,7 @@ export const ACTIVITIES = [
         tip:'Puan takibi, toplama ve çıkarmanın anlık ve anlamlı pratiğidir. Kazanmaktan öğrenmek daha değerli — bunu açıkça söyleyin.',
         anxFriendly:true, dysc:true, tags:['toplama','grafik','oyun'],
         sesAlt:'Masa oyunu yoksa: taş-kağıt-makas turlarını sayın.',
-        tymm_oo:['MAB6','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T4'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.1.4.1', 'MAT.2.2.1', 'MAT.2.4.1', 'MAT.3.2.1', 'MAT.3.4.1', 'MAT.4.2.1', 'MAT.4.4.2'] },
+        tymm_oo:['MAB6','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T4'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.2.1', 'MAT.1.4.1', 'MAT.2.2.1', 'MAT.2.4.1', 'MAT.3.2.1', 'MAT.3.4.1', 'MAT.4.2.1', 'MAT.4.4.2'], context:['outdoor', 'indoor', 'game'], difficulty:'hard' },
 
       { id:'g02', emoji:'🎴', title:'Matematik Hafıza Oyunu',
         desc:'Kendi kartlarınızı yapıp sayı eşleştirme oyunu oynayın.',
@@ -328,7 +328,7 @@ export const ACTIVITIES = [
         tip:'Kendi malzemenizi yapmak zaten matematik. Kartların pürüzsüz olması gerekmiyor — çocuğun yaptığı kart daha değerlidir.',
         anxFriendly:true, dysc:true, tags:['sayı tanıma','hafıza','oyun'],
         sesAlt:'Karton yoksa gazete kesilir, rakamlar elle yazılır.',
-        tymm_oo:['MAB6','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:['36-48','48-60'], tymm_outcomes:['MAT.1.1.1', 'MAT.1.1.2'] },
+        tymm_oo:['MAB6','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:['36-48','48-60'], tymm_outcomes:['MAT.1.1.1', 'MAT.1.1.2'], context:['outdoor', 'indoor', 'game'], difficulty:'hard' },
 
       // 🌿 DOĞA VE AÇIK HAVA
       { id:'n01', emoji:'🌦', title:'Hava Günlüğü',
@@ -339,7 +339,7 @@ export const ACTIVITIES = [
         tip:'Günlük 2 dakika + hafta sonu 10 dakika analiz. Tahmin yanlışlığı veri — "neden yanıldık?" sorusu muhakemeyi geliştirir.',
         anxFriendly:true, dysc:false, tags:['grafik','veri','gözlem'],
         sesAlt:'Termometre yoksa: sadece sıcak/ılık/soğuk kategorisi yeterli.',
-        tymm_oo:['MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.4.1', 'MAT.2.4.1', 'MAT.3.4.1'] },
+        tymm_oo:['MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.4.1', 'MAT.2.4.1', 'MAT.3.4.1'], context:['bedtime'], difficulty:'medium' },
 
       { id:'n02', emoji:'🌱', title:'Büyüme Ölçüm Günlüğü',
         desc:'Bir tohum ekin ve büyümesini ölçerek kaydedin.',
@@ -349,7 +349,7 @@ export const ACTIVITIES = [
         tip:'Fasulye ve ıslak pamuk en ucuz materyaldir. Ölçme, çıkarma ve grafik için gerçek bağlam sağlar.',
         anxFriendly:true, dysc:true, tags:['ölçme','çıkarma','doğa'],
         sesAlt:'Toprak yoksa: ıslak pamuk üzerinde fasulye. Her kap olur.',
-        tymm_oo:['MAB6','MAB1','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T3','T4'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.8', 'MAT.1.4.1', 'MAT.2.1.10', 'MAT.2.1.11', 'MAT.2.4.1'] },
+        tymm_oo:['MAB6','MAB1','MAB4'], tymm_il:['MAB1','MAB4'], tymm_t:['T1','T3','T4'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.8', 'MAT.1.4.1', 'MAT.2.1.10', 'MAT.2.1.11', 'MAT.2.4.1'], context:['outdoor'], difficulty:'hard' },
 
       { id:'n03', emoji:'🦜', title:'Doğa Sayım Yürüyüşü',
         desc:'Parkta veya bahçede canlıları sayın, sınıflandırın, grafiğe dökün.',
@@ -359,7 +359,7 @@ export const ACTIVITIES = [
         tip:'Tally işareti saymanın en eski yöntemidir. Veri toplama, düzenleme ve yorum — tek etkinlikte.',
         anxFriendly:true, dysc:false, tags:['sayma','grafik','sınıflama'],
         sesAlt:'Park yoksa: pencereden arabaları renk veya marka kategorisiyle sayın.',
-        tymm_oo:['MAB6','MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.2', 'MAT.1.4.1', 'MAT.2.4.1'] },
+        tymm_oo:['MAB6','MAB4'], tymm_il:['MAB4'], tymm_t:['T4'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.1.2', 'MAT.1.4.1', 'MAT.2.4.1'], context:['outdoor', 'indoor', 'commute'], difficulty:'hard' },
 
       { id:'o01', emoji:'🧻', title:'Kesir Duvarı',
         desc:'Kağıt şeritleri katlayarak kesir duvarı oluşturun; denk kesirleri gözle görün.',
@@ -369,7 +369,7 @@ export const ACTIVITIES = [
         tip:'Şeritleri kendilerinin katlaması çok önemli — kesir kavramı parmakların hareketiyle kaydediliyor. Denk kesirleri yan yana getirip kimin söyleyeceğini bekleyin. Kaynak: NRICH Fractional Wall (nrich.maths.org/problems/fractional-wall).',
         anxFriendly:true, dysc:true, tags:['kesir','denklik','katlama'],
         sesAlt:'Kağıt yoksa herhangi bir dikdörtgen parça — gazete, atık kağıt.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.11','MAT.4.1.7','MAT.4.1.8','MAT.4.1.9'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.11','MAT.4.1.7','MAT.4.1.8','MAT.4.1.9'], context:['indoor', 'game'], difficulty:'hard' },
 
       { id:'o02', emoji:'🍕', title:'Adalet Mahkemesi: Pizza Paylaşımı',
         desc:'Bir pizzayı/keki eşit paylaştırıp aynı paydalı kesirlerle toplama-çıkarma keşfedin.',
@@ -379,7 +379,7 @@ export const ACTIVITIES = [
         tip:'Paydaları eşit kesirlerle toplama-çıkarma en iyi gerçek gıda üzerinden kavranır. Problem kurmaya izin vermek, pasif çözme yerine aktif düşünmeyi tetikler (Silver, 1994). Kaynak: NRICH Fractions KS2 (nrich.maths.org/8957).',
         anxFriendly:true, dysc:false, tags:['kesir','toplama','paylaştırma'],
         sesAlt:'Pizza/kek yoksa: 8 fasulyeyi bir kağıt dairenin üstüne koyun — her dilim bir fasulye olsun.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.4.1.10','MAT.4.1.11','MAT.4.1.12'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.4.1.10','MAT.4.1.11','MAT.4.1.12'], context:['kitchen', 'indoor', 'game'], difficulty:'medium' },
 
       { id:'o03', emoji:'🎲', title:'Basamak Zarı',
         desc:'Üç zar atıp en büyük 3 basamaklı sayıyı kurun; 4 basamaklı için 4 zar.',
@@ -389,7 +389,7 @@ export const ACTIVITIES = [
         tip:'Aynı zarlardan farklı sayılar çıkarmak, basamak değerinin anlamını hissettirir. "1000\'den büyük mü küçük mü?" gibi ek sorular tahmin becerisini geliştirir. Kaynak: WeAreTeachers Place Value Activities (weareteachers.com/place-value-activities).',
         anxFriendly:true, dysc:true, tags:['basamak değeri','oyun','karşılaştırma'],
         sesAlt:'Zar yoksa: kağıda 1-6 yazıp karıştırın, 3 tane çekin.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.2.1.3','MAT.3.1.1','MAT.3.1.2','MAT.3.1.3','MAT.4.1.1','MAT.4.1.2','MAT.4.1.3'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.2.1.3','MAT.3.1.1','MAT.3.1.2','MAT.3.1.3','MAT.4.1.1','MAT.4.1.2','MAT.4.1.3'], context:['indoor', 'game'], difficulty:'hard' },
 
       { id:'o04', emoji:'🧮', title:'Kuru Fasulye Sayı Sarayı',
         desc:'Kuru fasulye ile onluk-yüzlük-binlik oluşturup büyük sayıları somutlaştırın.',
@@ -399,7 +399,7 @@ export const ACTIVITIES = [
         tip:'Fasulyeyi fiziksel olarak gruplama, soyut basamak kavramını kalıcı kılar. Çocuk "1 onluk = 10 birlik" dönüşümünü kendi keşfederse öğrenme kalıcı olur. Kaynak: Ashleigh Education Place Value (ashleigh-educationjourney.com/hands-on-place-value).',
         anxFriendly:true, dysc:true, tags:['basamak','somut','fasulye'],
         sesAlt:'Fasulye yoksa: düğme, boncuk, taş — her evde mevcut.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.3.1.1','MAT.3.1.2','MAT.4.1.1','MAT.4.1.2'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.3.1.1','MAT.3.1.2','MAT.4.1.1','MAT.4.1.2'], context:['outdoor', 'indoor', 'game'], difficulty:'hard' },
 
       { id:'o05', emoji:'⚖️', title:'Terazi Dengesi',
         desc:'Eşit işaretinin "aynı" anlamını terazi ile keşfedin.',
@@ -409,7 +409,7 @@ export const ACTIVITIES = [
         tip:'Türk çocukların çoğu eşit işaretini "cevabı ver" olarak anlıyor; oysa = "aynı" demek (Kieran, 1981; Carpenter et al., 2003). Terazi bu yanlış anlamayı düzeltir. "Solda ne var, sağda ne var, hangisi daha ağır?" sorusu kavramı somutlaştırır. Kaynak: NCTM Pan Balance Numbers (nctm.org/Classroom-Resources/Illuminations/Interactives/Pan-Balance----Numbers).',
         anxFriendly:true, dysc:true, tags:['eşitlik','terazi','cebirsel'],
         sesAlt:'Askı yoksa: ortadan katlanmış karton, iki eşit kutu.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.1.2.3','MAT.1.2.4','MAT.2.2.3','MAT.2.2.6','MAT.3.2.5','MAT.3.2.8','MAT.4.2.6','MAT.4.2.9'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.1.2.3','MAT.1.2.4','MAT.2.2.3','MAT.2.2.6','MAT.3.2.5','MAT.3.2.8','MAT.4.2.6','MAT.4.2.9'], context:['indoor', 'game'], difficulty:'hard' },
 
       { id:'o06', emoji:'🧦', title:'Çoraplar Tek mi Çift mi?',
         desc:'Çorapları eşleyerek tek-çift sayıları parmaklarınızla keşfedin.',
@@ -419,7 +419,7 @@ export const ACTIVITIES = [
         tip:'Fiziksel eşleme, tek-çift ayrımının en güçlü temelidir. 3. sınıf kazanımı "tek + tek = çift" kuralının keşfini de içeriyor — bunu çocuğa kendi söyletmek daha güçlüdür. Kaynak: NRICH Even and Odd (nrich.maths.org/problems/even-and-odd).',
         anxFriendly:true, dysc:true, tags:['tek-çift','eşleme','sınıflama'],
         sesAlt:'Çorap yoksa: 10-15 arası herhangi bir nesne (kapak, kalem).',
-        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.5','MAT.3.1.6'] },
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.5','MAT.3.1.6'], context:['indoor', 'game'], difficulty:'easy' },
 
       { id:'o07', emoji:'💨', title:'Yüzlük Tablo Atlaması',
         desc:'Yüzlük tabloda ikişer, üçer, dörder, beşer, altışar atlama — örüntüyü keşfedin.',
@@ -429,7 +429,7 @@ export const ACTIVITIES = [
         tip:'Yüzlük tablo ritmik saymanın görsel haritasıdır. Aynı sayının birden fazla örüntüde yer alması, çarpanlar/bölenler kavramının temelini kurar. Kaynak: ProudToBePrimary Numbers to 100 (proudtobeprimary.com/numbers-to-100).',
         anxFriendly:true, dysc:true, tags:['ritmik sayma','örüntü','tablo'],
         sesAlt:'Matbu tablo yoksa: 10x10\'luk bir ızgarayı kendiniz çizin.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.4','MAT.4.1.4'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.4','MAT.4.1.4'], context:['outdoor', 'indoor'], difficulty:'medium' },
 
       { id:'o08', emoji:'🔗', title:'Örüntü Kaşifi',
         desc:'Sayısal ve şekilsel örüntülerdeki kuralı çözümleyip tahmin edin.',
@@ -439,7 +439,7 @@ export const ACTIVITIES = [
         tip:'Örüntüyü bulmak matematik değil, kuralı sözel olarak ifade etmek matematiktir. "Nasıl buldun?" sorusu cebirsel düşüncenin ilk adımıdır. Olkun ve Uçar, "İlköğretimde Etkinlik Temelli Matematik Öğretimi" kitabında örüntüyü cebrin temel yapı taşı olarak tanımlar.',
         anxFriendly:true, dysc:false, tags:['örüntü','kural','cebirsel'],
         sesAlt:'Kağıt yoksa sesli örüntü: "1, 2, 4, 7, 11, ?"',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.5','MAT.3.1.7','MAT.4.1.5'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.5','MAT.3.1.7','MAT.4.1.5'], context:['outdoor', 'commute', 'game'], difficulty:'medium' },
 
       { id:'o09', emoji:'🫙', title:'Tahmin Kavanozu',
         desc:'Bir kavanozdaki nesne sayısını tahmin edin — stratejiyle gerçek arasındaki farkı görün.',
@@ -449,7 +449,7 @@ export const ACTIVITIES = [
         tip:'Tahmin, sayı hissinin kalbidir. Çocuğun "strateji" geliştirdiğini fark etmesi (örn: "önce 10 saydım, yaklaşık 4 tane 10 var") matematiksel muhakemedir. Kaynak: FamilyMathNight Estimation Jars (familymathnight.com/resources/familymathnight-estimationjars.php).',
         anxFriendly:true, dysc:true, tags:['tahmin','sayı hissi','strateji'],
         sesAlt:'Kavanoz yoksa bardak veya şeffaf torba. Her evde bulunan tanelik.',
-        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.6','MAT.3.1.8'] },
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.6','MAT.3.1.8'], context:['indoor', 'game'], difficulty:'easy' },
 
       { id:'o10', emoji:'📦', title:'Kartondan Geometrik Cisim Atölyesi',
         desc:'Mutfak/kargo kartonlarını inceleyip köşe, kenar, yüz sayıları keşfedin.',
@@ -459,7 +459,7 @@ export const ACTIVITIES = [
         tip:'3 boyutlu cismi açıp 2 boyuta indirmek, çocuğun mekansal düşünme becerisini güçlendirir. NRICH\'te "footprint" etkinliğinin ev versiyonu. Kaynak: NRICH Exploring 3D Shapes (nrich.maths.org/problems/exploring-3d-shapes).',
         anxFriendly:true, dysc:false, tags:['geometri','3B','köşe-kenar'],
         sesAlt:'Kutu yoksa: karton kesip açılır küp/piramit yapın.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.1','MAT.3.3.3','MAT.4.3.1','MAT.4.3.2'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.1','MAT.3.3.3','MAT.4.3.1','MAT.4.3.2'], context:['kitchen', 'indoor', 'bedtime', 'game'], difficulty:'hard' },
 
       { id:'o11', emoji:'📐', title:'Odam Ne Kadar? Çevre-Alan Keşfi',
         desc:'Odanızın çevresini karışla ölçün, alanı adımla keşfedin.',
@@ -469,7 +469,7 @@ export const ACTIVITIES = [
         tip:'Çevre = "etrafında yürüdüğümüz kadar", alan = "içine sığan". Bu sezgisel farkı çocuk kendi bedeniyle deneyimlemeli. Standart olmayan birimlerle başlamak, standart birim ihtiyacını doğurur (Freudenthal, 1991). Kaynak: Scholastic Area Perimeter (scholastic.com/teachers/teaching-tools/articles/lessons/area-perimeter-for-kids).',
         anxFriendly:true, dysc:false, tags:['çevre','alan','ölçme'],
         sesAlt:'Cetvel yoksa karış ve adım yeterli. İp de olur.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.4','MAT.4.3.3','MAT.4.3.4'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.4','MAT.4.3.3','MAT.4.3.4'], context:['outdoor', 'indoor'], difficulty:'hard' },
 
       { id:'o12', emoji:'🕐', title:'Saat Kolunun Açısı',
         desc:'Saatin iki kolunun oluşturduğu açı türünü (dar/dik/geniş) keşfedin.',
@@ -479,7 +479,7 @@ export const ACTIVITIES = [
         tip:'Açı = bir kolun diğerine göre ne kadar döndüğü. Saat, açının "dönme miktarı" anlamını en doğal gösteren araçtır. Dik açıyı referans alarak dar/geniş sınıflama 4. sınıf kazanımıdır. Kaynak: NRICH Clock Hands (nrich.maths.org/problems/clock-hands).',
         anxFriendly:true, dysc:true, tags:['açı','saat','dönme'],
         sesAlt:'Saat yoksa: iki kibrit çöpünü birleştirip döndürün — aynı prensip.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.5','MAT.4.3.6','MAT.4.3.7'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.5','MAT.4.3.6','MAT.4.3.7'], context:['outdoor', 'indoor', 'commute'], difficulty:'medium' },
 
       { id:'o13', emoji:'🦋', title:'Simetri Kelebeği',
         desc:'Boya damlasıyla kağıdı katlayıp açın — mükemmel simetri ortaya çıksın.',
@@ -489,7 +489,7 @@ export const ACTIVITIES = [
         tip:'Simetri "aynalık" demek değil — "doğruya göre yansıma" demek. Çocuk kendisi boya döküp katlayınca simetri doğrusunu hissediyor. 3. sınıf için birden fazla simetri doğrusu (örn: karenin 4 eksen), 4. sınıf için şekil yapılandırması. Kaynak: Happy Hooligans Symmetrical Butterfly (happyhooligans.ca/symmetrical-butterfly-painting-craft).',
         anxFriendly:true, dysc:true, tags:['simetri','sanat','yansıma'],
         sesAlt:'Boya yoksa yemek artığı (kahve, çay) ile de olur.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.3.6','MAT.3.3.7','MAT.3.3.8','MAT.4.3.8','MAT.4.3.9'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.3.6','MAT.3.3.7','MAT.3.3.8','MAT.4.3.8','MAT.4.3.9'], context:['kitchen', 'indoor', 'game'], difficulty:'hard' },
 
       { id:'o14', emoji:'🎯', title:'Torba Olasılığı',
         desc:'Bir torba içindeki renkli nesnelerden çekmeler yapıp "kesin/olabilir/imkânsız" keşfedin.',
@@ -499,7 +499,7 @@ export const ACTIVITIES = [
         tip:'Olasılık dili (imkânsız, olabilir, kesin) önce kelimelerle öğrenilir, sonra sayılarla. Çocuk "bir şey kesin olur" ile "kesin olmaz" ayrımını yaparken muhakeme yürütüyor. Kaynak: Maneuvering the Middle Probability (maneuveringthemiddle.com/10-low-prep-probability-activities).',
         anxFriendly:true, dysc:true, tags:['olasılık','muhakeme','deney'],
         sesAlt:'Torba yoksa kapalı kutu veya kese.',
-        tymm_oo:[], tymm_il:['MAB1','MAB4'], tymm_t:['T5'], tymm_yas:[], tymm_outcomes:['MAT.4.4.1'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB4'], tymm_t:['T5'], tymm_yas:[], tymm_outcomes:['MAT.4.4.1'], context:['outdoor', 'game'], difficulty:'medium' },
 
       { id:'o15', emoji:'⚡', title:'Zihinden Hızlı Çarpım',
         desc:'İki katı/yarısı stratejisi ile zor çarpmaları kolaya çevirin.',
@@ -509,7 +509,7 @@ export const ACTIVITIES = [
         tip:'İki katı/yarısı stratejisi çarpmanın değişmezlik özelliğini deneyimletir. Çocuk "matematik sadece ezber değil, bir mantığı var" hissini kazanır. Strateji neden çalıştığını anlamak, ezberin ötesidir. Kaynak: Komodo Math Halving Doubling (komodomath.com/us/blog/multiplication-the-halving-and-doubling-strategy).',
         anxFriendly:true, dysc:false, tags:['çarpma','zihinden','strateji'],
         sesAlt:'Kağıtsız da olur — sadece sözel yapın.',
-        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.4.2.3','MAT.4.2.4'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.4.2.3','MAT.4.2.4'], context:['indoor', 'commute'], difficulty:'medium' },
 
       { id:'o16', emoji:'🥤', title:'Su Yarışı: Sıvı Bilimi',
         desc:'Farklı bardakları kullanıp "hangisi daha çok su alır?" deneyin.',
@@ -519,7 +519,7 @@ export const ACTIVITIES = [
         tip:'Tahminin gerçekle karşılaştırılması bilim yöntemidir. "Uzun ama dar" bardakla "kısa ama geniş" bardaklar aynı su alabilir — bu sezgisel olmayan gerçek büyüleyicidir. Kaynak: Oxford Owl Measuring (home.oxfordowl.co.uk/get-messy-with-measuring).',
         anxFriendly:true, dysc:true, tags:['sıvı','ölçme','tahmin'],
         sesAlt:'Ölçü bardağı yoksa yemek kaşığıyla sayarak doldurun.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.2.3.5','MAT.3.3.5'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.2.3.5','MAT.3.3.5'], context:['kitchen', 'game'], difficulty:'medium' },
 
       { id:'o17', emoji:'🔄', title:'Ölçü Dönüşüm Kartları',
         desc:'Eşit uzunlukları/kütleleri farklı birimlerde eşleştirme oyunu.',
@@ -529,7 +529,7 @@ export const ACTIVITIES = [
         tip:'Hafıza oyunu formatı, dönüşüm tablolarını ezberlemeye alternatiftir. Çocuk eşleşmeyi bulurken "1 m = 100 cm" ilişkisini mental olarak inşa ediyor. Kaynak: Hello Learning Measurement Conversion (hellolearningresources.com/measurement-conversion-activities).',
         anxFriendly:true, dysc:true, tags:['ölçü dönüşüm','hafıza oyunu'],
         sesAlt:'Kart yoksa kağıda yazıp kesin — hiçbir ek materyal gerekmez.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T3'], tymm_yas:[], tymm_outcomes:['MAT.3.1.15','MAT.4.1.13'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T3'], tymm_yas:[], tymm_outcomes:['MAT.3.1.15','MAT.4.1.13'], context:['indoor', 'game'], difficulty:'medium' },
 
       { id:'o18', emoji:'🤖', title:'Robot Ebeveyn Oyunu',
         desc:'Ebeveyn "robot" olur; çocuk adım-adım komutlarla onu yönlendirir.',
@@ -539,7 +539,7 @@ export const ACTIVITIES = [
         tip:'Kodlama "ekrana bakmak" değil, net yönergeler üretmektir. Yanlış bir komut çocuğun "debug" etmesini tetikler — bu algoritmik düşünmenin özüdür. "Neden çalışmadı?" sorusu burada altın değerindedir. Kaynak: Kodable Unplugged Coding (kodable.com/learn/unplugged-coding-activities).',
         anxFriendly:true, dysc:true, tags:['kodlama','yön','algoritma'],
         sesAlt:'Hiçbir materyal gerekmez — tamamen sözel.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.10'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.10'], context:['indoor', 'game'], difficulty:'medium' },
 
       { id:'o19', emoji:'🥇', title:'Yarış Sıralaması',
         desc:'Oyuncaklarla mini yarış kurup "birinci, ikinci, üçüncü" kullanın.',
@@ -549,7 +549,7 @@ export const ACTIVITIES = [
         tip:'Sıra sayıları, miktar sayılarından farklıdır: "3 araba var" (miktar) vs. "3. sırada araba var" (sıra). Çocuk ikisi arasındaki farkı yarış gibi doğal bir bağlamda öğrenir.',
         anxFriendly:true, dysc:true, tags:['sıra sayısı','yarış','karşılaştırma'],
         sesAlt:'Oyuncak yoksa herhangi bir nesne: kalem, bardak, taş.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.3','MAT.1.1.4'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.3','MAT.1.1.4'], context:['outdoor', 'indoor', 'commute', 'game'], difficulty:'easy' },
 
       { id:'o20', emoji:'👯', title:'Eş Bulma Avı',
         desc:'Evdeki nesneleri renk, şekil veya büyüklükte eş olanları eşleştir.',
@@ -559,7 +559,7 @@ export const ACTIVITIES = [
         tip:'"Eş" kavramı "eşitlik"ten farklıdır — 1. sınıfta bu ayrım başlar. Eşlik = aynı görsel özellikler, eşitlik = aynı miktar. Çocuk bu ayrımı kendi sözleriyle ifade etmelidir.',
         anxFriendly:true, dysc:true, tags:['eşlik','sınıflama','karşılaştırma'],
         sesAlt:'Hiçbir ek materyal gerekmez — zaten mevcut eşyalar.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.2'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.2'], context:['indoor'], difficulty:'medium' },
 
       { id:'p01', emoji:'📏', title:'Kesir Sayı Doğrusu',
         desc:'Kağıda 0-1 arası doğru çizin, kesirleri doğru üzerinde yerleştirin.',
@@ -569,7 +569,7 @@ export const ACTIVITIES = [
         tip:'Sayı doğrusu, kesirlerin "parçalar" olmaktan "sayılar" olmaya geçişinde kritik köprüdür (Siegler, 2011). Çocuğun kendi yerleştirmesi ve karşılaştırması, kesir büyüklüğünü hissetmesini sağlar. Kaynak: Jillian Starr Teaching Fractions on a Number Line (jillianstarrteaching.com/fractions-on-a-number-line).',
         anxFriendly:true, dysc:true, tags:['kesir','sayı doğrusu','karşılaştırma'],
         sesAlt:'Cetvel yoksa kitap kenarı. İp veya kağıt şerit de olur.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.10','MAT.3.1.11','MAT.4.1.6','MAT.4.1.7','MAT.4.1.8','MAT.4.1.9'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.10','MAT.3.1.11','MAT.4.1.6','MAT.4.1.7','MAT.4.1.8','MAT.4.1.9'], context:['bedtime'], difficulty:'hard' },
 
       { id:'p02', emoji:'🔳', title:'Dizi (Array) Avı',
         desc:'Evde dizi oluşturan nesneleri bulup satır × sütun olarak sayın.',
@@ -579,7 +579,7 @@ export const ACTIVITIES = [
         tip:'Dizi (array) modeli, çarpmanın "tekrarlı toplama" ötesinde yapısını gösterir. Değişme özelliği (3×4 = 4×3) çocuğa dayatılmak yerine kendi keşfetmesi daha güçlüdür (Fuson, 2003). Kaynak: Jillian Starr Multiplication Arrays (jillianstarrteaching.com/multiplication-arrays).',
         anxFriendly:true, dysc:false, tags:['çarpma','array','değişme'],
         sesAlt:'Mutfakta en az 3 dizi vardır — yumurta, bardak rafı, fayans.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.2.2.4','MAT.3.2.3','MAT.3.2.4','MAT.4.2.5'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.2.2.4','MAT.3.2.3','MAT.3.2.4','MAT.4.2.5'], context:['kitchen', 'indoor', 'bedtime', 'game'], difficulty:'medium' },
 
       { id:'p03', emoji:'📝', title:'Kendin Problem Yaz',
         desc:'Çocuk bir sayı seçsin, buna uygun günlük yaşam problemi üretsin.',
@@ -589,7 +589,7 @@ export const ACTIVITIES = [
         tip:'Problem kurma (problem posing), problem çözmekten daha üst düzeydir ve matematiksel yaratıcılığı besler (Silver, 1994). "Verilen bir cevaba göre problem kurma" formatı özellikle güçlüdür.',
         anxFriendly:true, dysc:false, tags:['problem kurma','dört işlem','yaratıcılık'],
         sesAlt:'Kağıt yoksa sesli yapın — "benim cevabım 10, sen sor".',
-        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.7','MAT.4.2.8'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.7','MAT.4.2.8'], context:['indoor'], difficulty:'medium' },
 
       { id:'p04', emoji:'🕰️', title:'Kağıttan Saat',
         desc:'Bardak karton üzerinde kendi saatlerinizi yapıp zaman okuma pratiği.',
@@ -599,7 +599,7 @@ export const ACTIVITIES = [
         tip:'Saat yaparken "saat"in yapısı parmakla keşfedilir. Akrep ve yelkovanın neden farklı hızda döndüğünü çocuk kendi gözüyle görür. Analog saat okuma, dijital saatten önce öğrenilmelidir — "quarter past" gibi dil burada kuruluyor. Kaynak: Scholastic Telling Time (scholastic.com/parents/school-success/learning-toolkit-blog/practice-telling-analog-and-digital-time-printable).',
         anxFriendly:true, dysc:true, tags:['saat','zaman','analog'],
         sesAlt:'Karton yoksa: tabak veya kağıda çizin. Raptiye yoksa iki ataç.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.12','MAT.3.1.13','MAT.3.1.14'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.12','MAT.3.1.13','MAT.3.1.14'], context:['outdoor', 'game'], difficulty:'hard' },
 
       { id:'p05', emoji:'👏', title:'Beden Ritmi ile Sayma',
         desc:'Vücudu kullanarak 3\'er, 4\'er, 5\'er, 10\'ar sayın.',
@@ -609,7 +609,7 @@ export const ACTIVITIES = [
         tip:'Ritmik sayma işitsel + bedensel olduğunda hafızaya kazınır (Kamii, 1985). Alkış/zıplama/ayak vurma ritmi kazanımın kalıcılığını artırır. Zaman/yaş ilerledikçe aynı etkinlik 10\'ar, 50\'şer, 100\'er saymaya uzatılabilir.',
         anxFriendly:true, dysc:true, tags:['ritmik sayma','beden','ritim'],
         sesAlt:'Hiçbir ek materyal gerekmez.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.4','MAT.3.1.4','MAT.4.1.4'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.4','MAT.3.1.4','MAT.4.1.4'], context:['game'], difficulty:'medium' },
 
       { id:'p06', emoji:'📇', title:'Sayı Kartı Sıralama',
         desc:'10-15 sayı kartını küçükten büyüğe (veya tersi) sıralama oyunu.',
@@ -619,7 +619,7 @@ export const ACTIVITIES = [
         tip:'Sıralama, büyüklük karşılaştırma becerisinin uygulamasıdır. 2-4. sınıfta basamak değeri kavramı sıralamada belirleyici olur. "Nasıl karar verdin?" sorusu çocuğun kullandığı stratejiyi görünür kılar.',
         anxFriendly:true, dysc:true, tags:['sıralama','karşılaştırma','basamak'],
         sesAlt:'Kart yoksa: oyun kağıtları (iskambil), etiketli nesneler.',
-        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.3','MAT.3.1.3','MAT.4.1.3'] },
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.3','MAT.3.1.3','MAT.4.1.3'], context:['indoor', 'game'], difficulty:'medium' },
 
       { id:'p07', emoji:'🟰', title:'Doğru mu Yanlış mı?',
         desc:'Eşitlik ifadelerini doğru/yanlış olarak değerlendirme oyunu.',
@@ -629,7 +629,7 @@ export const ACTIVITIES = [
         tip:'Eşit işaretinin "cevap" değil "aynı" anlamı için en güçlü alıştırma: her iki tarafın da ifade olduğu eşitlikler ("3+4 = 5+2"). Türk çocukların çoğu bu formu ilk gördüklerinde "anlaşılmaz" bulur — bu tam doğru kavramı kurma fırsatıdır (Carpenter ve ark., 2003).',
         anxFriendly:true, dysc:true, tags:['eşitlik','cebirsel','ilişki'],
         sesAlt:'Tamamen sözel yapabilirsiniz.',
-        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.1.2.3','MAT.1.2.4','MAT.2.2.3','MAT.2.2.6','MAT.3.2.8','MAT.4.2.9'] },
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.1.2.3','MAT.1.2.4','MAT.2.2.3','MAT.2.2.6','MAT.3.2.8','MAT.4.2.9'], context:['indoor', 'game'], difficulty:'hard' },
 
       { id:'p08', emoji:'⚽', title:'Yuvarlanır mı Kayar mı?',
         desc:'Evdeki nesneleri küçük bir eğimden kaydırıp geometrik cisim tespit edin.',
@@ -639,7 +639,7 @@ export const ACTIVITIES = [
         tip:'3 boyutlu cisimlerin özelliklerini (yüz, kenar, köşe) davranışlarıyla bağlamak çocuğun kavramı somutlaştırır. Yuvarlanma küresel/silindirik yüzeyle ilgilidir — bu keşif 3. sınıfta resmi öğretilen cisim özelliklerinin somut temelidir. Kaynak: NRICH 3D Shapes (nrich.maths.org/public/topic.php?group_id=10&code=-1032).',
         anxFriendly:true, dysc:true, tags:['3D','geometri','deney'],
         sesAlt:'Eğim yoksa masada elle itebilirsiniz.',
-        tymm_oo:['MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.3.1','MAT.3.3.1','MAT.3.3.3','MAT.4.3.2'] },
+        tymm_oo:['MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.3.1','MAT.3.3.1','MAT.3.3.3','MAT.4.3.2'], context:['indoor', 'game'], difficulty:'medium' },
 
       { id:'p09', emoji:'🗺️', title:'Hazine Haritası Tasarla',
         desc:'Kareli kağıtta şekiller çizip çevre ve alanlarını ölçün.',
@@ -649,7 +649,7 @@ export const ACTIVITIES = [
         tip:'Kareli kağıt, çevre ve alan farkını gösteren en basit araçtır. Aynı alanın farklı çevreleri olabileceği keşfi (örn: 4x3 ve 2x6\'nın aynı alanı var, farklı çevreleri) muhakemeyi derinleştirir. Kaynak: Scholastic Area Perimeter (scholastic.com/teachers/teaching-tools/articles/lessons/area-perimeter-for-kids).',
         anxFriendly:true, dysc:false, tags:['çevre','alan','harita'],
         sesAlt:'Kareli kağıt yoksa düz kağıda 1 cm\'lik ızgara çizin.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.4','MAT.4.3.3','MAT.4.3.4'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.4','MAT.4.3.3','MAT.4.3.4'], context:['outdoor', 'indoor', 'commute'], difficulty:'hard' },
 
       { id:'p10', emoji:'🍀', title:'Doğada Simetri Avı',
         desc:'Parkta, bahçede, evde simetrik şekilleri bulup fotoğrafla veya çizin.',
@@ -659,7 +659,7 @@ export const ACTIVITIES = [
         tip:'Doğadaki simetri, matematik kavramının "gerçek dünyada var olduğunu" gösterir ve duygusal bağ kurdurur (Boaler, mathematical mindset). Birden fazla simetri doğrusunu keşfetmek 3-4. sınıf kazanımıdır.',
         anxFriendly:true, dysc:true, tags:['simetri','doğa','gözlem'],
         sesAlt:'Dışarı çıkmadan: yüzünüze, ellerinize, mutfak eşyalarına bakın.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.6','MAT.3.3.7','MAT.4.3.8','MAT.4.3.9'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.6','MAT.3.3.7','MAT.4.3.8','MAT.4.3.9'], context:['kitchen', 'outdoor', 'indoor'], difficulty:'hard' },
 
       { id:'p11', emoji:'💪', title:'Bedenimdeki Açılar',
         desc:'Kol ve bacakla dar, dik, geniş açıları oluşturun.',
@@ -669,7 +669,7 @@ export const ACTIVITIES = [
         tip:'Açı bir dönme miktarıdır — bedenle deneyimlemek bu kavramı en doğal şekilde öğretir (embodied cognition). Diskalkulili çocuklarda bedenlenmiş öğrenme özellikle etkili (Hawes ve ark., 2022 meta-analizinde vurgulandı).',
         anxFriendly:true, dysc:true, tags:['açı','beden','dönme'],
         sesAlt:'Ek materyal gerekmez.',
-        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.5','MAT.4.3.7'] },
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.5','MAT.4.3.7'], context:['outdoor', 'indoor'], difficulty:'easy' },
 
       { id:'p12', emoji:'☀️', title:'Hayat Tahminleri',
         desc:'Günlük olayların olasılığını "imkânsız/olabilir/kesin" olarak tartışın.',
@@ -679,7 +679,7 @@ export const ACTIVITIES = [
         tip:'Olasılığın kelime dili, sayısal olasılıktan önce gelir. "Kesin/olabilir/imkânsız" ayrımını gündelik olaylarla kurmak, ileride yüzdelik olasılık hesaplamanın temelini hazırlar. Kaynak: Maneuvering the Middle Probability (maneuveringthemiddle.com/10-low-prep-probability-activities).',
         anxFriendly:true, dysc:true, tags:['olasılık','dil','muhakeme'],
         sesAlt:'Tamamen sözel. Araba yolculuğunda mükemmel.',
-        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T5'], tymm_yas:[], tymm_outcomes:['MAT.4.4.1'] },
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T5'], tymm_yas:[], tymm_outcomes:['MAT.4.4.1'], context:['outdoor', 'commute', 'bedtime'], difficulty:'easy' },
 
       { id:'p13', emoji:'💰', title:'Paranı Topla',
         desc:'Farklı banknotları birleştirerek hedef tutarı yapmanın kaç yolu var.',
@@ -689,7 +689,7 @@ export const ACTIVITIES = [
         tip:'Para kombinasyonları, toplama işleminin "aynı sonuca farklı yollarla ulaşma" zenginliğini gösterir. Hem para değerleri hem de toplama pratiği tek etkinlikte (2. sınıf "paraları ilişkilendirme" kazanımına doğrudan uyar).',
         anxFriendly:true, dysc:true, tags:['para','toplama','kombinasyon'],
         sesAlt:'Gerçek para kullanmayın — hayali ve kâğıt yeterli.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB2'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.1.1.9','MAT.2.1.8'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB2'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.1.1.9','MAT.2.1.8'], context:['indoor', 'commute'], difficulty:'medium' },
 
       { id:'p14', emoji:'🎒', title:'Kaç Tane Var? Ev Turu',
         desc:'Evdeki nesne gruplarını (kitaplar, şişeler, havlular) tahmin edip sayın.',
@@ -699,7 +699,7 @@ export const ACTIVITIES = [
         tip:'Tahminin gerçekle karşılaştırılması, sayı hissinin kalbidir (Clements & Sarama, 2014). Çocuk "10\'dan mı az 100\'den mi çok?" sorularını kendine sormaya başladığında matematiksel olgunluk kazanıyor.',
         anxFriendly:true, dysc:true, tags:['tahmin','sayma','sayı hissi'],
         sesAlt:'Tamamen ücretsiz — tüm ev eşyası malzeme.',
-        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.1.1.7','MAT.2.1.6','MAT.3.1.8'] },
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.1.1.7','MAT.2.1.6','MAT.3.1.8'], context:['indoor'], difficulty:'medium' },
 
       { id:'p15', emoji:'🔲', title:'Şekillerin Hikayesi',
         desc:'Evdeki şekilleri fotoğrafla veya çizerek bir "şekil albümü" yapın.',
@@ -709,7 +709,148 @@ export const ACTIVITIES = [
         tip:'Şekil tanıma, nesne olarak somut bağlamlı olduğunda kalıcıdır. Çocuk pencereyi "dikdörtgen" diye isimlendirdiğinde matematik günlük hayatın parçası oluyor.',
         anxFriendly:true, dysc:true, tags:['şekil','gözlem','albüm'],
         sesAlt:'Telefon olmadan da tamamen defter + kalem yeterli.',
-        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.4','MAT.2.3.1'] },
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.3.4','MAT.2.3.1'], context:['indoor', 'bedtime'], difficulty:'medium' },
+
+      { id:'q01', emoji:'🚂', title:'Tren Sırası',
+        desc:'Oyuncakları/kutuları tren gibi sıralayın; sıra numarası ve büyüklük kavramlarını birlikte kullanın.',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.NUMBER, dur:12,
+        materials:['5-10 oyuncak, kutu veya nesne'],
+        steps:['Nesneleri üst üste değil yan yana dizin — bir tren','Çocuğa: "En önde hangisi? Birinci." "İkinci, üçüncü..." her biri söylesin','"Sondaki kaçıncı?" — en büyük sıra','"En uzun vagonu göster" — boyut','"Birinci vagon ikinciden daha mı kısa, daha mı uzun?" karşılaştırma'],
+        tip:'Sıra sayıları (1., 2., 3.) ve miktar sayıları (1, 2, 3) farklı kavramlardır — çocuklar zaman zaman bunu karıştırır. Yarış/tren/sıra gibi görsel bağlamlarda sıra sayısı anlamı pekişir. Büyüklük karşılaştırması (daha çok/az, daha uzun/kısa) da aynı oyun içinde öğrenilir.',
+        anxFriendly:true, dysc:true, tags:['sıra sayısı','karşılaştırma','tren'],
+        sesAlt:'Oyuncak yoksa: bardak, kaşık, kitap, kalem — ne varsa.',
+        tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.3','MAT.1.1.4'], context:['game'], difficulty:'medium' },
+
+      { id:'q02', emoji:'🎨', title:'Boncuk Örüntü Atölyesi',
+        desc:'Renkli boncuk, düğme veya makarna ile artan/azalan örüntüler kurup kuralı keşfedin.',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.PATTERNS, dur:18,
+        materials:['Boncuk, düğme, renkli makarna veya kağıt parçaları','İp (opsiyonel)'],
+        steps:['Basit tekrar: "kırmızı-mavi-kırmızı-mavi..." — çocuk devam ettirsin','Artan: "1 kırmızı, 2 mavi, 3 kırmızı, 4 mavi..." — sıradaki kaç?','Kural: 2\'şer artan, geriye doğru da 2\'şer azalan deneyin','Çocuk kendi kuralını bulsun ve kurssun — siz tahmin edin','"Bu kural bitmez, devam ederse 10. adım kaç olur?" — genelleme'],
+        tip:'Örüntü, cebirsel düşüncenin temelidir. 1-2. sınıfta tekrar eden örüntülerle başlanır; 3-4. sınıfta kural genelleme eklenir ("n\'inci adım kaç?"). Farklı yaş grupları için aynı etkinlik farklı zorluk seviyelerinde oynanabilir. Kaynak: NRICH Patterns (nrich.maths.org/10491).',
+        anxFriendly:true, dysc:true, tags:['örüntü','kural','genelleme'],
+        sesAlt:'Boncuk yoksa: fasulye, mercimek, kağıt parçaları — her evde.',
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T2'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.1.6','MAT.2.1.5','MAT.3.1.7','MAT.4.1.5'], context:['indoor', 'game'], difficulty:'hard' },
+
+      { id:'q03', emoji:'🪞', title:'İkiz Bulma',
+        desc:'Evdeki nesnelerin ikizlerini (eş ve simetrik) bulun.',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2], category:Category.GEOMETRY, dur:12,
+        materials:['Evdeki çeşitli nesneler'],
+        steps:['"Eş" nedir? Birebir aynı — örneğin iki aynı bardak','Çocuk 3 çift eş nesne bulsun (çoraplar, bardaklar, ayakkabılar)','"Simetrik" nedir? Yarıları birbirine benziyor — elleriniz gibi','Çocuk 3 simetrik nesne bulsun (kaşık, yaprak, yüz)','"Eş ve simetrik farklı mı?" — kendi sözleriyle açıklasın'],
+        tip:'Eşlik ve simetri birbirine karıştırılabilecek kavramlardır. Eşlik = iki nesnenin ayrı ama birebir aynı olması; simetri = bir nesnenin kendi içinde dengelenmesi. Çocuğun kendi kelimeleriyle ayırt etmesi kavramı pekiştirir.',
+        anxFriendly:true, dysc:true, tags:['eşlik','simetri','karşılaştırma'],
+        sesAlt:'Ek materyal gerekmez — evdeki her şey örnektir.',
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.1.3.2','MAT.2.3.7'], context:['outdoor', 'indoor'], difficulty:'medium' },
+
+      { id:'q04', emoji:'📏', title:'Ölçümde Kavga!',
+        desc:'Aynı nesneyi farklı birimlerle ölçün — standart ölçü neden gerekli?',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.MEASUREMENT, dur:18,
+        materials:['Bir nesne (kalem, kitap, masa)','Farklı ölçüm araçları: karış, kaşık, cetvel, mezura'],
+        steps:['Masanın uzunluğunu siz karışla ölçün — kaç karış?','Çocuk da kendi karışıyla ölçün — aynı mı?','"Neden farklı?" tartışın — çünkü elimiz farklı','Aynı masayı cetvelle ölçün — herkes aynı sayıyı bulur','"Demek ki standart birim gerekli" — kendi keşfetsin'],
+        tip:'Freudenthal (1991) "Gerçekçi Matematik Eğitimi": Standart olmayan birimlerle başlamak, standart birim ihtiyacını çocuğun kendisi keşfetmesini sağlar. Dayatılan bir kural değil — doğal bir gereksinim. Kütle için de aynı şey: kaşık ile kilogram, kaç kaşık kaşıkta aynı olur? Aynı soruyu su ile de yapabilirsiniz.',
+        anxFriendly:true, dysc:true, tags:['ölçü','standart','birim'],
+        sesAlt:'Cetvel yoksa adım, karış, kibrit çöpü — farklı birim ne olursa.',
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T1','T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.2.1.10','MAT.2.1.11','MAT.2.3.5','MAT.3.3.5'], context:['outdoor', 'indoor', 'commute', 'bedtime'], difficulty:'hard' },
+
+      { id:'q05', emoji:'👫', title:'Eş Arkadaşlar',
+        desc:'Nesne gruplarını ikili gruplayarak tek-çift ve toplam özelliklerini keşfedin.',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3], category:Category.NUMBER, dur:12,
+        materials:['Küçük nesneler (boncuk, nohut, düğme)'],
+        steps:['6 nesne önünüze koyun — ikili gruplayın: 3 çift, eşsiz yok → çift','7 nesne ile aynı: 3 çift + 1 eşsiz → tek','"Tek+tek = ?" — 3+5 nesneleri ikili grupla → 4 çift, eşsiz yok → çift','"Çift+çift = ?" — 2+4 gruplayın → çift','"Tek+çift = ?" — 3+4 gruplayın → eşsiz var → tek'],
+        tip:'Tek-çift sayıları ikili gruplama ile somutlaştırmak, soyut kuralı ezberden değil keşiften öğretir. "Tek+tek=çift" gibi özellikleri çocuk kendi keşfederse kural kalıcı olur. Bu 3. sınıfın önemli bir muhakeme kazanımıdır.',
+        anxFriendly:true, dysc:true, tags:['tek-çift','toplama','gruplama'],
+        sesAlt:'Herhangi 15-20 nesne yeterli.',
+        tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.5','MAT.3.1.6'], context:['indoor', 'game'], difficulty:'medium' },
+
+      { id:'q06', emoji:'🛍️', title:'Alışveriş Talimatları',
+        desc:'Hazır bir yönerge seti (alışveriş listesi gibi) takip edip hesap yapma oyunu.',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.PROBLEM, dur:15,
+        materials:['Kağıt','Kalem'],
+        steps:['Siz bir "görev listesi" yazın: "3 ekmek × 5 TL, 2 süt × 12 TL, 1 peynir × 30 TL"','Çocuk sırayla her satırı hesaplasın','Sonunda toplamı bulsun','"50 TL verdiysek, üstü ne kadar?" — çıkarma','"Bütçemiz 100 TL olsaydı, daha neler alabilirdik?" — açık uçlu'],
+        tip:'Dört işlemi (çarpma/toplama/çıkarma/bölme) tek yönerge içinde izleyebilmek 3-4. sınıf kazanımıdır. Gerçek yaşam bağlamı (alışveriş) motivasyonu yüksek tutar. "Yönergeyi takip etme" becerisi, ileride algoritmik düşünmeye köprüdür.',
+        anxFriendly:true, dysc:false, tags:['dört işlem','yönerge','alışveriş'],
+        sesAlt:'Kağıtsız: sözlü olarak yapabilirsiniz, araba yolculuğunda ideal.',
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.5','MAT.4.2.6'], context:['kitchen', 'outdoor', 'indoor', 'commute', 'game'], difficulty:'medium' },
+
+      { id:'q07', emoji:'🧾', title:'Market Matematiği 2: Toplam-Para Üstü',
+        desc:'Gerçek bir fiş ile toplam hesabı ve para üstü pratiği.',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.MARKET, dur:15,
+        materials:['Eski bir market fişi veya hayali liste','Kağıt','Kalem'],
+        steps:['Fişe bakın: 5-6 kalem var','Çocuk toplamı tek tek toplasın — fiştekiyle karşılaştırın','"100 TL ödediysek, üstü ne olurdu?" — 3 basamaklı çıkarma','"1000 TL ödediysek?" — 4 basamaklı','Çocuk kendi fişini uydursun, siz hesaplayın'],
+        tip:'4 basamaklı toplama-çıkarma işlemleri 4. sınıfın temel kazanımıdır. Gerçek fiş ile yapılan pratik, kuralsız çalışma kağıdından çok daha motive edicidir ve hata yakalama becerisi gelişir (Schaeffer et al., 2018 — Bedtime Math etkisi).',
+        anxFriendly:false, dysc:false, tags:['toplama','çıkarma','fiş','4 basamak'],
+        sesAlt:'Fiş yoksa hayali liste yazın — aynı işe yarar.',
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.3.2.2','MAT.4.2.2'], context:['kitchen', 'indoor'], difficulty:'medium' },
+
+      { id:'q08', emoji:'🔷', title:'Çubuk Geometri',
+        desc:'Kibrit çöpü veya kürdanla çokgenler yapıp kenar sayısına göre sınıflandırın.',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:18,
+        materials:['15-20 kibrit çöpü veya kürdan','(Opsiyonel) oyun hamuru köşeleri için'],
+        steps:['3 kibrit çöpüyle bir üçgen yapın','"4 çöple ne yaparsın?" — kare','5 çöp → beşgen, 6 → altıgen','Her şekilde köşe ve kenar sayısını sayın','"8 çöple bir şekil yap" — çocuk kendi keşfetsin (sekizgen? veya iki kare?)'],
+        tip:'Kenar sayısının artmasıyla şekillerin nasıl değiştiğini gözlemlemek, 3. sınıf sınıflama kazanımının temelidir. Parmakla inşa etmek, sadece çizmekten daha kalıcıdır (Hawes ve ark. 2022 — fiziksel manipülatif avantajı).',
+        anxFriendly:true, dysc:true, tags:['geometri','kenar','sınıflama'],
+        sesAlt:'Kibrit yoksa kürdan, pipet, kalem.',
+        tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.3.2','MAT.3.3.8'], context:['kitchen', 'indoor', 'game'], difficulty:'hard' },
+
+      { id:'q09', emoji:'🍬', title:'Şekerin Yarısı Kimin?',
+        desc:'Bir çokluğun basit kesir kadarını hesaplayıp eşit paylaştırın.',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:15,
+        materials:['12-20 adet küçük nesne (şeker, boncuk, düğme)'],
+        steps:['12 şekerin "yarısı" ne? — 6','"1/4\'ü ne?" — 3','"3/4\'ü ne?" — 9 (açıkla: 3 tane 1/4)','Ters soru: "Ahmet 4 şeker aldı, bu hepsinin 1/3\'ü. Toplam?" — 12','Kendi kesir bilmecelerini kursun'],
+        tip:'Bir çokluğun kesir kadarı ve kesir kadarı verilen çokluğun tamamını bulma 4. sınıfın temel kazanımlarındandır. Somut nesnelerle başlamak, soyut "a/b × n" formülüne ezbersiz temel hazırlar.',
+        anxFriendly:true, dysc:true, tags:['kesir','bölüştürme','oran'],
+        sesAlt:'Şeker yoksa boncuk, düğme, fasulye — her 12\'lik grup.',
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.4.1.10'], context:['indoor', 'game'], difficulty:'medium' },
+
+      { id:'q10', emoji:'🎂', title:'Pasta Savaşları',
+        desc:'Aynı paydalı kesirlerle toplama/çıkarma — gerçek pasta veya kağıt ile.',
+        ageGroups:[AgeGroup.G4], category:Category.NUMBER, dur:15,
+        materials:['Yuvarlak kağıt veya gerçek yassı bir nesne','Kalem'],
+        steps:['Kağıt pastayı 8 eşit dilime bölün','"Anne 3/8 aldı, baba 2/8 aldı — birlikte kaç dilim?" — 5/8','"Geriye kaç kaldı?" — 8/8 - 5/8 = 3/8','"Ben 1/8 daha aldım — şimdi ne kadar kaldı?" — zincirleme','Problem kurma: "Ben önce yarım yedim, sonra 1/4 daha..."'],
+        tip:'Paydaları eşit kesirler basit görünür ama 4. sınıfta tam anlaşılması gerekir. Gerçek bir pasta (veya kağıt model) üzerinde yapılan işlemler, sembolik 3/8 + 2/8 = 5/8 formülünden çok daha anlamlıdır.',
+        anxFriendly:true, dysc:false, tags:['kesir','toplama','çıkarma'],
+        sesAlt:'Kağıt daire yeterli — gerçek pasta gerekmez.',
+        tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.4.1.11','MAT.4.1.12'], context:['kitchen', 'indoor'], difficulty:'medium' },
+
+      { id:'q11', emoji:'⚖️', title:'Ölçü Dönüşüm Yolculuğu',
+        desc:'Uzunluk ve kütle birimleri arasında geçiş yapmanın pratik yolu.',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.MEASUREMENT, dur:15,
+        materials:['Cetvel veya mezura','Mutfak terazisi (opsiyonel)'],
+        steps:['Cetvelle 1 metre = 100 cm görün — elle doğrulayın','"Boyun kaç cm?" ölçün — metreye çevirin','"10 cm = ? mm" (100) — parmak boyunu ölçün','Mutfakta: "1 kg un = 1000 g" — terazide gösterin','"Yarım kg kaç g?" (500) — paketleri inceleyin'],
+        tip:'Metrik sistem dönüşümü "100 ile çarp / böl" kuralı olarak ezberletilmemelidir. Çocuk 1 m\'yi fiziksel olarak 100 kez 1 cm\'ye bölerek görmelidir. Bu 3-4. sınıfın önemli kazanımıdır.',
+        anxFriendly:true, dysc:true, tags:['ölçü','dönüşüm','metrik'],
+        sesAlt:'Terazi yoksa 1 kg\'lık paketleri incelemek yeterli.',
+        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T1','T3'], tymm_yas:[], tymm_outcomes:['MAT.3.1.15','MAT.4.1.13'], context:['kitchen', 'indoor', 'commute', 'game'], difficulty:'medium' },
+
+      { id:'q12', emoji:'🔢', title:'Tahmin Çarpması',
+        desc:'İki basamaklı çarpmanın sonucunu önce tahmin edip sonra hesaplama.',
+        ageGroups:[AgeGroup.G4], category:Category.NUMBER, dur:15,
+        materials:['Kağıt','Kalem'],
+        steps:['"23 × 4 aşağı yukarı ne olur?" — tahmin yazsın','İpucu: 20 × 4 = 80, 25 × 4 = 100 → arada olmalı','Sonra gerçek hesap: 23 × 4 = 92','"Tahminin ne kadar yakındı?" — değerlendirin','Başka örnekler: 49 × 5 (≈50×5=250), 98 ÷ 2 (≈100÷2=50)'],
+        tip:'Tahmin becerisi matematik öz-yeterliğinin temelidir. Çocuk "yaklaşık 90\'lı bir sayı" diye tahmin edip sonucu 92 bulursa, stratejisinin işe yaradığını görür. "Yuvarla ve kontrol et" 4. sınıfta resmi kazanımdır.',
+        anxFriendly:true, dysc:false, tags:['çarpma','tahmin','yuvarlak'],
+        sesAlt:'Sözel yapabilirsiniz — özellikle araba yolculuğunda.',
+        tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.4.2.3','MAT.4.2.4'], context:['outdoor', 'indoor', 'commute'], difficulty:'medium' },
+
+      { id:'q13', emoji:'📐', title:'İki Kalemle Açı',
+        desc:'İki kalem ve kağıtla açıları karşılaştırıp gerçek ölçü ihtiyacını keşfedin.',
+        ageGroups:[AgeGroup.G4], category:Category.GEOMETRY, dur:12,
+        materials:['2 kalem','Kağıt'],
+        steps:['İki kalemi "V" şeklinde tutun — bu bir açı','"Daha dar/geniş nasıl yapılır?" deneyin','Bir açıyı kağıda iz bırakacak şekilde çizin — bu açı ne kadar?','"Kaç derece?" — "Bilmiyoruz çünkü araç yok"','"Demek ki iletki (gönye) gerekliymiş" — standart araç ihtiyacı'],
+        tip:'Açının "kaçlık" olduğunu sayısal ifade edebilmek için iletki (gönye) gerekir. Bunu çocuğun kendi keşfetmesi, öğretmen/ebeveynin "iletki alın" demesinden daha güçlüdür. Freudenthal yaklaşımı.',
+        anxFriendly:true, dysc:false, tags:['açı','ölçme','standart'],
+        sesAlt:'Sadece 2 kalem ve 1 kağıt — çok ucuz.',
+        tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.6'], context:['indoor', 'commute'], difficulty:'medium' },
+
+      { id:'q14', emoji:'🟦', title:'Izgara Sanatçısı',
+        desc:'Kareli kağıtta renk kodlarıyla bir desen oluşturup algoritmik düşünün.',
+        ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.SPATIAL, dur:18,
+        materials:['Kareli kağıt','Renkli kalemler'],
+        steps:['5x5 ızgara çizin','Siz bir yönerge okuyun: "(1,1) kırmızı, (2,1) mavi, (1,2) mavi..."','Çocuk yönergeye göre boyasın','Ortaya ne çıktı? — tahmin etsin (basit bir desen)','Şimdi çocuk kendi deseni yapsın, size yönerge yazsın'],
+        tip:'Koordinat ve yönergeyle çalışma, ızgara kodlamasının özüdür. Kodlama ekran gerektirmez — kareli kağıt yeterli. "Kendi kuralını yaz, başkasına takip ettir" süreci algoritmik düşünmedir. Kaynak: Kodable Unplugged Coding (kodable.com/learn/unplugged-coding-activities).',
+        anxFriendly:true, dysc:true, tags:['ızgara','kodlama','koordinat'],
+        sesAlt:'Kareli defter her evde vardır.',
+        tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.10'], context:['indoor', 'bedtime'], difficulty:'hard' },
+
 
 
 ];
