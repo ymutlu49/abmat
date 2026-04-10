@@ -1,0 +1,1543 @@
+[
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.1",
+    "ders_saati": 57,
+    "title": "Rakamları ve 20’ye kadar olan sayıları (20 dâhil), niceliklerin büyüklüklerini temsil etmek için kullanabilme",
+    "bullets": [
+      "a) Niceliklerin büyüklüklerinin farklı temsillerini tanır.",
+      "b) Karşılaştığı niceliklerin büyüklüklerini, farklı temsilleri bağlamında belirler.",
+      "c) Karşılaştığı niceliklerin büyüklüklerini rakam ve sayılarla okur ve yazar."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.2",
+    "ders_saati": 57,
+    "title": "Ögeleri dağınık veya düzenli bir şekilde bulunan bir nesne grubunu sayarken parçalar arasında ilişkileri çözümleyebilme",
+    "bullets": [
+      "a) Ögeleri dağınık veya düzenli bir şekilde bulunan bir nesne grubunun parçalarını belirler.",
+      "b) Ögeleri dağınık veya düzenli bir şekilde bulunan bir nesne grubunu sayarken parçalar arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.3",
+    "ders_saati": 57,
+    "title": "Nesnelerin sıra sayısını gösterebilme",
+    "bullets": []
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.4",
+    "ders_saati": 57,
+    "title": "İki niceliğin büyüklüğünü “çok”, “daha çok”, “az”, “daha az” veya “eşit” terimleriyle karşılaştırabilme",
+    "bullets": [
+      "a) İki niceliğin büyüklüğünü “çok”, “daha çok”, “az”, “daha az” veya “eşit” terimleriyle ifade eder.",
+      "b) İfade edilen büyüklüklere ilişkin benzerlikleri listeler.",
+      "c) İfade edilen büyüklüklere ilişkin farklılıkları listeler."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.5",
+    "ders_saati": 57,
+    "title": "100’e kadar ileriye ve 20’den geriye doğru ritmik sayabilme",
+    "bullets": []
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.6",
+    "ders_saati": 57,
+    "title": "Artan veya azalan sayı ve şekil örüntülerini çözümleyebilme",
+    "bullets": [
+      "a) Sayı ve şekil örüntülerinin ardışık ögelerini belirler.",
+      "b) Sayı ve şekil örüntülerinin ardışık ögeleri arasındaki ilişkiyi belirler."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.7",
+    "ders_saati": 57,
+    "title": "Verilen bir çokluktaki ilişkilerden yararlanarak 20’ye kadar (20 dâhil) olan nesnelerin sayısını tahmin edebilme",
+    "bullets": [
+      "a) Verilen bir çokluktaki ilişkileri gözlem ve deneyimleri ile ilişkilendirir.",
+      "b) Bir çokluğun büyüklüğünü stratejiye dayanarak tahmin eder.",
+      "c) Tahmin edilen sonuç ile gerçek sonucu karşılaştırarak kendi tahminîne yönelik bir yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.8",
+    "ders_saati": 18,
+    "title": "Standart olmayan uygun ölçme araçları ile nesnelerin uzunluğunu ve tartacağı kütlenin ölçüm sonuçlarını tahmin edebilme",
+    "bullets": [
+      "a) Ölçeceği uzunluğa ve kütleye uygun standart olmayan ölçme aracını belirler.",
+      "b) Ölçeceği uzunluğun ve tartacağı kütlenin ölçüm sonuçlarını belirlenen standart olmayan ölçü birimi cinsinden tahmin eder.",
+      "c) Tahmininin doğruluğuna ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 3,
+    "theme_name": "SAYILAR VE NİCELİKLER (3)",
+    "theme_code": "MAT.1.1",
+    "code": "MAT.1.1.9",
+    "ders_saati": 7,
+    "title": "Paraların (1 TL, 5 TL, 10 TL, 20 TL, 50 TL, 100 TL ve 200 TL) temsil ettiği büyüklükleri tanıyabilme",
+    "bullets": []
+  },
+  {
+    "grade": 1,
+    "theme_num": 4,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.1.2",
+    "code": "MAT.1.2.1",
+    "ders_saati": 50,
+    "title": "Günlük yaşamın içerdiği toplama ve çıkarma işlemlerini çözümleyebilme",
+    "bullets": [
+      "a) Günlük yaşam durumunun toplama ve çıkarma işlemlerinden hangisini gerektirdiğini fark eder.",
+      "b) Günlük yaşam durumuna karşılık gelen toplama ve çıkarma işlemlerini birbiri ile ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 4,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.1.2",
+    "code": "MAT.1.2.2",
+    "ders_saati": 50,
+    "title": "Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak muhakeme edebilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerine ilişkin ögeleri belirler.",
+      "b) Toplama ve çıkarma işlemlerine ilişkin ögeler arasındaki ilişkileri belirler.",
+      "c) Toplama ve çıkarma işlemlerine yönelik tahmin ve zihinden işlem sonuçları arasında ilişki kurar.",
+      "ç) Tahmin ve zihinden işlem sonuçlarının tutarlılığını ifade eder."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 4,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.1.2",
+    "code": "MAT.1.2.3",
+    "ders_saati": 50,
+    "title": "Eşit işaretinin anlamını toplama ve çıkarma işlemi bağlamında yorumlayabilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerinde eşit işaretinin kullanımını inceler.",
+      "b) Eşit işaretinin anlamını kullanarak bir toplama ya da çıkarma işlemini dönüştürür.",
+      "c) Dönüştürdüğü toplama ve çıkarma işlemlerini kendi cümleleriyle ifade eder."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 4,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.1.2",
+    "code": "MAT.1.2.4",
+    "ders_saati": 50,
+    "title": "Toplama ve çıkarma işlemlerinin ilişkisini yorumlayabilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerinin ilişkisini inceler.",
+      "b) Toplama ve çıkarma işlemlerini tersine dönüştürür.",
+      "c) Toplama ve çıkarma işlemlerinin ilişkisini yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.1.3",
+    "code": "MAT.1.3.1",
+    "ders_saati": 15,
+    "title": "Hedefe ulaşmak için mesafeleri ve yönleri içeren yönergeleri çözümleyebilme",
+    "bullets": [
+      "a) Yönergede yer alan mesafe ve yönleri içeren kavramları belirler.",
+      "b) Yönergeleri kullanarak başlangıç noktası ve hedef arasında ilişki kurar."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.1.3",
+    "code": "MAT.1.3.2",
+    "ders_saati": 15,
+    "title": "Nesnelerin eşliğini değerlendirebilme",
+    "bullets": [
+      "a) Nesnelerin eşliği için bir ölçüt belirler.",
+      "b) Ölçüte uygun bilgileri kullanarak ölçme yapar.",
+      "c) Yapılan ölçmeye dayalı olarak elde ettiği sonuçları ölçüt ile karşılaştırır.",
+      "ç) Karşılaştırmalarına ilişkin olarak yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.1.3",
+    "code": "MAT.1.3.3",
+    "ders_saati": 15,
+    "title": "Günlük yaşamdaki nesneleri biçimsel özelliklerine göre ayırt edebilme",
+    "bullets": []
+  },
+  {
+    "grade": 1,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.1.3",
+    "code": "MAT.1.3.4",
+    "ders_saati": 15,
+    "title": "Günlük yaşamda karşılaşılan geometrik yapılardaki geometrik şekilleri çözümleyebilme",
+    "bullets": [
+      "a) Geometrik yapılardaki şekilleri belirler.",
+      "b) Şekiller arasında ilişki kurar."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.1.3",
+    "code": "MAT.1.3.5",
+    "ders_saati": 15,
+    "title": "Biçimsel özelliklerine göre geometrik şekilleri sınıflandırabilme",
+    "bullets": [
+      "a) Geometrik şekillerin biçimsel özelliklerini belirler.",
+      "b) Geometrik şekilleri biçimsel özelliklerine göre ayırır.",
+      "c) Geometrik şekilleri tasnif eder.",
+      "ç) Geometrik şekilleri adlandırır."
+    ]
+  },
+  {
+    "grade": 1,
+    "theme_num": 7,
+    "theme_name": "VERİYE DAYALI ARAŞTIRMA",
+    "theme_code": "MAT.1.4",
+    "code": "MAT.1.4.1",
+    "ders_saati": 10,
+    "title": "Kategorik veriye dayalı temel veri grubu ile çalışabilme ve veriye dayalı karar verebilme",
+    "bullets": [
+      "a) Kategorik veriye dayalı istatiksel araştırma gerektiren günlük yaşam durumu belirler.",
+      "b) Kategorik veriye dayalı betimleme gerektirebilecek araştırma soruları oluşturur.",
+      "c) Kategorik verileri toplamak için plan yapar.",
+      "ç) Kategorik verileri toplar.",
+      "d) Toplanan verileri analiz etmek için görselleştirme araçlarından çetele, sıklık tablosu ve nesne grafini seçer.",
+      "e) Seçtiği araçlarla verileri görselleştirerek analiz eder.",
+      "f) Araştırma sonuçlarını yorumlar.",
+      "g) Araştırma sonuçlarını araştırma sorularına göre değerlendirir."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.1",
+    "ders_saati": 41,
+    "title": "100’e kadar olan niceliklerin büyüklüklerini temsil etmede sayıların sembolik temsillerinden yararlanabilme",
+    "bullets": [
+      "a) Niceliklerin büyüklüklerinin farklı temsillerini tanır.",
+      "b) Niceliklerin büyüklüklerine uygun sayı temsillerini belirler.",
+      "c) Niceliklerin büyüklüklerine karşılık gelen sayıları okur ve yazar."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.2",
+    "ders_saati": 41,
+    "title": "İki basamaklı sayıları çözümleyebilme",
+    "bullets": [
+      "a) İki basamaklı sayıların basamak ve basamak değerini belirler.",
+      "b) İki basamaklı sayıların basamak ve basamak değerleri arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.3",
+    "ders_saati": 41,
+    "title": "Sayıların sırasını belirleyebilme",
+    "bullets": []
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.4",
+    "ders_saati": 41,
+    "title": "İleriye ve geriye doğru ritmik sayabilme",
+    "bullets": [
+      "a) Yüzlük tablo üzerinde ileriye ve geriye doğru ritmik saymaya ilişkin gözlem yapar.",
+      "b) 20 içinde ikişer, 30 içinde üçer, 40 içinde dörder, 100 içinde beşer ileriye ve geriye doğru ritmik sayarken örüntü bulur.",
+      "c) İleriye ve geriye doğru ritmik sayarken bulduğu örüntüyü geneller."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.5",
+    "ders_saati": 41,
+    "title": "Sayı ve sayı temsiline dönüşen şekil örüntülerine dayalı çıkarım yapabilme da) Örüntüde kullanılan sayılar ve sayı temsiline dönüşen şekiller arasındaki ilişkiye yönelik varsayımda bulunur. eb) Belirlediği varsayıma göre sayı ve sayı temsiline dönüşen şekil örüntülerini örnekler üzerinde listeler. cf) Gösterilen örüntünün, varsayımı karşılayıp karşılamadığını örneklerle sınar.",
+    "bullets": [
+      "ç) Karşılaştırılan sayı ve sayı temsiline dönüşen şekil örüntülerinin kuralını sözlü olarak ifade eder.",
+      "d) Gösterilen örüntü ile ilgili değerlendirmede bulunur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.6",
+    "ders_saati": 41,
+    "title": "Bir çokluktaki ilişkilerden yararlanarak 50’ye kadar olan nesnelerin sayısını tahmin edebilme",
+    "bullets": [
+      "a) Bir çokluktaki parça-bütün ve dağılım ilişkisini gözlem ve deneyimleri ile ilişkilendirir.",
+      "b) Bir çokluğun büyüklüğünü stratejiye dayanarak tahmin eder.",
+      "c) Tahmini ile gerçek sonucu karşılaştırarak tahmininin doğruluğuna yönelik bir yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.7",
+    "ders_saati": 30,
+    "title": "Bütün, yarım ve çeyrek arasındaki ilişkiyi çözümleyebilme",
+    "bullets": [
+      "a) Bir bütünün yarım ve çeyrek parçalarını belirler.",
+      "b) Bütün, yarım ve çeyrek arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.8",
+    "ders_saati": 30,
+    "title": "Paraları değerlerine göre ilişkilendirerek çözümleyebilme",
+    "bullets": [
+      "a) Paraları değerlerine göre inceleyerek madenî paraları belirler.",
+      "b) Kuruş ve Türk lirası arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.9",
+    "ders_saati": 30,
+    "title": "Zaman ölçü birimlerini okuyabilme ve yazabilme",
+    "bullets": []
+  },
+  {
+    "grade": 2,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.10",
+    "ders_saati": 30,
+    "title": "Standart uzunluk ve kütle ölçme araçlarının ve birimlerinin gerekliliğini yansıtabilme",
+    "bullets": [
+      "a) Standart olmayan araçlarla ilgili deneyimlerinden yola çıkarak standart ölçme araçlarına olan ihtiyacı gözden geçirir.",
+      "b) Deneyimlerine dayalı olarak standart ölçme araçlarının gerekliliğine ilişkin çıkarımda bulunur.",
+      "c) Standart ölçme araçlarına ilişkin ulaştığı çıkarımlar doğrultusunda standart ölçü birimlerinin gerekliliğini değerlendirir."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.2.1",
+    "code": "MAT.2.1.11",
+    "ders_saati": 30,
+    "title": "Standart uzunluk ve kütle ölçü birimleri cinsinden uzunlukları ve kütleleri tahmin edebilme",
+    "bullets": [
+      "a) Standart ölçü birimlerine ilişkin deneyimini, tahmine konu olan uzunluk ve kütle ile ilişkilendirir.",
+      "b) Nesnelerin uzunluğunu ve kütlesini standart ölçü birim cinsinden tahmin eder.",
+      "c) Tahminini ölçüm sonuçlarıyla karşılaştırarak tahminîne ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.1",
+    "ders_saati": 55,
+    "title": "Toplama ve çıkarma işlemleri gerektiren günlük yaşam problemlerini çözebilme",
+    "bullets": [
+      "a) Problemi anlayarak verilen ve istenilenleri belirler.",
+      "b) Problemde verilenler ile istenilenlerin gerektirdiği işlemler arasındaki ilişkiyi belirler.",
+      "c) Probleme ilişkin verilenleri belirleyerek uygun matematiksel temsillere dönüştürür.",
+      "ç) Matematiksel temsillere dönüştürdüğü problemi kendi ifadeleri ile açıklar.",
+      "d) Problemlerin sonucuna ilişkin tahminde bulunarak işlemleri gerçekleştirmek için stratejiler geliştirir.",
+      "e) Belirlenen strateji ya da stratejileri çözüm için uygular.",
+      "f) Çözüm yollarını kontrol ederek çözüme ulaştırmayan stratejiyi değiştirir.",
+      "g) Problemin çözümü için kullandığı veya geliştirdiği stratejileri gözden geçirerek kısa yolları değerlendirir.",
+      "ğ) Çözüme ulaştıran stratejinin/stratejilerin hangi problemlere uygulanabileceğini geneller.",
+      "h) Genellemenin geçerliliğini matematiksel örneklerle değerlendirir."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.2",
+    "ders_saati": 55,
+    "title": "Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak muhakeme edebilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerine ilişkin ögeleri belirler.",
+      "b) Toplama ve çıkarma işlemlerine ilişkin öğeler arasındaki ilişkileri belirler.",
+      "c) Toplama ve çıkarma işlemine yönelik tahmin ve zihinden işlem sonuçları arasında ilişki kurar.",
+      "ç) Tahmin ve zihinden işlem sonuçlarının tutarlılığını ifade eder."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.3",
+    "ders_saati": 55,
+    "title": "Toplama ve çıkarma işlemlerinin ilişkisini yorumlayabilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerinin ilişkisini inceler.",
+      "b) Toplama ve çıkarma işlemlerini tersine dönüştürür.",
+      "c) Toplama ve çıkarma işlemlerinin ilişkisini yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.4",
+    "ders_saati": 55,
+    "title": "Çarpma ve bölme işlemlerini toplama ve çıkarma işlemlerine dayalı olarak çözümleyebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerinin anlamlarının toplama ve çıkarma işlemleriyle ilişkili olduğunu fark eder.",
+      "b) Çarpma ve bölme işlemlerini toplama ve çıkarma işlemleriyle ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.5",
+    "ders_saati": 55,
+    "title": "Çarpma ve bölme işlemlerinin sonuçlarını muhakeme edebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerine ilişkin bileşenleri belirler.",
+      "b) Çarpma ve bölme işlemlerine ilişkin bileşenler arasındaki ilişkileri belirler.",
+      "c) Çarpma ve bölme işlemine yönelik tahmin ve zihinden işlem sonuçlarını ifade eder.",
+      "ç) Tahmin ve zihinden işlem sonuçlarını açıklar."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.2.2",
+    "code": "MAT.2.2.6",
+    "ders_saati": 55,
+    "title": "Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme",
+    "bullets": [
+      "a) Dört işlemde eşitliği farklı anlamlarına göre inceler.",
+      "b) Dört işlem bağlamında aynı sonucu veren durumları eşitliğin anlamını kullanarak farklı sayılarla ifade eder.",
+      "c) Eşitliğin anlamlarını dört işlem bağlamında ifade eder."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.1",
+    "ders_saati": 25,
+    "title": "Günlük yaşamda kullanılan nesneleri biçimsel özelliklerine göre geometrik cisim olarak sınıflandırabilme",
+    "bullets": [
+      "a) Günlük yaşamda kullanılan nesnelerin biçimsel özelliklerini belirler.",
+      "b) Farklı nesneleri biçimsel özelliklerine göre ayırır.",
+      "c) Nesneleri geometrik cisim olarak tasnif eder.",
+      "ç) Geometrik cisimleri adlandırır."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.2",
+    "ders_saati": 25,
+    "title": "Geometrik cisim modellerini kullanarak yapılar sentezleyebilme",
+    "bullets": [
+      "a) Geometrik yapılardaki geometrik cisimleri belirler.",
+      "b) Geometrik cisimler arasında ilişki kurar.",
+      "c) Geometrik cisimleri birleştirerek özgün bir yapı oluşturur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.3",
+    "ders_saati": 25,
+    "title": "Geometrik şekiller kullanarak modeller sentezleyebilme",
+    "bullets": [
+      "a) Geometrik yapılardaki geometrik şekilleri belirler.",
+      "b) Geometrik şekiller arasında ilişki kurar.",
+      "c) Geometrik şekilleri birleştirerek özgün model oluşturur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.4",
+    "ders_saati": 25,
+    "title": "Geometrik cisim ve şekillerin yön, konum veya büyüklükleri değiştiğinde biçimsel özelliklerinin değişmediğini yorumlayabilme",
+    "bullets": [
+      "a) Geometrik cisim ve şekillerin mevcut yön, konum veya büyüklüklerini inceler.",
+      "b) Geometrik cisim ve şekillerin mevcut yön, konum veya büyüklüklerini biçimsel özelliklerinden kopmadan farklı büyüklüklere veya farklı yönlere dönüştürerek gösterir.",
+      "c) Geometrik cisim ve şekillerin yön, konum veya büyüklükleri değişsede geometrik cisim ve şekil olarak aynı kaldığını ifade eder."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.5",
+    "ders_saati": 25,
+    "title": "Standart olmayan sıvı ölçme araçları ile sıvı miktarını tahmin edebilme",
+    "bullets": [
+      "a) Standart olmayan sıvı ölçme araçlarına ilişkin deneyimini, tahmine konu olan sıvı miktarı ile ilişkilendirir.",
+      "b) Belirlenen standart olmayan sıvı ölçme araçlarına göre sıvının miktarını tahmin eder.",
+      "c) Tahminini ölçüm sonuçlarıyla karşılaştırarak tahminîne ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.6",
+    "ders_saati": 11,
+    "title": "Mesafe ve yönleri içerecek şekilde hedefe ulaşmak için uygun stratejilere karar verebilme",
+    "bullets": [
+      "a) Hedefe ulaşmak için ölçüt belirler.",
+      "b) Belirlediği ölçüte uygun bilgileri toplar.",
+      "c) Topladığı bilgilerden ölçüte yönelik seçenekler oluşturur.",
+      "ç) Oluşturduğu seçenekler üzerinde mantıksal denetleme yapar.",
+      "d) Seçenekler arasından ölçüte uygun seçim yapar.",
+      "e) Ölçüt değişikliği durumunu sürece yansıtır."
+    ]
+  },
+  {
+    "grade": 2,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.2.3",
+    "code": "MAT.2.3.7",
+    "ders_saati": 11,
+    "title": "Verilen şekiller arasından simetrik olanları ayırt edebilme",
+    "bullets": []
+  },
+  {
+    "grade": 2,
+    "theme_num": 6,
+    "theme_name": "VERİYE DAYALI ARAŞTIRMA",
+    "theme_code": "MAT.2.4",
+    "code": "MAT.2.4.1",
+    "ders_saati": 10,
+    "title": "Kategorik veriye dayalı en çok iki veri grubu ile çalışabilme ve veriye dayalı karar verebilme",
+    "bullets": [
+      "a) Kategorik veriye dayalı istatistiksel araştırma gerektiren günlük yaşam durumu belirler.",
+      "b) Kategorik veriye dayalı betimleme veya karşılaştırma gerektirebilecek araştırma soruları oluşturur.",
+      "c) Kategorik verileri toplamak için plan yapar.",
+      "ç) Kategorik verileri toplar.",
+      "d) Toplanan verileri analiz etmek için görselleştirme araçlarından çetele tablosu, sıklık tablosu ve şekil grafiğini seçer.",
+      "e) Seçtiği araçlarla verileri görselleştirerek analiz eder.",
+      "f) Araştırma sonuçlarını yorumlar.",
+      "g) Araştırma sonuçlarını araştırma sorularına göre değerlendirir."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.1",
+    "ders_saati": 26,
+    "title": "Niceliklerin büyüklüklerine karşılık gelen 1000’e kadar olan sayıların temsillerinden yararlanabilme",
+    "bullets": [
+      "a) Niceliklerin büyüklüklerinin temsillerini tanır.",
+      "b) Niceliklerin büyüklüklerine uygun sayı temsillerini belirler.",
+      "c) Niceliklerin büyüklüklerine karşılık gelen uygun sayıları okur ve yazar."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.2",
+    "ders_saati": 26,
+    "title": "1000’e kadar olan sayıları çözümleyebilme",
+    "bullets": [
+      "a) Üç basamaklı sayıların basamaklarını belirler.",
+      "b) Üç basamaklı sayıların basamak ve basamak değerleri arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.3",
+    "ders_saati": 26,
+    "title": "Sayıları sıralayabilme",
+    "bullets": [
+      "a) 1000’e kadar olan sayıları öncelik/sonralık ilişkisine göre belirler.",
+      "b) 1000’e kadar olan sayıları bulundukları onluklara ve yüzlüklere göre ayırır.",
+      "c) 1000’e kadar olan sayıları en yakın onluklara ve yüzlüklere göre tasnif eder.",
+      "ç) 1000’e kadar olan sayıları en yakın onluklara ve yüzlüklere göre ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.4",
+    "ders_saati": 26,
+    "title": "Sayıları ileriye ve geriye doğru ritmik sayabilme",
+    "bullets": [
+      "a) Modeller üzerinde ileriye ve geriye doğru ritmik saymaya ilişkin gözlem yapar.",
+      "b) 60 içinde altışar, 70 içinde yedişer, 80 içinde sekizer, 90 içinde dokuzar; 1000 içinde onar ve yüzer ileriye ve geriye doğru ritmik sayarken örüntü bulur.",
+      "c) İleriye ve geriye doğru ritmik sayarken bulduğu örüntüyü geneller."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.5",
+    "ders_saati": 26,
+    "title": "Sayıları tek-çift olarak sınıflandırabilme",
+    "bullets": [
+      "a) Sayıları tek-çift ilişkisine göre belirler.",
+      "b) Sayıları tek-çift olma durumlarına göre ayırt eder.",
+      "c) Sayıları tek-çift olma durumlarına göre tasnif eder.",
+      "ç) Sayıları tek-çift sayı olarak ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.6",
+    "ders_saati": 26,
+    "title": "Tek ve çift sayıların toplamlarının tek ya da çift olduğunu belirleyebilme",
+    "bullets": []
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.7",
+    "ders_saati": 26,
+    "title": "Sayı ve sayı temsiline dönüşen şekil örüntülerine dayalı çıkarım yapabilme",
+    "bullets": [
+      "a) Örüntüde kullanılan sayılar ve sayı temsiline dönüşen şekiller arasındaki ilişkiye yönelik varsayımda bulunur.",
+      "b) Belirlediği varsayıma göre sayı ve sayı temsiline dönüşen şekil örüntülerini örnekler üzerinde listeler.",
+      "c) Gösterilen örüntünün varsayımı karşılayıp karşılamadığını örneklerle sınar.",
+      "ç) Karşılaştırılan sayı ve sayı temsiline dönüşen şekil örüntülerinin kuralını sözlü olarak ifade eder.",
+      "d) Gösterilen örüntü ile ilgili değerlendirmede bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.8",
+    "ders_saati": 26,
+    "title": "Bir çokluktaki ilişkilerden yararlanarak 100’e kadar olan nesnelerin sayısını tahmin edebilme",
+    "bullets": [
+      "a) Bir çokluktaki parça-bütün ve dağılım ilişkisini gözlem ve deneyimleri ile ilişkilendirir.",
+      "b) Bir çokluğun büyüklüğünü stratejiye dayanarak tahmin eder.",
+      "c) Tahmini ile gerçek sonucu karşılaştırarak tahmininin doğruluğuna yönelik bir yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.9",
+    "ders_saati": 45,
+    "title": "Bütün, yarım ve çeyreğin kesirle gösterimi için modellerden yararlanabilme",
+    "bullets": [
+      "a) Bütün, yarım ve çeyrek modellerinin temsillerini tanır.",
+      "b) Bütün, yarım ve çeyrek modellerine uygun kesir temsillerini belirler.",
+      "c) Belirlediği temsili bütün, yarım ve çeyrek modelleri için kullanır."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.10",
+    "ders_saati": 45,
+    "title": "Bir bütünü eş parçalar oluşturacak şekilde birim kesir olarak çözümleyebilme",
+    "bullets": [
+      "a) Bir bütünü oluşturan eş parçaları belirler.",
+      "b) Bütün ile eş parçaların her biri arasındaki ilişkiyi belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.11",
+    "ders_saati": 45,
+    "title": "Bir kesrin payı ile paydası arasındaki ilişkiyi çözümleyebilme",
+    "bullets": [
+      "a) Bir kesrin pay ve paydasına ait parçaları belirler.",
+      "b) Bir kesrin pay ve paydasına ait parçalar arasındaki ilişkiyi belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.12",
+    "ders_saati": 45,
+    "title": "Analog ve dijital saatlerde zamanı okuyabilme ve yazabilme",
+    "bullets": []
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.13",
+    "ders_saati": 45,
+    "title": "Zaman ölçü birimlerini çözümleyebilme",
+    "bullets": [
+      "a) Zaman ölçü birimlerini (yıl, ay, hafta, gün, saat, dakika, saniye) belirler.",
+      "b) Zaman ölçü birimleri arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.14",
+    "ders_saati": 45,
+    "title": "Olayların oluş sürelerini tahmin ederek yargıda bulunabilme",
+    "bullets": [
+      "a) Olayların oluş sürelerini birbirleriyle ilişkilendirir.",
+      "b) Olayların oluş sürelerine ilişkin deneyimlerinden faydalanarak çıkarım yapar.",
+      "c) Olayların oluş sürelerine ilişkin yapılan çıkarımla gerçekte olan sürelerine ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.15",
+    "ders_saati": 45,
+    "title": "Uzunluk ve kütle birimleri arasındaki ilişkileri kullanarak bu birimleri kendi içerisinde çözümleyebilme",
+    "bullets": [
+      "a) Standart kütle ve uzunluk birimlerine ilişkin parçaları belirler.",
+      "b) Santimetre, metre, kilometre ve gram, kilogram ve ton arasındaki ilişkileri kendi içerisinde belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.3.1",
+    "code": "MAT.3.1.16",
+    "ders_saati": 45,
+    "title": "Madenî ve kâğıt paraları değerlerine göre ilişkilendirerek yorumlayabilme",
+    "bullets": [
+      "a) Paraları değerlerine göre inceler.",
+      "b) Madenî paraları ve kâğıt paraları değerlerine göre dönüştürür.",
+      "c) Paranın değerini, anlamını değiştirmeyecek şekilde yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.1",
+    "ders_saati": 55,
+    "title": "Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak muhakeme edebilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerine ilişkin ögeleri belirler.",
+      "b) Toplama ve çıkarma işlemlerine ilişkin ögeler arasındaki ilişkileri belirler.",
+      "c) Toplama ve çıkarma işlemine yönelik tahminî ve zihinden işlem sonuçları arasında ilişki kurar.",
+      "ç) Tahminî ve zihinden işlem sonuçlarının tutarlılığını ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.2",
+    "ders_saati": 55,
+    "title": "Toplama ve çıkarma işlemlerini çözümleyebilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerinin adımlarını belirler.",
+      "b) Toplama ve çıkarmanın işlem süreçlerini birbiri ile ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.3",
+    "ders_saati": 55,
+    "title": "Çarpma ve bölme işlemlerinin sonuçlarını muhakeme edebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerine ilişkin bileşenleri belirler.",
+      "b) Çarpma ve bölme işlemlerine ilişkin bileşenler arasındaki ilişkileri belirler.",
+      "c) Çarpma ve bölme işlemine yönelik tahminî ve zihinden işlem sonuçlarını ifade eder.",
+      "ç) Tahminî ve zihinden işlem sonuçlarını kendi cümleleri ile açıklar."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.4",
+    "ders_saati": 55,
+    "title": "Çarpma ve bölme işlemlerini çözümleyebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerinin adımlarını belirler.",
+      "b) Çarpma ve bölme işlemlerini birbiri ile ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.5",
+    "ders_saati": 55,
+    "title": "Dört işlem gerektiren durumlar için, verilen yönergeleri takip ederek yorumlayabilme",
+    "bullets": [
+      "a) Dört işleme ait bileşenleri inceler.",
+      "b) İncelediği bileşenleri işlem diline dönüştürür.",
+      "c) Oluşturduğu yapıyı temsillerle yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.6",
+    "ders_saati": 55,
+    "title": "Dört işlem gerektiren günlük yaşam problemlerini çözebilme",
+    "bullets": [
+      "a) Problemi anlayarak verilenleri ve istenilenleri belirler.",
+      "b) Problemde verilenlerin ve istenilenlerin gerektirdiği işlemler arasındaki ilişkiyi belirler.",
+      "c) Probleme ilişkin verilenleri belirleyerek uygun matematiksel temsillere dönüştürür.",
+      "ç) Matematiksel temsillere dönüştürdüğü problemi kendi ifadeleri ile açıklar.",
+      "d) Problemlerin sonucuna ilişkin tahminde bulunarak işlemleri gerçekleştirmek için stratejiler geliştirir.",
+      "e) Belirlenen strateji ya da stratejileri çözüm için uygular.",
+      "f) Çözüm yollarını kontrol ederek çözüme ulaştırmayan stratejiyi değiştirir.",
+      "g) Problemin çözümü için kullandığı veya geliştirdiği stratejileri gözden geçirerek kısa yolları değerlendirir.",
+      "ğ) Çözüme ulaştıran stratejilerin hangi problemlere uygulanabileceğini geneller.",
+      "h) Genellemenin geçerliliğini matematiksel örneklerle değerlendirir."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.7",
+    "ders_saati": 55,
+    "title": "Dört işlem gerektiren problem durumlarını yapılandırabilme",
+    "bullets": [
+      "a) Dört işlem gerektiren problem durumlarına yönelik hiyerarşik, nedensel ya da mantıksal ilişkiler ortaya koyar.",
+      "b) Dört işlem yapmayı gerektiren deneyimleriyle elde ettiği ilişkilere dayalı bir problem oluşturur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.3.2",
+    "code": "MAT.3.2.8",
+    "ders_saati": 55,
+    "title": "Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme",
+    "bullets": [
+      "a) Dört işlemde eşitliğin kullanımını inceler.",
+      "b) Aynı sonucu veren dört işlemi eşitliğin anlamını kullanarak farklı sayılarla ifade eder.",
+      "c) Eşitliğin anlamlarını dört işlem bağlamında ifade eder."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.1",
+    "ders_saati": 21,
+    "title": "Geometrik cisimlerin özelliklerini yorumlayabilme",
+    "bullets": [
+      "a) Geometrik cisimlerin özelliklerini inceler.",
+      "b) Geometrik cisimlerin köşe, yüz ve ayrıt özelliklerini ifade eder.",
+      "c) Köşe, yüz ve ayrıt terimlerini kendi ifadeleri ile açıklar."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.2",
+    "ders_saati": 21,
+    "title": "Kenar sayılarına göre geometrik şekilleri sınıflandırabilme",
+    "bullets": [
+      "a) Geometrik şekillerin kenarlarını belirler.",
+      "b) Geometrik şekilleri kenar sayılarına göre ayırır.",
+      "c) Geometrik şekilleri kenar sayılarına göre tasnif eder.",
+      "ç) Geometrik şekilleri kenar sayılarına göre adlandırır."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.3",
+    "ders_saati": 21,
+    "title": "Matematiksel araç ve teknolojileri kullanarak çeşitli geometrik cisimleri ve şekilleri çizebilme",
+    "bullets": [
+      "a) Geometrik cisim ve şekil çizmeyi gerektiren matematiksel araç ve teknolojileri tanır.",
+      "b) Geometrik cisim ve şekil çizmek için gerekli araçları ve teknolojiyi belirler.",
+      "c) Belirlenen araç ve teknolojiyi kullanır."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.4",
+    "ders_saati": 21,
+    "title": "Standart olmayan ve standart ölçme araçları ile şekillerin çevre uzunluğunu tahmin edebilme",
+    "bullets": [
+      "a) Standart olmayan ve standart uzunluk ölçme araçlarına ilişkin deneyimini, tahmine konu olan şeklin çevre uzunluğu ile ilişkilendirir.",
+      "b) Belirlenen standart olmayan ve standart uzunluk ölçme aracına göre çevre uzunluğuna ilişkin tahminde bulunur.",
+      "c) Tahminini ölçüm sonuçlarıyla karşılaştırarak tahminine ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.5",
+    "ders_saati": 21,
+    "title": "Standart sıvı ölçü birimleri cinsinden sıvı miktarını tahmin edebilme",
+    "bullets": [
+      "a) Standart sıvı ölçü birimlerine ilişkin deneyimini tahmine konu olan sıvı miktarı ile ilişkilendirir.",
+      "b) Belirlenen standart sıvı ölçü birimi cinsinden sıvının miktarına ilişkin tahminde bulunur.",
+      "c) Tahminini ölçüm sonuçlarıyla karşılaştırarak tahminine ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.6",
+    "ders_saati": 10,
+    "title": "Birden fazla simetri doğrusu olan şekilleri çözümleyebilme",
+    "bullets": [
+      "a) Kare, dikdörtgen ve dairenin birden fazla simetri doğrusu olduğunu belirler.",
+      "b) Simetri doğrusuna göre oluşan parçaların birbirine eş olduğunu belirler."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.7",
+    "ders_saati": 10,
+    "title": "Bir parçası verilen simetrik şekli simetri doğrusuna göre yapılandırabilme",
+    "bullets": [
+      "a) Bir parçası verilen simetrik şekli inceleyerek mantıksal ilişkiler ortaya koyar.",
+      "b) Bir parçası verilen simetrik şekli yatay ve dikey simetri doğrusuna göre tamamlar."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.3.3",
+    "code": "MAT.3.3.8",
+    "ders_saati": 10,
+    "title": "Yönerge ile yapılandırılan ve bir parçası verilen bir şekli tamamlayarak simetrisini oluşturmaya ilişkin kodlama stratejilerini kullanarak yargıda bulunabilme",
+    "bullets": [
+      "a) Bir parçası verilen şekli tamamlayarak simetrisini oluşturmaya ilişkin yönergeleri yeniden ifade eder.",
+      "b) Yönergeleri takip ederek bir parçası verilen şekli tamamlayarak simetrisini oluşturur.",
+      "c) Bir şeklin simetrisini oluşturmaya ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 3,
+    "theme_num": 6,
+    "theme_name": "VERİYE DAYALI ARAŞTIRMA",
+    "theme_code": "MAT.3.4",
+    "code": "MAT.3.4.1",
+    "ders_saati": 15,
+    "title": "Kategorik ve sayma ile elde edilen nicel veriye dayalı tek veri grubu ile çalışabilme ve veriye dayalı karar verebilme",
+    "bullets": [
+      "a) Kategorik ve nicel veriye dayalı istatistiksel araştırma gerektiren günlük yaşam durumu belirler.",
+      "b) Kategorik ve nicel veriye dayalı betimleme gerektirebilecek araştırma soruları oluşturur.",
+      "c) Kategorik ve nicel verileri toplamak için plan yapar.",
+      "ç) Kategorik ve nicel verileri toplar.",
+      "d) Toplanan verileri analiz etmek için görselleştirme araçlarından çetele, sıklık tablosu veya nokta grafiğini seçer.",
+      "e) Seçtiği araçlarla verileri görselleştirerek analiz eder.",
+      "f) Araştırma sonuçlarını yorumlar.",
+      "g) Araştırma sonuçlarını araştırma sorularına göre değerlendirir."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.1",
+    "ders_saati": 23,
+    "title": "Niceliklerin büyüklükleri için en fazla altı basamaklı olan sayıların temsillerinden yararlanabilme",
+    "bullets": [
+      "a) Niceliklerin büyüklüklerinin temsillerini tanır.",
+      "b) Niceliklerin büyüklüklerine uygun sayı temsillerini belirler.",
+      "c) Niceliklerin büyüklüklerine karşılık gelen uygun sayıları okur ve yazar."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.2",
+    "ders_saati": 23,
+    "title": "En fazla altı basamaklı sayıları çözümleyebilme",
+    "bullets": [
+      "a) En fazla altı basamaklı sayıların basamaklarını ve bölüklerini belirler.",
+      "b) En fazla altı basamaklı sayıların basamak, bölük ile basamak ve sayı değerleri arasındaki ilişkileri belirler."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.3",
+    "ders_saati": 23,
+    "title": "Sayıları sıralayabilme",
+    "bullets": [
+      "a) En fazla altı basamaklı sayıları öncelik/sonralık ilişkisine göre sembol kullanarak belirler.",
+      "b) En fazla altı basamaklı sayıları onluklara, yüzlüklere ve binliklere göre basamaklarına ayırır.",
+      "c) En fazla dört basamaklı sayıları en yakın onluğa, yüzlüğe ve binliğe göre yuvarlayarak tasnif eder.",
+      "ç) Tasnif edilen sayı gruplarını birler ve binler bölüğü şeklinde ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.4",
+    "ders_saati": 23,
+    "title": "İleriye ve geriye doğru ritmik saymayı yapılandırabilme",
+    "bullets": [
+      "a) Sayıları ileriye ve geriye doğru ritmik sayarken hiyerarşik ilişkiler ortaya koyar.",
+      "b) Ritmik saymaya ilişkin öz bilgisine dayanarak yüzer ve biner ileriye ve geriye doğru hedeflenen sayıya ulaşır."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 1,
+    "theme_name": "SAYILAR VE NİCELİKLER (1)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.5",
+    "ders_saati": 23,
+    "title": "Artan azalan sayı örüntüleri ve şekil örüntülerindeki değişimi genelleyebilme",
+    "bullets": [
+      "a) Verilen örüntünün adımı ve örüntüde kullanılan sayılar ya da şekiller arasındaki ilişkiye yönelik bilgi toplar.",
+      "b) Verilen örüntüde kullanılan sayıların ya da şekillerin ortak olan özelliklerini belirler.",
+      "c) Verilen örüntüde kullanılan sayıların ya da şekillerin ortak olmayan özelliklerini belirler.",
+      "ç) Karşılaştırılan sayı ve şekil örüntülerindeki artma, azalma ve tekrar etme durumlarını sözlü olarak ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.6",
+    "ders_saati": 43,
+    "title": "Basit, bileşik ve tam sayılı kesirleri kullanmak için matematiksel temsillerden yararlanabilme",
+    "bullets": [
+      "a) Basit, bileşik ve tam sayılı kesirlerin temsillerini tanır.",
+      "b) Günlük yaşam durumuna uygun basit, bileşik ve tam sayılı kesir temsillerini belirler.",
+      "c) Belirlediği basit, bileşik ve tam sayılı kesirlerin temsillerini kullanır."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.7",
+    "ders_saati": 43,
+    "title": "Denk kesirleri kullanmak için matematiksel temsillerden yararlanabilme",
+    "bullets": [
+      "a) Denk kesirlerin temsillerini tanır.",
+      "b) Denk kesirlere uygun temsilleri belirler.",
+      "c) Belirlediği denk kesirlerin temsillerini kullanır."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.8",
+    "ders_saati": 43,
+    "title": "Birim kesirlerin büyüklük küçüklük ilişkilerini çözümleyebilme",
+    "bullets": [
+      "a) Birim kesirleri büyüklük küçüklük bağlamında ifade eder.",
+      "b) Birim kesirler arasındaki büyüklük küçüklük ilişkisini belirler."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.9",
+    "ders_saati": 43,
+    "title": "Paydaları eşit olan kesirlerin büyüklük küçüklük ilişkilerini çözümleyebilme",
+    "bullets": [
+      "a) Paydaları eşit kesirleri büyüklük küçüklük bağlamında ifade eder.",
+      "b) Paydaları eşit kesirler arasındaki büyüklük küçüklük ilişkisini belirler."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.10",
+    "ders_saati": 43,
+    "title": "Bir çokluğun basit kesir kadarını ve bir basit kesir kadarı verilen çokluğun tamamını çözümleyebilme",
+    "bullets": [
+      "a) Bir çokluğu oluşturan eş parçaları ve eş parçaları verilen bir çokluğu kesire uygun olacak şekilde belirler.",
+      "b) Çokluk ile eş parçalar ve eş parçalar ile çokluk arasındaki ilişkiyi belirler."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.11",
+    "ders_saati": 43,
+    "title": "Paydaları eşit kesirlerle toplama ve çıkarma işlemini yapılandırabilme",
+    "bullets": [
+      "a) Paydaları eşit kesirlerle toplama ve çıkarma işleminde mantıksal ilişkileri ortaya koyar.",
+      "b) Paydaları eşit kesirlerle toplama ve çıkarma işleminde kendi öz bilgisi ile elde ettiği ilişkilere dayalı bir bütün oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.12",
+    "ders_saati": 43,
+    "title": "Paydaları eşit kesirlerle toplama ve çıkarma işlemi gerektiren günlük yaşam problemlerini çözebilme",
+    "bullets": [
+      "a) Problemin çözümü için uygun stratejiyi oluşturur.",
+      "b) Problemi çözmek için uygun stratejiyi kullanır.",
+      "c) Problemin çözümünü kontrol eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 2,
+    "theme_name": "SAYILAR VE NİCELİKLER (2)",
+    "theme_code": "MAT.4.1",
+    "code": "MAT.4.1.13",
+    "ders_saati": 43,
+    "title": "Uzunluk ve kütle birimlerinin kendi içerisindeki dönüşümlerini yorumlayabilme",
+    "bullets": [
+      "a) Uzunluk ve kütle birimlerinin kendi içindeki ilişkileri inceler.",
+      "b) Uzunluk ve kütle birimlerini kendi içinde birbirine dönüştürür.",
+      "c) Uzunluk ve kütle birimlerini kendi içinde farklı birim cinsinden yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.1",
+    "ders_saati": 50,
+    "title": "Toplama ve çıkarma işlemlerini zihinden yaparak çözümleyebilme",
+    "bullets": [
+      "a) Zihinden toplama ve çıkarma işlemlerinde sayıların uygun bir biçimde parçalarını belirler.",
+      "b) Sayıların parçalarına ait özellikleri ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.2",
+    "ders_saati": 50,
+    "title": "En çok dört basamaklı sayılarla toplama ve çıkarma işlemlerini yapılandırabilme",
+    "bullets": [
+      "a) Toplama ve çıkarma işlemlerinin algoritmasına yönelik hiyerarşik, nedensel ya da mantıksal ilişkiler ortaya koyar.",
+      "b) Toplama ve çıkarma işlemlerinin algoritmasına yönelik kendi öz bilgisi ile elde ettiği ilişkilere dayalı bir bütün oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.3",
+    "ders_saati": 50,
+    "title": "Çarpma ve bölme işlemlerinin sonucunu tahmin edebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerinin sonucunu deneyimleri ile ilişkilendirir.",
+      "b) Çarpma ve bölme işlemlerinin sonucuna ilişkin çıkarım yapar.",
+      "c) Çarpma ve bölme işlemlerinin sonucuna ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.4",
+    "ders_saati": 50,
+    "title": "Zihinden çözümlenen çarpma ve bölme işlemleri ile bu işlemlerin kısa yollarını yapılandırabilme",
+    "bullets": [
+      "a) Zihinden çözümlenen çarpma ve bölme işlemlerinin algoritmasına yönelik hiyerarşik, nedensel ya da mantıksal ilişkiler ortaya koyar.",
+      "b) Zihinden çözümlenen çarpma ve bölme işlemlerinin algoritmasına yönelik kendi öz bilgisi ile elde ettiği ilişkilere dayalı bir bütün oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.5",
+    "ders_saati": 50,
+    "title": "Çarpma ve bölme işlemlerini çözümleyebilme",
+    "bullets": [
+      "a) Çarpma ve bölme işlemlerini fark eder.",
+      "b) Çarpma ve bölme işlemlerini birbiri ile ilişkilendirir."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.6",
+    "ders_saati": 50,
+    "title": "Dört işlem içeren yönergeler oluşturarak süreci yorumlayabilme",
+    "bullets": [
+      "a) Dört işlem içeren durumları inceler.",
+      "b) İncelediği durumları yönergelere dönüştürür.",
+      "c) Oluşturduğu yönergeyi yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.7",
+    "ders_saati": 50,
+    "title": "Dört işlem gerektiren problemleri çözebilme",
+    "bullets": [
+      "a) Problemi anlayarak verilenleri ve istenilenleri belirler.",
+      "b) Problemde verilenlerin ve istenilenlerin gerektirdiği işlemler arasındaki ilişkiyi belirler.",
+      "c) Probleme ilişkin verilenleri belirleyerek uygun matematiksel temsillere dönüştürür.",
+      "ç) Matematiksel temsillere dönüştürdüğü problemi kendi ifadeleri ile açıklar.",
+      "d) Problemlerin sonucuna ilişkin tahminde bulunarak işlemleri gerçekleştirmek için stratejiler geliştirir.",
+      "e) Belirlenen strateji ya da stratejileri çözüm için uygular.",
+      "f) Çözüm yollarını kontrol ederek çözüme ulaştırmayan stratejiyi değiştirir.",
+      "g) Problemin çözümü için kullandığı veya geliştirdiği stratejileri gözden geçirerek kısa yolları değerlendirir.",
+      "ğ) Çözüme ulaştıran stratejilerin hangi problemlere uygulanabileceğini geneller.",
+      "h) Genellemenin geçerliliğini matematiksel örneklerle değerlendirir."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.8",
+    "ders_saati": 50,
+    "title": "Dört işlem gerektiren problem durumlarını yapılandırabilme",
+    "bullets": [
+      "a) Dört işlem gerektiren problem durumlarına yönelik hiyerarşik, nedensel ya da mantıksal ilişkiler ortaya koyar.",
+      "b) Dört işlem gerektiren problemleri kendi öz bilgisi ile elde ettiği ilişkilere dayalı olarak oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 3,
+    "theme_name": "İŞLEMLERDEN CEBİRSEL DÜŞÜNMEYE",
+    "theme_code": "MAT.4.2",
+    "code": "MAT.4.2.9",
+    "ders_saati": 50,
+    "title": "Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme",
+    "bullets": [
+      "a) Dört işlem bağlamında eşitlik kavramını inceler.",
+      "b) Günlük yaşam durumlarını dört işleme dönüştürür.",
+      "c) Dört işlem içeren günlük yaşam durumunu eşitlik kavramı bağlamında ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.1",
+    "ders_saati": 17,
+    "title": "Geometrik cisimlerin açınımlarını yapılandırabilme",
+    "bullets": [
+      "a) Geometrik cisimlerin açınımlarını inceleyerek yüzler arasında mantıksal ilişkiler ortaya koyar.",
+      "b) Ortaya koyduğu ilişkilerden yola çıkarak geometrik cismi oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.2",
+    "ders_saati": 17,
+    "title": "Geometrik şekilleri köşe ve kenarlarına göre yorumlayabilme",
+    "bullets": [
+      "a) Üçgen, kare ve dikdörtgenin köşe ve kenarlarını belirler.",
+      "b) Üçgen, kare ve dikdörtgenin köşe ve kenarları arasında ilişki kurar.",
+      "c) Kenarlarına göre üçgen çeşitlerini ve kare ile dikdörtgen ilişkisini ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.3",
+    "ders_saati": 17,
+    "title": "Geometrik şekillerin çevre uzunluğunu ölçmede matematiksel araç ve teknolojiden yararlanabilme",
+    "bullets": [
+      "a) Geometrik şekillerin çevre uzunluğunu ölçmede kullanılabilecek matematiksel araç ve teknolojiyi tanır.",
+      "b) Üçgen, kare ve dikdörtgenin çevre uzunluğunu ölçmede kullanılabilecek matematiksel araç ve teknolojiyi belirler.",
+      "c) Üçgen, kare ve dikdörtgenin çevre uzunluğunu ölçmek için ilgili matematiksel araç ve teknolojiyi kullanır."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 4,
+    "theme_name": "NESNELERİN GEOMETRİSİ (1)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.4",
+    "ders_saati": 17,
+    "title": "Standart olmayan ölçü birimleri cinsinden şekillerin alanlarını tahmin edebilme",
+    "bullets": [
+      "a) Standart olmayan ölçü birimlerine ilişkin deneyimini, tahmine konu olan şeklin alanıyla ilişkilendirir.",
+      "b) Belirlenen standart olmayan ölçü birimini kullanarak şeklin alanına ilişkin tahminde bulunur.",
+      "c) Tahminini ölçüm sonuçlarıyla karşılaştırarak tahminine ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.5",
+    "ders_saati": 11,
+    "title": "Günlük yaşamdan örneklerle açıyı bir dönme miktarı olarak yorumlayabilme",
+    "bullets": [
+      "a) Günlük hayattan örneklerle açıyı belirler.",
+      "b) Açıları bağlamından koparmadan günlük yaşam durumlarına dönüştürür.",
+      "c) Açıyı bir dönme miktarı olarak yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.6",
+    "ders_saati": 11,
+    "title": "Açı ölçümüne ilişkin standart ölçme araçlarının gerekliliğini değerlendirebilme",
+    "bullets": [
+      "a) Açı ölçümü için bir ölçüt belirler.",
+      "b) Ölçüte uygun olarak standart olmayan ölçü birimlerini kullanarak ölçme yapar.",
+      "c) Standart olmayan ölçü birimlerine dayalı olarak elde ettiği sonuçları ölçüt ile karşılaştırır.",
+      "ç) Karşılaştırmalarına ilişkin olarak standart ölçme araçlarının gerekliliğine ilişkin yargıda bulunur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 5,
+    "theme_name": "NESNELERİN GEOMETRİSİ (2)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.7",
+    "ders_saati": 11,
+    "title": "Dik açıyı referans alarak açıları dar ve geniş olarak sınıflandırabilme",
+    "bullets": [
+      "a) Dik açının özelliklerini belirler.",
+      "b) Dik açıyı referans alarak açı çeşitlerini dar ve geniş açı olarak ayırır.",
+      "c) Dar ve geniş açının özelliklerini tasnif eder.",
+      "ç) Dar ve geniş açıyı adlandırır."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (3)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.8",
+    "ders_saati": 13,
+    "title": "Geometrik nesneler ve şekiller üzerinden doğruya göre simetriyi yorumlayabilme",
+    "bullets": [
+      "a) Geometrik şekiller ve modeller üzerinden aynaya göre simetrinin özelliklerini inceler.",
+      "b) Aynaya göre simetri ile doğruya göre simetri arasındaki ilişkiyi fark eder.",
+      "c) Aynaya göre simetriyi, anlamını değiştirmeden kendi ifadeleriyle doğruya göre simetri olarak yeniden ifade eder."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (3)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.9",
+    "ders_saati": 13,
+    "title": "Bir şeklin doğruya göre simetrisini yapılandırabilme",
+    "bullets": [
+      "a) Simetri doğrusunun özelliklerini inceleyerek doğruya göre simetriye ilişkin mantıksal ilişkiler ortaya koyar.",
+      "b) Ortaya koyduğu ilişkilerden yola çıkarak şeklin doğruya göre simetrisini oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 6,
+    "theme_name": "NESNELERİN GEOMETRİSİ (3)",
+    "theme_code": "MAT.4.3",
+    "code": "MAT.4.3.10",
+    "ders_saati": 13,
+    "title": "Geometrik şekillere dayalı bir yapı oluşturabilmek için kodlama stratejilerini yapılandırabilme",
+    "bullets": [
+      "a) Geometrik şekil ve yapı bilgisi arasında mantıksal ilişkiler ortaya koyar.",
+      "b) Ortaya koyduğu ilişkilerden yola çıkarak kodlama stratejisi oluşturur."
+    ]
+  },
+  {
+    "grade": 4,
+    "theme_num": 7,
+    "theme_name": "OLAYLARIN OLASILIĞI VE VERİYE DAYALI ARAŞTIRMA",
+    "theme_code": "MAT.4.4",
+    "code": "MAT.4.4.1",
+    "ders_saati": 15,
+    "title": "Günlük yaşamdan herhangi bir olayın olasılığını “imkânsız, olabilir, kesin” olarak belirleyebilme",
+    "bullets": []
+  },
+  {
+    "grade": 4,
+    "theme_num": 7,
+    "theme_name": "OLAYLARIN OLASILIĞI VE VERİYE DAYALI ARAŞTIRMA",
+    "theme_code": "MAT.4.4",
+    "code": "MAT.4.4.2",
+    "ders_saati": 15,
+    "title": "Kategorik veriye ve sayma ile elde edilen nicel veriye dayalı en çok iki veri grubu ile çalışabilme ve veriye dayalı karar verebilme",
+    "bullets": [
+      "a) Kategorik ve nicel veriye dayalı istatistiksel araştırma gerektiren günlük yaşam ile ilgili bir problem belirler.",
+      "b) Kategorik ve nicel veriye dayalı betimleme veya karşılaştırma gerektirebilecek araştırma soruları oluşturur.",
+      "c) Kategorik ve nicel verileri toplamak için plan yapar.",
+      "ç) Kategorik ve nicel verileri toplar.",
+      "d) Toplanan verileri analiz etmek için uygun görselleştirme araçlarını (çetele ve sıklık tablosu ile nesne, şekil ve nokta grafiği) seçer.",
+      "e) Seçtiği araçlarla verileri görselleştirerek analiz eder.",
+      "f) Araştırma sonuçlarını yorumlar.",
+      "g) Araştırma sonuçlarını araştırma sorularına göre değerlendirir."
+    ]
+  }
+]

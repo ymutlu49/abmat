@@ -6,7 +6,15 @@
 
 // ── Çekirdek sabitler ve müfredat ─────────────────────────
 import { AgeGroup, AnxietyLevel, ParentingStyle, Category } from './core/constants.js';
-import { TYMM } from './core/tymm.js';
+import {
+  TYMM,
+  TYMM_IL_OUTCOMES,
+  getOutcomesByGrade,
+  getOutcomesByTheme,
+  getOutcomeByCode,
+  getThemesByGrade,
+  resolveOutcomes,
+} from './core/tymm.js';
 
 // ── Servisler ─────────────────────────────────────────────
 import { StorageService }        from './services/StorageService.js';
@@ -1169,10 +1177,17 @@ class MatEvdeApp {
 
   _buildTymmModal(a){
     const hasOO = a.tymm_oo?.length > 0;
-    const hasIL = a.tymm_il?.length > 0 || a.tymm_t?.length > 0;
-    if(!hasOO && !hasIL) return '';
+    // tymm_outcomes resmi kazanım kodlarını içerir (MAT.S.T.N)
+    const realOutcomes = resolveOutcomes(a.tymm_outcomes || []);
+    const hasReal = realOutcomes.length > 0;
+    // Geriye dönük: eski tymm_il (MAB alan becerileri) varsa alan becerileri rozetini göster
+    const hasMAB = a.tymm_il?.length > 0;
+    if(!hasOO && !hasReal && !hasMAB) return '';
+
     let html = `<div style="background:linear-gradient(135deg,rgba(17,138,178,.08),rgba(17,138,178,.02));border:1.5px solid rgba(17,138,178,.22);border-radius:var(--r-md);padding:.95rem 1rem;margin-bottom:1rem">
       <p style="font-size:var(--t-xs);font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem">🎓 TYMM Müfredat Uyumu</p>`;
+
+    // ── OKUL ÖNCESİ ────────────────────────────────────────
     if(hasOO){
       html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin-bottom:.4rem">OKUL ÖNCESİ — Alan Becerileri (OÖEP 2024)</p>`;
       html += `<div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem">`;
@@ -1190,33 +1205,53 @@ class MatEvdeApp {
       html += `</div>`;
       if(a.tymm_yas?.length) html += `<p style="font-size:var(--t-xs);color:var(--muted);margin-bottom:.4rem"><strong>Yaş:</strong> ${a.tymm_yas.map(y=>y+' ay').join(' · ')}</p>`;
     }
-    if(hasIL){
-      html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin-bottom:.4rem${hasOO?';margin-top:.5rem':''}">İLKOKUL — Matematik Dersi Öğretim Programı (1–4. Sınıf, 2024)</p>`;
-      if(a.tymm_t?.length){
-        html += `<div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.45rem">`;
-        (a.tymm_t||[]).forEach(k => {
-          const t = TYMM.IL_TEMA[k]; if(!t) return;
-          html += `<div style="background:var(--surface);border:1px solid rgba(45,106,79,.2);border-radius:var(--r-sm);padding:.55rem .75rem">
-            <div style="display:flex;align-items:center;gap:.45rem;margin-bottom:.2rem">
-              <span style="background:var(--teal-d);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.12rem .4rem;border-radius:3px">${t.kod}</span>
-              <strong style="font-size:var(--t-sm)">${t.ad}</strong>
+
+    // ── İLKOKUL — GERÇEK KAZANIMLAR (MAT.S.T.N) ───────────
+    if(hasReal){
+      // Kazanımları sınıf bazında grupla
+      const byGrade = {};
+      realOutcomes.forEach(o => {
+        if(!byGrade[o.grade]) byGrade[o.grade] = [];
+        byGrade[o.grade].push(o);
+      });
+      html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin-bottom:.4rem${hasOO?';margin-top:.6rem':''}">İLKOKUL — Öğrenme Çıktıları (TYMM İlkokul Mat. Prog. 2024)</p>`;
+      Object.keys(byGrade).sort().forEach(g => {
+        const outcomes = byGrade[g];
+        html += `<div style="margin-bottom:.6rem">
+          <p style="font-size:var(--t-xs);font-weight:800;color:var(--teal-d);margin-bottom:.35rem;letter-spacing:.04em">📘 ${g}. SINIF (${outcomes.length} kazanım)</p>
+          <div style="display:flex;flex-direction:column;gap:.45rem">`;
+        outcomes.forEach(o => {
+          html += `<div style="background:var(--surface);border:1px solid rgba(45,106,79,.2);border-radius:var(--r-sm);padding:.6rem .75rem">
+            <div style="display:flex;align-items:flex-start;gap:.45rem;margin-bottom:.25rem">
+              <span style="background:var(--teal-d);color:#fff;font-size:.6rem;font-weight:800;padding:.15rem .4rem;border-radius:3px;white-space:nowrap;margin-top:.1rem">${o.code}</span>
+              <p style="font-size:var(--t-sm);font-weight:700;line-height:1.45;flex:1">${o.title}</p>
             </div>
-            <p style="font-size:var(--t-sm);color:var(--muted);line-height:1.5">${t.aciklama}</p>
-            <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.2rem">${t.siniflar.map(s=>s+'. Sınıf').join(' · ')}</p>
+            ${o.bullets.length ? `
+              <div style="margin-top:.35rem;padding-left:.25rem;border-left:2px solid rgba(45,106,79,.15);padding-left:.6rem">
+                ${o.bullets.map(b => `<p style="font-size:var(--t-xs);color:var(--muted);line-height:1.55;margin:.1rem 0">${b}</p>`).join('')}
+              </div>
+            ` : ''}
+            <p style="font-size:.58rem;color:var(--hint);margin-top:.35rem;text-transform:uppercase;letter-spacing:.06em">
+              ${o.themeName} · ${o.dersSaati} saat
+            </p>
           </div>`;
         });
-        html += `</div>`;
-      }
-      if(a.tymm_il?.length){
-        html += `<div style="display:flex;gap:.3rem;flex-wrap:wrap">`;
-        (a.tymm_il||[]).forEach(k => {
-          const b = TYMM.IL_MAB[k]; if(!b) return;
-          html += `<span title="${b.aciklama}" style="font-size:var(--t-xs);background:rgba(45,106,79,.1);color:var(--teal-d);border-radius:3px;padding:.18rem .45rem;font-weight:700">${b.kod}: ${b.ad}</span>`;
-        });
-        html += `</div>`;
-      }
+        html += `</div></div>`;
+      });
     }
-    html += `<p style="font-size:var(--t-xs);color:var(--muted);margin-top:.6rem;opacity:.7">Kaynak: MEB TEGM OÖEP 2024 · MEB TYMM İlkokul Mat. Prog. 2024</p></div>`;
+
+    // ── ALAN BECERİLERİ (MAB rozetleri) ────────────────────
+    if(hasMAB){
+      html += `<p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);margin:.5rem 0 .35rem">ALAN BECERİLERİ</p>
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap">`;
+      (a.tymm_il||[]).forEach(k => {
+        const b = TYMM.IL_MAB[k]; if(!b) return;
+        html += `<span title="${b.aciklama}" style="font-size:var(--t-xs);background:rgba(45,106,79,.1);color:var(--teal-d);border-radius:3px;padding:.18rem .45rem;font-weight:700">${b.kod}: ${b.ad}</span>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<p style="font-size:var(--t-xs);color:var(--muted);margin-top:.6rem;opacity:.7">Kaynak: MEB TEGM OÖEP 2024 · MEB TYMM İlkokul Matematik Dersi Öğretim Programı 2024</p></div>`;
     return html;
   }
 
@@ -1418,19 +1453,45 @@ class MatEvdeApp {
     '</div>';
   }
 
+  _selectTymmGrade(g){
+    this._tymmSelectedGrade = g;
+    this._renderTymm();
+  }
+
   _renderTymm(){
     const el = document.getElementById('tymm-body'); if(!el) return;
     const child = this._getChild();
     const isOO = child?.ageGroup === AgeGroup.PRESCHOOL;
-    const allActs = child ? this._repo.byAgeGroup(child.ageGroup) : this._repo.all();
+
+    // Seçili sınıf (varsayılan: çocuğun sınıfı veya 1. sınıf)
+    const gradeMap = { [AgeGroup.G1]:1, [AgeGroup.G2]:2, [AgeGroup.G3]:3, [AgeGroup.G4]:4 };
+    if(this._tymmSelectedGrade === undefined){
+      this._tymmSelectedGrade = gradeMap[child?.ageGroup] || 1;
+    }
+    const sel = this._tymmSelectedGrade;
+
+    const allActs = this._repo.all();
     const done = new Set(child?.completedActivities||[]);
 
-    // Her beceri/tema için toplam ve tamamlanan etkinlik sayısı
-    const countOO={}, countIL={};
-    const doneOO={}, doneIL={};
+    // Her OO alan becerisi için etkinlik sayısı
+    const countOO={}, doneOO={};
     allActs.forEach(a => {
       (a.tymm_oo||[]).forEach(k => { countOO[k]=(countOO[k]||0)+1; if(done.has(a.id)) doneOO[k]=(doneOO[k]||0)+1; });
-      (a.tymm_t||[]).forEach(k => { countIL[k]=(countIL[k]||0)+1; if(done.has(a.id)) doneIL[k]=(doneIL[k]||0)+1; });
+    });
+
+    // Her MAT.S.T için etkinlik ve kazanım sayıları
+    const themeActCount = {};   // 'MAT.1.1' -> activity count
+    const themeActDone  = {};   // 'MAT.1.1' -> done activity count
+    allActs.forEach(a => {
+      const themes = new Set();
+      (a.tymm_outcomes||[]).forEach(code => {
+        const o = getOutcomeByCode(code);
+        if(o) themes.add(o.themeCode);
+      });
+      themes.forEach(tc => {
+        themeActCount[tc] = (themeActCount[tc]||0) + 1;
+        if(done.has(a.id)) themeActDone[tc] = (themeActDone[tc]||0) + 1;
+      });
     });
 
     el.innerHTML = `
@@ -1450,65 +1511,84 @@ class MatEvdeApp {
         <div class="sec-header">
           <span class="sec-title">Okul Öncesi Matematik Alan Becerileri (36-72 ay)</span>
         </div>
-        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: OÖEP 2024 Bölüm 4.2 + tymm.meb.gov.tr aylık planlar (doğrulanmış)</p>
-        <div style="display:flex;flex-direction:column;gap:.7rem">
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: OÖEP 2024 Bölüm 4.2 + tymm.meb.gov.tr aylık planlar</p>
+        <div style="display:flex;flex-direction:column;gap:.55rem">
           ${Object.entries(TYMM.OO).map(([k,b])=>{
             const tot=countOO[k]||0, don=doneOO[k]||0;
             const pct=tot>0?Math.round(don/tot*100):0;
-            return `<div data-lm-id="${m.id}"
-        onclick="App._openLearn('${m.id}')"
-        style="display:flex;align-items:center;gap:.7rem;
-          padding:.65rem .85rem;
-          background:var(--surface);
-          border:1.5px solid var(--border);
-          border-radius:var(--r-sm);
-          cursor:pointer;transition:var(--t);
-          -webkit-tap-highlight-color:transparent"
-        onmousedown="this.style.transform='scale(.985)'"
-        onmouseup="this.style.transform=''">
-        <div style="width:36px;height:36px;border-radius:var(--r-sm);
-          background:var(--raised);
-          display:flex;align-items:center;justify-content:center;
-          font-size:1.25rem;flex-shrink:0">${m.emoji}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:var(--fs-md);font-weight:700;
-            white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.title}</div>
-          <div style="font-size:var(--fs-xs);color:var(--muted);margin-top:.1rem">${m.sub} · ${m.dur}</div>
-        </div>
-        <svg viewBox="0 0 8 12" width="7" style="flex-shrink:0;opacity:.3">
-          <polyline points="1,1 7,6 1,11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </div>`;
-      }).join('')}
+            return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:.65rem .8rem">
+              <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem">
+                <span style="background:var(--blue);color:#fff;font-size:.65rem;font-weight:800;padding:.15rem .4rem;border-radius:3px">${b.kod}</span>
+                <strong style="font-size:var(--t-sm)">${b.ad}</strong>
+                ${tot>0 ? `<span style="margin-left:auto;font-size:.65rem;color:var(--muted);font-weight:700">${don}/${tot}</span>` : ''}
+              </div>
+              <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.5">${b.aciklama}</p>
+              ${tot>0 ? `<div class="progress" style="margin-top:.35rem"><div class="progress-fill" style="width:${pct}%"></div></div>` : ''}
+            </div>`;
+          }).join('')}
         </div>
       </div>
 
-      <!-- İLKOKUL TEMALAR -->
-      <div style="margin-bottom:1.5rem">
+      <!-- İLKOKUL — SINIF SEÇİCİ -->
+      <div style="margin-bottom:.8rem">
         <div class="sec-header">
-          <span class="sec-title">İlkokul Matematik Temaları (1–4. Sınıf)</span>
+          <span class="sec-title">İlkokul Matematik Programı (TYMM 2024)</span>
         </div>
-        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.8rem">Kaynak: İlkokul Matematik Dersi Öğretim Programı 2024, s.9 ve 12–18</p>
+        <p style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.6rem">111 öğrenme çıktısı, 16 tema — resmi PDF'ten doğrulandı. Sınıf seçin:</p>
+        <div style="display:flex;gap:.35rem">
+          ${[1,2,3,4].map(g => `
+            <button onclick="App._selectTymmGrade(${g})" style="flex:1;padding:.55rem .2rem;background:${sel===g?'var(--teal)':'var(--surface)'};color:${sel===g?'#fff':'var(--text)'};border:1.5px solid ${sel===g?'var(--teal)':'var(--border)'};border-radius:var(--r-sm);font-weight:800;font-size:var(--t-sm);cursor:pointer">${g}. Sınıf</button>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- İLKOKUL — Seçili sınıfın temaları -->
+      <div style="margin-bottom:1.5rem">
         <div style="display:flex;flex-direction:column;gap:.7rem">
-          ${Object.entries(TYMM.IL_TEMA).map(([k,t])=>{
-            const tot=countIL[k]||0, don=doneIL[k]||0;
-            const pct=tot>0?Math.round(don/tot*100):0;
-            return `<div class="card card-sm"><div class="card-body">
-              <div style="display:flex;align-items:flex-start;gap:.7rem">
-                <span style="background:var(--teal-d);color:#fff;font-size:var(--t-xs);font-weight:800;padding:.2rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem">${t.kod}</span>
-                <div style="flex:1">
-                  <strong style="font-size:var(--t-lg)">${t.ad}</strong>
-                  <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.15rem;line-height:1.5">${t.aciklama}</p>
-                  <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.25rem">${t.siniflar.map(s=>s+'. Sınıf').join(' · ')}</p>
-                  ${tot>0?`<div style="margin-top:.5rem">
-                    <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-bottom:.2rem">
-                      <span>Destekleyen etkinlikler</span>
-                      <span style="color:${pct>=70?'var(--success)':pct>=30?'var(--amber)':'var(--muted)'};font-weight:700">${don}/${tot}</span>
-                    </div>
-                    <div class="progress"><div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--teal-d),#4ade80)"></div></div>
-                  </div>`:''}
+          ${getThemesByGrade(sel).map(t => {
+            const themeOutcomes = getOutcomesByTheme(t.kod);
+            const tot = themeActCount[t.kod] || 0;
+            const don = themeActDone[t.kod] || 0;
+            const pct = tot > 0 ? Math.round(don / tot * 100) : 0;
+            const totalHours = t.altTemalar.reduce((s,st) => s + st.saat, 0);
+            return `<div class="card"><div class="card-body">
+              <div style="display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.4rem">
+                <span style="background:var(--teal-d);color:#fff;font-size:.65rem;font-weight:800;padding:.2rem .5rem;border-radius:4px;flex-shrink:0;white-space:nowrap;margin-top:.1rem">${t.kod}</span>
+                <div style="flex:1;min-width:0">
+                  <strong style="font-size:var(--t-lg);line-height:1.25;display:block">${t.ad}</strong>
+                  <p style="font-size:.65rem;color:var(--hint);margin-top:.15rem;text-transform:uppercase;letter-spacing:.05em">${totalHours} saat · ${themeOutcomes.length} kazanım</p>
                 </div>
               </div>
+              ${t.altTemalar.length > 1 ? `
+                <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem">
+                  ${t.altTemalar.map(st => `<span style="font-size:.58rem;background:var(--raised);color:var(--muted);padding:.15rem .4rem;border-radius:3px;font-weight:700">${st.ad} (${st.saat}s)</span>`).join('')}
+                </div>
+              ` : ''}
+              <details style="margin-top:.4rem">
+                <summary style="cursor:pointer;font-size:var(--t-xs);font-weight:700;color:var(--teal-d);padding:.3rem 0">Öğrenme çıktılarını göster (${themeOutcomes.length})</summary>
+                <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem;padding-left:.25rem;border-left:2px solid rgba(45,106,79,.15);padding-left:.55rem">
+                  ${themeOutcomes.map(o => `
+                    <div style="padding:.35rem 0">
+                      <div style="display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.15rem">
+                        <span style="background:rgba(45,106,79,.12);color:var(--teal-d);font-size:.55rem;font-weight:800;padding:.12rem .35rem;border-radius:3px;white-space:nowrap">${o.code}</span>
+                        <p style="font-size:var(--t-xs);font-weight:600;line-height:1.5;flex:1">${o.title}</p>
+                      </div>
+                      ${o.bullets.length ? `
+                        <div style="padding-left:.3rem;margin-top:.15rem">
+                          ${o.bullets.map(b => `<p style="font-size:.65rem;color:var(--muted);line-height:1.5;margin:.05rem 0">${b}</p>`).join('')}
+                        </div>
+                      ` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </details>
+              ${tot > 0 ? `<div style="margin-top:.55rem">
+                <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-bottom:.2rem">
+                  <span>Destekleyen etkinlikler</span>
+                  <span style="color:${pct>=70?'var(--success)':pct>=30?'var(--amber)':'var(--muted)'};font-weight:700">${don}/${tot}</span>
+                </div>
+                <div class="progress"><div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--teal-d),var(--teal-l))"></div></div>
+              </div>` : `<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.45rem;font-style:italic">Henüz destekleyen etkinlik yok</p>`}
             </div></div>`;
           }).join('')}
         </div>

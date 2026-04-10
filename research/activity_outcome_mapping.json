@@ -1,0 +1,292 @@
+{
+  "version": "1.0",
+  "mapping_date": "2026-04-10",
+  "method": "Manuel eşleme — her etkinliğin title/desc/steps/category/ageGroups alanları PDF'teki 111 kazanım ile eşleştirildi. Çoklu sınıf desteği aktif.",
+  "confidence_legend": {
+    "high": "Etkinlik adımları kazanımla doğrudan örtüşüyor",
+    "medium": "Etkinlik kazanıma katkı sağlıyor ama tek odak değil",
+    "low": "Gevşek bağlantı — alternatif kazanım da düşünülebilir"
+  },
+  "activities": {
+
+    "a01": {
+      "title": "Mutfakta Sayıyoruz",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.1", "MAT.1.1.2", "MAT.1.1.7"],
+      "confidence": "high",
+      "reason": "Nesne sayma, rakamla ifade, tahmin — 1. sınıfın sayı temellerine doğrudan uyar."
+    },
+
+    "a02": {
+      "title": "Çorapları Eşleştir",
+      "ageGroups": ["PRESCHOOL"],
+      "tymm_outcomes": [],
+      "confidence": "n/a",
+      "reason": "Yalnızca okul öncesi — ilkokul kazanımı atanmadı."
+    },
+
+    "a03": {
+      "title": "Kim Daha Uzun?",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.8"],
+      "confidence": "high",
+      "reason": "Standart olmayan ölçme araçlarıyla uzunluk — birebir."
+    },
+
+    "a04": {
+      "title": "Market Oyunu",
+      "ageGroups": ["G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.9", "MAT.1.2.1", "MAT.1.2.2", "MAT.2.1.8", "MAT.2.2.1", "MAT.2.2.2"],
+      "confidence": "high",
+      "reason": "Paralar + günlük yaşam toplama/çıkarma + para üstü hesabı. 1-2. sınıfta doğrudan eşleşme."
+    },
+
+    "a05": {
+      "title": "Pizzayı Paylaş",
+      "ageGroups": ["G2", "G3"],
+      "tymm_outcomes": ["MAT.2.1.7", "MAT.3.1.9", "MAT.3.1.10"],
+      "confidence": "high",
+      "reason": "Bütün-yarım-çeyrek ve birim kesir — kesir kavramının somut temeli."
+    },
+
+    "a06": {
+      "title": "Geometri Yürüyüşü",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.3.3", "MAT.1.3.4", "MAT.1.3.5", "MAT.2.3.1"],
+      "confidence": "high",
+      "reason": "Günlük yaşamda geometrik şekil avı — nesnelerin biçimsel özellikleri ve geometrik yapılar."
+    },
+
+    "a07": {
+      "title": "Hikâyeden Soru Yaz",
+      "ageGroups": ["G3", "G4"],
+      "tymm_outcomes": ["MAT.3.2.6", "MAT.3.2.7", "MAT.4.2.7", "MAT.4.2.8"],
+      "confidence": "high",
+      "reason": "Dört işlem problemleri çözme ve problem kurma — perfect match (soru kurma)."
+    },
+
+    "a08": {
+      "title": "Takvim Matematiği",
+      "ageGroups": ["G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.5", "MAT.1.2.1", "MAT.2.1.9", "MAT.2.1.4"],
+      "confidence": "high",
+      "reason": "Ritmik sayma + takvim (zaman ölçü birimleri) + 'kaç gün kaldı' çıkarma."
+    },
+
+    "a09": {
+      "title": "Zar Oyunu",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.1.2.1", "MAT.1.2.2", "MAT.2.2.1", "MAT.2.2.2", "MAT.2.2.4", "MAT.2.2.5", "MAT.3.2.1", "MAT.3.2.3"],
+      "confidence": "high",
+      "reason": "Toplama (temel) + çarpma (ileri sürüm) + zihinden işlem. Üç sınıfa da yayılıyor."
+    },
+
+    "a10": {
+      "title": "Hava Grafiği",
+      "ageGroups": ["G2", "G3", "G4"],
+      "tymm_outcomes": ["MAT.2.4.1", "MAT.3.4.1", "MAT.4.4.2"],
+      "confidence": "high",
+      "reason": "Veri toplama, grafik çizme, yorumlama — her sınıfın veri teması."
+    },
+
+    "a11": {
+      "title": "Tangram Ailesi",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.3.5", "MAT.2.3.3"],
+      "confidence": "high",
+      "reason": "Geometrik şekillerin sınıflandırılması (1.sınıf) + geometrik şekillerle model sentezi (2.sınıf)."
+    },
+
+    "a12": {
+      "title": "Çikolata Paylaşımı",
+      "ageGroups": ["G1", "G2"],
+      "tymm_outcomes": ["MAT.1.2.1", "MAT.2.1.7", "MAT.2.2.4", "MAT.2.2.5"],
+      "confidence": "high",
+      "reason": "Eşit paylaşma (bölme) + bütün-yarım-çeyrek + çıkarma/bölme muhakemesi."
+    },
+
+    "a13": {
+      "title": "Lego Mimarı",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.3.3", "MAT.2.3.2"],
+      "confidence": "high",
+      "reason": "Biçimsel özelliklere göre nesneleri ayırt etme + geometrik cisim modelleriyle yapılar."
+    },
+
+    "a14": {
+      "title": "Bahçe Matematiği",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.2", "MAT.1.1.8", "MAT.1.4.1"],
+      "confidence": "high",
+      "reason": "Tohum sayma + aralık ölçme + büyüme takip günlüğü (kategorik veri araştırması)."
+    },
+
+    "a15": {
+      "title": "Ritim Sayma",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.5", "MAT.1.1.6"],
+      "confidence": "high",
+      "reason": "Ritmik sayma + örüntü çözümleme — perfect match."
+    },
+
+    "a16": {
+      "title": "Hazine Haritası",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.1.3.1", "MAT.2.3.6"],
+      "confidence": "high",
+      "reason": "Mesafeleri ve yönleri içeren yönergeleri çözümleme — perfect match."
+    },
+
+    "s01": {
+      "title": "Blok Kopya",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.2.3.2", "MAT.2.3.4"],
+      "confidence": "high",
+      "reason": "Geometrik cisim modelleriyle yapılar + yön/konum/büyüklük değişiminde biçimsel özellikler."
+    },
+
+    "s02": {
+      "title": "Evimizi Haritala",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.1.3.1", "MAT.2.3.6"],
+      "confidence": "high",
+      "reason": "Yön, konum, mesafe içeren yönergeler ve harita okuma."
+    },
+
+    "s03": {
+      "title": "Ayna Oyunu",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.2.3.7"],
+      "confidence": "high",
+      "reason": "Verilen şekiller arasından simetrik olanları ayırt etme (2. sınıf)."
+    },
+
+    "s04": {
+      "title": "Vücut Koordinatları",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.3.1"],
+      "confidence": "high",
+      "reason": "Yer, yön, konum bildiren kavramlar — birebir eşleşme."
+    },
+
+    "s05": {
+      "title": "Şekil Parçalama",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.1.3.5", "MAT.2.3.3", "MAT.3.3.2"],
+      "confidence": "high",
+      "reason": "Şekillerin parçalanması ve yeniden sentezi + kenar sayısına göre sınıflandırma."
+    },
+
+    "s06": {
+      "title": "Farklı Açılardan Bak",
+      "ageGroups": ["G2", "G3", "G4"],
+      "tymm_outcomes": ["MAT.2.3.4", "MAT.4.3.1"],
+      "confidence": "medium",
+      "reason": "Yön/konum/büyüklük değişimi + geometrik cisim açınımları. Perspektif PDF'te ayrı kazanım olarak geçmiyor; en yakın eşleşme."
+    },
+
+    "k01": {
+      "title": "Tarif Ölçeklendirme",
+      "ageGroups": ["G2", "G3", "G4"],
+      "tymm_outcomes": ["MAT.3.1.9", "MAT.3.2.6", "MAT.4.1.6", "MAT.4.2.7"],
+      "confidence": "high",
+      "reason": "Kesir kavramı (bütün-yarım-çeyrek, bileşik kesirler) + dört işlem problemleri."
+    },
+
+    "k02": {
+      "title": "Pişirme Süresi Tahmini",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.5", "MAT.2.1.9"],
+      "confidence": "high",
+      "reason": "Ritmik sayma (geri sayım) + zaman ölçü birimleri."
+    },
+
+    "k03": {
+      "title": "Mutfak Birim Turu",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.8"],
+      "confidence": "high",
+      "reason": "Standart olmayan ölçme araçları — perfect match."
+    },
+
+    "m01": {
+      "title": "Fiş Dedektifi",
+      "ageGroups": ["G2", "G3", "G4"],
+      "tymm_outcomes": ["MAT.2.1.8", "MAT.2.2.1", "MAT.2.2.2", "MAT.3.1.16", "MAT.3.2.1", "MAT.3.2.2", "MAT.4.2.1", "MAT.4.2.2"],
+      "confidence": "high",
+      "reason": "Para değerleri + toplama/çıkarma (zihinden, 4 basamaklı)."
+    },
+
+    "m02": {
+      "title": "Birim Fiyat Yarışması",
+      "ageGroups": ["G3", "G4"],
+      "tymm_outcomes": ["MAT.3.1.16", "MAT.3.2.4", "MAT.4.2.5", "MAT.4.2.7"],
+      "confidence": "high",
+      "reason": "Para + bölme işlemi (birim fiyat hesaplama) + karar verme."
+    },
+
+    "m03": {
+      "title": "50 TL Bütçe Oyunu",
+      "ageGroups": ["G2", "G3"],
+      "tymm_outcomes": ["MAT.2.1.8", "MAT.2.2.1", "MAT.3.1.16", "MAT.3.2.6"],
+      "confidence": "high",
+      "reason": "Para + bütçe (toplama/çıkarma) + dört işlem problemi."
+    },
+
+    "t01": {
+      "title": "Günlük Program Tasarımı",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.2.1.9", "MAT.2.2.1", "MAT.3.1.12", "MAT.3.1.13", "MAT.3.1.14"],
+      "confidence": "high",
+      "reason": "Zaman okuma + süre hesabı + dört işlem. Takvim/saat temasına birebir."
+    },
+
+    "t02": {
+      "title": "Kaç Gün Kaldı?",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.5", "MAT.1.2.1", "MAT.2.1.9"],
+      "confidence": "high",
+      "reason": "Ritmik sayma + günlük yaşamda çıkarma + zaman ölçü."
+    },
+
+    "g01": {
+      "title": "Puan Tablosu Analizi",
+      "ageGroups": ["G1", "G2", "G3", "G4"],
+      "tymm_outcomes": ["MAT.1.2.1", "MAT.1.4.1", "MAT.2.2.1", "MAT.2.4.1", "MAT.3.2.1", "MAT.3.4.1", "MAT.4.2.1", "MAT.4.4.2"],
+      "confidence": "high",
+      "reason": "Her sınıfta toplama (puan) + veri araştırması (grafik). Dört sınıfa da yayılan tam kapsamlı etkinlik."
+    },
+
+    "g02": {
+      "title": "Matematik Hafıza Oyunu",
+      "ageGroups": ["PRESCHOOL", "G1"],
+      "tymm_outcomes": ["MAT.1.1.1", "MAT.1.1.2"],
+      "confidence": "high",
+      "reason": "Rakam-sayı eşleştirme + nesne grubu sayma (1-8)."
+    },
+
+    "n01": {
+      "title": "Hava Günlüğü",
+      "ageGroups": ["G1", "G2", "G3"],
+      "tymm_outcomes": ["MAT.1.4.1", "MAT.2.4.1", "MAT.3.4.1"],
+      "confidence": "high",
+      "reason": "Kategorik veriye dayalı araştırma — her üç sınıfın veri teması."
+    },
+
+    "n02": {
+      "title": "Büyüme Ölçüm Günlüğü",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.8", "MAT.1.4.1", "MAT.2.1.10", "MAT.2.1.11", "MAT.2.4.1"],
+      "confidence": "high",
+      "reason": "Ölçme (standart olmayan → standart geçişi) + veri günlüğü."
+    },
+
+    "n03": {
+      "title": "Doğa Sayım Yürüyüşü",
+      "ageGroups": ["PRESCHOOL", "G1", "G2"],
+      "tymm_outcomes": ["MAT.1.1.2", "MAT.1.4.1", "MAT.2.4.1"],
+      "confidence": "high",
+      "reason": "Tally işareti sayma (nesne grubunda ilişkiler) + veri toplama ve analizi."
+    }
+  }
+}
