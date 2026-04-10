@@ -1531,8 +1531,7 @@ class MatEvdeApp {
     const c = this._getChild();
     const done = (c?.completedActivities||[]).includes(id);
 
-    this._openModal(`
-      <div class="modal-handle"></div>
+    const body = `
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3.5rem;margin-bottom:.3rem">${a.emoji}</div>
         <h2 style="line-height:1.2">${a.title}</h2>
@@ -1566,27 +1565,23 @@ class MatEvdeApp {
         <p style="font-size:var(--t-sm);margin-top:.25rem;line-height:1.5;color:var(--muted)">${a.sesAlt}</p>
       </div>`:''}
       ${this._buildTymmModal(a)}
-      <div style="margin-bottom:1rem">
+      <div style="margin-bottom:.4rem">
         <label style="font-size:var(--t-sm);font-weight:700;display:block;margin-bottom:.4rem">📝 Gözlem Notu <span style="font-weight:400;color:var(--muted)">(isteğe bağlı)</span></label>
-        <textarea placeholder="Nasıl geçti? Ne fark ettin? Çocuğun ne söyledi?..." style="width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:var(--r-md);font-family:var(--ff-body);font-size:var(--t-md);resize:none;height:70px;background:var(--surface);color:var(--text);box-sizing:border-box" oninput="App._saveNote('${id}',this.value)">${App._getNote('${id}')}</textarea>
+        <textarea placeholder="Nasıl geçti? Ne fark ettin? Çocuğun ne söyledi?..." style="width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:var(--r-md);font-family:var(--ff-body);font-size:var(--t-md);resize:none;height:70px;background:var(--surface);color:var(--text);box-sizing:border-box" oninput="App._saveNote('${id}',this.value)">${App._getNote(id)}</textarea>
       </div>
-      <div style="position:sticky;bottom:0;background:var(--surface);padding:.75rem 0 calc(.5rem + env(safe-area-inset-bottom));margin-top:.75rem;border-top:0.5px solid var(--border)">
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-ghost" onclick="App._closeModal()" style="flex:1;font-size:.875rem;padding:.8rem">
-            Kapat
-          </button>
-          ${done
-            ?`<div style="flex:2;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.8rem;background:rgba(13,148,136,.1);border-radius:14px;border:1px solid rgba(13,148,136,.2)">
-                <span style="color:var(--teal)">✓</span>
-                <span style="font-size:.9rem;font-weight:700;color:var(--teal)">Tamamlandı</span>
-              </div>`
-            :`<button class="btn btn-primary" onclick="App._complete('${id}')" style="flex:2;font-size:.9375rem;padding:.8rem">
-                ✓ Tamamladım
-              </button>`
-          }
-        </div>
+    `;
+
+    const footer = `
+      <div class="modal-footer-row">
+        <button class="btn btn-ghost" onclick="App._closeModal()">Kapat</button>
+        ${done
+          ? `<div class="modal-done-pill"><span>✓</span><span>Tamamlandı</span></div>`
+          : `<button class="btn btn-primary" onclick="App._complete('${id}')">✓ Tamamladım</button>`
+        }
       </div>
-    `);
+    `;
+
+    this._openModal(body, footer);
   }
 
   _complete(id){
@@ -1632,7 +1627,6 @@ class MatEvdeApp {
 
   _askDifficulty(actId){
     this._openModal(`
-      <div class="modal-handle"></div>
       <div class="center" style="margin-bottom:1rem">
         <div style="font-size:2.5rem;margin-bottom:.4rem">🎯</div>
         <h3>Bu etkinlik nasıldı?</h3>
@@ -1841,7 +1835,6 @@ class MatEvdeApp {
     const c=this._getChild(); if(!c) return;
     const acts=this._repo.byAgeGroup(c.ageGroup);
     this._openModal(`
-      <div class="modal-handle"></div>
       <h3 style="margin-bottom:1rem">${this._DAYS[dayIdx]} için etkinlik seç</h3>
       <div style="display:flex;flex-direction:column;gap:.55rem;max-height:55vh;overflow-y:auto">
         ${acts.map(a=>`
@@ -2459,7 +2452,6 @@ class MatEvdeApp {
     if(m.isSpecial==='stories')   { this.show('stories');     return; }
     if(m.isSpecial==='skill')     { this.show('skill');       return; }
     this._openModal(`
-      <div class="modal-handle"></div>
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3rem;margin-bottom:.3rem">${m.emoji}</div>
         <h2>${m.title}</h2>
@@ -2627,7 +2619,6 @@ class MatEvdeApp {
   _openCheckIn(){
     this._wqResp={};
     this._openModal(`
-      <div class="modal-handle"></div>
       <h2 style="margin-bottom:.3rem">Haftalık Check-In 📋</h2>
       <p class="muted" style="font-size:var(--t-md);margin-bottom:1.2rem">3 soru, 2 dakika.</p>
       <div style="display:flex;flex-direction:column;gap:.9rem">
@@ -2686,7 +2677,6 @@ class MatEvdeApp {
   _badgeModal(badge){
     this._openModal(`
       <div style="text-align:center;padding:1rem">
-        <div class="modal-handle"></div>
         <div style="font-size:5rem;animation:popIn .5s var(--spring);margin-bottom:.5rem">${badge.emoji}</div>
         <h2 style="color:var(--teal)">Rozet Kazandın!</h2>
         <h3 style="margin:.4rem 0">${badge.label}</h3>
@@ -2772,12 +2762,15 @@ class MatEvdeApp {
      MODAL + TOAST
   ══════════════════════════════════════════════ */
 
-  _openModal(html){
+  _openModal(html, footer=''){
+    // html  : kayan gövde içeriği
+    // footer: (opsiyonel) scroll alanı dışında sabit alt şerit
     document.getElementById('modals').innerHTML=`
       <div class="modal-overlay" onclick="if(event.target===this)App._closeModal()">
         <div class="modal">
-          <div class="modal-handle" style="flex-shrink:0"></div>
+          <div class="modal-handle"></div>
           <div class="modal-body">${html}</div>
+          ${footer?`<div class="modal-footer">${footer}</div>`:''}
         </div>
       </div>`;
   }
@@ -2813,7 +2806,6 @@ class MatEvdeApp {
 
   _confirmReset(){
     this._openModal(`
-      <div class="modal-handle"></div>
       <div class="center">
         <div style="font-size:3rem;margin-bottom:.5rem">⚠️</div>
         <h2>Sıfırla?</h2>
@@ -3014,7 +3006,7 @@ class MatEvdeApp {
     var a=this._repo.byId(id); if(!a) return;
     var C={NUMBER:'Sayı',PATTERNS:'Örüntü',GEOMETRY:'Geometri',MEASUREMENT:'Ölçme',DAILY:'Günlük',PROBLEM:'Problem',SPATIAL:'Uzamsal',KITCHEN:'Mutfak',MARKET:'Market',TIME:'Zaman',GAME:'Oyun',NATURE:'Doğa'};
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Etkinlik Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Etkinlik Düzenle</h3>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
       +this._eF('Emoji',this._eI('emoji',a.emoji))
       +this._eF('Süre (dk)',this._eI('dur',String(a.dur),'number'))
@@ -3053,7 +3045,7 @@ class MatEvdeApp {
   _editLM(id){
     var m=this._learnModules.find(function(x){return x.id===id;}); if(!m) return;
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Modül Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Modül Düzenle</h3>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
       +this._eF('Emoji',this._eI('emoji',m.emoji))
       +this._eF('Süre',this._eI('dur',m.dur))+'</div>'
@@ -3076,7 +3068,7 @@ class MatEvdeApp {
   _editBook(id){
     var b=this._bookLibrary.find(function(x){return x.id===id;}); if(!b) return;
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kitap Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Kitap Düzenle</h3>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
       +this._eF('Emoji',this._eI('emoji',b.emoji))
       +this._eF('ID',this._eI('bid',b.id,'text','readonly'))+'</div>'
@@ -3105,7 +3097,7 @@ class MatEvdeApp {
     if(!this._stories) this._stories=[];
     var s=this._stories[parseInt(idx)]; if(!s) return;
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Hikaye Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Hikaye Düzenle</h3>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
       +this._eF('Emoji',this._eI('emoji',s.emoji||'🌟'))
       +this._eF('Etiket',this._eI('label',s.label||''))+'</div>'
@@ -3131,7 +3123,7 @@ class MatEvdeApp {
     var A={PRESCHOOL:'Okul Öncesi',G1:'1.Sınıf',G2:'2.Sınıf',G3:'3.Sınıf',G4:'4.Sınıf'};
     var m=this._sayiSohbetiKartlari.find(function(x){return x.id===id;}); if(!m) return;
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kart Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Kart Düzenle</h3>'
       +this._eF('Bağlam (🚗 Araçta)',this._eI('ctx',m.context||''))
       +this._eF('Soru / İpucu',this._eI('prompt',m.prompt||''))
       +this._eF('Matematik Kavramı',this._eI('conc',m.concept||''))
@@ -3189,7 +3181,7 @@ class MatEvdeApp {
   }
   _openNewUserModal(){
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">👤 Yeni Kullanıcı</h3>'
+      '<h3 style="margin-bottom:.9rem">👤 Yeni Kullanıcı</h3>'
       +this._eF('Ad Soyad',this._eI('name',''))
       +this._eF('Kullanıcı Adı',this._eI('uname',''))
       +this._eF('Şifre',this._eI('pwd','','password'))
@@ -3214,7 +3206,7 @@ class MatEvdeApp {
   _editUserModal(i){
     var u=this._eGetUsers()[i]; if(!u) return;
     this._openModal(
-      '<div class="modal-handle"></div><h3 style="margin-bottom:.9rem">✏️ Kullanıcı Düzenle</h3>'
+      '<h3 style="margin-bottom:.9rem">✏️ Kullanıcı Düzenle</h3>'
       +this._eF('Ad Soyad',this._eI('name',u.name))
       +this._eF('Yeni Şifre (boş = değişmez)',this._eI('pwd','','password'))
       +this._eF('Rol',this._eS('role',{editor:'İçerik Üretici',admin:'Yönetici'},u.role))
