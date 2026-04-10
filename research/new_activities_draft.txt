@@ -1,0 +1,294 @@
+/*
+ * Yeni etkinlikler — orphan TYMM kazanımlarını kapsamak için
+ * Her biri web araştırmasına dayalı, kaynak URL'si tip alanında
+ * id prefix: 'o' (orphan-fill) + 2 haneli numara
+ */
+
+// ─────────────────────────────────────────────────────────────
+// GRUP A: KESİRLER (4. sınıf kesir bloğu + 3. sınıf kesir temeli)
+// Kaynak: NRICH "Fractional Wall", Beauty of Play paper folding
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o01', emoji:'🧻', title:'Kesir Duvarı',
+  desc:'Kağıt şeritleri katlayarak kesir duvarı oluşturun; denk kesirleri gözle görün.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:20,
+  materials:['7 adet eşit boy kağıt şerit (A4 boyundan kesilmiş)','Renkli kalemler','Makas'],
+  steps:['Her şeridi bir bütün olarak kabul edin','Bir şeridi 2 eşit parçaya katlayın ve 1/2 yazın','Yeni bir şeridi 3 parçaya katlayın, 1/3 yazın','Sırayla 4, 5, 6, 8\'e kadar devam edin','Şeritleri üst üste koyun — "1/2, 2/4\'e eşit mi?" diye sorun, kendi keşfetsin'],
+  tip:'Şeritleri kendilerinin katlaması çok önemli — kesir kavramı parmakların hareketiyle kaydediliyor. Denk kesirleri yan yana getirip kimin söyleyeceğini bekleyin. Kaynak: NRICH Fractional Wall (nrich.maths.org/problems/fractional-wall).',
+  anxFriendly:true, dysc:true, tags:['kesir','denklik','katlama'],
+  sesAlt:'Kağıt yoksa herhangi bir dikdörtgen parça — gazete, atık kağıt.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.11','MAT.4.1.7','MAT.4.1.8','MAT.4.1.9'] },
+
+{ id:'o02', emoji:'🍕', title:'Adalet Mahkemesi: Pizza Paylaşımı',
+  desc:'Bir pizzayı/keki eşit paylaştırıp aynı paydalı kesirlerle toplama-çıkarma keşfedin.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['Yuvarlak kağıt tabak veya karton daire','Oyun hamuru (opsiyonel)'],
+  steps:['8 eşit dilim olacak şekilde kağıt pizzayı çizin','Çocuğa: "Hasan 3 dilim, Ayşe 2 dilim yedi. Ne kadar kaldı?" sorun','Dilimleri parmakla gösterterek toplasın','Bir kişi daha katılırsa ne değişir, beraber düşünün','Çocuk kendi problemini kursun — "Şimdi sen sor, ben cevaplayayım"'],
+  tip:'Paydaları eşit kesirlerle toplama-çıkarma en iyi gerçek gıda üzerinden kavranır. Problem kurmaya izin vermek, pasif çözme yerine aktif düşünmeyi tetikler (Silver, 1994). Kaynak: NRICH Fractions KS2 (nrich.maths.org/8957).',
+  anxFriendly:true, dysc:false, tags:['kesir','toplama','paylaştırma'],
+  sesAlt:'Pizza/kek yoksa: 8 fasulyeyi bir kağıt dairenin üstüne koyun — her dilim bir fasulye olsun.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2','MAB3'], tymm_t:['T1','T2'], tymm_yas:[], tymm_outcomes:['MAT.4.1.10','MAT.4.1.11','MAT.4.1.12'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP B: BASAMAK DEĞERİ / BÜYÜK SAYILAR
+// Kaynak: WeAreTeachers 30 Place Value Activities, Hands-On Place Value
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o03', emoji:'🎲', title:'Basamak Zarı',
+  desc:'Üç zar atıp en büyük 3 basamaklı sayıyı kurun; 4 basamaklı için 4 zar.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:12,
+  materials:['3-6 adet zar (yoksa kağıt parçaları 1-6)'],
+  steps:['Her oyuncu 3 zar atar (3. sınıf) veya 4-6 zar (4. sınıf)','Zarları sıralayarak mümkün olan en büyük sayıyı yazar','Diğeri en küçüğü yazar','"Hangisi daha büyük? Nasıl bildin?"','Sayıyı yüzlük-onluk-birlik olarak çözümleyin'],
+  tip:'Aynı zarlardan farklı sayılar çıkarmak, basamak değerinin anlamını hissettirir. "1000\'den büyük mü küçük mü?" gibi ek sorular tahmin becerisini geliştirir. Kaynak: WeAreTeachers Place Value Activities (weareteachers.com/place-value-activities).',
+  anxFriendly:true, dysc:true, tags:['basamak değeri','oyun','karşılaştırma'],
+  sesAlt:'Zar yoksa: kağıda 1-6 yazıp karıştırın, 3 tane çekin.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.2.1.3','MAT.3.1.1','MAT.3.1.2','MAT.3.1.3','MAT.4.1.1','MAT.4.1.2','MAT.4.1.3'] },
+
+{ id:'o04', emoji:'🧮', title:'Kuru Fasulye Sayı Sarayı',
+  desc:'Kuru fasulye ile onluk-yüzlük-binlik oluşturup büyük sayıları somutlaştırın.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:18,
+  materials:['Bir tas kuru fasulye veya mercimek','Küçük bardaklar / kapaklar'],
+  steps:['İlk bardağa 10 fasulye sayıp koyun — "bir onluk"','10 onluk bardak = bir yüzlük (yeni bir kap)','"Kaç fasulye gerek bir binlik için?" tahmin edin','Çocuk 3 basamaklı rastgele bir sayı söylesin, birlikte kurun','Çözümleme yapın: "152 = 100+50+2" — kendi sözleriyle açıklasın'],
+  tip:'Fasulyeyi fiziksel olarak gruplama, soyut basamak kavramını kalıcı kılar. Çocuk "1 onluk = 10 birlik" dönüşümünü kendi keşfederse öğrenme kalıcı olur. Kaynak: Ashleigh Education Place Value (ashleigh-educationjourney.com/hands-on-place-value).',
+  anxFriendly:true, dysc:true, tags:['basamak','somut','fasulye'],
+  sesAlt:'Fasulye yoksa: düğme, boncuk, taş — her evde mevcut.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.1','MAT.2.1.2','MAT.3.1.1','MAT.3.1.2','MAT.4.1.1','MAT.4.1.2'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP C: EŞİT İŞARETİ / EŞİTLİK / İLİŞKİ
+// Kaynak: NCTM Pan Balance, ERIC EJ1332583 (balance scale for equations)
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o05', emoji:'⚖️', title:'Terazi Dengesi',
+  desc:'Eşit işaretinin "aynı" anlamını terazi ile keşfedin.',
+  ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.PATTERNS, dur:15,
+  materials:['İki özdeş bardak','Bir askı (tel veya ip)','Düğme veya küçük nesne'],
+  steps:['Askıdan iki bardak sarkıtarak basit bir terazi kurun','Bir tarafa 5 düğme, diğer tarafa 3 düğme koyun — "eşit mi?"','Diğer tarafa 2 daha ekleyin — "şimdi?"','"5 = 3 + 2" yazın — her iki taraf "aynı" demektir','Çocuk kendi eşitliğini kurup denesin (örn: 4+3 = 6+1)'],
+  tip:'Türk çocukların çoğu eşit işaretini "cevabı ver" olarak anlıyor; oysa = "aynı" demek (Kieran, 1981; Carpenter et al., 2003). Terazi bu yanlış anlamayı düzeltir. "Solda ne var, sağda ne var, hangisi daha ağır?" sorusu kavramı somutlaştırır. Kaynak: NCTM Pan Balance Numbers (nctm.org/Classroom-Resources/Illuminations/Interactives/Pan-Balance----Numbers).',
+  anxFriendly:true, dysc:true, tags:['eşitlik','terazi','cebirsel'],
+  sesAlt:'Askı yoksa: ortadan katlanmış karton, iki eşit kutu.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.1.2.3','MAT.1.2.4','MAT.2.2.3','MAT.2.2.6','MAT.3.2.5','MAT.3.2.8','MAT.4.2.6','MAT.4.2.9'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP D: TEK-ÇİFT SAYILAR
+// Kaynak: SplashLearn Odd Even, NRICH Even and Odd
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o06', emoji:'🧦', title:'Çoraplar Tek mi Çift mi?',
+  desc:'Çorapları eşleyerek tek-çift sayıları parmaklarınızla keşfedin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3], category:Category.NUMBER, dur:10,
+  materials:['7-15 arası çift ve tek adet çorap (veya düğme, şeker)'],
+  steps:['8 çorap verin, çocuk bunları çiftlesin','"Eş bulamayan var mı? Yoksa sayı çifttir."','7 çorap verin, tekrar eşlesin — bir tanesi eşsiz kalır','"Demek 7 tek sayı" — kendi açıklasın','"İki tek sayı toplayınca ne olur?" birlikte deneyin (örn: 3+5=8, çift)'],
+  tip:'Fiziksel eşleme, tek-çift ayrımının en güçlü temelidir. 3. sınıf kazanımı "tek + tek = çift" kuralının keşfini de içeriyor — bunu çocuğa kendi söyletmek daha güçlüdür. Kaynak: NRICH Even and Odd (nrich.maths.org/problems/even-and-odd).',
+  anxFriendly:true, dysc:true, tags:['tek-çift','eşleme','sınıflama'],
+  sesAlt:'Çorap yoksa: 10-15 arası herhangi bir nesne (kapak, kalem).',
+  tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.5','MAT.3.1.6'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP E: RİTMİK SAYMA (3-4. sınıf ileri)
+// Kaynak: Dreambox 20 Skip Counting Games, WeAreTeachers 21 Activities
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o07', emoji:'💨', title:'Yüzlük Tablo Atlaması',
+  desc:'Yüzlük tabloda ikişer, üçer, dörder, beşer, altışar atlama — örüntüyü keşfedin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['1-100 arası bir tablo (kağıda çizilebilir)','Renkli kalemler veya işaretleyici'],
+  steps:['Tablodaki sayıları 1\'den 100\'e kadar yazın','5\'er saymayı kırmızı ile işaretleyin','2\'şer saymayı mavi ile işaretleyin','"Hangi sayılar her iki renkte var?" sorun','"Sence neden?" — çocuk örüntüyü keşfetsin'],
+  tip:'Yüzlük tablo ritmik saymanın görsel haritasıdır. Aynı sayının birden fazla örüntüde yer alması, çarpanlar/bölenler kavramının temelini kurar. Kaynak: ProudToBePrimary Numbers to 100 (proudtobeprimary.com/numbers-to-100).',
+  anxFriendly:true, dysc:true, tags:['ritmik sayma','örüntü','tablo'],
+  sesAlt:'Matbu tablo yoksa: 10x10\'luk bir ızgarayı kendiniz çizin.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.3.1.4','MAT.4.1.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP F: ÖRÜNTÜ (ileri)
+// Kaynak: NRICH pattern problems, Sinan Olkun örüntü çalışmaları
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o08', emoji:'🔗', title:'Örüntü Kaşifi',
+  desc:'Sayısal ve şekilsel örüntülerdeki kuralı çözümleyip tahmin edin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.PATTERNS, dur:15,
+  materials:['Kağıt','Kalem','Opsiyonel: Lego veya boncuklar'],
+  steps:['"2, 5, 8, 11, ?" yazın — "sıradaki ne?" sorun','Çocuk bulunca: "Nasıl buldun?" diye süreci anlattırın','Şekil örüntüsü: 1 daire, 2 kare, 3 daire, 4 kare — sıradaki?','"Kural ne?" diye sorun','Kendisi bir örüntü yazsın, siz bulmaya çalışın — roller değişsin'],
+  tip:'Örüntüyü bulmak matematik değil, kuralı sözel olarak ifade etmek matematiktir. "Nasıl buldun?" sorusu cebirsel düşüncenin ilk adımıdır. Olkun ve Uçar, "İlköğretimde Etkinlik Temelli Matematik Öğretimi" kitabında örüntüyü cebrin temel yapı taşı olarak tanımlar.',
+  anxFriendly:true, dysc:false, tags:['örüntü','kural','cebirsel'],
+  sesAlt:'Kağıt yoksa sesli örüntü: "1, 2, 4, 7, 11, ?"',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.5','MAT.3.1.7','MAT.4.1.5'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP G: TAHMİN KAVANOZU
+// Kaynak: HappyTeacher Estimation Jars, Clements & Sarama number sense
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o09', emoji:'🫙', title:'Tahmin Kavanozu',
+  desc:'Bir kavanozdaki nesne sayısını tahmin edin — stratejiyle gerçek arasındaki farkı görün.',
+  ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3], category:Category.NUMBER, dur:10,
+  materials:['Şeffaf bir kavanoz veya bardak','Aynı boyutta 20-100 nesne (nohut, düğme, boncuk)'],
+  steps:['Kavanoza nesneler koyun — çocuk sadece görsün','"Kaç tane tahmin ediyorsun?" — yazın','"Neden bu sayıyı söyledin?" — stratejiyi dinleyin','Birlikte sayıp doğrulayın','Kim daha yakın? Tahminini nasıl iyileştirir — konuşun'],
+  tip:'Tahmin, sayı hissinin kalbidir. Çocuğun "strateji" geliştirdiğini fark etmesi (örn: "önce 10 saydım, yaklaşık 4 tane 10 var") matematiksel muhakemedir. Kaynak: FamilyMathNight Estimation Jars (familymathnight.com/resources/familymathnight-estimationjars.php).',
+  anxFriendly:true, dysc:true, tags:['tahmin','sayı hissi','strateji'],
+  sesAlt:'Kavanoz yoksa bardak veya şeffaf torba. Her evde bulunan tanelik.',
+  tymm_oo:[], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:[], tymm_outcomes:['MAT.2.1.6','MAT.3.1.8'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP H: GEOMETRİK CİSİMLER / KÖŞE-KENAR
+// Kaynak: NRICH Exploring 3D Shapes, Erikson Early Math
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o10', emoji:'📦', title:'Kartondan Geometrik Cisim Atölyesi',
+  desc:'Mutfak/kargo kartonlarını inceleyip köşe, kenar, yüz sayıları keşfedin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:20,
+  materials:['Süt kutusu, ayakkabı kutusu, bisküvi kutusu, top','Makas','Kalem'],
+  steps:['Her cismi sırayla inceleyin','Köşeleri sayın ("sivri uçları")','Kenarları parmakla geçin, sayın','Yüzleri sayın ("düz tarafları")','Bir kutuyu keserek açın — "Açılmış haline ne diyoruz?" (açınım)'],
+  tip:'3 boyutlu cismi açıp 2 boyuta indirmek, çocuğun mekansal düşünme becerisini güçlendirir. NRICH\'te "footprint" etkinliğinin ev versiyonu. Kaynak: NRICH Exploring 3D Shapes (nrich.maths.org/problems/exploring-3d-shapes).',
+  anxFriendly:true, dysc:false, tags:['geometri','3B','köşe-kenar'],
+  sesAlt:'Kutu yoksa: karton kesip açılır küp/piramit yapın.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.1','MAT.3.3.3','MAT.4.3.1','MAT.4.3.2'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP I: ÇEVRE VE ALAN
+// Kaynak: WeAreTeachers Area and Perimeter, Scholastic Hands-On
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o11', emoji:'📐', title:'Odam Ne Kadar? Çevre-Alan Keşfi',
+  desc:'Odanızın çevresini karışla ölçün, alanı adımla keşfedin.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:25,
+  materials:['Kağıt','Kalem','Cetvel (opsiyonel)'],
+  steps:['Odanın bir duvarının uzunluğunu karışınızla sayın, yazın','4 duvarın hepsini sayın, toplayın (çevre)','Aynı odanın içinde adım sayın (alan için yaklaşım)','Çocuk aynı ölçmeleri yapsın — neden farklı? (birim)','"Peki cm ile ölçseydik?" — standart birim ihtiyacı keşfedilsin'],
+  tip:'Çevre = "etrafında yürüdüğümüz kadar", alan = "içine sığan". Bu sezgisel farkı çocuk kendi bedeniyle deneyimlemeli. Standart olmayan birimlerle başlamak, standart birim ihtiyacını doğurur (Freudenthal, 1991). Kaynak: Scholastic Area Perimeter (scholastic.com/teachers/teaching-tools/articles/lessons/area-perimeter-for-kids).',
+  anxFriendly:true, dysc:false, tags:['çevre','alan','ölçme'],
+  sesAlt:'Cetvel yoksa karış ve adım yeterli. İp de olur.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.3.3.4','MAT.4.3.3','MAT.4.3.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP J: AÇI
+// Kaynak: NRICH Clock Hands, Runde's Room Angles
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o12', emoji:'🕐', title:'Saat Kolunun Açısı',
+  desc:'Saatin iki kolunun oluşturduğu açı türünü (dar/dik/geniş) keşfedin.',
+  ageGroups:[AgeGroup.G4], category:Category.GEOMETRY, dur:15,
+  materials:['Duvar saati veya kağıda çizilmiş saat'],
+  steps:['Saat 3\'i gösterirken: iki kol arasındaki açı nasıl? — "Dik" (90°)','Saat 1\'i gösterirken — "Dar" (daha küçük)','Saat 4\'ü gösterirken — "Geniş" (daha büyük)','Çocuğa sorun: "Saat kaçken iki kol üst üste?" (12)','"Saat 6\'da açı türü ne?" (düz = 180°)'],
+  tip:'Açı = bir kolun diğerine göre ne kadar döndüğü. Saat, açının "dönme miktarı" anlamını en doğal gösteren araçtır. Dik açıyı referans alarak dar/geniş sınıflama 4. sınıf kazanımıdır. Kaynak: NRICH Clock Hands (nrich.maths.org/problems/clock-hands).',
+  anxFriendly:true, dysc:true, tags:['açı','saat','dönme'],
+  sesAlt:'Saat yoksa: iki kibrit çöpünü birleştirip döndürün — aynı prensip.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.5','MAT.4.3.6','MAT.4.3.7'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP K: SİMETRİ (ileri)
+// Kaynak: NRICH Symmetry, Happy Hooligans Symmetrical Butterfly
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o13', emoji:'🦋', title:'Simetri Kelebeği',
+  desc:'Boya damlasıyla kağıdı katlayıp açın — mükemmel simetri ortaya çıksın.',
+  ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:15,
+  materials:['Beyaz kağıt (A4)','Sulu boya veya parmak boyası'],
+  steps:['Kağıdı ortadan ikiye katlayın, sonra açın — simetri doğrusu belli oldu','Sadece bir tarafa renkli lekeler koyun','Kağıdı tekrar katlayın, elinizle bastırın','Açın — "iki taraf aynı mı?" — simetriyi görsün','Başka simetri doğrusu var mı? "Yukardan aşağı da simetrik mi?"'],
+  tip:'Simetri "aynalık" demek değil — "doğruya göre yansıma" demek. Çocuk kendisi boya döküp katlayınca simetri doğrusunu hissediyor. 3. sınıf için birden fazla simetri doğrusu (örn: karenin 4 eksen), 4. sınıf için şekil yapılandırması. Kaynak: Happy Hooligans Symmetrical Butterfly (happyhooligans.ca/symmetrical-butterfly-painting-craft).',
+  anxFriendly:true, dysc:true, tags:['simetri','sanat','yansıma'],
+  sesAlt:'Boya yoksa yemek artığı (kahve, çay) ile de olur.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:['60-72'], tymm_outcomes:['MAT.3.3.6','MAT.3.3.7','MAT.3.3.8','MAT.4.3.8','MAT.4.3.9'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP L: OLASILIK
+// Kaynak: NRICH probability, Maneuvering the Middle Low-Prep Probability
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o14', emoji:'🎯', title:'Torba Olasılığı',
+  desc:'Bir torba içindeki renkli nesnelerden çekmeler yapıp "kesin/olabilir/imkânsız" keşfedin.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.PROBLEM, dur:12,
+  materials:['Opak bir torba','Farklı renklerde 10 küçük nesne (düğme/şeker/boncuk)'],
+  steps:['5 kırmızı, 3 mavi, 2 sarı düğmeyi torbaya koyun','"Yeşil çekme olasılığı ne?" — imkânsız','"Kırmızı çekme olasılığı ne?" — en olası','"Kırmızı mı mavi mi daha olası?" — neden sorun','10 çekip rengi kaydedin — tahminle karşılaştırın'],
+  tip:'Olasılık dili (imkânsız, olabilir, kesin) önce kelimelerle öğrenilir, sonra sayılarla. Çocuk "bir şey kesin olur" ile "kesin olmaz" ayrımını yaparken muhakeme yürütüyor. Kaynak: Maneuvering the Middle Probability (maneuveringthemiddle.com/10-low-prep-probability-activities).',
+  anxFriendly:true, dysc:true, tags:['olasılık','muhakeme','deney'],
+  sesAlt:'Torba yoksa kapalı kutu veya kese.',
+  tymm_oo:[], tymm_il:['MAB1','MAB4'], tymm_t:['T5'], tymm_yas:[], tymm_outcomes:['MAT.4.4.1'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP M: ÇARPMA-BÖLME TAHMİN VE KISA YOLLAR
+// Kaynak: Komodomath Halving and Doubling, Shelley Gray Doubling
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o15', emoji:'⚡', title:'Zihinden Hızlı Çarpım',
+  desc:'İki katı/yarısı stratejisi ile zor çarpmaları kolaya çevirin.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:15,
+  materials:['Kağıt','Kalem'],
+  steps:['"25 × 4" yazın — çocuk klasik yolla çözsün','Sonra: "25\'in iki katı 50, 4\'ün yarısı 2 — 50 × 2 = 100" gösterin','"25 × 16" deneyin: 50 × 8 = 100 × 4 = 400','Çocuk kendi örneğini kursun — hangi sayılarda işe yarar?','"Neden bu kural çalışıyor?" — sebebini sorun'],
+  tip:'İki katı/yarısı stratejisi çarpmanın değişmezlik özelliğini deneyimletir. Çocuk "matematik sadece ezber değil, bir mantığı var" hissini kazanır. Strateji neden çalıştığını anlamak, ezberin ötesidir. Kaynak: Komodo Math Halving Doubling (komodomath.com/us/blog/multiplication-the-halving-and-doubling-strategy).',
+  anxFriendly:true, dysc:false, tags:['çarpma','zihinden','strateji'],
+  sesAlt:'Kağıtsız da olur — sadece sözel yapın.',
+  tymm_oo:[], tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_yas:[], tymm_outcomes:['MAT.4.2.3','MAT.4.2.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP N: SIVI ÖLÇME
+// Kaynak: EC Learning Liquid Volume, Oxford Owl Measuring
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o16', emoji:'🥤', title:'Su Yarışı: Sıvı Bilimi',
+  desc:'Farklı bardakları kullanıp "hangisi daha çok su alır?" deneyin.',
+  ageGroups:[AgeGroup.G2,AgeGroup.G3], category:Category.MEASUREMENT, dur:15,
+  materials:['3-5 farklı boyda bardak','Su','Tepsi (yerde dökülme olmasın)'],
+  steps:['3 bardağı gözle karşılaştırın — "hangisi en çok su alır?"','Çocuk tahmin yazsın','Sırayla her birini bir ölçü bardağıyla doldurun','Gerçek sıralamayı yapın','"Benim tahminim doğru muydu?" değerlendirin'],
+  tip:'Tahminin gerçekle karşılaştırılması bilim yöntemidir. "Uzun ama dar" bardakla "kısa ama geniş" bardaklar aynı su alabilir — bu sezgisel olmayan gerçek büyüleyicidir. Kaynak: Oxford Owl Measuring (home.oxfordowl.co.uk/get-messy-with-measuring).',
+  anxFriendly:true, dysc:true, tags:['sıvı','ölçme','tahmin'],
+  sesAlt:'Ölçü bardağı yoksa yemek kaşığıyla sayarak doldurun.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3','MAB5'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.2.3.5','MAT.3.3.5'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP O: ÖLÇÜ DÖNÜŞÜMÜ (cm-m, g-kg)
+// Kaynak: Hello Learning 20 Measurement Conversion Activities
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o17', emoji:'🔄', title:'Ölçü Dönüşüm Kartları',
+  desc:'Eşit uzunlukları/kütleleri farklı birimlerde eşleştirme oyunu.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.MEASUREMENT, dur:15,
+  materials:['8-10 kart (kağıttan kesilebilir)','Kalem'],
+  steps:['Kartları çift olarak hazırlayın: bir yüzde "1 m", diğerinde "100 cm"','"2 m / 200 cm", "1 kg / 1000 g", "500 g / yarım kg" vb.','Kartları karıştırıp ters çevirerek hafıza oyunu oynayın','Eşleşme bulunca "neden eşit?" diye sorun','Çocuk kendi karışımını yapsın'],
+  tip:'Hafıza oyunu formatı, dönüşüm tablolarını ezberlemeye alternatiftir. Çocuk eşleşmeyi bulurken "1 m = 100 cm" ilişkisini mental olarak inşa ediyor. Kaynak: Hello Learning Measurement Conversion (hellolearningresources.com/measurement-conversion-activities).',
+  anxFriendly:true, dysc:true, tags:['ölçü dönüşüm','hafıza oyunu'],
+  sesAlt:'Kart yoksa kağıda yazıp kesin — hiçbir ek materyal gerekmez.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T1','T3'], tymm_yas:[], tymm_outcomes:['MAT.3.1.15','MAT.4.1.13'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP P: UNPLUGGED KODLAMA
+// Kaynak: Kodable Unplugged Coding, Richard Campbell 13 Activities
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o18', emoji:'🤖', title:'Robot Ebeveyn Oyunu',
+  desc:'Ebeveyn "robot" olur; çocuk adım-adım komutlarla onu yönlendirir.',
+  ageGroups:[AgeGroup.G3,AgeGroup.G4], category:Category.SPATIAL, dur:15,
+  materials:['Kağıt, kalem (opsiyonel hedef nesne)'],
+  steps:['Odada bir hedef belirleyin (örn: masadaki bardağa ulaşmak)','Çocuk size komutlar verir: "2 adım ileri, sola dön, 1 adım ileri..."','Siz komutu harfi harfine uygulayın — yanlışsa durup geri sorun','Hedefe ulaşamazsa çocuk hatayı bulsun ve düzeltsin','Roller değişsin — şimdi çocuk robot olsun'],
+  tip:'Kodlama "ekrana bakmak" değil, net yönergeler üretmektir. Yanlış bir komut çocuğun "debug" etmesini tetikler — bu algoritmik düşünmenin özüdür. "Neden çalışmadı?" sorusu burada altın değerindedir. Kaynak: Kodable Unplugged Coding (kodable.com/learn/unplugged-coding-activities).',
+  anxFriendly:true, dysc:true, tags:['kodlama','yön','algoritma'],
+  sesAlt:'Hiçbir materyal gerekmez — tamamen sözel.',
+  tymm_oo:[], tymm_il:['MAB1','MAB3'], tymm_t:['T3'], tymm_yas:[], tymm_outcomes:['MAT.4.3.10'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP Q: SIRA SAYILARI / BÜYÜKLÜK KARŞILAŞTIRMA (1. sınıf)
+// Kaynak: MEB TYMM 2024 örnek etkinlikler, NRICH Fractions KS1
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o19', emoji:'🥇', title:'Yarış Sıralaması',
+  desc:'Oyuncaklarla mini yarış kurup "birinci, ikinci, üçüncü" kullanın.',
+  ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.NUMBER, dur:10,
+  materials:['5-6 oyuncak araba veya hayvan'],
+  steps:['Masadan masaya bir "yarış pisti" belirleyin','Oyuncakları sırayla itin — biri birinci, diğeri ikinci olsun','Çocuk her birinin sıra sayısını söylesin','"Hangisi üçüncü? Sondaki kaçıncı?" sorun','"En hızlı hangisi olurdu sence? Neden?"'],
+  tip:'Sıra sayıları, miktar sayılarından farklıdır: "3 araba var" (miktar) vs. "3. sırada araba var" (sıra). Çocuk ikisi arasındaki farkı yarış gibi doğal bir bağlamda öğrenir.',
+  anxFriendly:true, dysc:true, tags:['sıra sayısı','yarış','karşılaştırma'],
+  sesAlt:'Oyuncak yoksa herhangi bir nesne: kalem, bardak, taş.',
+  tymm_oo:['MAB6','MAB1'], tymm_il:['MAB1'], tymm_t:['T1'], tymm_yas:['48-60','60-72'], tymm_outcomes:['MAT.1.1.3','MAT.1.1.4'] },
+
+// ─────────────────────────────────────────────────────────────
+// GRUP R: EŞLİK (1. sınıf - MAT.1.3.2)
+// ─────────────────────────────────────────────────────────────
+
+{ id:'o20', emoji:'👯', title:'Eş Bulma Avı',
+  desc:'Evdeki nesneleri renk, şekil veya büyüklükte eş olanları eşleştir.',
+  ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.GEOMETRY, dur:12,
+  materials:['Evdeki herhangi nesneler — bardak, kaşık, ayakkabı, eldiven...'],
+  steps:['Çocuğa: "Şu ayakkabının eşini bul" deyin','Bulduğunda: "Nereden biliyorsun eş?" sorun','Farklı kategoriler deneyin: bardaklar, çoraplar, kalemler','"Eş olabilmek için ne gerek?" tartışın (aynı renk? şekil? boy?)','Çocuk size bir nesne göstersin, siz eşini bulmaya çalışın'],
+  tip:'"Eş" kavramı "eşitlik"ten farklıdır — 1. sınıfta bu ayrım başlar. Eşlik = aynı görsel özellikler, eşitlik = aynı miktar. Çocuk bu ayrımı kendi sözleriyle ifade etmelidir.',
+  anxFriendly:true, dysc:true, tags:['eşlik','sınıflama','karşılaştırma'],
+  sesAlt:'Hiçbir ek materyal gerekmez — zaten mevcut eşyalar.',
+  tymm_oo:['MAB1','MAB3'], tymm_il:['MAB1'], tymm_t:['T3'], tymm_yas:['36-48','48-60','60-72'], tymm_outcomes:['MAT.1.3.2'] },
