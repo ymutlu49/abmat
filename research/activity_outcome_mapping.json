@@ -819,7 +819,228 @@
       ],
       "confidence": "high",
       "reason": "Web araştırmasından (NRICH/DREME/Kodable/MEB) üretilen yeni etkinlik; orphan kazanımı doldurmak için eklendi."
+    },
+    "p01": {
+      "title": "Kesir Sayı Doğrusu",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.1.10",
+        "MAT.3.1.11",
+        "MAT.4.1.6",
+        "MAT.4.1.7",
+        "MAT.4.1.8",
+        "MAT.4.1.9"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p02": {
+      "title": "Dizi (Array) Avı",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.2.2.4",
+        "MAT.3.2.3",
+        "MAT.3.2.4",
+        "MAT.4.2.5"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p03": {
+      "title": "Kendin Problem Yaz",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.2.7",
+        "MAT.4.2.8"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p04": {
+      "title": "Kağıttan Saat",
+      "ageGroups": [
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.1.12",
+        "MAT.3.1.13",
+        "MAT.3.1.14"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p05": {
+      "title": "Beden Ritmi ile Sayma",
+      "ageGroups": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.2.1.4",
+        "MAT.3.1.4",
+        "MAT.4.1.4"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p06": {
+      "title": "Sayı Kartı Sıralama",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.2.1.3",
+        "MAT.3.1.3",
+        "MAT.4.1.3"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p07": {
+      "title": "Doğru mu Yanlış mı?",
+      "ageGroups": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.2.3",
+        "MAT.1.2.4",
+        "MAT.2.2.3",
+        "MAT.2.2.6",
+        "MAT.3.2.8",
+        "MAT.4.2.9"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p08": {
+      "title": "Yuvarlanır mı Kayar mı?",
+      "ageGroups": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.2.3.1",
+        "MAT.3.3.1",
+        "MAT.3.3.3",
+        "MAT.4.3.2"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p09": {
+      "title": "Hazine Haritası Tasarla",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.3.4",
+        "MAT.4.3.3",
+        "MAT.4.3.4"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p10": {
+      "title": "Doğada Simetri Avı",
+      "ageGroups": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.3.3.6",
+        "MAT.3.3.7",
+        "MAT.4.3.8",
+        "MAT.4.3.9"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p11": {
+      "title": "Bedenimdeki Açılar",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.3.5",
+        "MAT.4.3.7"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p12": {
+      "title": "Hayat Tahminleri",
+      "ageGroups": [
+        "G3",
+        "G4"
+      ],
+      "tymm_outcomes": [
+        "MAT.4.4.1"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p13": {
+      "title": "Paranı Topla",
+      "ageGroups": [
+        "G1",
+        "G2"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.1.9",
+        "MAT.2.1.8"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p14": {
+      "title": "Kaç Tane Var? Ev Turu",
+      "ageGroups": [
+        "G1",
+        "G2",
+        "G3"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.1.7",
+        "MAT.2.1.6",
+        "MAT.3.1.8"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
+    },
+    "p15": {
+      "title": "Şekillerin Hikayesi",
+      "ageGroups": [
+        "G1",
+        "G2"
+      ],
+      "tymm_outcomes": [
+        "MAT.1.3.4",
+        "MAT.2.3.1"
+      ],
+      "confidence": "high",
+      "reason": "v2 — kapsam derinleştirme turu; tek-kapsamlı kazanımları ≥2'ye çıkarmak için eklendi."
     }
   },
-  "last_updated": "2026-04-10"
+  "last_updated": "2026-04-10 (v2)"
 }

@@ -2744,6 +2744,9 @@ class MatEvdeApp {
         </div>
       </div>
 
+      <!-- Dijital Subitizing Oyunu (Dehaene Number Race ilhamlı) -->
+      ${this._renderSubitizingGame()}
+
       <!-- Diskalkuli activities -->
       <div>
         <div class="sec-header"><span class="sec-title">💙 Diskalkuli Dostu Etkinlikler</span></div>
@@ -2812,6 +2815,218 @@ class MatEvdeApp {
   _dyscCheck(){
     // Artık oyun tabanlı _dyscGameNext kullanıyor — eski metod geriye dönük uyumluluk için kaldı
     this._toast('Mini tarama oyununu deneyin ↑','ok');
+  }
+
+  /* ══════════════════════════════════════════════
+     DİJİTAL SUBİTİZİNG OYUNU (Dehaene Number Race ilhamlı)
+     Kanıt: Wilson et al. 2006 — 5 hafta × 4 gün × 30 dk
+     protokolünde subitizing hızı birkaç yüz ms artıyor.
+     Bu bir tarama değil, çocukla ebeveynin birlikte
+     oynayacağı kısa bir pratik oyunudur.
+  ══════════════════════════════════════════════ */
+
+  _renderSubitizingGame(){
+    return `
+      <div style="margin-bottom:1.4rem">
+        <div class="sec-header"><span class="sec-title">🎯 Subitizing Oyunu (Birlikte Oynayın)</span></div>
+        <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem;line-height:1.6">
+          <strong>Subitizing</strong> = saymadan küçük grupları hızlıca görebilme. Sayı hissinin temelidir.
+          Aşağıdaki noktalara 1 saniye bakın, saymadan cevap verin. <em>(Wilson &amp; Dehaene, 2006)</em>
+        </p>
+        <div class="card">
+          <div class="card-body" style="text-align:center">
+            <div id="sub-score" style="font-size:var(--t-sm);color:var(--muted);margin-bottom:.4rem">Tur: <strong id="sub-turn">0</strong> · Doğru: <strong id="sub-correct">0</strong> · Hızlı: <strong id="sub-fast">0</strong></div>
+            <div id="sub-dots-container" style="min-height:120px;background:linear-gradient(135deg,rgba(13,148,136,.05),rgba(13,148,136,.02));border-radius:var(--r-md);padding:1rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+              <div id="sub-message" style="font-size:var(--t-md);color:var(--muted);line-height:1.5">Başlamak için "Başla" düğmesine basın.<br><span style="font-size:var(--t-xs)">1–9 arası rastgele noktalar gösterilecek.</span></div>
+            </div>
+            <div id="sub-options" style="display:none;flex-wrap:wrap;gap:.35rem;justify-content:center;margin-top:.7rem"></div>
+            <div id="sub-feedback" style="display:none;font-size:var(--t-md);font-weight:700;margin-top:.55rem;min-height:1.5rem"></div>
+            <div style="display:flex;gap:.45rem;justify-content:center;margin-top:.75rem">
+              <button id="sub-start-btn" class="btn btn-primary btn-sm" onclick="App._subStart()">Başla →</button>
+              <button id="sub-reset-btn" class="btn btn-ghost btn-sm" onclick="App._subReset()" style="display:none">Sıfırla</button>
+            </div>
+            <p class="muted" style="font-size:.65rem;margin-top:.55rem;line-height:1.5">
+              💡 İpucu: Çocuğunuz 5\'e kadar gruplu noktaları "şip şak" görmeye başlarsa, sayı hissi gelişiyor demektir.
+              Yavaş düşünmek de sorun değil — pratikle hızlanır.
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  _subStart(){
+    // Oyun durumu
+    this._sub = { turn:0, correct:0, fast:0, current:null, showTime:0, maxTurns:8 };
+    document.getElementById('sub-start-btn').style.display = 'none';
+    document.getElementById('sub-reset-btn').style.display = 'inline-flex';
+    document.getElementById('sub-options').style.display = 'flex';
+    this._subNextRound();
+  }
+
+  _subNextRound(){
+    if(this._sub.turn >= this._sub.maxTurns){
+      this._subFinish();
+      return;
+    }
+    this._sub.turn++;
+    this._updateSubHud();
+    // Rastgele 1–9 arası sayı
+    const n = 1 + Math.floor(Math.random() * 9);
+    this._sub.current = n;
+    this._sub.showTime = Date.now();
+
+    // Nokta render et — rastgele ama çakışmayan yerleşim
+    const container = document.getElementById('sub-dots-container');
+    if(!container) return;
+    const dotsHtml = this._subRenderDots(n);
+    container.innerHTML = dotsHtml;
+
+    // Seçenekleri oluştur — doğru cevap + 3 yakın yanlış
+    const options = new Set([n]);
+    while(options.size < 4){
+      const delta = (Math.random() < .5 ? -1 : 1) * (1 + Math.floor(Math.random() * 3));
+      const candidate = Math.max(1, Math.min(9, n + delta));
+      options.add(candidate);
+    }
+    const shuffled = [...options].sort(() => Math.random() - .5);
+
+    const optsEl = document.getElementById('sub-options');
+    if(optsEl){
+      optsEl.innerHTML = shuffled.map(v =>
+        `<button class="btn btn-soft btn-sm" style="min-width:44px;font-size:var(--t-lg);font-weight:800" onclick="App._subAnswer(${v})">${v}</button>`
+      ).join('');
+    }
+    const fb = document.getElementById('sub-feedback');
+    if(fb){ fb.style.display = 'none'; fb.textContent = ''; }
+  }
+
+  // Rastgele yerleştirilmiş noktalar üretir
+  _subRenderDots(n){
+    const positions = [];
+    const size = 18; // nokta çapı
+    const maxAttempts = 80;
+    for(let i=0; i<n; i++){
+      let placed = false;
+      for(let attempt=0; attempt<maxAttempts && !placed; attempt++){
+        // yüzde cinsinden koordinat (container %100)
+        const x = 10 + Math.random() * 80;
+        const y = 10 + Math.random() * 80;
+        // Çakışma kontrolü
+        let ok = true;
+        for(const p of positions){
+          const dx = p.x - x, dy = p.y - y;
+          if(Math.sqrt(dx*dx + dy*dy) < 15){ ok = false; break; }
+        }
+        if(ok){ positions.push({x,y}); placed = true; }
+      }
+      if(!placed){
+        // Başarısızsa herhangi bir yere
+        positions.push({ x: 10 + (i*12)%80, y: 20 + Math.floor(i/7)*25 });
+      }
+    }
+    const dots = positions.map(p =>
+      `<div style="position:absolute;left:${p.x}%;top:${p.y}%;width:${size}px;height:${size}px;border-radius:50%;background:var(--teal);box-shadow:0 2px 4px rgba(13,148,136,.3);transform:translate(-50%,-50%)"></div>`
+    ).join('');
+    return `<div style="position:relative;width:100%;height:120px">${dots}</div>`;
+  }
+
+  _subAnswer(val){
+    if(!this._sub || !this._sub.current) return;
+    const elapsed = Date.now() - this._sub.showTime;
+    const isCorrect = (val === this._sub.current);
+    const isFast = elapsed < 2000; // 2 saniyeden hızlıysa "subitizing" sayılır
+    if(isCorrect){
+      this._sub.correct++;
+      if(isFast) this._sub.fast++;
+    }
+    // Feedback
+    const fb = document.getElementById('sub-feedback');
+    if(fb){
+      fb.style.display = 'block';
+      if(isCorrect && isFast){
+        fb.textContent = '⚡ Harika! Hızlı ve doğru!';
+        fb.style.color = 'var(--success)';
+      } else if(isCorrect){
+        fb.textContent = '✓ Doğru';
+        fb.style.color = 'var(--teal-d)';
+      } else {
+        fb.textContent = `✗ Doğrusu: ${this._sub.current}`;
+        fb.style.color = 'var(--danger)';
+      }
+    }
+    this._updateSubHud();
+    // Bir sonraki tur
+    setTimeout(() => this._subNextRound(), 1100);
+  }
+
+  _updateSubHud(){
+    const t = document.getElementById('sub-turn');
+    const c = document.getElementById('sub-correct');
+    const f = document.getElementById('sub-fast');
+    if(t) t.textContent = this._sub.turn;
+    if(c) c.textContent = this._sub.correct;
+    if(f) f.textContent = this._sub.fast;
+  }
+
+  _subFinish(){
+    const { correct, fast, maxTurns } = this._sub;
+    const container = document.getElementById('sub-dots-container');
+    const opts = document.getElementById('sub-options');
+    if(opts) opts.style.display = 'none';
+    const pct = Math.round((correct / maxTurns) * 100);
+    const fastPct = Math.round((fast / maxTurns) * 100);
+
+    let msg, emoji;
+    if(correct >= 7 && fast >= 5){
+      msg = 'Harika! Subitizing gelişmiş görünüyor.';
+      emoji = '🌟';
+    } else if(correct >= 5){
+      msg = 'İyi iş! Düzenli oyun ile daha da hızlanır.';
+      emoji = '👍';
+    } else {
+      msg = 'Pratik ile iyileşir. Endişelenmeyin, bir hafta sonra tekrar deneyin.';
+      emoji = '💪';
+    }
+
+    if(container){
+      container.innerHTML = `
+        <div style="text-align:center;padding:.5rem">
+          <div style="font-size:2.5rem;margin-bottom:.3rem">${emoji}</div>
+          <p style="font-size:var(--t-md);font-weight:700;margin-bottom:.4rem">${msg}</p>
+          <p style="font-size:var(--t-sm);color:var(--muted);line-height:1.5">
+            Doğru: <strong>${correct}/${maxTurns}</strong> (%${pct})<br>
+            Hızlı tanıma: <strong>${fast}/${maxTurns}</strong> (%${fastPct})
+          </p>
+        </div>
+      `;
+    }
+  }
+
+  _subReset(){
+    this._sub = null;
+    const container = document.getElementById('sub-dots-container');
+    if(container){
+      container.innerHTML = `
+        <div id="sub-message" style="font-size:var(--t-md);color:var(--muted);line-height:1.5">
+          Başlamak için "Başla" düğmesine basın.<br>
+          <span style="font-size:var(--t-xs)">1–9 arası rastgele noktalar gösterilecek.</span>
+        </div>
+      `;
+    }
+    const opts = document.getElementById('sub-options');
+    if(opts){ opts.style.display = 'none'; opts.innerHTML = ''; }
+    const fb = document.getElementById('sub-feedback');
+    if(fb){ fb.style.display = 'none'; fb.textContent = ''; }
+    const s = document.getElementById('sub-start-btn');
+    if(s) s.style.display = 'inline-flex';
+    const r = document.getElementById('sub-reset-btn');
+    if(r) r.style.display = 'none';
+    // HUD sıfırla
+    ['sub-turn','sub-correct','sub-fast'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.textContent = '0';
+    });
   }
 
   _setSpatialFilter(){
