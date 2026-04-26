@@ -8,7 +8,7 @@
  * Sürüm kontrolü: CACHE_NAME'yi yeni deploy'da güncelle.
  */
 
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `abmat-${CACHE_VERSION}`;
 const OFFLINE_URL = './offline.html';
 
@@ -47,6 +47,7 @@ const CORE_ASSETS = [
   './js/services/ErrorPatternService.js',
   './js/services/ChildModeService.js',
   './js/services/ExportService.js',
+  './js/services/ContentService.js',
   './js/views/BaseView.js',
   './js/views/BreathingView.js',
   './js/views/MagnitudeGameView.js',
@@ -60,6 +61,7 @@ const CORE_ASSETS = [
   './js/views/ErrorReportView.js',
   './js/views/A11ySettingsView.js',
   './js/views/KidsModeView.js',
+  './js/views/AdminPanelView.js',
   './js/skill-bridge/index.js',
   './js/skill-bridge/data.js',
   './js/skill-bridge/SkillProgressStore.js',

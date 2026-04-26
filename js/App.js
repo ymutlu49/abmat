@@ -34,6 +34,7 @@ import { SpacedRetrievalService }from './services/SpacedRetrievalService.js';
 import { ErrorPatternService }   from './services/ErrorPatternService.js';
 import { ChildModeService }      from './services/ChildModeService.js';
 import { ExportService }         from './services/ExportService.js';
+import { ContentService }        from './services/ContentService.js';
 
 // ── Alt uygulama: Beceri Köprüsü ──────────────────────────
 import { createSkillBridge } from './skill-bridge/index.js';
@@ -51,6 +52,7 @@ import { MathTalkExtView } from './views/MathTalkExtView.js';
 import { ErrorReportView } from './views/ErrorReportView.js';
 import { A11ySettingsView } from './views/A11ySettingsView.js';
 import { KidsModeView } from './views/KidsModeView.js';
+import { AdminPanelView } from './views/AdminPanelView.js';
 
 // ── Aile rutin tetikleyicileri (Math Talk extended) ──────
 import { ROUTINE_TRIGGERS, pickRandomTalk } from './data/math-talk-extended.js';
@@ -78,6 +80,7 @@ class MatEvdeApp {
       storage: this._storage, repo: this._repo, subtype: this._subtype,
       spaced: this._spaced, errorPattern: this._errPatterns, anxiety: this._anxTracker,
     });
+    this._content    = new ContentService(this._storage);
     // _s alias servislerin storage'a kısa erişimi için (CorsiView kullanır)
     this._s = this._storage;
     // A11y body class uygulamasını DOM hazır olunca yap
@@ -281,6 +284,9 @@ class MatEvdeApp {
       { icon:'⏸️', label:'Tut', duration:4, instruction:'Nefesinizi tutun… 1… 2… 3… 4…' },
       { icon:'💨', label:'Nefes ver', duration:6, instruction:'Ağzınızdan yavaşça verin… 1… 2… 3… 4… 5… 6…' },
     ];
+
+    // v6: Yönetici tarafından kaydedilmiş içerik snapshot'larını yükle
+    this._hydrateContentOverrides();
   }
 
   /* ── ROUTING ───────────────────────────────────── */
@@ -311,7 +317,7 @@ class MatEvdeApp {
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu'};
+      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu', 'admin': 'ABMAT — Yönetici Paneli'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -345,6 +351,7 @@ class MatEvdeApp {
       errreport:()=>ErrorReportView.render(this),
       a11y:()=>A11ySettingsView.render(this),
       kids:()=>KidsModeView.render(this),
+      admin:()=>AdminPanelView.render(this),
     };
     renders[name]?.();
     this._updateBnavs(name);
@@ -3915,17 +3922,26 @@ class MatEvdeApp {
         </div>
 
         ${this._canEdit()?`
-        <div style="margin-bottom:.75rem">
-          <button onclick="App._toggleEditMode()" class="btn btn-block"
-            style="background:${this._isEditMode()?'var(--teal)':'var(--raised)'};
-              color:${this._isEditMode()?'#fff':'var(--text)'};
-              border:1.5px solid ${this._isEditMode()?'var(--teal)':'var(--border)'};
-              font-size:var(--t-md)">
-            ${this._isEditMode()?'✏️ Düzenleme Aktif — Kapat':'✏️ Düzenleme Modunu Aç'}
-          </button>
-          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.35rem;text-align:center">
-            ${this._isEditMode()?'Tüm sayfalarda kartların altında düzenle/sil butonları var.':'Etkinlik, akademi, kitap, hikaye ve sayı sohbeti kartlarını düzenleyin.'}
-          </p>
+        <div class="card card-sm" style="margin-bottom:.75rem;border:1.5px solid var(--teal-l);background:linear-gradient(135deg,rgba(46,125,50,.06),rgba(46,125,50,.02))">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <h3 style="font-size:var(--t-md);margin-bottom:.15rem;color:var(--teal-d)">🛠️ Yönetici / İçerik</h3>
+            <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.5;margin-bottom:.35rem">
+              Etkinlik, akademi modülü, kitap, hikaye ve sohbet kartlarını yönetin — düzenleyin, silin veya yenisini ekleyin.
+            </p>
+            <button onclick="App._openAdmin()" class="btn btn-primary btn-block" style="font-size:var(--t-md);font-weight:800">
+              🛠️ Yönetici Paneline Git →
+            </button>
+            <button onclick="App._toggleEditMode()" class="btn btn-block"
+              style="background:${this._isEditMode()?'var(--teal)':'var(--raised)'};
+                color:${this._isEditMode()?'#fff':'var(--text)'};
+                border:1.5px solid ${this._isEditMode()?'var(--teal)':'var(--border)'};
+                font-size:var(--t-sm)">
+              ${this._isEditMode()?'✏️ Sayfa İçi Düzenleme Aktif — Kapat':'✏️ Sayfa İçi Düzenleme Modu'}
+            </button>
+            <p style="font-size:var(--t-xs);color:var(--muted);text-align:center">
+              ${this._isEditMode()?'Tüm sayfalarda kartların altında düzenle/sil butonları görünür.':'Sayfalardaki kartların altına düzenle/sil butonları ekler.'}
+            </p>
+          </div>
         </div>
         ${this._renderUserMgmt()}
         `:''}
@@ -4527,11 +4543,11 @@ class MatEvdeApp {
   _inlineDel(type,id){
     const L={activity:'etkinlik',lm:'modül',book:'kitap',story:'hikaye',mt:'kart'};
     if(!confirm('Bu '+(L[type]||'öğe')+' silinsin mi?')) return;
-    if(type==='activity'){ const i=this._repo._data.findIndex(a=>a.id===id); if(i>=0)this._repo._data.splice(i,1); }
-    else if(type==='lm')   this._learnModules=this._learnModules.filter(m=>m.id!==id);
-    else if(type==='book') this._bookLibrary=this._bookLibrary.filter(b=>b.id!==id);
-    else if(type==='story'){ if(!this._stories)this._stories=[]; this._stories.splice(parseInt(id),1); }
-    else if(type==='mt')   this._sayiSohbetiKartlari=this._sayiSohbetiKartlari.filter(m=>m.id!==id);
+    if(type==='activity'){ const i=this._repo._data.findIndex(a=>a.id===id); if(i>=0)this._repo._data.splice(i,1); this._persistContent('activities'); }
+    else if(type==='lm')  { this._learnModules=this._learnModules.filter(m=>m.id!==id); this._persistContent('learn'); }
+    else if(type==='book'){ this._bookLibrary=this._bookLibrary.filter(b=>b.id!==id); this._persistContent('books'); }
+    else if(type==='story'){ if(!this._stories)this._stories=[]; this._stories.splice(parseInt(id),1); this._persistContent('stories'); }
+    else if(type==='mt')  { this._sayiSohbetiKartlari=this._sayiSohbetiKartlari.filter(m=>m.id!==id); this._persistContent('mt'); }
     this.show(this._activeView); this._toast('Silindi');
   }
 
@@ -4603,6 +4619,7 @@ class MatEvdeApp {
     a.tip=this._ef('tip');
     a.anxFriendly=!!document.getElementById('ef-anx')?.checked;
     a.dysc=!!document.getElementById('ef-dysc')?.checked;
+    this._persistContent('activities');
     this._closeModal(); this.show(this._activeView); this._toast('Etkinlik güncellendi ✓','ok');
   }
 
@@ -4626,6 +4643,7 @@ class MatEvdeApp {
     m.emoji=this._ef('emoji')||m.emoji; m.title=this._ef('title')||m.title;
     m.sub=this._ef('sub'); m.dur=this._ef('dur')||m.dur;
     m.level=parseInt(this._ef('level'))||m.level; m.text=this._ef('text');
+    this._persistContent('learn');
     this._closeModal(); this.show(this._activeView); this._toast('Modül güncellendi ✓','ok');
   }
 
@@ -4654,6 +4672,7 @@ class MatEvdeApp {
     b.mathConcepts=this._ef('conc').split(',').map(function(s){return s.trim();}).filter(Boolean);
     b.mathQuestions=this._ef('qs').split('\n').map(function(s){return s.trim();}).filter(Boolean);
     b.tip=this._ef('tip');
+    this._persistContent('books');
     this._closeModal(); this.show(this._activeView); this._toast('Kitap güncellendi ✓','ok');
   }
 
@@ -4680,6 +4699,7 @@ class MatEvdeApp {
     s.emoji=this._ef('emoji')||s.emoji; s.label=this._ef('label')||s.label;
     s.family=this._ef('family'); s.age=this._ef('age');
     s.story=this._ef('story'); s.lesson=this._ef('lesson'); s.tag=this._ef('tag');
+    this._persistContent('stories');
     this._closeModal(); this.show(this._activeView); this._toast('Hikaye güncellendi ✓','ok');
   }
 
@@ -4700,6 +4720,7 @@ class MatEvdeApp {
     var m=this._sayiSohbetiKartlari.find(function(x){return x.id===id;}); if(!m) return;
     m.context=this._ef('ctx')||m.context; m.prompt=this._ef('prompt')||m.prompt;
     m.concept=this._ef('conc'); m.ageMin=this._ef('ageMin')||m.ageMin;
+    this._persistContent('mt');
     this._closeModal(); this.show(this._activeView); this._toast('Kart güncellendi ✓','ok');
   }
 
@@ -5015,6 +5036,275 @@ class MatEvdeApp {
     if(!Array.isArray(this._dyscGameAnswers) || this._dyscGameAnswers.length < 3) return;
     const delta = this._subtype.scoreFromMiniGame(this._dyscGameAnswers);
     this._subtype.addScores(delta, 'mini_game');
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     v6 — Yönetici Paneli & Kalıcı İçerik (ContentService)
+  ══════════════════════════════════════════════════════════ */
+
+  /** İlk açılışta localStorage snapshot'ları belleğe yükle.
+   *  Constructor'dan SONRA, mevcut diziler kurulduktan sonra çağrılır. */
+  _hydrateContentOverrides(){
+    try {
+      const aSnap = this._content.load('activities');
+      if(Array.isArray(aSnap)) this._repo._data = aSnap;
+      const lSnap = this._content.load('learn');
+      if(Array.isArray(lSnap)) this._learnModules = lSnap;
+      const bSnap = this._content.load('books');
+      if(Array.isArray(bSnap)) this._bookLibrary = bSnap;
+      const sSnap = this._content.load('stories');
+      if(Array.isArray(sSnap)) this._stories = sSnap;
+      const mSnap = this._content.load('mt');
+      if(Array.isArray(mSnap)) this._sayiSohbetiKartlari = mSnap;
+    } catch(e) { /* sessiz */ }
+  }
+
+  /** Tek tipli snapshot kaydet — _save*/_inlineDel/_add* sonunda çağrılır. */
+  _persistContent(type){
+    try {
+      if(type === 'activities') this._content.save('activities', this._repo._data);
+      else if(type === 'learn') this._content.save('learn', this._learnModules);
+      else if(type === 'books') this._content.save('books', this._bookLibrary);
+      else if(type === 'stories') this._content.save('stories', this._stories || []);
+      else if(type === 'mt') this._content.save('mt', this._sayiSohbetiKartlari);
+    } catch(e) { /* sessiz */ }
+  }
+
+  /* ─── Admin paneli navigasyonu ──────────────────────────── */
+  _openAdmin(){
+    if(!this._canEdit()){ this._toast('Yönetici/içerik üretici girişi gerekli','err'); return; }
+    if(!this._isEditMode()) sessionStorage.setItem('abmat_em','1');
+    this._adminTab = this._adminTab || 'activities';
+    this._adminSearch = '';
+    this.show('admin');
+  }
+  _adminSetTab(tab){ this._adminTab = tab; this._adminSearch = ''; AdminPanelView.render(this); }
+  _adminSearchSet(v){
+    this._adminSearch = v || '';
+    const el = document.getElementById('admin-list');
+    if(el) el.innerHTML = AdminPanelView._renderList(this, this._adminTab, this._adminSearch);
+  }
+  _adminDelete(tab, id){
+    const map = { activities:'activity', learn:'lm', books:'book', stories:'story', mt:'mt' };
+    this._inlineDel(map[tab], id);
+    setTimeout(() => AdminPanelView.render(this), 50);
+  }
+  _adminResetTab(tab){
+    if(!confirm('Bu listedeki TÜM düzenlemelerinizi sıfırlayıp varsayılan içeriğe dönmek istediğinize emin misiniz?')) return;
+    this._content.reset(tab);
+    location.reload();
+  }
+  _adminResetAll(){
+    if(!confirm('TÜM içerik düzenlemelerinizi (etkinlik, akademi, kitap, hikaye, sohbet) sıfırlayıp varsayılana dönmek istediğinize emin misiniz?')) return;
+    this._content.resetAll();
+    location.reload();
+  }
+
+  /* ─── Yeni içerik ekleme (boş form aç) ─────────────────── */
+  _adminAdd(tab){
+    if(tab === 'activities') return this._addActivity();
+    if(tab === 'learn')      return this._addLM();
+    if(tab === 'books')      return this._addBook();
+    if(tab === 'stories')    return this._addStory();
+    if(tab === 'mt')         return this._addMT();
+  }
+
+  /* ── Yeni Etkinlik ────────────────────────────────────── */
+  _addActivity(){
+    const C = {NUMBER:'Sayı',PATTERNS:'Örüntü',GEOMETRY:'Geometri',MEASUREMENT:'Ölçme',DAILY:'Günlük',PROBLEM:'Problem',SPATIAL:'Uzamsal',KITCHEN:'Mutfak',MARKET:'Market',TIME:'Zaman',GAME:'Oyun',NATURE:'Doğa'};
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">➕ Yeni Etkinlik</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji','🎯'))
+      +this._eF('Süre (dk)',this._eI('dur','15','number'))
+      +'</div>'
+      +this._eF('Başlık *',this._eI('title',''))
+      +this._eF('Açıklama',this._eI('desc',''))
+      +this._eF('Kategori',this._eS('cat',C,'NUMBER'))
+      +this._eF('Yaş Grupları','<div style="margin-top:.25rem">'+this._eAge([])+'</div>')
+      +this._eF('Malzemeler (virgülle)',this._eI('mat',''))
+      +this._eF('Adımlar (her satır bir adım)',this._eT('steps','',85))
+      +this._eF('İpucu',this._eT('tip','',55))
+      +'<div style="display:flex;gap:1rem;margin-bottom:.5rem">'
+      +'<label style="display:flex;align-items:center;gap:.3rem;font-size:var(--t-sm);cursor:pointer">'
+      +'<input type="checkbox" id="ef-anx" style="accent-color:var(--teal);width:14px;height:14px"> Kaygı Dostu</label>'
+      +'<label style="display:flex;align-items:center;gap:.3rem;font-size:var(--t-sm);cursor:pointer">'
+      +'<input type="checkbox" id="ef-dysc" style="accent-color:var(--teal);width:14px;height:14px"> Diskalkuli</label>'
+      +'</div>'
+      +this._eBtns('App._saveNewActivity()')
+    );
+  }
+  _saveNewActivity(){
+    const title = this._ef('title');
+    if(!title){ this._toast('Başlık zorunlu','err'); return; }
+    const ag = this._echk('eAge');
+    const item = {
+      id: this._content.newId('a'),
+      emoji: this._ef('emoji') || '🎯',
+      title,
+      desc: this._ef('desc'),
+      ageGroups: ag.length ? ag : ['G1'],
+      category: this._ef('cat') || 'NUMBER',
+      dur: parseInt(this._ef('dur')) || 15,
+      materials: this._ef('mat').split(',').map(s=>s.trim()).filter(Boolean),
+      steps: this._ef('steps').split('\n').map(s=>s.trim()).filter(Boolean),
+      tip: this._ef('tip'),
+      anxFriendly: !!document.getElementById('ef-anx')?.checked,
+      dysc: !!document.getElementById('ef-dysc')?.checked,
+      tags: [],
+      tymm_oo: [], tymm_il: [], tymm_t: [], tymm_yas: [], tymm_outcomes: [],
+      _custom: true,
+    };
+    this._repo._data.push(item);
+    this._persistContent('activities');
+    this._closeModal();
+    if(this._activeView === 'admin') AdminPanelView.render(this);
+    else this.show(this._activeView);
+    this._toast('Etkinlik eklendi ✓','ok');
+  }
+
+  /* ── Yeni Akademi Modülü ───────────────────────────────── */
+  _addLM(){
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">➕ Yeni Akademi Modülü</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji','📘'))
+      +this._eF('Süre',this._eI('dur','10 dk'))+'</div>'
+      +this._eF('Başlık *',this._eI('title',''))
+      +this._eF('Alt Başlık',this._eI('sub',''))
+      +this._eF('Seviye',this._eS('level',{'1':'Başlangıç','2':'Orta','3':'İleri'},'1'))
+      +this._eF('İçerik',this._eT('text','',110))
+      +this._eBtns('App._saveNewLM()')
+    );
+  }
+  _saveNewLM(){
+    const title = this._ef('title');
+    if(!title){ this._toast('Başlık zorunlu','err'); return; }
+    const item = {
+      id: this._content.newId('lm'),
+      emoji: this._ef('emoji') || '📘',
+      title,
+      sub: this._ef('sub'),
+      dur: this._ef('dur') || '10 dk',
+      level: parseInt(this._ef('level')) || 1,
+      text: this._ef('text'),
+      _custom: true,
+    };
+    if(!this._learnModules) this._learnModules = [];
+    this._learnModules.push(item);
+    this._persistContent('learn');
+    this._closeModal();
+    if(this._activeView === 'admin') AdminPanelView.render(this);
+    else this.show(this._activeView);
+    this._toast('Modül eklendi ✓','ok');
+  }
+
+  /* ── Yeni Kitap ─────────────────────────────────────────── */
+  _addBook(){
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">➕ Yeni Kitap</h3>'
+      +this._eF('Emoji',this._eI('emoji','📖'))
+      +this._eF('Başlık *',this._eI('title',''))
+      +this._eF('Yazar / Yayınevi',this._eI('author',''))
+      +this._eF('Yaş Grupları','<div style="margin-top:.25rem">'+this._eAge([])+'</div>')
+      +this._eF('Matematik Kavramları (virgülle)',this._eI('conc',''))
+      +this._eF('Sorular (her satır bir soru)',this._eT('qs','',75))
+      +this._eF('Pedagojik Not',this._eI('tip',''))
+      +this._eBtns('App._saveNewBook()')
+    );
+  }
+  _saveNewBook(){
+    const title = this._ef('title');
+    if(!title){ this._toast('Başlık zorunlu','err'); return; }
+    const ag = this._echk('eAge');
+    const item = {
+      id: this._content.newId('b'),
+      emoji: this._ef('emoji') || '📖',
+      title,
+      author: this._ef('author'),
+      ageGroups: ag.length ? ag : ['G1'],
+      mathConcepts: this._ef('conc').split(',').map(s=>s.trim()).filter(Boolean),
+      mathQuestions: this._ef('qs').split('\n').map(s=>s.trim()).filter(Boolean),
+      tip: this._ef('tip'),
+      _custom: true,
+    };
+    if(!this._bookLibrary) this._bookLibrary = [];
+    this._bookLibrary.push(item);
+    this._persistContent('books');
+    this._closeModal();
+    if(this._activeView === 'admin') AdminPanelView.render(this);
+    else this.show(this._activeView);
+    this._toast('Kitap eklendi ✓','ok');
+  }
+
+  /* ── Yeni Hikaye ────────────────────────────────────────── */
+  _addStory(){
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">➕ Yeni Başarı Hikayesi</h3>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Emoji',this._eI('emoji','🌟'))
+      +this._eF('Etiket',this._eI('label',''))+'</div>'
+      +this._eF('Aile / Şehir',this._eI('family',''))
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">'
+      +this._eF('Yaş Grubu',this._eI('age',''))
+      +this._eF('Konu',this._eI('tag',''))+'</div>'
+      +this._eF('Hikaye Metni *',this._eT('story','',90))
+      +this._eF('Ders / Mesaj',this._eI('lesson',''))
+      +this._eBtns('App._saveNewStory()')
+    );
+  }
+  _saveNewStory(){
+    const story = this._ef('story');
+    if(!story){ this._toast('Hikaye metni zorunlu','err'); return; }
+    const item = {
+      emoji: this._ef('emoji') || '🌟',
+      label: this._ef('label'),
+      family: this._ef('family'),
+      age: this._ef('age'),
+      tag: this._ef('tag'),
+      story,
+      lesson: this._ef('lesson'),
+      _custom: true,
+    };
+    if(!this._stories) this._stories = [];
+    this._stories.push(item);
+    this._persistContent('stories');
+    this._closeModal();
+    if(this._activeView === 'admin') AdminPanelView.render(this);
+    else this.show(this._activeView);
+    this._toast('Hikaye eklendi ✓','ok');
+  }
+
+  /* ── Yeni Sayı Sohbeti Kartı ────────────────────────────── */
+  _addMT(){
+    const A = {PRESCHOOL:'Okul Öncesi',G1:'1.Sınıf',G2:'2.Sınıf',G3:'3.Sınıf',G4:'4.Sınıf'};
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">➕ Yeni Sohbet Kartı</h3>'
+      +this._eF('Bağlam (örn. 🚗 Araçta)',this._eI('ctx',''))
+      +this._eF('Soru / İpucu *',this._eI('prompt',''))
+      +this._eF('Matematik Kavramı',this._eI('conc',''))
+      +this._eF('Min. Yaş',this._eS('ageMin',A,'PRESCHOOL'))
+      +this._eBtns('App._saveNewMT()')
+    );
+  }
+  _saveNewMT(){
+    const prompt = this._ef('prompt');
+    if(!prompt){ this._toast('Soru zorunlu','err'); return; }
+    const item = {
+      id: this._content.newId('mt'),
+      context: this._ef('ctx'),
+      prompt,
+      concept: this._ef('conc'),
+      ageMin: this._ef('ageMin') || 'PRESCHOOL',
+      _custom: true,
+    };
+    if(!this._sayiSohbetiKartlari) this._sayiSohbetiKartlari = [];
+    this._sayiSohbetiKartlari.push(item);
+    this._persistContent('mt');
+    this._closeModal();
+    if(this._activeView === 'admin') AdminPanelView.render(this);
+    else this.show(this._activeView);
+    this._toast('Kart eklendi ✓','ok');
   }
 }
 
