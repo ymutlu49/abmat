@@ -31,41 +31,40 @@
 <!-- ═══════════════════ SPLASH ════════════════════════ -->
 <div id="view-splash" class="view active">
 
-  <!-- Arka plan — Dernek yeşili paleti -->
-  <div style="position:absolute;inset:0;background:linear-gradient(175deg,#388E3C 0%,#2E7D32 45%,#1B5E20 100%)"></div>
-  <div style="position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.04);top:-90px;right:-70px"></div>
-  <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);bottom:-50px;left:-60px"></div>
+  <!-- Arka plan — krem/beyaz, dernek paleti aksent -->
+  <div style="position:absolute;inset:0;background:#FAFAF8"></div>
+  <div style="position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(46,125,50,.05);top:-100px;right:-80px"></div>
+  <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(160,82,45,.04);bottom:-60px;left:-70px"></div>
 
   <!-- Status bar -->
   <div style="height:env(safe-area-inset-top);min-height:44px;flex-shrink:0;position:relative;z-index:1"></div>
 
-  <!-- Üst: Dernek + ABMAT Logo -->
+  <!-- Üst: Logo + İsim -->
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2rem 1rem;position:relative;z-index:1;text-align:center">
 
-    <!-- Logo -->
-    <div style="width:104px;height:104px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;box-shadow:0 6px 18px rgba(0,0,0,.22)">
-      <img src="icons/dernek-logo.png" alt="Diskalkuli Derneği" style="width:92px;height:92px;object-fit:contain">
-    </div>
+    <!-- Logo (saydam zemin, doğrudan) -->
+    <img src="./icons/dernek-logo.png" alt="Diskalkuli Derneği" width="160" height="160"
+         style="width:160px;height:160px;object-fit:contain;margin-bottom:1.6rem;filter:drop-shadow(0 4px 12px rgba(46,125,50,.15))">
 
     <!-- İsim -->
-    <div style="font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:600;letter-spacing:.16em;color:#fff;line-height:1;margin-bottom:.45rem">ABMAT</div>
-    <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:1.5rem">Anne-Baba Matematik Okulu</div>
+    <div style="font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:700;letter-spacing:.16em;color:#1B5E20;line-height:1;margin-bottom:.45rem">ABMAT</div>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#6B6259;margin-bottom:1.5rem">Anne-Baba Matematik Okulu</div>
 
     <!-- Açıklama -->
-    <p style="font-size:.85rem;color:rgba(255,255,255,.82);line-height:1.6;max-width:220px;margin-bottom:2rem;font-weight:500;letter-spacing:.02em">
+    <p style="font-size:.9rem;color:#37433C;line-height:1.6;max-width:240px;margin-bottom:2rem;font-weight:500;letter-spacing:.01em">
       Evde matematik.<br>Bilimsel. Etkili. Kolay.
     </p>
 
     <!-- Butonlar -->
     <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:.6rem">
       <button onclick="this.style.transform='scale(.96)';this.style.opacity='.88';setTimeout(()=>App.start(),120)"
-        style="width:100%;padding:.95rem;background:#fff;color:#0D7A6E;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 4px 20px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent;transition:transform .1s,opacity .1s"
+        style="width:100%;padding:.95rem;background:#2E7D32;color:#fff;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 6px 18px rgba(46,125,50,.32);-webkit-tap-highlight-color:transparent;transition:transform .1s,opacity .1s"
         ontouchstart="this.style.transform='scale(.96)';this.style.opacity='.88'"
         ontouchend="this.style.transform='';this.style.opacity=''">
         Başla →
       </button>
       <button onclick="App.demo()"
-        style="width:100%;padding:.8rem;background:rgba(255,255,255,.14);color:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.28);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
+        style="width:100%;padding:.8rem;background:rgba(46,125,50,.08);color:#1B5E20;border:1.5px solid rgba(46,125,50,.25);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
         ontouchstart="this.style.opacity='.75'"
         ontouchend="this.style.opacity=''"
         onmousedown="this.style.opacity='.75'"
@@ -73,7 +72,7 @@
         Demo Modu
       </button>
       <button onclick="App._showLogin()"
-        style="width:100%;padding:.6rem;background:transparent;color:rgba(255,255,255,.78);border:none;font-family:var(--ff-body);font-size:.82rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:.01em">
+        style="width:100%;padding:.6rem;background:transparent;color:#6B6259;border:none;font-family:var(--ff-body);font-size:.82rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:.01em">
         Zaten hesabım var →
       </button>
     </div>
@@ -81,9 +80,9 @@
 
   <!-- Alt bilgi -->
   <div style="padding:.75rem 2rem calc(1.25rem + env(safe-area-inset-bottom));text-align:center;position:relative;z-index:1;flex-shrink:0">
-    <p style="font-size:.7rem;color:rgba(255,255,255,.6);letter-spacing:.04em;line-height:1.7;font-weight:600">
+    <p style="font-size:.7rem;color:#6B6259;letter-spacing:.04em;line-height:1.7;font-weight:600">
       Okul Öncesi &amp; İlkokul<br>
-      <span style="color:rgba(255,255,255,.5);font-weight:500">Prof. Dr. Yılmaz Mutlu</span>
+      <span style="color:#9A8F84;font-weight:500">Prof. Dr. Yılmaz Mutlu</span>
     </p>
   </div>
 
