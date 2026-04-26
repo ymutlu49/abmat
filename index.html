@@ -58,10 +58,12 @@
 
     <!-- Butonlar -->
     <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:.6rem">
-      <button onclick="this.style.transform='scale(.96)';this.style.opacity='.88';setTimeout(()=>App.start(),120)"
-        style="width:100%;padding:.95rem;background:#2E7D32;color:#fff;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 6px 18px rgba(46,125,50,.32);-webkit-tap-highlight-color:transparent;transition:transform .1s,opacity .1s"
-        ontouchstart="this.style.transform='scale(.96)';this.style.opacity='.88'"
-        ontouchend="this.style.transform='';this.style.opacity=''">
+      <button onclick="App.start()"
+        style="width:100%;padding:.95rem;background:#2E7D32;color:#fff;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 6px 18px rgba(46,125,50,.32);-webkit-tap-highlight-color:transparent;transition:transform .08s,opacity .08s"
+        ontouchstart="this.style.transform='scale(.97)';this.style.opacity='.9'"
+        ontouchend="this.style.transform='';this.style.opacity=''"
+        onmousedown="this.style.transform='scale(.97)';this.style.opacity='.9'"
+        onmouseup="this.style.transform='';this.style.opacity=''">
         Başla →
       </button>
       <button onclick="App.demo()"
