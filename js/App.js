@@ -54,6 +54,7 @@ import { ErrorReportView } from './views/ErrorReportView.js';
 import { A11ySettingsView } from './views/A11ySettingsView.js';
 import { KidsModeView } from './views/KidsModeView.js';
 import { AdminPanelView } from './views/AdminPanelView.js';
+import { AboutView } from './views/AboutView.js';
 
 // ── Aile rutin tetikleyicileri (Math Talk extended) ──────
 import { ROUTINE_TRIGGERS, pickRandomTalk } from './data/math-talk-extended.js';
@@ -170,6 +171,7 @@ class MatEvdeApp {
       { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
       { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
       { id:'lm11', emoji:'💬', title:'Sayı Sohbeti+ (Genişletilmiş)', sub:'60+ tetikleyici, 6 bağlam, 3 yaş grubu', dur:'10 dk', level:2, text:'Mutfak, banyo, yatma, yol, market ve oyun bağlamlarında 60+ rehber soru. Yaş ve bağlama göre filtrelenir; rastgele soru çeker; sesli okur (TTS).', isSpecial:'mtext' },
+      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz, üyelik, iletişim', dur:'5 dk', level:1, text:'ABMAT, Diskalkuli Derneği işbirliğiyle geliştirilmektedir. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. Üyelik, bağış ve iletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
       { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
 
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
@@ -319,7 +321,7 @@ class MatEvdeApp {
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu', 'admin': 'ABMAT — Yönetici Paneli'};
+      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu', 'admin': 'ABMAT — Yönetici Paneli', 'about': 'ABMAT — Diskalkuli Derneği'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -354,6 +356,7 @@ class MatEvdeApp {
       a11y:()=>A11ySettingsView.render(this),
       kids:()=>KidsModeView.render(this),
       admin:()=>AdminPanelView.render(this),
+      about:()=>AboutView.render(this),
     };
     renders[name]?.();
     this._updateBnavs(name);
@@ -818,6 +821,20 @@ class MatEvdeApp {
           <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.55"><em>Berkowitz ve ark., 2015 — Science</em></p>
         </div>
       </div>`:''}
+
+      <!-- Diskalkuli Derneği işbirliği banner'ı -->
+      <div onclick="App.show('about')" role="button" tabindex="0"
+        style="background:linear-gradient(135deg,rgba(46,125,50,.08),rgba(46,125,50,.03));border:1.5px solid rgba(46,125,50,.22);border-radius:var(--r-lg);padding:.85rem 1rem;margin-bottom:1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;-webkit-tap-highlight-color:transparent;transition:var(--t)"
+        onmouseover="this.style.borderColor='var(--teal-l)'"
+        onmouseout="this.style.borderColor='rgba(46,125,50,.22)'"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();App.show('about')}">
+        <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:42px;height:42px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--t-sm);font-weight:800;color:var(--teal-d)">Diskalkuli Derneği iş birliğiyle 💚</div>
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">"Herkes Matematik Öğrenebilir" · Hakkında, üyelik & destek →</p>
+        </div>
+        <span style="color:var(--muted);flex-shrink:0;font-size:1.2rem">›</span>
+      </div>
     `  }
 
   /* ══════════════════════════════════════════════
@@ -3796,6 +3813,7 @@ class MatEvdeApp {
     if(m.isSpecial==='stories')   { this.show('stories');     return; }
     if(m.isSpecial==='skill')     { this.show('skill');       return; }
     if(m.isSpecial==='mtext')     { this.show('mtext');       return; }
+    if(m.isSpecial==='about')     { this.show('about');       return; }
     this._openModal(`
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3rem;margin-bottom:.3rem">${m.emoji}</div>
@@ -3876,8 +3894,28 @@ class MatEvdeApp {
         <div style="display:flex;gap:.6rem;flex-wrap:wrap">
           <span style="background:rgba(255,255,255,.2);color:#fff;padding:.3rem .75rem;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700">${si.label}</span>
           <span style="background:rgba(255,255,255,.2);color:#fff;padding:.3rem .75rem;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700">${this._AGLabels[c?.ageGroup]||'—'}</span>
+          <span style="background:${p.role==='admin'?'rgba(255,209,102,.3)':p.role==='editor'?'rgba(255,255,255,.2)':'rgba(255,255,255,.15)'};color:#fff;padding:.3rem .75rem;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700">
+            ${p.role==='admin'?'👑 Yönetici':p.role==='editor'?'✍️ İçerik Üretici':'👨‍👩‍👧 Ebeveyn'}
+          </span>
         </div>
       </div>
+
+      ${this._auth?.needsFirstAdmin?.() ? `
+        <div style="margin:0 1.25rem 1rem;background:linear-gradient(135deg,#FFF3CD,#FFE69C);border:1.5px solid var(--amber);border-radius:var(--r-lg);padding:1rem 1.1rem">
+          <div style="display:flex;align-items:flex-start;gap:.7rem">
+            <span style="font-size:1.8rem;flex-shrink:0">⚠️</span>
+            <div style="flex:1">
+              <strong style="color:#92600A;font-size:var(--t-md);display:block">Yönetici Hesabı Yok</strong>
+              <p style="font-size:var(--t-sm);color:#5C3D00;line-height:1.55;margin-top:.25rem">
+                Bu cihazda henüz yönetici hesabı kurulmamış. Etkinlik/içerik düzenlemek için yönetici girişi gerekli.
+              </p>
+              <button class="btn btn-primary btn-sm" style="margin-top:.55rem;font-weight:800" onclick="App._openAdminSetup()">
+                👑 Yönetici Hesabı Kur →
+              </button>
+            </div>
+          </div>
+        </div>
+      ` : ''}
 
       <div style="padding:0 1.25rem 7rem;display:flex;flex-direction:column;gap:1.1rem">
 
@@ -3993,6 +4031,18 @@ class MatEvdeApp {
               <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._exportCsv()">📊 CSV İndir</button>
               <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._exportSummary()">📝 PDF Raporu</button>
             </div>
+          </div>
+        </div>
+
+        <!-- v6 — Diskalkuli Derneği -->
+        <div class="card card-sm" style="border:1.5px solid var(--teal-l);background:linear-gradient(135deg,rgba(46,125,50,.06),rgba(46,125,50,.02))">
+          <div class="card-body" style="display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem">
+            <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:46px;height:46px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:var(--t-md);color:var(--teal-d);display:block">Diskalkuli Derneği</strong>
+              <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.45">Hakkında, üyelik, bağış ve iletişim</p>
+            </div>
+            <button class="btn btn-soft btn-sm" onclick="App.show('about')" style="flex-shrink:0">→</button>
           </div>
         </div>
 
@@ -4954,6 +5004,54 @@ class MatEvdeApp {
       + '<button class="btn btn-ghost btn-block" style="color:var(--danger);font-size:var(--t-sm)" onclick="App._logout();App._closeModal()">↩️ Çıkış Yap</button>'
       + '</div>'
     );
+  }
+
+  /* ── İlk Yönetici Kurulumu ────────────────────────── */
+  _openAdminSetup(){
+    if(!this._auth.needsFirstAdmin()){
+      this._toast('Zaten bir yönetici hesabı var','err'); return;
+    }
+    const cur = this._parent || {};
+    this._openModal(
+      '<h3 style="margin-bottom:.4rem">👑 Yönetici Hesabı Kur</h3>'
+      + '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55;margin-bottom:.85rem">Bu cihazda içerik yönetimi (etkinlik/kitap/hikaye ekleme) için bir yönetici hesabı oluşturun. Profil bilgileriniz ön doldurulmuştur — değiştirebilirsiniz.</p>'
+      + this._eF('Ad Soyad *', this._eI('name', cur.name || ''))
+      + this._eF('Kullanıcı Adı * <span style="font-weight:400;color:var(--muted);font-size:.7rem">(3-30 karakter, harf/rakam/_)</span>',
+          this._eI('uname', this._auth.normalizeUsername(cur.name || 'admin')))
+      + this._eF('E-posta', this._eI('email', cur.email || '','email'))
+      + this._eF('Şifre * <span style="font-weight:400;color:var(--muted);font-size:.7rem">(en az 8 karakter)</span>',
+          '<input id="ef-pwd" type="password" oninput="App._updatePwdMeter(\'ef-pwd\',\'pwd-meter\')" '
+          + 'style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem">'
+          + '<div id="pwd-meter" style="margin-top:.4rem"></div>'
+        )
+      + this._eF('Şifre (Tekrar) *', this._eI('pwd2','','password'))
+      + this._eBtns('App._setupFirstAdmin()')
+    );
+  }
+
+  async _setupFirstAdmin(){
+    const name = this._ef('name');
+    const uname = this._ef('uname');
+    const email = this._ef('email');
+    const pwd = document.getElementById('ef-pwd')?.value || '';
+    const pwd2 = this._ef('pwd2');
+    if(pwd !== pwd2){ this._toast('Şifreler eşleşmiyor','err'); return; }
+    try {
+      const u = await this._auth.setupFirstAdmin({ name, username: uname, email, password: pwd });
+      // Mevcut profil verisini kullanıcıya bağla
+      if(this._parent){
+        this._parent = { ...this._parent, id: u.id, name: u.name, role: u.role, username: u.username, email: u.email };
+        this._storage.set('parent', this._parent);
+        this._storage.set('parent_' + u.id, this._parent);
+      }
+      // Otomatik oturum
+      const sess = this._auth._createSession(u.id, true);
+      this._closeModal();
+      this._toast('Yönetici hesabınız hazır 👑','ok');
+      this.show('profile');
+    } catch(e) {
+      this._toast(e.message || 'Hata','err');
+    }
   }
 
   async _changeMyPassword(){

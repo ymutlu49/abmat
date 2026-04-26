@@ -357,6 +357,28 @@ class AuthService {
     return true;
   }
 
+  /* ════════════════ İLK KURULUM ═══════════════════ */
+  /** Aktif (çalışan şifresi olan) admin var mı? Boş hash ya da pasif sayılmaz. */
+  hasUsableAdmin(){
+    return this.getUsers().some(u =>
+      u.role === 'admin' && u.active && u.password && u.username !== 'yonetici'
+    );
+  }
+  /** Liste tamamen boşsa veya yalnızca legacy "yonetici" var ise true. */
+  needsFirstAdmin(){
+    const users = this.getUsers();
+    if(users.length === 0) return true;
+    return !this.hasUsableAdmin();
+  }
+  /** İlk admin kurulumu — sadece henüz kullanılabilir admin yoksa çalışır. */
+  async setupFirstAdmin({ name, username, email, password }){
+    if(this.hasUsableAdmin()){
+      throw new Error('Zaten bir yönetici hesabı var');
+    }
+    const u = await this.createUser({ name, username, email, password, role: 'admin', active: true });
+    return u;
+  }
+
   /* ════════════════ OTURUM ═══════════════════ */
   _createSession(userId, remember){
     const days = remember ? 30 : 7;

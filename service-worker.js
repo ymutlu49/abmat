@@ -8,7 +8,7 @@
  * Sürüm kontrolü: CACHE_NAME'yi yeni deploy'da güncelle.
  */
 
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = `abmat-${CACHE_VERSION}`;
 const OFFLINE_URL = './offline.html';
 
@@ -63,6 +63,7 @@ const CORE_ASSETS = [
   './js/views/A11ySettingsView.js',
   './js/views/KidsModeView.js',
   './js/views/AdminPanelView.js',
+  './js/views/AboutView.js',
   './js/skill-bridge/index.js',
   './js/skill-bridge/data.js',
   './js/skill-bridge/SkillProgressStore.js',
