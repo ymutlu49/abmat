@@ -35,6 +35,7 @@ import { ErrorPatternService }   from './services/ErrorPatternService.js';
 import { ChildModeService }      from './services/ChildModeService.js';
 import { ExportService }         from './services/ExportService.js';
 import { ContentService }        from './services/ContentService.js';
+import { AuthService }           from './services/AuthService.js';
 
 // ── Alt uygulama: Beceri Köprüsü ──────────────────────────
 import { createSkillBridge } from './skill-bridge/index.js';
@@ -81,6 +82,7 @@ class MatEvdeApp {
       spaced: this._spaced, errorPattern: this._errPatterns, anxiety: this._anxTracker,
     });
     this._content    = new ContentService(this._storage);
+    this._auth       = new AuthService(this._storage);
     // _s alias servislerin storage'a kısa erişimi için (CorsiView kullanır)
     this._s = this._storage;
     // A11y body class uygulamasını DOM hazır olunca yap
@@ -377,8 +379,15 @@ class MatEvdeApp {
     this._starting = true;
     setTimeout(()=>{ this._starting = false; }, 500);
 
+    /* Önce: aktif oturum var mı? (Beni hatırla) */
+    const sessUser = this._auth?.currentUser?.();
+    if(sessUser){
+      this._loginSuccess(sessUser);
+      return;
+    }
+
     /* Kayıtlı kullanıcı var mı? → Giriş paneli */
-    const users = this._eGetUsers();
+    const users = this._auth ? this._auth.getUsers() : this._eGetUsers();
     const hasRealUsers = users.some(u=>u.active&&u.username!=='yonetici');
     const saved = this._storage.get('parent');
     if(hasRealUsers && !saved?.onboardingComplete){
@@ -3946,6 +3955,17 @@ class MatEvdeApp {
         ${this._renderUserMgmt()}
         `:''}
 
+        <!-- v6 — Hesap & Güvenlik -->
+        <div class="card card-sm">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <h3 style="font-size:var(--t-md);margin-bottom:.15rem">🔐 Hesap & Güvenlik</h3>
+            <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.5;margin-bottom:.35rem">
+              Şifre değiştir, oturum bilgisi, hesap durumu.
+            </p>
+            <button class="btn btn-soft btn-block" style="font-size:var(--t-sm)" onclick="App._openAccountSecurity()">🔑 Hesap & Güvenlik →</button>
+          </div>
+        </div>
+
         <!-- v4 — Erişilebilirlik & Çocuk Modu -->
         <div class="card card-sm">
           <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
@@ -4425,90 +4445,126 @@ class MatEvdeApp {
     const el = document.getElementById('login-user-list');
     if(!el) return;
     // Varsayılan 'yonetici' hesabını ve şifresiz single-user flow'u gizle
-    const users = this._eGetUsers().filter(u=>
-      u.active && u.username!=='yonetici'
+    const users = this._auth.getUsers().filter(u =>
+      u.active && u.username !== 'yonetici'
     );
     const divider = document.getElementById('login-divider');
-    if(users.length===0){
-      el.innerHTML='<div style="background:var(--raised);border-radius:var(--r-md);padding:.75rem;margin-bottom:.75rem;text-align:center">'
-        +'<p style="font-size:var(--t-sm);color:var(--muted)">Kayıtlı hesap bulunamadı.</p>'
-        +'<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.2rem">E-posta ile giriş yapın veya yeni hesap oluşturun.</p>'
-        +'</div>';
-      if(divider) divider.style.display='none';
+    if(users.length === 0){
+      el.innerHTML = '<div style="background:var(--raised);border-radius:var(--r-md);padding:.75rem;margin-bottom:.75rem;text-align:center">'
+        + '<p style="font-size:var(--t-sm);color:var(--muted)">Kayıtlı hesap bulunamadı.</p>'
+        + '<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.2rem">E-posta ile giriş yapın veya yeni hesap oluşturun.</p>'
+        + '</div>';
+      if(divider) divider.style.display = 'none';
       return;
     }
-    if(divider) divider.style.display='flex';
+    if(divider) divider.style.display = 'flex';
     el.innerHTML = '<p style="font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 .6rem;letter-spacing:.05em;text-transform:uppercase">Hesaplar</p>'
-      + users.map(u=>`<button onclick="App._loginAsUser('${u.username}')"
-        style="width:100%;display:flex;align-items:center;gap:.8rem;padding:.7rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:var(--ff-body);margin-bottom:.4rem;-webkit-tap-highlight-color:transparent;text-align:left;box-shadow:0 1px 3px rgba(0,0,0,.05);box-sizing:border-box"
-        ontouchstart="this.style.background='var(--raised)'" ontouchend="this.style.background='var(--surface)'">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0D9488,#0F766E);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0">
-          ${u.name.charAt(0).toUpperCase()}
-        </div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:.9375rem;font-weight:700;color:var(--text)">${this._admEsc(u.name)}</div>
-          <div style="font-size:.75rem;color:var(--muted);margin-top:.05rem">@${u.username}</div>
-        </div>
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>`).join('');
+      + users.map(u => {
+        const lockSec = u.lockedUntil && Date.now() < new Date(u.lockedUntil).getTime()
+          ? Math.ceil((new Date(u.lockedUntil).getTime() - Date.now()) / 1000) : 0;
+        const lastLogin = u.lastLoginAt ? this._relTime(u.lastLoginAt) : 'henüz giriş yok';
+        return `<button onclick="App._loginAsUser('${u.username}')"
+          style="width:100%;display:flex;align-items:center;gap:.8rem;padding:.7rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:var(--ff-body);margin-bottom:.4rem;-webkit-tap-highlight-color:transparent;text-align:left;box-shadow:0 1px 3px rgba(0,0,0,.05);box-sizing:border-box;${lockSec?'opacity:.6':''}"
+          ontouchstart="this.style.background='var(--raised)'" ontouchend="this.style.background='var(--surface)'">
+          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0">
+            ${this._admEsc(u.name.charAt(0).toUpperCase())}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.9375rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.35rem">
+              ${this._admEsc(u.name)}
+              ${u.role==='admin'?'<span style="font-size:.7rem">👑</span>':''}
+              ${lockSec?`<span style="font-size:.65rem;color:var(--danger)">🔒 ${lockSec}s</span>`:''}
+            </div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:.05rem">@${u.username} · ${lastLogin}</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>`;
+      }).join('');
   }
 
   _loginAsUser(username){
-    const users = this._eGetUsers();
-    const u = users.find(x=>x.username===username);
-    if(!u||!u.active) return;
-    if(u.pwdHash===''){
-      /* Şifresi yok — doğrudan giriş (ilk kayıt) */
-      this._loginSuccess(u); return;
-    }
-    /* Şifre varsa input'a odaklan */
-    document.getElementById('login-email').value = username;
-    document.getElementById('login-pwd').focus();
-  }
-
-  _loginSubmit(){
+    const u = this._auth.findByUsername(username);
+    if(!u || !u.active) return;
+    /* Şifre alanına ad doldur ve odaklan */
     const emailInput = document.getElementById('login-email');
     const pwdInput   = document.getElementById('login-pwd');
-    if(!emailInput||!pwdInput) return;
-    const identifier = emailInput.value.trim().toLowerCase();
+    if(emailInput) emailInput.value = username;
+    if(pwdInput){ pwdInput.value = ''; pwdInput.focus(); }
+  }
+
+  async _loginSubmit(){
+    const emailInput = document.getElementById('login-email');
+    const pwdInput   = document.getElementById('login-pwd');
+    const submitBtn  = document.getElementById('login-submit-btn');
+    const rememberEl = document.getElementById('login-remember');
+    if(!emailInput || !pwdInput) return;
+    const identifier = emailInput.value.trim();
     const pwd        = pwdInput.value;
-
-    const users  = this._eGetUsers();
-    const u      = users.find(x=>
-      (x.username===identifier||x.email===identifier) && x.active
-    );
-
-    if(!u){
-      document.getElementById('login-email-err').style.display='block';
-      emailInput.style.borderColor='#DC2626'; return;
+    const remember   = !!rememberEl?.checked;
+    if(!identifier || !pwd){
+      this._toast('Kullanıcı adı/e-posta ve şifre gerekli','err');
+      return;
     }
-
-    if(u.pwdHash && u.pwdHash!==this._eHashPwd(pwd)){
-      document.getElementById('login-pwd-err').style.display='block';
-      pwdInput.style.borderColor='#DC2626';
-      pwdInput.value=''; pwdInput.focus(); return;
+    // UI lock
+    if(submitBtn){ submitBtn.disabled = true; submitBtn.style.opacity = '.6'; submitBtn.textContent = 'Doğrulanıyor…'; }
+    const errEmail = document.getElementById('login-email-err');
+    const errPwd   = document.getElementById('login-pwd-err');
+    if(errEmail) errEmail.style.display = 'none';
+    if(errPwd){ errPwd.style.display = 'none'; errPwd.textContent = 'Şifre hatalı.'; }
+    try {
+      const r = await this._auth.login(identifier, pwd, { remember });
+      if(r.ok){
+        this._loginSuccess(r.user);
+      } else {
+        if(r.reason === 'not_found'){
+          if(errEmail){ errEmail.style.display = 'block'; errEmail.textContent = 'Bu kullanıcı bulunamadı.'; }
+          emailInput.style.borderColor = 'var(--danger)';
+        } else if(r.reason === 'disabled'){
+          if(errEmail){ errEmail.style.display = 'block'; errEmail.textContent = 'Bu hesap pasifleştirilmiş.'; }
+          emailInput.style.borderColor = 'var(--danger)';
+        } else if(r.reason === 'locked'){
+          const min = Math.ceil(r.retryAfterSec / 60);
+          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = `🔒 Hesap geçici olarak kilitli. ${r.retryAfterSec < 60 ? r.retryAfterSec + ' saniye' : min + ' dakika'} sonra tekrar deneyin.`; }
+        } else if(r.reason === 'bad_password'){
+          if(errPwd){
+            errPwd.style.display = 'block';
+            errPwd.textContent = r.attemptsLeft > 0
+              ? `Şifre hatalı. Kalan deneme: ${r.attemptsLeft}`
+              : 'Şifre hatalı. Hesap kilitlenmek üzere.';
+          }
+          pwdInput.style.borderColor = 'var(--danger)';
+          pwdInput.value = ''; pwdInput.focus();
+        }
+        this._renderLoginUsers();
+      }
+    } catch(e) {
+      this._toast(e.message || 'Giriş hatası', 'err');
+    } finally {
+      if(submitBtn){ submitBtn.disabled = false; submitBtn.style.opacity = ''; submitBtn.textContent = 'Giriş Yap'; }
     }
-
-    this._loginSuccess(u);
   }
 
   _logout(){
+    this._auth?.logout();
     this._parent = null; this._childId = null;
     this._toast('Çıkış yapıldı');
-    setTimeout(()=>this.show('splash'),300);
+    setTimeout(() => this.show('splash'), 300);
   }
 
-    _loginSuccess(u){
+  _loginSuccess(u){
     /* Kullanıcıyı _parent'a bağla — localStorage'dan veriyi yükle */
-    const saved = this._storage.get('parent_'+u.id) || this._storage.get('parent');
+    const saved = this._storage.get('parent_' + u.id) || this._storage.get('parent');
     if(saved?.onboardingComplete){
-      this._parent = saved;
-      this._childId = saved.children?.[0]?.id||null;
+      // Profil verisindeki rol/ad/email vb. bilgileri auth user'dan güncelle (tek kaynak)
+      this._parent = { ...saved, id: u.id, name: u.name, email: u.email || saved.email, role: u.role, username: u.username };
+      this._storage.set('parent', this._parent);
+      this._storage.set('parent_' + u.id, this._parent);
+      this._childId = saved.children?.[0]?.id || null;
       this.show('dashboard');
-      setTimeout(()=>this._toast('Hoş geldiniz, '+saved.name+'! 👋','ok'), 400);
+      setTimeout(() => this._toast('Hoş geldiniz, ' + this._parent.name + '! 👋', 'ok'), 400);
     } else {
       /* Bu kullanıcı için onboarding */
-      this._ob = {step:0,name:u.name,email:u.email||'',childName:'',ageGroup:'',style:'autonomy',anxiety:{},resources:[]};
+      this._ob = { step:0, name:u.name, email:u.email||'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
       this.show('onboarding');
       this._renderOb();
     }
@@ -4724,93 +4780,196 @@ class MatEvdeApp {
     this._closeModal(); this.show(this._activeView); this._toast('Kart güncellendi ✓','ok');
   }
 
-  /* ── Kullanıcı Yönetimi (sadece admin) ──────────────── */
-  _eHashPwd(s){ var h=0; for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h.toString(36); }
-  _eGetUsers(){
-    var r=localStorage.getItem('abmat_users');
-    if(r) try{return JSON.parse(r);}catch{}
-    var u=[{id:'u1',name:this._parent?.name||'Yönetici',
-      username:this._parent?.username||'yonetici',
-      pwdHash:'',role:'admin',active:true,createdAt:new Date().toISOString()}];
-    this._eSaveUsers(u); return u;
+  /* ── Kullanıcı Yönetimi (AuthService destekli) ─────── */
+  /* Geriye uyumluluk: eski _eGetUsers/_eSaveUsers/_eHashPwd çağrıları AuthService'e proxy'lenir */
+  _eGetUsers(){ return this._auth.getUsers(); }
+  _eSaveUsers(_u){ /* no-op — AuthService kendisi yönetir */ }
+  _eHashPwd(s){ /* sadece legacy doğrulamada — yeni kayıtta KULLANILMAZ */
+    let h = 0; for(let i=0; i<s.length; i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
+    return h.toString(36);
   }
-  _eSaveUsers(u){ localStorage.setItem('abmat_users',JSON.stringify(u)); }
 
   _renderUserMgmt(){
     if(!this._isAdmin()) return '';
-    var users=this._eGetUsers();
-    var self=this;
-    var rows=users.map(function(u,i){
-      return '<div style="display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;'
-        +'background:var(--surface);border:1.5px solid var(--border);'
-        +'border-radius:var(--r-md);margin-bottom:.4rem">'
-        +'<span style="font-size:1.1rem">'+(u.role==='admin'?'👑':'✍️')+'</span>'
-        +'<div style="flex:1;min-width:0">'
-        +'<div style="font-size:var(--t-md);font-weight:700">'+self._eesc(u.name)+'</div>'
-        +'<div style="font-size:var(--t-xs);color:var(--muted)">@'+u.username+' · '+(u.role==='admin'?'Yönetici':'İçerik Üretici')
-        +(u.active?'':'<span style="color:var(--danger)"> · Pasif</span>')+'</div></div>'
-        +'<div style="display:flex;gap:.3rem">'
-        +'<button onclick="App._editUserModal('+i+')" class="btn btn-soft btn-sm">✏️</button>'
-        +(u.username!==self._parent?.username
-          ?'<button onclick="App._toggleUser('+i+')" class="btn btn-sm" style="background:'
-            +(u.active?'rgba(229,62,62,.1)':'var(--teal-a)')
-            +';color:'+(u.active?'var(--danger)':'var(--teal-d)')
-            +';border:none;font-size:.7rem">'+(u.active?'Pasifleştir':'Aktifleştir')+'</button>'
-          :'<span style="font-size:var(--t-xs);color:var(--muted);padding:.3rem">Siz</span>')
-        +'</div></div>';
+    const users = this._auth.getUsers();
+    const self = this;
+    const rows = users.map(u => {
+      const lockSec = u.lockedUntil && Date.now() < new Date(u.lockedUntil).getTime()
+        ? Math.ceil((new Date(u.lockedUntil).getTime() - Date.now()) / 1000) : 0;
+      const isMe = self._parent?.id === u.id;
+      return `<div style="display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);margin-bottom:.4rem">
+        <span style="font-size:1.1rem">${u.role==='admin'?'👑':'✍️'}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--t-md);font-weight:700;display:flex;align-items:center;gap:.35rem">
+            ${self._eesc(u.name)}
+            ${lockSec?`<span style="font-size:.65rem;color:var(--danger);font-weight:700">🔒 ${lockSec}s</span>`:''}
+          </div>
+          <div style="font-size:var(--t-xs);color:var(--muted)">@${u.username}${u.email?' · '+u.email:''} · ${u.role==='admin'?'Yönetici':'İçerik Üretici'}${u.active?'':' · <span style="color:var(--danger)">Pasif</span>'}</div>
+          ${u.lastLoginAt?`<div style="font-size:.65rem;color:var(--hint);margin-top:.1rem">Son giriş: ${self._relTime(u.lastLoginAt)}</div>`:''}
+        </div>
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap;justify-content:flex-end;max-width:130px">
+          <button onclick="App._editUserModal('${u.id}')" class="btn btn-soft btn-sm" title="Düzenle">✏️</button>
+          ${lockSec?`<button onclick="App._unlockUser('${u.id}')" class="btn btn-sm" style="background:var(--amber-a);color:var(--amber);border:none;font-size:.7rem" title="Kilidi aç">🔓</button>`:''}
+          ${!isMe?`<button onclick="App._toggleUser('${u.id}')" class="btn btn-sm" style="background:${u.active?'rgba(220,38,38,.1)':'var(--teal-a)'};color:${u.active?'var(--danger)':'var(--teal-d)'};border:none;font-size:.7rem">${u.active?'Pasif':'Aktif'}</button>`:'<span style="font-size:var(--t-xs);color:var(--muted);padding:.3rem">Siz</span>'}
+          ${!isMe?`<button onclick="App._deleteUser('${u.id}')" class="btn btn-sm" style="background:rgba(220,38,38,.08);color:var(--danger);border:none;font-size:.7rem" title="Sil">🗑</button>`:''}
+        </div>
+      </div>`;
     }).join('');
-    return '<div style="margin-top:1.1rem">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem">'
-      +'<div style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Kullanıcılar</div>'
-      +'<button onclick="App._openNewUserModal()" class="btn btn-soft btn-sm">+ Ekle</button></div>'
-      +rows+'</div>';
+    return `<div style="margin-top:1.1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.55rem">
+        <div style="font-size:var(--t-xs);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Kullanıcılar (${users.length})</div>
+        <button onclick="App._openNewUserModal()" class="btn btn-soft btn-sm">+ Ekle</button>
+      </div>
+      ${rows}
+    </div>`;
   }
+
   _openNewUserModal(){
     this._openModal(
       '<h3 style="margin-bottom:.9rem">👤 Yeni Kullanıcı</h3>'
-      +this._eF('Ad Soyad',this._eI('name',''))
-      +this._eF('Kullanıcı Adı',this._eI('uname',''))
-      +this._eF('Şifre',this._eI('pwd','','password'))
-      +this._eF('Rol',this._eS('role',{editor:'İçerik Üretici',admin:'Yönetici'},'editor'))
-      +this._eBtns('App._createUser()')
+      + this._eF('Ad Soyad *', this._eI('name',''))
+      + this._eF('Kullanıcı Adı * <span style="font-weight:400;color:var(--muted);font-size:.7rem">(3-30 karakter, harf/rakam/_)</span>', this._eI('uname',''))
+      + this._eF('E-posta <span style="font-weight:400;color:var(--muted);font-size:.7rem">(opsiyonel)</span>', this._eI('email','','email'))
+      + this._eF('Şifre * <span style="font-weight:400;color:var(--muted);font-size:.7rem">(en az 8 karakter)</span>',
+          '<input id="ef-pwd" type="password" oninput="App._updatePwdMeter(\'ef-pwd\',\'pwd-meter\')" '
+          + 'style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem">'
+          + '<div id="pwd-meter" style="margin-top:.4rem"></div>'
+        )
+      + this._eF('Rol', this._eS('role',{editor:'✍️ İçerik Üretici',admin:'👑 Yönetici'},'editor'))
+      + this._eBtns('App._createUser()')
     );
   }
-  _createUser(){
-    var name=this._ef('name');
-    var uname=this._ef('uname').toLowerCase().replace(/\s+/g,'_');
-    var pwd=document.getElementById('ef-pwd')?.value;
-    var role=this._ef('role');
-    if(!name||!uname||!pwd){this._toast('Tüm alanlar zorunlu','err');return;}
-    if(pwd.length<6){this._toast('Şifre en az 6 karakter','err');return;}
-    var users=this._eGetUsers();
-    if(users.find(function(u){return u.username===uname;})){this._toast('Bu kullanıcı adı alınmış','err');return;}
-    users.push({id:'u'+Date.now(),name:name,username:uname,
-      pwdHash:this._eHashPwd(pwd),role:role,active:true,createdAt:new Date().toISOString()});
-    this._eSaveUsers(users); this._closeModal(); this.show('profile');
-    this._toast('Kullanıcı oluşturuldu ✓','ok');
+
+  /** Şifre güçlülük metresi — input'a bağlanır */
+  _updatePwdMeter(inputId, meterId){
+    const inp = document.getElementById(inputId);
+    const m = document.getElementById(meterId);
+    if(!inp || !m) return;
+    const r = this._auth.scorePassword(inp.value);
+    const segs = [0,1,2,3].map(i => `<div style="flex:1;height:5px;border-radius:3px;background:${i <= r.score - 1 ? r.color : 'var(--border)'};transition:background .2s"></div>`).join('');
+    m.innerHTML = `
+      <div style="display:flex;gap:3px">${segs}</div>
+      <div style="font-size:var(--t-xs);margin-top:.3rem;color:${r.color};font-weight:700">${r.label}</div>
+      ${r.issues.length?`<div style="font-size:var(--t-xs);color:var(--danger);margin-top:.15rem">${r.issues.join(' · ')}</div>`:''}
+      ${r.suggestions.length && r.score < 3?`<div style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem">💡 ${r.suggestions.join(' · ')}</div>`:''}
+    `;
   }
-  _editUserModal(i){
-    var u=this._eGetUsers()[i]; if(!u) return;
+
+  async _createUser(){
+    const name  = this._ef('name');
+    const uname = this._ef('uname');
+    const email = this._ef('email');
+    const pwd   = document.getElementById('ef-pwd')?.value || '';
+    const role  = this._ef('role');
+    try {
+      await this._auth.createUser({ name, username: uname, email, password: pwd, role });
+      this._closeModal();
+      this.show('profile');
+      this._toast('Kullanıcı oluşturuldu ✓','ok');
+    } catch(e) {
+      this._toast(e.message || 'Hata','err');
+    }
+  }
+
+  _editUserModal(userId){
+    const u = this._auth.findById(userId); if(!u) return;
     this._openModal(
       '<h3 style="margin-bottom:.9rem">✏️ Kullanıcı Düzenle</h3>'
-      +this._eF('Ad Soyad',this._eI('name',u.name))
-      +this._eF('Yeni Şifre (boş = değişmez)',this._eI('pwd','','password'))
-      +this._eF('Rol',this._eS('role',{editor:'İçerik Üretici',admin:'Yönetici'},u.role))
-      +this._eBtns('App._saveUser('+i+')')
+      + this._eF('Ad Soyad', this._eI('name', u.name))
+      + this._eF('Kullanıcı Adı', this._eI('uname', u.username))
+      + this._eF('E-posta', this._eI('email', u.email || '','email'))
+      + this._eF('Rol', this._eS('role',{editor:'✍️ İçerik Üretici',admin:'👑 Yönetici'}, u.role))
+      + '<div style="margin:.7rem 0;padding:.6rem .8rem;background:var(--raised);border-radius:var(--r-sm);border:1px solid var(--border)">'
+      + '<p style="font-size:var(--t-xs);color:var(--muted);margin-bottom:.3rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em">🔑 Şifre Sıfırla (opsiyonel)</p>'
+      + '<input id="ef-pwd" type="password" placeholder="Boş bırakırsanız değişmez" oninput="App._updatePwdMeter(\'ef-pwd\',\'pwd-meter\')" '
+      + 'style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit">'
+      + '<div id="pwd-meter" style="margin-top:.4rem"></div></div>'
+      + this._eBtns(`App._saveUser('${userId}')`)
     );
   }
-  _saveUser(i){
-    var users=this._eGetUsers(); var u=users[i]; if(!u) return;
-    var name=this._ef('name'); var pwd=document.getElementById('ef-pwd')?.value; var role=this._ef('role');
-    if(name) u.name=name; if(role) u.role=role;
-    if(pwd){if(pwd.length<6){this._toast('Şifre en az 6 karakter','err');return;} u.pwdHash=this._eHashPwd(pwd);}
-    this._eSaveUsers(users); this._closeModal(); this.show('profile');
-    this._toast('Güncellendi ✓','ok');
+
+  async _saveUser(userId){
+    const name  = this._ef('name');
+    const uname = this._ef('uname');
+    const email = this._ef('email');
+    const role  = this._ef('role');
+    const pwd   = document.getElementById('ef-pwd')?.value || '';
+    try {
+      this._auth.updateUser(userId, { name, username: uname, email, role });
+      if(pwd){ await this._auth.adminResetPassword(userId, pwd); }
+      this._closeModal();
+      this.show('profile');
+      this._toast('Güncellendi ✓','ok');
+    } catch(e) {
+      this._toast(e.message || 'Hata','err');
+    }
   }
-  _toggleUser(i){
-    var users=this._eGetUsers(); users[i].active=!users[i].active;
-    this._eSaveUsers(users); this.show('profile');
-    this._toast(users[i].active?'Kullanıcı aktifleştirildi':'Pasifleştirildi');
+
+  _toggleUser(userId){
+    const u = this._auth.findById(userId); if(!u) return;
+    this._auth.updateUser(userId, { active: !u.active });
+    this.show('profile');
+    this._toast(!u.active ? 'Kullanıcı aktifleştirildi' : 'Pasifleştirildi');
+  }
+  _unlockUser(userId){
+    if(this._auth.unlockUser(userId)){ this.show('profile'); this._toast('Kilit kaldırıldı 🔓','ok'); }
+  }
+  _deleteUser(userId){
+    const u = this._auth.findById(userId); if(!u) return;
+    if(u.id === this._parent?.id){ this._toast('Kendi hesabınızı silemezsiniz','err'); return; }
+    if(!confirm(`"${u.name}" kullanıcısını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`)) return;
+    this._auth.deleteUser(userId);
+    this.show('profile');
+    this._toast('Kullanıcı silindi','ok');
+  }
+
+  /* ── Hesap & Güvenlik (kendi hesabı için) ──────────── */
+  _openAccountSecurity(){
+    const u = this._auth.findById(this._parent?.id);
+    if(!u){ this._toast('Hesap bulunamadı','err'); return; }
+    const sess = this._auth.session();
+    this._openModal(
+      '<h3 style="margin-bottom:.9rem">🔐 Hesap & Güvenlik</h3>'
+      + '<div style="background:var(--raised);border-radius:var(--r-sm);padding:.65rem .85rem;margin-bottom:.85rem;font-size:var(--t-sm);line-height:1.55">'
+      + `<div><strong>Kullanıcı:</strong> ${this._eesc(u.name)} (@${u.username})</div>`
+      + (u.email?`<div><strong>E-posta:</strong> ${this._eesc(u.email)}</div>`:'')
+      + `<div><strong>Rol:</strong> ${u.role==='admin'?'👑 Yönetici':'✍️ İçerik Üretici'}</div>`
+      + `<div><strong>Hesap oluşturma:</strong> ${this._relTime(u.createdAt)}</div>`
+      + (u.lastLoginAt?`<div><strong>Son giriş:</strong> ${this._relTime(u.lastLoginAt)}</div>`:'')
+      + (sess?`<div><strong>Oturum süresi:</strong> ${this._relTime(sess.expiresAt)} sona erecek${sess.remember?' (Beni hatırla)':''}</div>`:'')
+      + '</div>'
+      + '<div class="sec-header" style="margin-bottom:.4rem"><span class="sec-title">🔑 Şifre Değiştir</span></div>'
+      + this._eF('Mevcut Şifre', this._eI('cur','','password'))
+      + this._eF('Yeni Şifre',
+          '<input id="ef-new" type="password" oninput="App._updatePwdMeter(\'ef-new\',\'pwd-meter\')" '
+          + 'style="width:100%;background:var(--raised);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.48rem .75rem;color:var(--text);font-size:var(--t-md);outline:none;font-family:inherit;margin-top:.2rem">'
+          + '<div id="pwd-meter" style="margin-top:.4rem"></div>'
+        )
+      + this._eF('Yeni Şifre (Tekrar)', this._eI('new2','','password'))
+      + '<div style="display:flex;gap:.5rem;margin-top:.75rem">'
+      + '<button class="btn btn-soft btn-block" onclick="App._closeModal()">Kapat</button>'
+      + '<button class="btn btn-primary btn-block" onclick="App._changeMyPassword()">🔑 Şifreyi Değiştir</button>'
+      + '</div>'
+      + '<div style="margin-top:1rem;padding-top:.7rem;border-top:1px solid var(--border)">'
+      + '<button class="btn btn-ghost btn-block" style="color:var(--danger);font-size:var(--t-sm)" onclick="App._logout();App._closeModal()">↩️ Çıkış Yap</button>'
+      + '</div>'
+    );
+  }
+
+  async _changeMyPassword(){
+    const cur = document.getElementById('ef-cur')?.value || '';
+    const nw  = document.getElementById('ef-new')?.value || '';
+    const nw2 = document.getElementById('ef-new2')?.value || '';
+    if(!cur || !nw){ this._toast('Tüm alanlar gerekli','err'); return; }
+    if(nw !== nw2){ this._toast('Yeni şifreler eşleşmiyor','err'); return; }
+    if(cur === nw){ this._toast('Yeni şifre mevcut ile aynı olamaz','err'); return; }
+    try {
+      await this._auth.changePassword(this._parent.id, cur, nw);
+      this._closeModal();
+      this._toast('Şifreniz güncellendi 🔐','ok');
+    } catch(e) {
+      this._toast(e.message || 'Şifre değiştirilemedi','err');
+    }
   }
 
   _admEsc(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

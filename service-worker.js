@@ -8,7 +8,7 @@
  * Sürüm kontrolü: CACHE_NAME'yi yeni deploy'da güncelle.
  */
 
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `abmat-${CACHE_VERSION}`;
 const OFFLINE_URL = './offline.html';
 
@@ -48,6 +48,7 @@ const CORE_ASSETS = [
   './js/services/ChildModeService.js',
   './js/services/ExportService.js',
   './js/services/ContentService.js',
+  './js/services/AuthService.js',
   './js/views/BaseView.js',
   './js/views/BreathingView.js',
   './js/views/MagnitudeGameView.js',
