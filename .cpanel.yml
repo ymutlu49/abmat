@@ -1,0 +1,38 @@
+---
+# ══════════════════════════════════════════════════════════════
+# cPanel Git Version Control — Otomatik Deploy
+# Push'tan sonra cPanel "Update from Remote" + "Deploy HEAD Commit"
+# tıklandığında bu adımlar çalışır.
+#
+# Kurulum:
+#   1) cPanel → Git Version Control → Create
+#      Clone URL: https://github.com/ymutlu49/abmat.git
+#      Repository Path: /home/diskalkulidernek/repositories/abmat
+#      Branch: main
+#   2) İlk klonlamadan sonra "Manage" → "Pull or Deploy" → "Deploy HEAD Commit"
+#   3) DEPLOYPATH'i kendi sunucu yoluna göre güncelleyin (subdomain veya alt dizin)
+# ══════════════════════════════════════════════════════════════
+
+deployment:
+  tasks:
+    # >>>>> KENDİ DEPLOY YOLUNUZA GÖRE GÜNCELLEYİN <<<<<
+    # Subdomain için (önerilen):  /home/diskalkulidernek/public_html/abmat
+    # Alt dizin için:             /home/diskalkulidernek/public_html/abmat
+    - export DEPLOYPATH=/home/diskalkulidernek/public_html/abmat/
+
+    # Hedef klasörü hazırla
+    - /bin/mkdir -p $DEPLOYPATH
+
+    # Statik içerik — public klasörler ve kök dosyalar
+    - /bin/cp -R css/                   $DEPLOYPATH
+    - /bin/cp -R js/                    $DEPLOYPATH
+    - /bin/cp -R icons/                 $DEPLOYPATH
+    - /bin/cp    index.html             $DEPLOYPATH
+    - /bin/cp    offline.html           $DEPLOYPATH
+    - /bin/cp    manifest.json          $DEPLOYPATH
+    - /bin/cp    service-worker.js      $DEPLOYPATH
+    - /bin/cp    .htaccess              $DEPLOYPATH 2>/dev/null || true
+
+    # İzinler — Apache/Nginx için güvenli ve okunabilir
+    - /bin/find  $DEPLOYPATH -type d -exec /bin/chmod 755 {} \;
+    - /bin/find  $DEPLOYPATH -type f -exec /bin/chmod 644 {} \;

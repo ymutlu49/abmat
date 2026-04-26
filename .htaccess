@@ -1,0 +1,116 @@
+# ══════════════════════════════════════════════════════════════
+# ABMAT — Apache .htaccess (cPanel uyumlu)
+#
+# Sağladıkları:
+#   • Doğru MIME türleri (ES modules, manifest, service worker, fontlar)
+#   • Sıkıştırma (gzip)
+#   • Akıllı önbellekleme (statik 1 yıl, HTML/SW immediate)
+#   • PWA için service worker scope'u kök
+#   • Doğrudan dosya keşfi engeli
+#   • HSTS + güvenlik başlıkları
+#   • Türkçe karakter sorunlarına karşı UTF-8
+# ══════════════════════════════════════════════════════════════
+
+# ── UTF-8 varsayılan ─────────────────────────────────────────
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .css .js .json .webmanifest .svg
+
+# ── MIME türleri ─────────────────────────────────────────────
+<IfModule mod_mime.c>
+  AddType application/javascript          .js .mjs
+  AddType application/json                .json
+  AddType application/manifest+json       .webmanifest
+  AddType image/svg+xml                   .svg
+  AddType image/x-icon                    .ico
+  AddType font/woff                       .woff
+  AddType font/woff2                      .woff2
+  AddType text/cache-manifest             .appcache
+</IfModule>
+
+# ── Service Worker scope: kök altındaki SW tüm scope'u kontrol etsin ──
+<Files "service-worker.js">
+  Header set Service-Worker-Allowed "/"
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires "0"
+</Files>
+
+# ── manifest.json daima taze ─────────────────────────────────
+<Files "manifest.json">
+  Header set Cache-Control "no-cache"
+</Files>
+
+# ── HTML kısa cache (servis worker güncellesi için) ──────────
+<FilesMatch "\.(html|htm)$">
+  Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+</FilesMatch>
+
+# ── Statik varlıklar uzun cache (parmak izli olmadığı için "no-cache" + ETag) ──
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                              "access plus 1 hour"
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType application/manifest+json     "access plus 0 seconds"
+  ExpiresByType application/javascript        "access plus 7 days"
+  ExpiresByType text/css                      "access plus 7 days"
+  ExpiresByType image/png                     "access plus 30 days"
+  ExpiresByType image/jpeg                    "access plus 30 days"
+  ExpiresByType image/webp                    "access plus 30 days"
+  ExpiresByType image/svg+xml                 "access plus 30 days"
+  ExpiresByType image/x-icon                  "access plus 30 days"
+  ExpiresByType font/woff                     "access plus 365 days"
+  ExpiresByType font/woff2                    "access plus 365 days"
+</IfModule>
+
+# ── Sıkıştırma ──────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/manifest+json
+  AddOutputFilterByType DEFLATE image/svg+xml image/x-icon
+</IfModule>
+
+# ── Güvenlik başlıkları ─────────────────────────────────────
+<IfModule mod_headers.c>
+  # HTTPS zorunlu (cPanel'de SSL aktifse)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # Çerçeve içine alınmaya karşı (clickjacking)
+  Header set X-Frame-Options "SAMEORIGIN"
+  # MIME sniffing engeli
+  Header set X-Content-Type-Options "nosniff"
+  # Referer politikası
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  # İzin politikası — kamera/mikrofon vs. kapalı
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ── Hassas dosya/dizin engelleri ────────────────────────────
+<FilesMatch "^\.(htaccess|htpasswd|env|git|gitignore|cpanel\.yml)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 /\.git
+RedirectMatch 404 /research/
+RedirectMatch 404 /docs/
+
+# ── Dizin listelemesi kapalı ────────────────────────────────
+Options -Indexes
+
+# ── HTTPS yönlendirme (cPanel'de SSL aktifse) ───────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # http -> https
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # SPA navigasyonları index.html'e (PWA için route fallback)
+  # Mevcut dosya/klasör değilse index.html'e yönlendir
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/service-worker\.js$
+  RewriteCond %{REQUEST_URI} !^/manifest\.json$
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ── Hata sayfaları ─────────────────────────────────────────
+ErrorDocument 404 /index.html
+ErrorDocument 503 /offline.html
