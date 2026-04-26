@@ -28,9 +28,32 @@ import { SmsService }            from './services/SmsService.js';
 import { StreakService }         from './services/StreakService.js';
 import { AnxietyTracker }        from './services/AnxietyTracker.js';
 import { AdaptiveEngine }        from './services/AdaptiveEngine.js';
+import { A11yService }           from './services/A11yService.js';
+import { SubtypeService }        from './services/SubtypeService.js';
+import { SpacedRetrievalService }from './services/SpacedRetrievalService.js';
+import { ErrorPatternService }   from './services/ErrorPatternService.js';
+import { ChildModeService }      from './services/ChildModeService.js';
+import { ExportService }         from './services/ExportService.js';
 
 // ── Alt uygulama: Beceri Köprüsü ──────────────────────────
 import { createSkillBridge } from './skill-bridge/index.js';
+
+// ── View kontrolcüleri (kademeli refactor) ────────────────
+import { BreathingView } from './views/BreathingView.js';
+import { MagnitudeGameView } from './views/MagnitudeGameView.js';
+import { StructuredSubitizingView } from './views/StructuredSubitizingView.js';
+import { CorsiBlockGameView } from './views/CorsiBlockGameView.js';
+import { FactPracticeView } from './views/FactPracticeView.js';
+import { StrategyView } from './views/StrategyView.js';
+import { SubtypeProfileView } from './views/SubtypeProfileView.js';
+import { EmbodiedNumberLineView } from './views/EmbodiedNumberLineView.js';
+import { MathTalkExtView } from './views/MathTalkExtView.js';
+import { ErrorReportView } from './views/ErrorReportView.js';
+import { A11ySettingsView } from './views/A11ySettingsView.js';
+import { KidsModeView } from './views/KidsModeView.js';
+
+// ── Aile rutin tetikleyicileri (Math Talk extended) ──────
+import { ROUTINE_TRIGGERS, pickRandomTalk } from './data/math-talk-extended.js';
 
 class MatEvdeApp {
   constructor(){
@@ -45,6 +68,25 @@ class MatEvdeApp {
     this._streakSvc = new StreakService(this._storage);
     this._anxTracker= new AnxietyTracker(this._storage);
     this._adaptEng  = new AdaptiveEngine(this._storage);
+    // ── Yeni servisler (v4 — diskalkuli derinleşme + a11y) ─
+    this._a11y       = new A11yService(this._storage);
+    this._subtype    = new SubtypeService(this._storage);
+    this._spaced     = new SpacedRetrievalService(this._storage);
+    this._errPatterns= new ErrorPatternService(this._storage);
+    this._kidsMode   = new ChildModeService(this._storage);
+    this._exportSvc  = new ExportService({
+      storage: this._storage, repo: this._repo, subtype: this._subtype,
+      spaced: this._spaced, errorPattern: this._errPatterns, anxiety: this._anxTracker,
+    });
+    // _s alias servislerin storage'a kısa erişimi için (CorsiView kullanır)
+    this._s = this._storage;
+    // A11y body class uygulamasını DOM hazır olunca yap
+    if(typeof document !== 'undefined'){
+      if(document.body) this._a11y.apply();
+      else document.addEventListener('DOMContentLoaded', () => this._a11y.apply(), { once: true });
+    }
+    // Eğer ChildMode aktifse body sınıfı uygula
+    if(this._kidsMode.isOn()) document.body?.classList.add('kids-mode');
 
     this._parent   = null;
     this._childId  = null;
@@ -122,6 +164,7 @@ class MatEvdeApp {
       { id:'lm8', emoji:'🧭', title:'Uzamsal Düşünme Neden Önemli?', sub:'STEM başarısının gizli anahtarı', dur:'10 dk', level:2, text:'5 yaşındaki bir çocuğun zihinsel döndürme becerisi, 6 yaşındaki sayı doğrusu başarısını öngörüyor (Gunderson et al., 2012). Blok oyunu, tangram, harita çizimi — bunların hepsi uzamsal düşünceyi besler. Çocuğun "matematik zekâsı" gerçekte büyük ölçüde uzamsal zekâdır.' },
       { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
       { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
+      { id:'lm11', emoji:'💬', title:'Sayı Sohbeti+ (Genişletilmiş)', sub:'60+ tetikleyici, 6 bağlam, 3 yaş grubu', dur:'10 dk', level:2, text:'Mutfak, banyo, yatma, yol, market ve oyun bağlamlarında 60+ rehber soru. Yaş ve bağlama göre filtrelenir; rastgele soru çeker; sesli okur (TTS).', isSpecial:'mtext' },
       { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
 
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
@@ -268,7 +311,7 @@ class MatEvdeApp {
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler'};
+      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -290,6 +333,18 @@ class MatEvdeApp {
       mathtalk:()=>this._renderSayiSohbeti(),
       breathing:()=>this._renderBreathing(),
       spatial:()=>this._renderSpatialModule(),
+      // ── Yeni view'lar ────────────────────────────────────
+      magnitude:()=>MagnitudeGameView.render(this),
+      'struct-sub':()=>StructuredSubitizingView.render(this),
+      corsi:()=>CorsiBlockGameView.render(this),
+      fact:()=>FactPracticeView.render(this),
+      strategies:()=>StrategyView.render(this),
+      subtype:()=>SubtypeProfileView.render(this),
+      embodied:()=>EmbodiedNumberLineView.render(this),
+      mtext:()=>MathTalkExtView.render(this),
+      errreport:()=>ErrorReportView.render(this),
+      a11y:()=>A11ySettingsView.render(this),
+      kids:()=>KidsModeView.render(this),
     };
     renders[name]?.();
     this._updateBnavs(name);
@@ -310,6 +365,11 @@ class MatEvdeApp {
   /* ── BOOT ──────────────────────────────────────── */
 
   start(){
+    // Çift tıklama / hızlı tekrar çağrı yarış koşulu — kısa bir süre reentrant'ı kilitle.
+    if(this._starting) return;
+    this._starting = true;
+    setTimeout(()=>{ this._starting = false; }, 500);
+
     /* Kayıtlı kullanıcı var mı? → Giriş paneli */
     const users = this._eGetUsers();
     const hasRealUsers = users.some(u=>u.active&&u.username!=='yonetici');
@@ -379,11 +439,11 @@ class MatEvdeApp {
       </div>
       <div class="field">
         <label>Adınız</label>
-        <input class="input" id="ob-name" placeholder="Örn: Zeynep" value="${this._ob.name}" style="font-size:var(--t-lg)">
+        <input class="input" id="ob-name" placeholder="Örn: Zeynep" value="${this._esc(this._ob.name)}" style="font-size:var(--t-lg)">
       </div>
       <div class="field">
         <label>E-posta <span style="font-weight:400;color:var(--muted)">(isteğe bağlı)</span></label>
-        <input class="input" id="ob-email" type="email" placeholder="ornek@mail.com" value="${this._ob.email}">
+        <input class="input" id="ob-email" type="email" placeholder="ornek@mail.com" value="${this._esc(this._ob.email)}">
       </div>
       <div style="background:var(--teal-a);border-radius:var(--r-md);padding:.7rem .9rem;display:flex;align-items:center;gap:.6rem">
         <span style="font-size:1.1rem">🔒</span>
@@ -413,7 +473,7 @@ class MatEvdeApp {
   _obStep2(el){
     el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
       <div class="center" style="margin-bottom:1.4rem"><div style="font-size:3rem">👧🏻</div><h2 style="margin-top:.5rem">Çocuğunuzu Tanıyalım</h2></div>
-      <div class="field" style="margin-bottom:1.2rem"><label>Çocuğunuzun Adı</label><input class="input" id="ob-cname" placeholder="Örn: Ali" value="${this._ob.childName}"></div>
+      <div class="field" style="margin-bottom:1.2rem"><label>Çocuğunuzun Adı</label><input class="input" id="ob-cname" placeholder="Örn: Ali" value="${this._esc(this._ob.childName)}"></div>
       <div class="field"><label>Sınıf / Yaş Grubu</label>
         <div style="display:flex;flex-direction:column;gap:.55rem;margin-top:.25rem">
           ${Object.entries(this._AGLabels).map(([k,v])=>`
@@ -634,6 +694,8 @@ class MatEvdeApp {
   _renderDash(){
     const p=this._parent; if(!p) return;
     const c=this._getChild(); if(!c) return;
+    // v4: aile rutin tetikleyicilerini kontrol et (sabah/öğle/akşam)
+    try { this._checkRoutineTriggers(); } catch(e) { /* sessiz */ }
     const rec = this._recEngine.recommend(p, c, 3, this._adaptEng);
     const done = (c.completedActivities||[]).length;
     const anxLevel=p.anxietyProfile?.level;
@@ -660,8 +722,8 @@ class MatEvdeApp {
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.1rem;padding-top:.25rem">
         <div>
           <p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">${greet}</p>
-          <h2 style="font-size:1.4375rem;font-weight:900;color:var(--text);margin:.15rem 0 0;line-height:1.15;letter-spacing:-.02em">${p.name}</h2>
-          <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.2rem;font-weight:600">${c.name} · ${this._AGLabels[c.ageGroup]}</p>
+          <h2 style="font-size:1.4375rem;font-weight:900;color:var(--text);margin:.15rem 0 0;line-height:1.15;letter-spacing:-.02em">${this._esc(p.name)}</h2>
+          <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.2rem;font-weight:600">${this._esc(c.name)} · ${this._AGLabels[c.ageGroup]}</p>
         </div>
         <button onclick="App.show('notifications')" style="width:38px;height:38px;border-radius:11px;background:var(--surface);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:1rem" ontouchstart="this.style.opacity='.6'" ontouchend="this.style.opacity=''">
           🔔<span id="notif-dot" class="nav-dot" style="display:none"></span>
@@ -692,6 +754,9 @@ class MatEvdeApp {
 
       <!-- Haftanın Kazanımları (TYMM sınıf-bazlı hedef) -->
       ${this._renderWeeklyOutcomesCard()}
+
+      <!-- En çok yaptıklarınız (yerel telemetry) -->
+      ${this._renderPopularCard()}
 
       <!-- Şu an neredesiniz? — bağlam bazlı etkinlik seçici (DREME Family Math) -->
       ${this._renderContextPickerCard()}
@@ -1898,7 +1963,7 @@ class MatEvdeApp {
       </div>
 
       ${!child ? '' : `<p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem">
-        ${child.name} için yaş grubuna uygun kitaplar gösteriliyor.
+        ${this._esc(child.name)} için yaş grubuna uygun kitaplar gösteriliyor.
         <button class="btn btn-soft btn-xs" onclick="App._renderAllBooks()">Tümünü gör</button>
       </p>`}
 
@@ -2048,69 +2113,9 @@ class MatEvdeApp {
   ══════════════════════════════════════════════ */
 
   _renderBreathing(){
-    const el = document.getElementById('breathing-body'); if(!el) return;
-    const anxHistory = this._anxTracker.getHistory();
-    const trend = this._anxTracker.getTrend();
-    const p = this._parent;
-    const score = p?.anxietyProfile?.score || 0;
-
-    el.innerHTML=`
-      <!-- Kaygı durumu -->
-      <div style="background:${score<35?'rgba(34,197,94,.08)':score<65?'rgba(245,158,11,.08)':'rgba(239,68,68,.08)'};border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.4rem;border:1.5px solid ${score<35?'rgba(34,197,94,.25)':score<65?'rgba(245,158,11,.25)':'rgba(239,68,68,.25)'}">
-        <div style="display:flex;align-items:center;gap:1rem">
-          <div style="font-size:2.5rem">${score<35?'😌':score<65?'🤔':'😰'}</div>
-          <div>
-            <h3>Kaygı Skoru: ${score}%</h3>
-            <p class="muted" style="font-size:var(--t-md);margin-top:.2rem">
-              Trend: ${trend==='improving'?'📉 İyileşiyor':trend==='worsening'?'📈 Yükseliyor':'➡️ Stabil'}
-              ${anxHistory.length<2?' (Henüz yeterli veri yok)':''}
-            </p>
-          </div>
-        </div>
-        ${anxHistory.length >= 2 ? `
-        <div style="margin-top:.9rem">
-          <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:.4rem">Son ${anxHistory.length} ölçüm</p>
-          <div style="display:flex;gap:.25rem;align-items:flex-end;height:36px">
-            ${anxHistory.map(h=>`
-              <div style="flex:1;background:${h.score<35?'var(--success)':h.score<65?'var(--amber)':'var(--danger)'};border-radius:3px 3px 0 0;height:${Math.round(h.score*36/100)}px;opacity:.75" title="${h.score}%"></div>
-            `).join('')}
-          </div>
-        </div>` : ''}
-      </div>
-
-      <!-- Nefes egzersizi -->
-      <div style="margin-bottom:1.4rem">
-        <div class="sec-header"><span class="sec-title">🧘 4-4-6 Nefes Tekniği</span></div>
-        <div class="card">
-          <div class="card-body" style="text-align:center;padding:1.5rem">
-            <div id="breath-icon" style="font-size:4rem;margin-bottom:.5rem;transition:transform .5s ease">🫁</div>
-            <h3 id="breath-label" style="font-size:1.2rem;margin-bottom:.4rem">Hazır mısınız?</h3>
-            <p id="breath-instruction" class="muted" style="font-size:var(--t-lg);line-height:1.55;min-height:3rem">Bu egzersiz matematik stresi sırasında zihni sakinleştirmek için tasarlanmıştır.</p>
-            <div id="breath-progress" style="margin:.9rem 0">
-              <div class="progress" style="height:6px"><div class="progress-fill" id="breath-bar" style="width:0%;transition:width linear"></div></div>
-            </div>
-            <div id="breath-phase" class="muted" style="font-size:var(--t-sm);margin-bottom:1rem">3 tekrar · ~42 saniye</div>
-            <button id="breath-btn" class="btn btn-primary" onclick="App._startBreathing()" style="min-width:160px">Başlat</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Araştırma notu -->
-      <div style="background:rgba(255,209,102,.15);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);border:1.5px solid rgba(255,209,102,.3);margin-bottom:1.4rem">
-        <strong style="font-size:var(--t-md);color:#92600A">💡 Neden işe yarıyor?</strong>
-        <p style="font-size:var(--t-md);line-height:1.6;margin-top:.35rem;color:var(--text2)">Cosso ve arkadaşları (2023): Ebeveyn kaygısı azaltılmadan ev matematik ortamının etkisi sınırlı kalıyor. Çocuğunuza yardım etmeden önce kendi zihinsel durumunuzu yönetmek en kritik adımdır.</p>
-      </div>
-
-      <!-- Kaygı haftalık check-in bağlantısı -->
-      <div style="background:linear-gradient(135deg,var(--teal-d) 0%,var(--teal-l) 100%);border-radius:var(--r-lg);padding:1.1rem 1.3rem;color:#fff;display:flex;align-items:center;gap:.9rem;cursor:pointer" onclick="App._openCheckIn()">
-        <div style="font-size:1.8rem">📋</div>
-        <div style="flex:1">
-          <strong style="display:block">Haftalık kaygı takibi</strong>
-          <p style="font-size:var(--t-sm);opacity:.85;margin-top:.1rem">Check-in yaparak kaygı grafiğinizi güncel tutun</p>
-        </div>
-        <span style="font-size:1.2rem;opacity:.8">→</span>
-      </div>
-    `;
+    // Delege edildi: js/views/BreathingView.js
+    // (App.js monoliti kademeli bölünmesi — refactor seed)
+    BreathingView.render(this);
   }
 
   _startBreathing(){
@@ -2238,6 +2243,9 @@ class MatEvdeApp {
     const c = this._getChild();
     const done = (c?.completedActivities||[]).includes(id);
 
+    // Telemetry — kullanım sayacı
+    this._trackEvent('activity_open', id);
+
     const body = `
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3.5rem;margin-bottom:.3rem">${a.emoji}</div>
@@ -2307,11 +2315,14 @@ class MatEvdeApp {
     `;
 
     const footer = `
-      <div class="modal-footer-row">
-        <button class="btn btn-ghost" onclick="App._closeModal()">Kapat</button>
+      <div class="modal-footer-row" style="flex-wrap:wrap;gap:.4rem">
+        <button class="btn btn-ghost" onclick="App._closeModal()" aria-label="Kapat">Kapat</button>
+        <button class="btn btn-soft" onclick="App._shareActivityOnWhatsApp('${id}')" aria-label="WhatsApp'ta paylaş" title="WhatsApp'ta paylaş" style="flex:0 0 auto;min-width:48px">
+          <span aria-hidden="true">📤</span>
+        </button>
         ${done
-          ? `<div class="modal-done-pill"><span>✓</span><span>Tamamlandı</span></div>`
-          : `<button class="btn btn-primary" onclick="App._complete('${id}')">✓ Tamamladım</button>`
+          ? `<div class="modal-done-pill" role="status"><span aria-hidden="true">✓</span><span>Tamamlandı</span></div>`
+          : `<button class="btn btn-primary" onclick="App._complete('${id}')" aria-label="Etkinliği tamamla">✓ Tamamladım</button>`
         }
       </div>
     `;
@@ -2319,10 +2330,114 @@ class MatEvdeApp {
     this._openModal(body, footer);
   }
 
+  /* ══════════════════════════════════════════════
+     E — Telemetry (yerel, sunucusuz)
+     Sadece localStorage'da sayaç tutar. Hiçbir yere gönderilmez.
+     Kullanım:
+       _trackEvent('activity_open', 'a01')
+       _trackEvent('activity_complete', 'a01')
+       _trackEvent('share_whatsapp', 'a01')
+     _getPopularActivities() en çok açılan aktiviteleri döndürür.
+  ══════════════════════════════════════════════ */
+
+  _trackEvent(event, id){
+    try{
+      const stats = this._storage.get('telemetry', { open:{}, complete:{}, share:{} });
+      const bucket = event === 'activity_complete' ? 'complete'
+                   : event === 'share_whatsapp'    ? 'share'
+                   : 'open';
+      stats[bucket][id] = (stats[bucket][id] || 0) + 1;
+      stats.lastUpdated = new Date().toISOString();
+      this._storage.set('telemetry', stats);
+    }catch(_){ /* sessiz fail */ }
+  }
+
+  _getPopularActivities(limit = 3){
+    const stats = this._storage.get('telemetry', { open:{}, complete:{}, share:{} });
+    // Skor: complete × 3 + open × 1 + share × 2
+    const scores = {};
+    Object.entries(stats.open || {}).forEach(([id,n]) => { scores[id] = (scores[id]||0) + n; });
+    Object.entries(stats.complete || {}).forEach(([id,n]) => { scores[id] = (scores[id]||0) + n * 3; });
+    Object.entries(stats.share || {}).forEach(([id,n]) => { scores[id] = (scores[id]||0) + n * 2; });
+    return Object.entries(scores)
+      .sort((a,b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([id, score]) => ({ id, score, activity: this._repo.byId(id) }))
+      .filter(x => x.activity);
+  }
+
+  _renderPopularCard(){
+    const popular = this._getPopularActivities(3);
+    if(popular.length === 0) return '';
+    return `
+      <div style="margin-bottom:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+          <span style="font-size:var(--t-xs);font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">⭐ En Çok Yaptıklarınız</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.45rem">
+          ${popular.map(p => `
+            <div onclick="App._openActivity('${p.id}')" role="button" tabindex="0"
+              style="display:flex;align-items:center;gap:.7rem;padding:.55rem .75rem;
+                background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);
+                cursor:pointer;-webkit-tap-highlight-color:transparent"
+              onkeydown="if(event.key==='Enter')App._openActivity('${p.id}')">
+              <span style="font-size:1.4rem;line-height:1">${p.activity.emoji}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:var(--t-sm);font-weight:700;line-height:1.3">${p.activity.title}</div>
+                <div style="font-size:.58rem;color:var(--muted);margin-top:.1rem">${p.score} etkileşim puanı</div>
+              </div>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--hint)" stroke-width="2" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  /* ══════════════════════════════════════════════
+     C — WhatsApp paylaşım (Türkiye'de %97+ penetrasyon)
+     wa.me deeplink ile etkinlik özetini paylaşmak için yeni
+     bir mesaj penceresi açar. Herhangi bir server veya API
+     gerektirmez — doğal tarayıcı yönlendirmesi.
+  ══════════════════════════════════════════════ */
+  _shareActivityOnWhatsApp(id){
+    const a = this._repo.byId(id); if(!a) return;
+    const catLabel = this._CatLabels[a.category] || '';
+    const parts = [
+      `${a.emoji} *${a.title}*`,
+      '',
+      a.desc,
+      '',
+      `⏱ ${a.dur} dk · ${catLabel}`,
+      '',
+      '📝 *Nasıl yapılır?*',
+      ...a.steps.map((s, i) => `${i+1}. ${s}`),
+      '',
+      '💡 ' + a.tip,
+      '',
+      '— ABMAT · Anne-Baba Matematik Okulu',
+      'https://ymutlu49.github.io/abmat/',
+    ];
+    const text = parts.join('\n');
+    const url = 'https://wa.me/?text=' + encodeURIComponent(text);
+    // Yeni pencerede aç
+    try{
+      window.open(url, '_blank', 'noopener,noreferrer');
+      // Telemetry — paylaşım sayacı
+      if(typeof this._trackEvent === 'function') this._trackEvent('share_whatsapp', id);
+      this._toast('WhatsApp\'ta paylaşılıyor…', 'ok');
+    }catch(err){
+      this._toast('Paylaşım açılamadı', 'err');
+    }
+  }
+
   _complete(id){
     const p=this._parent; if(!p) return;
     const child=this._getChild(); if(!child) return;
     if((child.completedActivities||[]).includes(id)) return;
+
+    // Telemetry — tamamlama
+    this._trackEvent('activity_complete', id);
 
     const updChild = {...child, completedActivities:[...(child.completedActivities||[]), id]};
     const updParent = {...p, children:p.children.map(c=>c.id===child.id?updChild:c)};
@@ -2642,7 +2757,7 @@ class MatEvdeApp {
           <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9375rem;font-family:var(--ff-mono);color:var(--teal)">${pct}%</div>
         </div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:1.0625rem;font-weight:800;color:var(--text)">${c.name}</div>
+          <div style="font-size:1.0625rem;font-weight:800;color:var(--text)">${this._esc(c.name)}</div>
           <div style="font-size:var(--t-sm);color:var(--muted);margin-top:.12rem">${done.length} / ${total} etkinlik</div>
           <div style="margin-top:.5rem;background:var(--raised);border-radius:99px;height:4px;overflow:hidden">
             <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--teal-l),var(--teal));border-radius:99px"></div>
@@ -2941,6 +3056,53 @@ class MatEvdeApp {
         </div>
       </div>
 
+      <!-- v4 — Yeni Müdahale Modülleri -->
+      <div style="margin-top:1.6rem">
+        <div class="sec-header"><span class="sec-title">🎮 Kanıt-Temelli Müdahale Oyunları</span></div>
+        <p class="muted" style="font-size:var(--t-sm);line-height:1.6;margin-bottom:.7rem">
+          Çocuğunuzla birlikte oynayabileceğiniz, alt-tipe özel pratikler.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+          ${[
+            { id:'magnitude',  emoji:'⚖️', title:'Hangisi Büyük?', sub:'Sayı hissi · Butterworth' },
+            { id:'struct-sub', emoji:'🎲', title:'Yapılı Sayma',   sub:'Subitizing · Clements' },
+            { id:'corsi',      emoji:'🧠', title:'Hafıza Blokları', sub:'Görsel-uzamsal WM' },
+            { id:'fact',       emoji:'⏰', title:'Aralıklı Tekrar', sub:'Olgu hatırlama · Leitner' },
+            { id:'strategies', emoji:'🛠️', title:'Stratejiler',    sub:'10\'a tamamlama, parmak…' },
+            { id:'embodied',   emoji:'🚶', title:'Yer Sayı Doğrusu', sub:'Embodied · Fischer' },
+          ].map(g => `
+            <button onclick="App.show('${g.id}')" class="card" style="border:1.5px solid var(--border);background:var(--surface);cursor:pointer;padding:.85rem .7rem;border-radius:var(--r-md);text-align:left;font-family:var(--ff-body);min-height:90px">
+              <div style="font-size:1.6rem;margin-bottom:.25rem">${g.emoji}</div>
+              <strong style="font-size:var(--t-sm);display:block;line-height:1.3">${g.title}</strong>
+              <p class="muted" style="font-size:.65rem;margin-top:.2rem;line-height:1.4">${g.sub}</p>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- v4 — Profil & Analiz -->
+      <div style="margin-top:1.4rem">
+        <div class="sec-header"><span class="sec-title">📊 Profil & Analiz</span></div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <button class="card" onclick="App.show('subtype')" style="border:1.5px solid var(--border);background:var(--surface);cursor:pointer;padding:.85rem 1rem;border-radius:var(--r-md);text-align:left;font-family:var(--ff-body);display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.6rem">🎯</span>
+            <div style="flex:1">
+              <strong style="font-size:var(--t-md)">Alt-Tip Profili</strong>
+              <p class="muted" style="font-size:var(--t-xs);margin-top:.15rem">Sayı hissi · Olgu · WM · Uzamsal</p>
+            </div>
+            <span style="color:var(--muted)">→</span>
+          </button>
+          <button class="card" onclick="App.show('errreport')" style="border:1.5px solid var(--border);background:var(--surface);cursor:pointer;padding:.85rem 1rem;border-radius:var(--r-md);text-align:left;font-family:var(--ff-body);display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.6rem">🔍</span>
+            <div style="flex:1">
+              <strong style="font-size:var(--t-md)">Hata Deseni Analizi</strong>
+              <p class="muted" style="font-size:var(--t-xs);margin-top:.15rem">Tekrarlayan hata kalıpları + öneri</p>
+            </div>
+            <span style="color:var(--muted)">→</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Modül tamamla butonu -->
       <button class="btn btn-blue btn-block" style="margin-top:1.4rem" onclick="App._completeDyscModule()">
         💙 Modülü Tamamladım
@@ -2985,6 +3147,8 @@ class MatEvdeApp {
         if(titleEl) titleEl.textContent = 'Uzman görüşü öneriliyor';
         if(textEl) textEl.textContent = 'Birden fazla güçlü sinyal gözlemlendi. Bir gelişim uzmanına veya eğitim psikologuna danışmanızı öneririz. Erken müdahale büyük fark yaratır.';
       }
+      // v4: skorları subtype profiline aktar
+      try { this._persistMiniGameToSubtype(); } catch(e) { /* sessiz */ }
     }
   }
 
@@ -3126,6 +3290,14 @@ class MatEvdeApp {
       this._sub.correct++;
       if(isFast) this._sub.fast++;
     }
+    // v4: hata desenleri & subtype skoru için logla
+    try {
+      this._errPatterns?.logAnswer({
+        gameId:'subitizing-classic', q:`n=${this._sub.current}`,
+        expected:this._sub.current, given:val, elapsedMs:elapsed,
+      });
+      if(!isCorrect) this._subtype?.addScores({ number_sense: 1 }, 'subitizing_classic');
+    } catch(e) { /* sessiz */ }
     // Feedback
     const fb = document.getElementById('sub-feedback');
     if(fb){
@@ -3607,6 +3779,7 @@ class MatEvdeApp {
     if(m.isSpecial==='tymm')      { this.show('tymm');        return; }
     if(m.isSpecial==='stories')   { this.show('stories');     return; }
     if(m.isSpecial==='skill')     { this.show('skill');       return; }
+    if(m.isSpecial==='mtext')     { this.show('mtext');       return; }
     this._openModal(`
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3rem;margin-bottom:.3rem">${m.emoji}</div>
@@ -3678,9 +3851,9 @@ class MatEvdeApp {
       <!-- Header -->
       <div style="background:linear-gradient(145deg,var(--teal) 0%,var(--teal-d) 100%);padding:2.2rem 1.4rem 2rem;border-radius:0 0 var(--r-xl) var(--r-xl);margin-bottom:1.4rem;box-shadow:var(--sh-btn)">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.9rem;border:3px solid rgba(255,255,255,.4)">${p.name?.[0]?.toUpperCase()||'?'}</div>
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.9rem;border:3px solid rgba(255,255,255,.4)">${this._esc((p.name||'?').charAt(0).toUpperCase())}</div>
           <div>
-            <h2 style="color:#fff;margin:0">${p.name}</h2>
+            <h2 style="color:#fff;margin:0">${this._esc(p.name)}</h2>
             <p style="color:rgba(255,255,255,.75);font-size:var(--t-md);margin-top:.1rem">${(c?.completedActivities||[]).length} etkinlik tamamlandı</p>
           </div>
         </div>
@@ -3755,7 +3928,61 @@ class MatEvdeApp {
           </p>
         </div>
         ${this._renderUserMgmt()}
-        `:''}        
+        `:''}
+
+        <!-- v4 — Erişilebilirlik & Çocuk Modu -->
+        <div class="card card-sm">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <h3 style="font-size:var(--t-md);margin-bottom:.15rem">♿ Erişilebilirlik & Mod</h3>
+            <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.55;margin-bottom:.35rem">
+              Yüksek kontrast, büyük font, disleksi-dostu font, sesli okuma (TTS), zaman baskısız mod.
+            </p>
+            <button class="btn btn-soft btn-block" style="font-size:var(--t-sm)" onclick="App._openA11y()">♿ Erişilebilirlik Ayarları →</button>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._openKidsMode()">🌟 Çocuk Modu</button>
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._kidsSetPin()">🔒 PIN Ayarla</button>
+            </div>
+            <button class="btn btn-soft btn-block" style="font-size:var(--t-sm)" onclick="App._enableNotifications()">🔔 Bildirimleri Etkinleştir</button>
+          </div>
+        </div>
+
+        <!-- v4 — Öğretmen Raporu (CSV/PDF) -->
+        <div class="card card-sm">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <h3 style="font-size:var(--t-md);margin-bottom:.15rem">📄 Öğretmen / RAM Raporu</h3>
+            <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.55;margin-bottom:.35rem">
+              Çocuğunuzun ilerleme verisini öğretmenle veya RAM ile paylaşmak için.
+            </p>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._exportCsv()">📊 CSV İndir</button>
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._exportSummary()">📝 PDF Raporu</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Veri Yedekleme -->
+        <div class="card card-sm" aria-label="Veri yedekleme">
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
+            <h3 style="font-size:var(--t-md);margin-bottom:.15rem">📦 Veri Yedekleme</h3>
+            <p style="font-size:var(--t-xs);color:var(--muted);line-height:1.55;margin-bottom:.35rem">
+              Tüm verileriniz cihazınızda saklanır. Cihaz değiştirirken veya ikinci bir ebeveyne aktarırken
+              yedek alın. Yedek dosyası tamamen çevrimdışıdır, hiçbir yere gönderilmez.
+            </p>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._exportData()" aria-label="Verileri JSON dosyasına dışa aktar">📤 Dışa Aktar</button>
+              <button class="btn btn-soft" style="flex:1;font-size:var(--t-sm)" onclick="App._promptImportData()" aria-label="JSON yedekten geri yükle">📥 İçe Aktar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PWA Install (beforeinstallprompt yakalandıysa) -->
+        <div id="pwa-install-row" style="display:${this._pwaInstallReady?'block':'none'}">
+          <button class="btn btn-soft btn-block" onclick="App._installPwa()"
+            style="font-size:var(--t-sm);margin-top:.1rem" aria-label="Uygulamayı ana ekrana ekle">
+            📲 Ana Ekrana Ekle
+          </button>
+        </div>
+
         <button class="btn btn-soft btn-block" onclick="App._logout()" style="margin-bottom:.5rem">Çıkış Yap</button><button class="btn btn-ghost btn-block" style="color:var(--muted);border-color:var(--muted)" onclick="App._confirmReset()">⚙ Sıfırla &amp; Yeniden Başla</button>
       </div>
     `;
@@ -3921,23 +4148,81 @@ class MatEvdeApp {
   _openModal(html, footer=''){
     // html  : kayan gövde içeriği
     // footer: (opsiyonel) scroll alanı dışında sabit alt şerit
+    // A11y: role=dialog, aria-modal, escape-to-close, focus trap, prev focus restore
+    this._prevFocus = document.activeElement;
     document.getElementById('modals').innerHTML=`
-      <div class="modal-overlay" onclick="if(event.target===this)App._closeModal()">
-        <div class="modal">
-          <div class="modal-handle"></div>
+      <div class="modal-overlay" onclick="if(event.target===this)App._closeModal()" role="presentation">
+        <div class="modal" role="dialog" aria-modal="true" aria-label="Bilgi penceresi" tabindex="-1">
+          <div class="modal-handle" aria-hidden="true"></div>
           <div class="modal-body">${html}</div>
           ${footer?`<div class="modal-footer">${footer}</div>`:''}
         </div>
       </div>`;
+    // Bind escape-to-close and focus trap
+    if(!this._modalKeyHandler){
+      this._modalKeyHandler = (e) => this._handleModalKey(e);
+    }
+    document.addEventListener('keydown', this._modalKeyHandler);
+    // Move focus into modal
+    setTimeout(() => {
+      const modal = document.querySelector('.modal[role="dialog"]');
+      if(modal){
+        const focusable = this._getFocusableInside(modal);
+        (focusable[0] || modal).focus();
+      }
+    }, 50);
+  }
+
+  _getFocusableInside(el){
+    if(!el) return [];
+    return Array.from(el.querySelectorAll(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+  }
+
+  _handleModalKey(e){
+    if(e.key === 'Escape'){
+      e.preventDefault();
+      this._closeModal();
+      return;
+    }
+    if(e.key === 'Tab'){
+      const modal = document.querySelector('.modal[role="dialog"]');
+      if(!modal) return;
+      const focusable = this._getFocusableInside(modal);
+      if(!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if(e.shiftKey && document.activeElement === first){
+        e.preventDefault();
+        last.focus();
+      } else if(!e.shiftKey && document.activeElement === last){
+        e.preventDefault();
+        first.focus();
+      }
+    }
   }
 
   _bdClick(e){ if(e.target.classList.contains('backdrop')) this._closeModal(); }
-  _closeModal(){ document.getElementById('modals').innerHTML=''; }
+  _closeModal(){
+    document.getElementById('modals').innerHTML='';
+    if(this._modalKeyHandler){
+      document.removeEventListener('keydown', this._modalKeyHandler);
+    }
+    // Restore focus
+    if(this._prevFocus && typeof this._prevFocus.focus === 'function'){
+      try{ this._prevFocus.focus(); }catch(_){}
+    }
+    this._prevFocus = null;
+  }
 
   _toast(msg, type=''){
     const t=document.createElement('div');
     t.className=`toast ${type}`;
     t.textContent=msg;
+    // A11y: screen reader announcement
+    t.setAttribute('role', type === 'err' ? 'alert' : 'status');
+    t.setAttribute('aria-live', type === 'err' ? 'assertive' : 'polite');
     document.getElementById('toasts').appendChild(t);
     t.addEventListener('animationend',()=>t.remove());
   }
@@ -3945,6 +4230,22 @@ class MatEvdeApp {
   /* ══════════════════════════════════════════════
      HELPERS
   ══════════════════════════════════════════════ */
+
+  /**
+   * HTML-escape herhangi bir değer.
+   * Kullanıcıdan gelen string'ler (ad, çocuk adı, e-posta, not, vb.)
+   * innerHTML veya template literal ile render edilmeden önce
+   * MUTLAKA bu fonksiyondan geçmelidir.
+   * 5 karakter: & < > " '   → HTML entity karşılıkları.
+   */
+  _esc(s){
+    return String(s ?? '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
 
   _getChild(){
     const p=this._parent; if(!p?.children?.length) return null;
@@ -3979,6 +4280,108 @@ class MatEvdeApp {
     this._parent=null; this._childId=null;
     this._closeModal();
     this.show('splash');
+  }
+
+  /* ══════════════════════════════════════════════
+     VERİ YEDEKLEME (EXPORT / IMPORT)
+     — Cihaz değişikliği ve aile çocuk profili transferi için.
+     — Sunucusuz, dosya tabanlı JSON. Tüm namespace'i kapsar.
+  ══════════════════════════════════════════════ */
+
+  _exportData(){
+    try {
+      const payload = this._storage.exportAll();
+      const json = JSON.stringify(payload, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const pname = (this._parent?.name || 'abmat').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+      const stamp = new Date().toISOString().slice(0,10);
+      a.href = url;
+      a.download = `abmat-yedek-${pname||'kullanici'}-${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+      this._toast('Yedek dosyası indirildi ✓','ok');
+    } catch(err) {
+      console.error('[ABMAT] Export failed:', err);
+      this._toast('Yedek oluşturulamadı','err');
+    }
+  }
+
+  _promptImportData(){
+    // Kullanıcıya önce uyarı göster — import veriyi üzerine yazar
+    this._openModal(`
+      <div class="center">
+        <div style="font-size:2.6rem;margin-bottom:.3rem">📥</div>
+        <h2>Yedekten Geri Yükle</h2>
+        <p class="muted" style="margin:.6rem auto 1.1rem;max-width:280px;font-size:var(--t-md);line-height:1.55">
+          Yükleyeceğiniz yedek dosyası mevcut tüm ABMAT verilerinin yerini alır.
+          Mevcut durumun kaybolmasını istemiyorsanız önce "Dışa Aktar" ile yedek alın.
+        </p>
+        <input type="file" id="abmat-import-file" accept="application/json,.json"
+          style="display:block;margin:0 auto 1rem;max-width:260px;font-family:var(--ff-body);font-size:var(--t-sm)">
+        <div style="display:flex;gap:.8rem">
+          <button class="btn btn-ghost" style="flex:1" onclick="App._closeModal()">İptal</button>
+          <button class="btn btn-primary" style="flex:1" onclick="App._importDataFile()">Yükle</button>
+        </div>
+      </div>
+    `);
+  }
+
+  _importDataFile(){
+    const input = document.getElementById('abmat-import-file');
+    const file = input && input.files && input.files[0];
+    if(!file){ this._toast('Bir dosya seçin','err'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const payload = JSON.parse(reader.result);
+        const result = this._storage.importAll(payload, { replace: true });
+        this._closeModal();
+        this._toast(`Yedek yüklendi (${result.written} kayıt) ✓`,'ok');
+        // Parent'ı yeniden yükle ve dashboard'a dön
+        const saved = this._storage.get('parent');
+        if(saved?.onboardingComplete){
+          this._parent = saved;
+          this._childId = saved.children?.[0]?.id || null;
+          this.show('dashboard');
+        } else {
+          this.show('splash');
+        }
+      } catch(err) {
+        console.error('[ABMAT] Import failed:', err);
+        this._toast(`Hatalı yedek: ${err.message||'okunamadı'}`,'err');
+      }
+    };
+    reader.onerror = () => this._toast('Dosya okunamadı','err');
+    reader.readAsText(file);
+  }
+
+  /* ══════════════════════════════════════════════
+     PWA — Ana Ekrana Ekle (beforeinstallprompt)
+     main.js beforeinstallprompt olayını yakalayıp
+     _pwaInstallReady=true + _triggerInstall() ile iletir.
+  ══════════════════════════════════════════════ */
+
+  _updateInstallButton(){
+    // Profil ekranında PWA install satırını yeniden hesapla
+    const row = document.getElementById('pwa-install-row');
+    if(row) row.style.display = this._pwaInstallReady ? 'block' : 'none';
+  }
+
+  async _installPwa(){
+    if(typeof this._triggerInstall !== 'function'){
+      this._toast('Bu tarayıcıda yükleme desteklenmiyor','err'); return;
+    }
+    try {
+      const ok = await this._triggerInstall();
+      if(ok) this._toast('Ana ekrana eklendi ✓','ok');
+    } catch(err){
+      console.warn('[ABMAT] Install prompt failed:', err);
+    }
+    this._updateInstallButton();
   }
 
 
@@ -4385,7 +4788,228 @@ class MatEvdeApp {
 
   _admEsc(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+  /* ══════════════════════════════════════════════════════════
+     v4 — Yeni özelliklerin köprü metodları
+     (HTML inline onclick'leri buraya çağırır)
+  ══════════════════════════════════════════════════════════ */
 
+  // ─── Magnitude oyunu ─────────────────────────────────────
+  _magStart(){ MagnitudeGameView.start(this); }
+  _magReset(){ MagnitudeGameView.reset(this); }
+  _magAnswer(side){ MagnitudeGameView.answer(this, side); }
+  _magSetMode(mode){ MagnitudeGameView.setMode(this, mode); }
+  _openMagnitude(){ this.show('magnitude'); }
+
+  // ─── Yapılandırılmış subitizing ─────────────────────────
+  _ssubStart(){ StructuredSubitizingView.start(this); }
+  _ssubReset(){ StructuredSubitizingView.reset(this); }
+  _ssubAnswer(v){ StructuredSubitizingView.answer(this, v); }
+  _ssubMode(m){ StructuredSubitizingView.setMode(this, m); }
+  _openStructSub(){ this.show('struct-sub'); }
+
+  // ─── Corsi blok ─────────────────────────────────────────
+  _corsiStart(){ CorsiBlockGameView.start(this); }
+  _corsiReset(){ CorsiBlockGameView.reset(this); }
+  _corsiTap(idx){ CorsiBlockGameView.tap(this, idx); }
+  _openCorsi(){ this.show('corsi'); }
+
+  // ─── Fact practice (Leitner) ────────────────────────────
+  _factOpen(deckId){ FactPracticeView.openDeck(this, deckId); }
+  _factHome(){ this._factSession = null; FactPracticeView.render(this); }
+  _factAnswer(v){ FactPracticeView.answer(this, v); }
+  _openFact(){ this.show('fact'); }
+
+  // ─── Stratejiler ────────────────────────────────────────
+  _strategyOpen(id){ StrategyView.renderDetail(this, id); }
+  _strategyClose(){ StrategyView.render(this); }
+  _strategyComplete(id){
+    const done = this._storage.get('strategies_done', []);
+    if(!done.includes(id)){ done.push(id); this._storage.set('strategies_done', done); }
+    this._toast('Strateji denendi ✓','ok');
+    StrategyView.render(this);
+  }
+  _openStrategies(){ this.show('strategies'); }
+
+  // ─── Subtype profili ────────────────────────────────────
+  _openSubtype(){ this.show('subtype'); }
+  _subtypeReset(){
+    if(confirm('Alt-tip skorlarını sıfırlamak istediğinize emin misiniz?')){
+      this._subtype.resetScores();
+      this.show('subtype');
+      this._toast('Profil sıfırlandı','ok');
+    }
+  }
+
+  // ─── Embodied number line ───────────────────────────────
+  _openEmbodied(){ this.show('embodied'); }
+  _embodiedComplete(){
+    const done = this._storage.get('embodied_done', 0);
+    this._storage.set('embodied_done', done + 1);
+    this._toast('Etkinlik kaydedildi 🚶','ok');
+    this.show('dyscalculia');
+  }
+
+  // ─── Math Talk genişletilmiş ────────────────────────────
+  _openMathTalkExt(){ this._mtFilter = { ctx:null, age:null }; this.show('mtext'); }
+  _mtFilterCtx(c){ this._mtFilter = { ...(this._mtFilter||{}), ctx: c }; MathTalkExtView.render(this); }
+  _mtFilterAge(a){ this._mtFilter = { ...(this._mtFilter||{}), age: a }; MathTalkExtView.render(this); }
+  _mtRandom(){
+    const q = pickRandomTalk(this._mtFilter || {});
+    const el = document.getElementById('mt-random-q');
+    if(el) el.textContent = q.soru;
+    if(this._a11y?.prefs?.ttsEnabled) this._a11y.speak(q.soru);
+  }
+
+  // ─── Hata raporu ────────────────────────────────────────
+  _openErrorReport(){ this.show('errreport'); }
+  _errReset(){
+    if(confirm('Hata geçmişini silmek istiyor musunuz?')){
+      this._errPatterns.reset();
+      ErrorReportView.render(this);
+      this._toast('Geçmiş silindi','ok');
+    }
+  }
+
+  // ─── Export (CSV/PDF) ───────────────────────────────────
+  _exportCsv(){
+    const csv = this._exportSvc.activitiesCsv(this._parent, this._getChild());
+    const today = new Date().toISOString().slice(0,10);
+    this._exportSvc.download(`abmat-etkinlikler-${today}.csv`, csv);
+    this._toast('CSV indirildi 📥','ok');
+  }
+  _exportSummary(){
+    if(this._exportSvc.printableReport(this._parent, this._getChild())){
+      this._toast('Rapor yeni sekmede açıldı 📄','ok');
+    } else {
+      this._toast('Açılır pencere engellendi — izin verin','err');
+    }
+  }
+
+  // ─── A11y ayarları ──────────────────────────────────────
+  _openA11y(){ this.show('a11y'); }
+  _a11ySet(key, val){
+    this._a11y.set(key, val);
+    A11ySettingsView.render(this);
+  }
+  _a11yReset(){
+    this._a11y.reset();
+    A11ySettingsView.render(this);
+    this._toast('Erişilebilirlik ayarları sıfırlandı','ok');
+  }
+
+  // ─── Çocuk modu ─────────────────────────────────────────
+  _openKidsMode(){
+    this._kidsMode.setOn(true);
+    this.show('kids');
+  }
+  _kidsPlay(gameId){
+    const map = { mag:'magnitude', ssub:'struct-sub', corsi:'corsi', nl:'dyscalculia', fact:'fact', sub:'dyscalculia' };
+    const target = map[gameId] || 'kids';
+    this.show(target);
+  }
+  _kidsExit(){
+    if(this._kidsMode.hasPin()){
+      let modal = document.getElementById('kids-pin-modal');
+      if(!modal){
+        modal = document.createElement('div');
+        modal.id = 'kids-pin-modal';
+        modal.innerHTML = KidsModeView.promptPin(this);
+        document.body.appendChild(modal);
+        setTimeout(() => document.getElementById('kids-pin-input')?.focus(), 50);
+      }
+    } else {
+      this._kidsMode.setOn(false);
+      document.body.classList.remove('kids-mode');
+      this.show('dashboard');
+    }
+  }
+  _kidsCancelPin(){
+    document.getElementById('kids-pin-modal')?.remove();
+  }
+  _kidsVerifyPin(){
+    const v = document.getElementById('kids-pin-input')?.value;
+    if(this._kidsMode.verifyPin(v)){
+      document.getElementById('kids-pin-modal')?.remove();
+      this._kidsMode.setOn(false);
+      document.body.classList.remove('kids-mode');
+      this.show('dashboard');
+    } else {
+      const err = document.getElementById('kids-pin-err');
+      if(err) err.style.display = 'block';
+    }
+  }
+  _kidsSetPin(){
+    const cur = this._kidsMode.hasPin() ? prompt('Mevcut PIN:') : null;
+    if(this._kidsMode.hasPin() && !this._kidsMode.verifyPin(cur)){
+      this._toast('Yanlış mevcut PIN','err'); return;
+    }
+    const np = prompt('Yeni 4-6 haneli PIN (boş bırakırsanız PIN kaldırılır):');
+    if(np === null) return;
+    if(np === ''){ this._kidsMode.removePin(); this._toast('PIN kaldırıldı','ok'); return; }
+    try{
+      this._kidsMode.setPin(np);
+      this._toast('PIN kaydedildi 🔒','ok');
+    }catch(e){ this._toast(e.message,'err'); }
+  }
+
+  /* ─── Aile rutin tetikleyicileri ──────────────────────── */
+  _checkRoutineTriggers(){
+    const now = new Date();
+    const hour = now.getHours();
+    const today = now.toDateString();
+    const fired = this._storage.get('routine_fired', {});
+    ROUTINE_TRIGGERS.forEach(r => {
+      // hour ± 1 saatlik pencere
+      if(Math.abs(hour - r.hour) > 1) return;
+      const key = `${today}:${r.time}`;
+      if(fired[key]) return;
+      fired[key] = true;
+      this._notifSvc.addNotif({
+        emoji: r.emoji,
+        title: r.label,
+        text: r.soru + ' (Sayı Sohbeti+ kütüphanesinden)',
+      });
+      this._updateNotifDot?.();
+      // Tarayıcı izniyle gerçek push bildirimi (varsa)
+      this._sendLocalNotification(`${r.emoji} ${r.label}`, r.soru, '#mtext');
+    });
+    // Sadece bugünün kayıtlarını tut
+    const trimmed = Object.fromEntries(Object.entries(fired).filter(([k]) => k.startsWith(today)));
+    this._storage.set('routine_fired', trimmed);
+  }
+
+  /* ─── PWA push bildirimi (local, izinle) ──────────────── */
+  async _enableNotifications(){
+    if(typeof Notification === 'undefined'){
+      this._toast('Bu cihazda bildirimler desteklenmiyor','err'); return false;
+    }
+    if(Notification.permission === 'granted') return true;
+    if(Notification.permission === 'denied'){
+      this._toast('Bildirim izni reddedilmiş — tarayıcı ayarından açın','err'); return false;
+    }
+    const perm = await Notification.requestPermission();
+    if(perm === 'granted'){
+      this._toast('Bildirimler aktif 🔔','ok');
+      this._storage.set('notif_perm', true);
+      return true;
+    }
+    return false;
+  }
+
+  _sendLocalNotification(title, body, url){
+    if(typeof navigator === 'undefined' || !navigator.serviceWorker) return;
+    if(typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+    navigator.serviceWorker.ready.then(reg => {
+      reg.active?.postMessage({ type: 'show-notif', title, body, url: url || './' });
+    }).catch(() => {});
+  }
+
+  /* ─── Mini gözlem oyunu sonucunu subtype profiline yaz ─── */
+  _persistMiniGameToSubtype(){
+    if(!Array.isArray(this._dyscGameAnswers) || this._dyscGameAnswers.length < 3) return;
+    const delta = this._subtype.scoreFromMiniGame(this._dyscGameAnswers);
+    this._subtype.addScores(delta, 'mini_game');
+  }
 }
 
 export { MatEvdeApp, createSkillBridge };

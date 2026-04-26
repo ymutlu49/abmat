@@ -1,0 +1,40 @@
+{
+  "name": "ABMAT — Anne-Baba Matematik Okulu",
+  "short_name": "ABMAT",
+  "description": "Okul öncesi ve ilkokul çocukları için kanıt temelli, kaygı dostu matematik etkinlikleri. TYMM 2024 uyumlu. Diskalkuli Derneği iş birliğiyle.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAFAF8",
+  "theme_color": "#1B5E20",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["education", "kids", "parenting"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/dernek-logo-small.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/dernek-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/dernek-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

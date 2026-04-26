@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D9488">
+<title>ABMAT — Çevrimdışı</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<style>
+  body{
+    background:linear-gradient(175deg,#0F8C82 0%,#0D7A6E 45%,#085049 100%);
+    color:#fff;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;min-height:100dvh;padding:1.5rem;margin:0;
+  }
+  .wrap{max-width:340px;text-align:center}
+  .logo{
+    width:80px;height:80px;border-radius:20px;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 1.3rem;font-size:2.2rem;
+  }
+  h1{font-family:'DM Mono',monospace;font-size:1.4rem;letter-spacing:.1em;margin:0 0 .4rem}
+  p{font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.75);margin:0 0 1.4rem}
+  button{
+    width:100%;padding:.9rem 1rem;background:#fff;color:#0D7A6E;
+    border:none;border-radius:14px;font-weight:800;font-size:1rem;
+    cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.2);
+  }
+  .hint{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:1rem}
+</style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="logo" aria-hidden="true">📡</div>
+    <h1>Çevrimdışısınız</h1>
+    <p>
+      İnternet bağlantınız şu anda yok. ABMAT çoğu özellikle çevrimdışı çalışır —
+      bağlantı geri geldiğinde veya uygulama yüklendikten sonra tekrar deneyin.
+    </p>
+    <button onclick="location.reload()" aria-label="Sayfayı yeniden dene">Yeniden Dene</button>
+    <p class="hint">ABMAT verileriniz cihazınızda güvenle saklanıyor.</p>
+  </div>
+</body>
+</html>

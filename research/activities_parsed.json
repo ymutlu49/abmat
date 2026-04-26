@@ -1,0 +1,655 @@
+[
+  {
+    "id": "a01",
+    "title": "Mutfakta Sayıyoruz",
+    "desc": "Malzemeleri birlikte sayın, renk ve boyuta göre gruplandırın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "NUMBER",
+    "dur": "10",
+    "tymm_t": [
+      "T1"
+    ],
+    "tymm_il": [
+      "MAB1"
+    ]
+  },
+  {
+    "id": "a02",
+    "title": "Çorapları Eşleştir",
+    "desc": "Çamaşırları renk ve desene göre eşleştirin.",
+    "ageGroups": [
+      "PRESCHOOL"
+    ],
+    "category": "PATTERNS",
+    "dur": "8",
+    "tymm_t": [
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a03",
+    "title": "Kim Daha Uzun?",
+    "desc": "Nesneleri elle, karışla veya adımla ölçün.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "MEASUREMENT",
+    "dur": "12",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a04",
+    "title": "Market Oyunu",
+    "desc": "Evde küçük bir market kurup alışveriş yapın.",
+    "ageGroups": [
+      "G1",
+      "G2"
+    ],
+    "category": "DAILY",
+    "dur": "20",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2"
+    ]
+  },
+  {
+    "id": "a05",
+    "title": "Pizzayı Paylaş",
+    "desc": "Oyun hamuru ile kesir kavramını keşfedin.",
+    "ageGroups": [
+      "G2",
+      "G3"
+    ],
+    "category": "NUMBER",
+    "dur": "15",
+    "tymm_t": [
+      "T1"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a06",
+    "title": "Geometri Yürüyüşü",
+    "desc": "Ev veya parkta şekil avına çıkın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "GEOMETRY",
+    "dur": "15",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a07",
+    "title": "Hikâyeden Soru Yaz",
+    "desc": "Sevilen bir hikâyeden matematik sorusu üretin.",
+    "ageGroups": [
+      "G3",
+      "G4"
+    ],
+    "category": "PROBLEM",
+    "dur": "15",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a08",
+    "title": "Takvim Matematiği",
+    "desc": "Günlük takvim rutinini matematiğe dönüştürün.",
+    "ageGroups": [
+      "G1",
+      "G2"
+    ],
+    "category": "NUMBER",
+    "dur": "5",
+    "tymm_t": [
+      "T1",
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB1"
+    ]
+  },
+  {
+    "id": "a09",
+    "title": "Zar Oyunu",
+    "desc": "Zarları toplayarak veya çarparak işlem pratiği yapın.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "NUMBER",
+    "dur": "15",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2"
+    ]
+  },
+  {
+    "id": "a10",
+    "title": "Hava Grafiği",
+    "desc": "Bir hafta boyunca günlük sıcaklığı kaydedin ve grafiğe dökün.",
+    "ageGroups": [
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "category": "MEASUREMENT",
+    "dur": "7",
+    "tymm_t": [
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB4"
+    ]
+  },
+  {
+    "id": "a11",
+    "title": "Tangram Ailesi",
+    "desc": "7 parçalı tangramla şekiller oluşturun.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "GEOMETRY",
+    "dur": "20",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a12",
+    "title": "Çikolata Paylaşımı",
+    "desc": "Kare çikolatayı eşit bölerek bölme ve kesirleri öğrenin.",
+    "ageGroups": [
+      "G1",
+      "G2"
+    ],
+    "category": "NUMBER",
+    "dur": "10",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a13",
+    "title": "Lego Mimarı",
+    "desc": "Belirli sayıda blokla köprü veya kule inşa edin.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "GEOMETRY",
+    "dur": "25",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a14",
+    "title": "Bahçe Matematiği",
+    "desc": "Tohum ekerken sayma, ölçme ve sıra kavramlarını pekiştirin.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "DAILY",
+    "dur": "20",
+    "tymm_t": [
+      "T1",
+      "T3",
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB4"
+    ]
+  },
+  {
+    "id": "a15",
+    "title": "Ritim Sayma",
+    "desc": "Alkış ve ritimle sayı örüntüleri oluşturun.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "PATTERNS",
+    "dur": "10",
+    "tymm_t": [
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "a16",
+    "title": "Hazine Haritası",
+    "desc": "Evde gizlenmiş \"hazineye\" yön ve mesafe talimatlarıyla ulaşın.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "GEOMETRY",
+    "dur": "20",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s01",
+    "title": "Blok Kopya",
+    "desc": "Bir blok yapısını gösterin, çocuk aynısını karşınızda yeniden kursun.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "SPATIAL",
+    "dur": "15",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s02",
+    "title": "Evimizi Haritala",
+    "desc": "Evin basit bir planını birlikte çizin; odaları, kapıları işaretleyin.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "SPATIAL",
+    "dur": "20",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s03",
+    "title": "Ayna Oyunu",
+    "desc": "Bir nesnenin simetrisini vücut ve kâğıt üzerinde keşfedin.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "SPATIAL",
+    "dur": "12",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s04",
+    "title": "Vücut Koordinatları",
+    "desc": "Yön talimatlarını vücutla uygulayın: ileri, geri, sağ, sol, üst, alt.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "SPATIAL",
+    "dur": "10",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s05",
+    "title": "Şekil Parçalama",
+    "desc": "Bir şekli alt parçalara bölün ve yeniden birleştirin.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "SPATIAL",
+    "dur": "15",
+    "tymm_t": [
+      "T1",
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "s06",
+    "title": "Farklı Açılardan Bak",
+    "desc": "Aynı nesneyi farklı pozisyonlardan çizerek perspektif keşfedin.",
+    "ageGroups": [
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "category": "SPATIAL",
+    "dur": "15",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "k01",
+    "title": "Tarif Ölçeklendirme",
+    "desc": "4 kişilik tarifi 6 kişiye uyarlayın — kesir ve oran içinde.",
+    "ageGroups": [
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "category": "KITCHEN",
+    "dur": "15",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2"
+    ]
+  },
+  {
+    "id": "k02",
+    "title": "Pişirme Süresi Tahmini",
+    "desc": "Yemek pişerken zaman tahmini yapın ve gerçeği karşılaştırın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "KITCHEN",
+    "dur": "10",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB1"
+    ]
+  },
+  {
+    "id": "k03",
+    "title": "Mutfak Birim Turu",
+    "desc": "Kaşık, karış ve bardakla standart olmayan ölçüm yapın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "KITCHEN",
+    "dur": "12",
+    "tymm_t": [
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB3"
+    ]
+  },
+  {
+    "id": "m01",
+    "title": "Fiş Dedektifi",
+    "desc": "Market fişini birlikte kontrol edin — doğru mu hesaplandı?",
+    "ageGroups": [
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "category": "MARKET",
+    "dur": "10",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2"
+    ]
+  },
+  {
+    "id": "m02",
+    "title": "Birim Fiyat Yarışması",
+    "desc": "Hangi paket daha ekonomik? Hesaplayın ve karar verin.",
+    "ageGroups": [
+      "G3",
+      "G4"
+    ],
+    "category": "MARKET",
+    "dur": "12",
+    "tymm_t": [
+      "T1",
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2",
+      "MAB4"
+    ]
+  },
+  {
+    "id": "m03",
+    "title": "50 TL Bütçe Oyunu",
+    "desc": "Haftalık meyve-sebze alışverişini belirli bütçeyle planlayın.",
+    "ageGroups": [
+      "G2",
+      "G3"
+    ],
+    "category": "MARKET",
+    "dur": "20",
+    "tymm_t": [
+      "T1",
+      "T2"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB2"
+    ]
+  },
+  {
+    "id": "t01",
+    "title": "Günlük Program Tasarımı",
+    "desc": "Çocukla birlikte bir günün saatlik planını yapın.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "TIME",
+    "dur": "15",
+    "tymm_t": [
+      "T1",
+      "T3"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "t02",
+    "title": "Kaç Gün Kaldı?",
+    "desc": "Bir etkinliğe veya tatile kaç gün kaldığını birlikte hesaplayın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "TIME",
+    "dur": "8",
+    "tymm_t": [
+      "T1"
+    ],
+    "tymm_il": [
+      "MAB1"
+    ]
+  },
+  {
+    "id": "g01",
+    "title": "Puan Tablosu Analizi",
+    "desc": "Aile oyununda puan tablosu tutun, sonunda birlikte analiz edin.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3",
+      "G4"
+    ],
+    "category": "GAME",
+    "dur": "20",
+    "tymm_t": [
+      "T1",
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB4"
+    ]
+  },
+  {
+    "id": "g02",
+    "title": "Matematik Hafıza Oyunu",
+    "desc": "Kendi kartlarınızı yapıp sayı eşleştirme oyunu oynayın.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1"
+    ],
+    "category": "GAME",
+    "dur": "20",
+    "tymm_t": [
+      "T1"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB3"
+    ]
+  },
+  {
+    "id": "n01",
+    "title": "Hava Günlüğü",
+    "desc": "Her gün hava durumunu kaydedin ve haftalık analiz yapın.",
+    "ageGroups": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "category": "NATURE",
+    "dur": "5",
+    "tymm_t": [
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB4"
+    ]
+  },
+  {
+    "id": "n02",
+    "title": "Büyüme Ölçüm Günlüğü",
+    "desc": "Bir tohum ekin ve büyümesini ölçerek kaydedin.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "NATURE",
+    "dur": "10",
+    "tymm_t": [
+      "T1",
+      "T3",
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB1",
+      "MAB4"
+    ]
+  },
+  {
+    "id": "n03",
+    "title": "Doğa Sayım Yürüyüşü",
+    "desc": "Parkta veya bahçede canlıları sayın, sınıflandırın, grafiğe dökün.",
+    "ageGroups": [
+      "PRESCHOOL",
+      "G1",
+      "G2"
+    ],
+    "category": "NATURE",
+    "dur": "20",
+    "tymm_t": [
+      "T4"
+    ],
+    "tymm_il": [
+      "MAB4"
+    ]
+  }
+]

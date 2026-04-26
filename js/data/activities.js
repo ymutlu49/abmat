@@ -603,7 +603,7 @@ export const ACTIVITIES = [
 
       { id:'p05', emoji:'👏', title:'Beden Ritmi ile Sayma',
         desc:'Vücudu kullanarak 3\'er, 4\'er, 5\'er, 10\'ar sayın.',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3], category:Category.NUMBER, dur:10,
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.NUMBER, dur:10,
         materials:['Hiçbir şey'],
         steps:['"1, 2, [alkış], 4, 5, [alkış]" — 3\'er sayma','Çocuk birlikte yapsın, ritmi yakalasın','5\'er sayın: her 5\'te zıplayın','Geriye doğru: 20\'den geri 2\'şer — "20, 18, [ayak vur], 16, 14..."','"Kafamda yaparsan sonucu söyle: 2, 4, 6, ? " — beklenti tahmin'],
         tip:'Ritmik sayma işitsel + bedensel olduğunda hafızaya kazınır (Kamii, 1985). Alkış/zıplama/ayak vurma ritmi kazanımın kalıcılığını artırır. Zaman/yaş ilerledikçe aynı etkinlik 10\'ar, 50\'şer, 100\'er saymaya uzatılabilir.',
@@ -623,7 +623,7 @@ export const ACTIVITIES = [
 
       { id:'p07', emoji:'🟰', title:'Doğru mu Yanlış mı?',
         desc:'Eşitlik ifadelerini doğru/yanlış olarak değerlendirme oyunu.',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3], category:Category.PATTERNS, dur:10,
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.PATTERNS, dur:10,
         materials:['Kağıt','Kalem'],
         steps:['"3 + 4 = 7" yazın — doğru mu?','"5 + 2 = 3 + 4" yazın — bu da doğru mu? Neden?','"8 = 8" — "Bu nasıl?" (hem aynı hem eşit)','"10 - 3 = 4 + 3" — "İkisi de 7\'ye eşit!"','Çocuk bir eşitlik yazsın, siz doğru/yanlış deyin'],
         tip:'Eşit işaretinin "cevap" değil "aynı" anlamı için en güçlü alıştırma: her iki tarafın da ifade olduğu eşitlikler ("3+4 = 5+2"). Türk çocukların çoğu bu formu ilk gördüklerinde "anlaşılmaz" bulur — bu tam doğru kavramı kurma fırsatıdır (Carpenter ve ark., 2003).',
@@ -633,7 +633,7 @@ export const ACTIVITIES = [
 
       { id:'p08', emoji:'⚽', title:'Yuvarlanır mı Kayar mı?',
         desc:'Evdeki nesneleri küçük bir eğimden kaydırıp geometrik cisim tespit edin.',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3], category:Category.GEOMETRY, dur:15,
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4], category:Category.GEOMETRY, dur:15,
         materials:['Yastık veya kitap (eğim yapmak için)','Farklı cisimler: top, kutu, piramit, konserve'],
         steps:['Kitaplardan hafif eğim oluşturun','Nesneleri sırayla tepeye koyun, bırakın','"Yuvarlandı mı? Kaydı mı?" işaretleyin','"Neden top yuvarlandı?" — yüzeyler','"Piramit hem yuvarlandı hem kaydı" — neden?'],
         tip:'3 boyutlu cisimlerin özelliklerini (yüz, kenar, köşe) davranışlarıyla bağlamak çocuğun kavramı somutlaştırır. Yuvarlanma küresel/silindirik yüzeyle ilgilidir — bu keşif 3. sınıfta resmi öğretilen cisim özelliklerinin somut temelidir. Kaynak: NRICH 3D Shapes (nrich.maths.org/public/topic.php?group_id=10&code=-1032).',

@@ -1,0 +1,111 @@
+MAT.1.1.1    Rakamları ve 20’ye kadar olan sayıları (20 dâhil), niceliklerin büyüklüklerini temsil etme
+MAT.1.1.2    Ögeleri dağınık veya düzenli bir şekilde bulunan bir nesne grubunu sayarken parçalar arası
+MAT.1.1.3    Nesnelerin sıra sayısını gösterebilme
+MAT.1.1.4    İki niceliğin büyüklüğünü “çok”, “daha çok”, “az”, “daha az” veya “eşit” terimleriyle karş
+MAT.1.1.5    100’e kadar ileriye ve 20’den geriye doğru ritmik sayabilme
+MAT.1.1.6    Artan veya azalan sayı ve şekil örüntülerini çözümleyebilme
+MAT.1.1.7    Verilen bir çokluktaki ilişkilerden yararlanarak 20’ye kadar (20 dâhil) olan nesnelerin sa
+MAT.1.1.8    Standart olmayan uygun ölçme araçları ile nesnelerin uzunluğunu ve tartacağı kütlenin ölçü
+MAT.1.1.9    Paraların (1 TL, 5 TL, 10 TL, 20 TL, 50 TL, 100 TL ve 200 TL) temsil ettiği büyüklükleri t
+MAT.1.2.1    Günlük yaşamın içerdiği toplama ve çıkarma işlemlerini çözümleyebilme
+MAT.1.2.2    Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak m
+MAT.1.2.3    Eşit işaretinin anlamını toplama ve çıkarma işlemi bağlamında yorumlayabilme
+MAT.1.2.4    Toplama ve çıkarma işlemlerinin ilişkisini yorumlayabilme
+MAT.1.3.1    Hedefe ulaşmak için mesafeleri ve yönleri içeren yönergeleri çözümleyebilme
+MAT.1.3.2    Nesnelerin eşliğini değerlendirebilme
+MAT.1.3.3    Günlük yaşamdaki nesneleri biçimsel özelliklerine göre ayırt edebilme
+MAT.1.3.4    Günlük yaşamda karşılaşılan geometrik yapılardaki geometrik şekilleri çözümleyebilme
+MAT.1.3.5    Biçimsel özelliklerine göre geometrik şekilleri sınıflandırabilme
+MAT.1.4.1    Kategorik veriye dayalı temel veri grubu ile çalışabilme ve veriye dayalı karar verebilme
+MAT.2.1.1    100’e kadar olan niceliklerin büyüklüklerini temsil etmede sayıların sembolik temsillerind
+MAT.2.1.2    İki basamaklı sayıları çözümleyebilme
+MAT.2.1.3    Sayıların sırasını belirleyebilme
+MAT.2.1.4    İleriye ve geriye doğru ritmik sayabilme
+MAT.2.1.5    Sayı ve sayı temsiline dönüşen şekil örüntülerine dayalı çıkarım yapabilme da) Örüntüde ku
+MAT.2.1.6    Bir çokluktaki ilişkilerden yararlanarak 50’ye kadar olan nesnelerin sayısını tahmin edebi
+MAT.2.1.7    Bütün, yarım ve çeyrek arasındaki ilişkiyi çözümleyebilme
+MAT.2.1.8    Paraları değerlerine göre ilişkilendirerek çözümleyebilme
+MAT.2.1.9    Zaman ölçü birimlerini okuyabilme ve yazabilme
+MAT.2.1.10   Standart uzunluk ve kütle ölçme araçlarının ve birimlerinin gerekliliğini yansıtabilme
+MAT.2.1.11   Standart uzunluk ve kütle ölçü birimleri cinsinden uzunlukları ve kütleleri tahmin edebilm
+MAT.2.2.1    Toplama ve çıkarma işlemleri gerektiren günlük yaşam problemlerini çözebilme
+MAT.2.2.2    Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak m
+MAT.2.2.3    Toplama ve çıkarma işlemlerinin ilişkisini yorumlayabilme
+MAT.2.2.4    Çarpma ve bölme işlemlerini toplama ve çıkarma işlemlerine dayalı olarak çözümleyebilme
+MAT.2.2.5    Çarpma ve bölme işlemlerinin sonuçlarını muhakeme edebilme
+MAT.2.2.6    Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme
+MAT.2.3.1    Günlük yaşamda kullanılan nesneleri biçimsel özelliklerine göre geometrik cisim olarak sın
+MAT.2.3.2    Geometrik cisim modellerini kullanarak yapılar sentezleyebilme
+MAT.2.3.3    Geometrik şekiller kullanarak modeller sentezleyebilme
+MAT.2.3.4    Geometrik cisim ve şekillerin yön, konum veya büyüklükleri değiştiğinde biçimsel özellikle
+MAT.2.3.5    Standart olmayan sıvı ölçme araçları ile sıvı miktarını tahmin edebilme
+MAT.2.3.6    Mesafe ve yönleri içerecek şekilde hedefe ulaşmak için uygun stratejilere karar verebilme
+MAT.2.3.7    Verilen şekiller arasından simetrik olanları ayırt edebilme
+MAT.2.4.1    Kategorik veriye dayalı en çok iki veri grubu ile çalışabilme ve veriye dayalı karar vereb
+MAT.3.1.1    Niceliklerin büyüklüklerine karşılık gelen 1000’e kadar olan sayıların temsillerinden yara
+MAT.3.1.2    1000’e kadar olan sayıları çözümleyebilme
+MAT.3.1.3    Sayıları sıralayabilme
+MAT.3.1.4    Sayıları ileriye ve geriye doğru ritmik sayabilme
+MAT.3.1.5    Sayıları tek-çift olarak sınıflandırabilme
+MAT.3.1.6    Tek ve çift sayıların toplamlarının tek ya da çift olduğunu belirleyebilme
+MAT.3.1.7    Sayı ve sayı temsiline dönüşen şekil örüntülerine dayalı çıkarım yapabilme
+MAT.3.1.8    Bir çokluktaki ilişkilerden yararlanarak 100’e kadar olan nesnelerin sayısını tahmin edebi
+MAT.3.1.9    Bütün, yarım ve çeyreğin kesirle gösterimi için modellerden yararlanabilme
+MAT.3.1.10   Bir bütünü eş parçalar oluşturacak şekilde birim kesir olarak çözümleyebilme
+MAT.3.1.11   Bir kesrin payı ile paydası arasındaki ilişkiyi çözümleyebilme
+MAT.3.1.12   Analog ve dijital saatlerde zamanı okuyabilme ve yazabilme
+MAT.3.1.13   Zaman ölçü birimlerini çözümleyebilme
+MAT.3.1.14   Olayların oluş sürelerini tahmin ederek yargıda bulunabilme
+MAT.3.1.15   Uzunluk ve kütle birimleri arasındaki ilişkileri kullanarak bu birimleri kendi içerisinde 
+MAT.3.1.16   Madenî ve kâğıt paraları değerlerine göre ilişkilendirerek yorumlayabilme
+MAT.3.2.1    Toplama ve çıkarma işlemlerinin sonuçlarını tahminde bulunarak ve zihinden işlem yaparak m
+MAT.3.2.2    Toplama ve çıkarma işlemlerini çözümleyebilme
+MAT.3.2.3    Çarpma ve bölme işlemlerinin sonuçlarını muhakeme edebilme
+MAT.3.2.4    Çarpma ve bölme işlemlerini çözümleyebilme
+MAT.3.2.5    Dört işlem gerektiren durumlar için, verilen yönergeleri takip ederek yorumlayabilme
+MAT.3.2.6    Dört işlem gerektiren günlük yaşam problemlerini çözebilme
+MAT.3.2.7    Dört işlem gerektiren problem durumlarını yapılandırabilme
+MAT.3.2.8    Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme
+MAT.3.3.1    Geometrik cisimlerin özelliklerini yorumlayabilme
+MAT.3.3.2    Kenar sayılarına göre geometrik şekilleri sınıflandırabilme
+MAT.3.3.3    Matematiksel araç ve teknolojileri kullanarak çeşitli geometrik cisimleri ve şekilleri çiz
+MAT.3.3.4    Standart olmayan ve standart ölçme araçları ile şekillerin çevre uzunluğunu tahmin edebilm
+MAT.3.3.5    Standart sıvı ölçü birimleri cinsinden sıvı miktarını tahmin edebilme
+MAT.3.3.6    Birden fazla simetri doğrusu olan şekilleri çözümleyebilme
+MAT.3.3.7    Bir parçası verilen simetrik şekli simetri doğrusuna göre yapılandırabilme
+MAT.3.3.8    Yönerge ile yapılandırılan ve bir parçası verilen bir şekli tamamlayarak simetrisini oluşt
+MAT.3.4.1    Kategorik ve sayma ile elde edilen nicel veriye dayalı tek veri grubu ile çalışabilme ve v
+MAT.4.1.1    Niceliklerin büyüklükleri için en fazla altı basamaklı olan sayıların temsillerinden yarar
+MAT.4.1.2    En fazla altı basamaklı sayıları çözümleyebilme
+MAT.4.1.3    Sayıları sıralayabilme
+MAT.4.1.4    İleriye ve geriye doğru ritmik saymayı yapılandırabilme
+MAT.4.1.5    Artan azalan sayı örüntüleri ve şekil örüntülerindeki değişimi genelleyebilme
+MAT.4.1.6    Basit, bileşik ve tam sayılı kesirleri kullanmak için matematiksel temsillerden yararlanab
+MAT.4.1.7    Denk kesirleri kullanmak için matematiksel temsillerden yararlanabilme
+MAT.4.1.8    Birim kesirlerin büyüklük küçüklük ilişkilerini çözümleyebilme
+MAT.4.1.9    Paydaları eşit olan kesirlerin büyüklük küçüklük ilişkilerini çözümleyebilme
+MAT.4.1.10   Bir çokluğun basit kesir kadarını ve bir basit kesir kadarı verilen çokluğun tamamını çözü
+MAT.4.1.11   Paydaları eşit kesirlerle toplama ve çıkarma işlemini yapılandırabilme
+MAT.4.1.12   Paydaları eşit kesirlerle toplama ve çıkarma işlemi gerektiren günlük yaşam problemlerini 
+MAT.4.1.13   Uzunluk ve kütle birimlerinin kendi içerisindeki dönüşümlerini yorumlayabilme
+MAT.4.2.1    Toplama ve çıkarma işlemlerini zihinden yaparak çözümleyebilme
+MAT.4.2.2    En çok dört basamaklı sayılarla toplama ve çıkarma işlemlerini yapılandırabilme
+MAT.4.2.3    Çarpma ve bölme işlemlerinin sonucunu tahmin edebilme
+MAT.4.2.4    Zihinden çözümlenen çarpma ve bölme işlemleri ile bu işlemlerin kısa yollarını yapılandıra
+MAT.4.2.5    Çarpma ve bölme işlemlerini çözümleyebilme
+MAT.4.2.6    Dört işlem içeren yönergeler oluşturarak süreci yorumlayabilme
+MAT.4.2.7    Dört işlem gerektiren problemleri çözebilme
+MAT.4.2.8    Dört işlem gerektiren problem durumlarını yapılandırabilme
+MAT.4.2.9    Dört işlem bağlamında eşitliğin farklı anlamlarını yorumlayabilme
+MAT.4.3.1    Geometrik cisimlerin açınımlarını yapılandırabilme
+MAT.4.3.2    Geometrik şekilleri köşe ve kenarlarına göre yorumlayabilme
+MAT.4.3.3    Geometrik şekillerin çevre uzunluğunu ölçmede matematiksel araç ve teknolojiden yararlanab
+MAT.4.3.4    Standart olmayan ölçü birimleri cinsinden şekillerin alanlarını tahmin edebilme
+MAT.4.3.5    Günlük yaşamdan örneklerle açıyı bir dönme miktarı olarak yorumlayabilme
+MAT.4.3.6    Açı ölçümüne ilişkin standart ölçme araçlarının gerekliliğini değerlendirebilme
+MAT.4.3.7    Dik açıyı referans alarak açıları dar ve geniş olarak sınıflandırabilme
+MAT.4.3.8    Geometrik nesneler ve şekiller üzerinden doğruya göre simetriyi yorumlayabilme
+MAT.4.3.9    Bir şeklin doğruya göre simetrisini yapılandırabilme
+MAT.4.3.10   Geometrik şekillere dayalı bir yapı oluşturabilmek için kodlama stratejilerini yapılandıra
+MAT.4.4.1    Günlük yaşamdan herhangi bir olayın olasılığını “imkânsız, olabilir, kesin” olarak belirle
+MAT.4.4.2    Kategorik veriye ve sayma ile elde edilen nicel veriye dayalı en çok iki veri grubu ile ça

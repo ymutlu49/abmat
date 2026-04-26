@@ -1,0 +1,234 @@
+/* ══════════════════════════════════════════════════════════
+   ABMAT — Accessibility (a11y) CSS
+   Erişilebilirlik katmanı: yüksek kontrast, büyük tipografi,
+   disleksi-dostu font, azaltılmış hareket.
+
+   Kullanım: <body class="a11y-contrast a11y-large a11y-dyslexic">
+   A11yService bu sınıfları yönetir.
+   Kanıt: WCAG 2.1 AA (W3C); OpenDyslexic; Reduced Motion (Apple HIG).
+══════════════════════════════════════════════════════════ */
+
+/* ─── Yüksek Kontrast Modu ─────────────────────────────── */
+body.a11y-contrast {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --text: #000000;
+  --text2: #0a0a0a;
+  --muted: #1a1a1a;
+  --hint: #2a2a2a;
+  --border: #000000;
+  --border2: #1a1a1a;
+  --teal: #006b62;
+  --teal-d: #003d38;
+  --teal-l: #008a7e;
+  --teal-a: rgba(0, 107, 98, .15);
+  --blue: #003d8f;
+  --orange: #b34000;
+  --amber: #8a5a00;
+  --danger: #8b0000;
+  --success: #005c1f;
+  --purple: #4a0080;
+}
+body.a11y-contrast.a11y-dark {
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --text: #ffffff;
+  --text2: #f0f0f0;
+  --muted: #d0d0d0;
+  --hint: #b0b0b0;
+  --border: #ffffff;
+  --border2: #d0d0d0;
+  --teal: #4dd6c8;
+  --teal-d: #80f0e0;
+  --teal-l: #00b8a4;
+  --teal-a: rgba(77, 214, 200, .25);
+  --blue: #80b8ff;
+  --orange: #ffa040;
+  --amber: #ffcc40;
+  --danger: #ff6060;
+  --success: #60ff80;
+  --purple: #c080ff;
+}
+
+body.a11y-contrast .card,
+body.a11y-contrast .btn,
+body.a11y-contrast input,
+body.a11y-contrast textarea,
+body.a11y-contrast select {
+  border-width: 2px !important;
+  border-style: solid !important;
+}
+
+body.a11y-contrast .btn-primary,
+body.a11y-contrast .btn-blue {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ─── Büyük Tipografi Modu ─────────────────────────────── */
+body.a11y-large {
+  --t-xs: .85rem;
+  --t-sm: .95rem;
+  --t-md: 1.1rem;
+  --t-lg: 1.25rem;
+  --t-xl: 1.5rem;
+  --t-2xl: 1.95rem;
+  font-size: 1.08rem;
+}
+body.a11y-large.a11y-xlarge {
+  --t-xs: .95rem;
+  --t-sm: 1.05rem;
+  --t-md: 1.2rem;
+  --t-lg: 1.4rem;
+  --t-xl: 1.7rem;
+  --t-2xl: 2.2rem;
+  font-size: 1.18rem;
+}
+
+body.a11y-large .btn { padding: .9rem 1.2rem; min-height: 48px; }
+body.a11y-large input,
+body.a11y-large textarea,
+body.a11y-large select { padding: .9rem 1rem; font-size: 1.1rem; }
+
+/* ─── Disleksi-Dostu Font (OpenDyslexic alternatif: sistem) ───── */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: local('OpenDyslexic Regular'), local('OpenDyslexic-Regular');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: local('OpenDyslexic Bold'), local('OpenDyslexic-Bold');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+body.a11y-dyslexic {
+  --ff-body: 'OpenDyslexic', 'Atkinson Hyperlegible', 'Lexend', 'Comic Sans MS', sans-serif;
+  letter-spacing: .035em;
+  word-spacing: .15em;
+  line-height: 1.7;
+}
+body.a11y-dyslexic * { letter-spacing: inherit; }
+
+/* Sayılar her zaman tabular okunmalı (1 vs l ayrımı için) */
+body.a11y-dyslexic .num,
+body.a11y-dyslexic input[type="number"],
+body.a11y-dyslexic [data-num] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ─── Azaltılmış Hareket ──────────────────────────────── */
+body.a11y-reduce-motion *,
+body.a11y-reduce-motion *::before,
+body.a11y-reduce-motion *::after {
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not(.a11y-allow-motion) *,
+  body:not(.a11y-allow-motion) *::before,
+  body:not(.a11y-allow-motion) *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ─── Zaman Baskısız Mod İşareti ─────────────────────── */
+body.a11y-no-pressure .timer-badge,
+body.a11y-no-pressure [data-timer],
+body.a11y-no-pressure [data-time-pressure] { display: none !important; }
+
+body.a11y-no-pressure [data-pressure-text]::after {
+  content: " (kendi hızınızda)";
+  font-size: .8em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ─── Renk Körü Dostu Vurgular (yardımcı sınıflar) ───── */
+.cb-pattern-correct {
+  background-image: repeating-linear-gradient(45deg,
+    rgba(0,150,80,.15) 0,
+    rgba(0,150,80,.15) 4px,
+    transparent 4px,
+    transparent 8px);
+}
+.cb-pattern-wrong {
+  background-image: repeating-linear-gradient(135deg,
+    rgba(180,30,30,.15) 0,
+    rgba(180,30,30,.15) 4px,
+    transparent 4px,
+    transparent 8px);
+}
+
+/* ─── Odak Halkasını Görünür Yap ─────────────────────── */
+body.a11y-contrast *:focus-visible,
+body.a11y-large *:focus-visible {
+  outline: 3px solid var(--teal-d) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* ─── Skip-link Geliştirme ───────────────────────────── */
+.skip-link:focus {
+  background: var(--teal-d);
+  color: #fff;
+  padding: .8rem 1.2rem;
+  border-radius: 0 0 .6rem 0;
+  font-weight: 800;
+  z-index: 9999;
+}
+
+/* ─── A11y Ayar Paneli (Profil sayfasından açılır) ───── */
+.a11y-panel { display: flex; flex-direction: column; gap: .6rem; }
+.a11y-toggle {
+  display: flex; align-items: center; gap: .85rem;
+  padding: .85rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  cursor: pointer;
+  transition: var(--t);
+}
+.a11y-toggle:hover { border-color: var(--teal); }
+.a11y-toggle input[type="checkbox"] {
+  width: 22px; height: 22px;
+  accent-color: var(--teal);
+  flex-shrink: 0;
+}
+.a11y-toggle .a11y-icon { font-size: 1.5rem; }
+.a11y-toggle .a11y-info { flex: 1; }
+.a11y-toggle .a11y-info strong { display: block; font-size: var(--t-md); }
+.a11y-toggle .a11y-info span { display: block; font-size: var(--t-sm); color: var(--muted); margin-top: .2rem; line-height: 1.45; }
+
+/* ─── TTS Konuşma Düğmesi ────────────────────────────── */
+.tts-btn {
+  display: inline-flex; align-items: center; gap: .25rem;
+  background: var(--teal-a);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: .25rem .55rem;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--teal-d);
+  cursor: pointer;
+  transition: var(--t);
+  -webkit-tap-highlight-color: transparent;
+}
+.tts-btn:hover, .tts-btn:focus-visible { background: var(--teal); color: #fff; }
+.tts-btn[aria-pressed="true"] {
+  background: var(--teal-d);
+  color: #fff;
+  animation: tts-pulse 1.2s ease-in-out infinite;
+}
+@keyframes tts-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13,148,136,.4); }
+  50% { box-shadow: 0 0 0 6px rgba(13,148,136,0); }
+}

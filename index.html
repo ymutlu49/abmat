@@ -7,8 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ABMAT">
-<meta name="theme-color" content="#0D9488">
-<title>ABMAT</title>
+<meta name="theme-color" content="#1B5E20">
+<meta name="description" content="ABMAT — Anne-Baba Matematik Okulu: Okul öncesi ve ilkokul çocukları için kanıt temelli, kaygı dostu, TYMM uyumlu matematik etkinlikleri.">
+<title>ABMAT — Anne-Baba Matematik Okulu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,40 +17,42 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/utilities.css">
+<link rel="stylesheet" href="css/a11y.css">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="icon" type="image/png" href="icons/dernek-logo-small.png">
+<link rel="apple-touch-icon" href="icons/dernek-logo-small.png">
 </head>
-<body><div id="app-root">
+<body>
+<a href="#main-content" class="skip-link">Ana içeriğe atla</a>
+<div id="app-root" role="application" aria-label="ABMAT uygulaması">
 <div id="app">
 
 <!-- ═══════════════════ SPLASH ════════════════════════ -->
 <div id="view-splash" class="view active">
 
-  <!-- Arka plan -->
-  <div style="position:absolute;inset:0;background:linear-gradient(175deg,#0F8C82 0%,#0D7A6E 45%,#085049 100%)"></div>
+  <!-- Arka plan — Dernek yeşili paleti -->
+  <div style="position:absolute;inset:0;background:linear-gradient(175deg,#388E3C 0%,#2E7D32 45%,#1B5E20 100%)"></div>
   <div style="position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.04);top:-90px;right:-70px"></div>
   <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);bottom:-50px;left:-60px"></div>
 
   <!-- Status bar -->
   <div style="height:env(safe-area-inset-top);min-height:44px;flex-shrink:0;position:relative;z-index:1"></div>
 
-  <!-- Üst: Logo -->
+  <!-- Üst: Dernek + ABMAT Logo -->
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2rem 1rem;position:relative;z-index:1;text-align:center">
 
-    <!-- App icon -->
-    <div style="width:88px;height:88px;border-radius:22px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
-      <svg viewBox="0 0 48 48" width="52" height="52" fill="none">
-        <path d="M11 37L24 11L37 37" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16 29L32 29" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-        <circle cx="39" cy="13" r="4.5" fill="rgba(255,255,255,.25)"/>
-        <path d="M37.2 13L40.8 13M39 11.2L39 14.8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+    <!-- Logo -->
+    <div style="width:104px;height:104px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;box-shadow:0 6px 18px rgba(0,0,0,.22)">
+      <img src="icons/dernek-logo.png" alt="Diskalkuli Derneği" style="width:92px;height:92px;object-fit:contain">
     </div>
 
     <!-- İsim -->
     <div style="font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:600;letter-spacing:.16em;color:#fff;line-height:1;margin-bottom:.45rem">ABMAT</div>
-    <div style="font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1.5rem">Anne-Baba Matematik Okulu</div>
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:1.5rem">Anne-Baba Matematik Okulu</div>
 
-    <!-- Açıklama — küçük puntoyla -->
-    <p style="font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6;max-width:200px;margin-bottom:2rem;font-weight:400;letter-spacing:.02em">
+    <!-- Açıklama -->
+    <p style="font-size:.85rem;color:rgba(255,255,255,.82);line-height:1.6;max-width:220px;margin-bottom:2rem;font-weight:500;letter-spacing:.02em">
       Evde matematik.<br>Bilimsel. Etkili. Kolay.
     </p>
 
@@ -62,15 +65,15 @@
         Başla →
       </button>
       <button onclick="App.demo()"
-        style="width:100%;padding:.8rem;background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.16);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent"
-        ontouchstart="this.style.opacity='.65'"
+        style="width:100%;padding:.8rem;background:rgba(255,255,255,.14);color:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.28);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
+        ontouchstart="this.style.opacity='.75'"
         ontouchend="this.style.opacity=''"
-        onmousedown="this.style.opacity='.65'"
+        onmousedown="this.style.opacity='.75'"
         onmouseup="this.style.opacity=''">
         Demo Modu
       </button>
       <button onclick="App._showLogin()"
-        style="width:100%;padding:.6rem;background:transparent;color:rgba(255,255,255,.45);border:none;font-family:var(--ff-body);font-size:.8rem;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:.01em">
+        style="width:100%;padding:.6rem;background:transparent;color:rgba(255,255,255,.78);border:none;font-family:var(--ff-body);font-size:.82rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:.01em">
         Zaten hesabım var →
       </button>
     </div>
@@ -78,9 +81,9 @@
 
   <!-- Alt bilgi -->
   <div style="padding:.75rem 2rem calc(1.25rem + env(safe-area-inset-bottom));text-align:center;position:relative;z-index:1;flex-shrink:0">
-    <p style="font-size:.65rem;color:rgba(255,255,255,.28);letter-spacing:.04em;line-height:1.7">
+    <p style="font-size:.7rem;color:rgba(255,255,255,.6);letter-spacing:.04em;line-height:1.7;font-weight:600">
       Okul Öncesi &amp; İlkokul<br>
-      <span style="color:rgba(255,255,255,.2)">Prof. Dr. Yılmaz Mutlu</span>
+      <span style="color:rgba(255,255,255,.5);font-weight:500">Prof. Dr. Yılmaz Mutlu</span>
     </p>
   </div>
 
@@ -89,17 +92,18 @@
 <!-- ═══════════════════ GİRİŞ PANELİ ═══════════════════════ -->
 <div id="view-login" class="view" style="background:var(--bg)">
 
-  <!-- Üst teal alan — kompakt -->
-  <div style="background:linear-gradient(160deg,#0F8C82,#085049);padding-top:env(safe-area-inset-top);flex-shrink:0">
+  <!-- Üst alan — Dernek yeşili -->
+  <div style="background:linear-gradient(160deg,#388E3C,#1B5E20);padding-top:env(safe-area-inset-top);flex-shrink:0">
     <div style="padding:.6rem .875rem .8rem;display:flex;align-items:center;gap:.6rem">
       <button onclick="App.show('splash')" style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;flex-shrink:0">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <span style="font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.7)">ABMAT</span>
+      <img src="icons/dernek-logo-small.png" alt="" aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0">
+      <span style="font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.85)">ABMAT</span>
     </div>
     <div style="padding:.25rem 1.25rem 1.5rem;text-align:center">
       <h2 style="color:#fff;font-size:1.625rem;font-weight:900;margin:0;letter-spacing:-.02em;line-height:1.15">Giriş Yap</h2>
-      <p style="color:rgba(255,255,255,.5);font-size:.8125rem;margin:.3rem 0 0">Hesabınızı seçin veya bilgilerinizi girin</p>
+      <p style="color:rgba(255,255,255,.65);font-size:.8125rem;margin:.3rem 0 0">Hesabınızı seçin veya bilgilerinizi girin</p>
     </div>
   </div>
 
@@ -180,6 +184,7 @@
 <!-- ═══════════════════ DASHBOARD ═════════════════════ -->
 <div id="view-dashboard" class="view">
   <div class="navbar">
+    <img src="icons/dernek-logo-small.png" alt="Diskalkuli Derneği" title="Diskalkuli Derneği iş birliğiyle" style="width:28px;height:28px;border-radius:50%;background:#fff;padding:2px;border:1.5px solid var(--border);flex-shrink:0;margin-right:.5rem">
     <span style="font-family:var(--ff-mono);font-size:.95rem;font-weight:700;letter-spacing:.14em;color:var(--teal)">ABMAT</span>
     <div class="spacer"></div>
     <button class="nav-action-btn" onclick="App.show('notifications')" id="notif-btn">
@@ -341,6 +346,106 @@
     <span class="navbar-title" style="font-size:1.2rem">Çevrimdışı Kartlar</span>
   </div>
   <div class="page" id="offline-body"></div>
+</div>
+
+<!-- ═══════════════════ MAGNITUDE COMPARISON OYUNU ═══ -->
+<div id="view-magnitude" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">⚖️ Hangisi Büyük?</span>
+  </div>
+  <div class="page" id="magnitude-body"></div>
+</div>
+
+<!-- ═══════════════════ STRUCTURED SUBITIZING ═══════ -->
+<div id="view-struct-sub" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🎲 Yapılı Sayma</span>
+  </div>
+  <div class="page" id="struct-sub-body"></div>
+</div>
+
+<!-- ═══════════════════ CORSI BLOK ════════════════════ -->
+<div id="view-corsi" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🧠 Hafıza Blokları</span>
+  </div>
+  <div class="page" id="corsi-body"></div>
+</div>
+
+<!-- ═══════════════════ FACT PRACTICE (LEITNER) ════ -->
+<div id="view-fact" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">⏰ Aralıklı Tekrar</span>
+  </div>
+  <div class="page" id="fact-body"></div>
+</div>
+
+<!-- ═══════════════════ STRATEJİLER ═══════════════════ -->
+<div id="view-strategies" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🛠️ Stratejiler</span>
+  </div>
+  <div class="page" id="strategies-body"></div>
+</div>
+
+<!-- ═══════════════════ SUBTYPE PROFİL ════════════════ -->
+<div id="view-subtype" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🎯 Alt-Tip Profili</span>
+  </div>
+  <div class="page" id="subtype-body"></div>
+</div>
+
+<!-- ═══════════════════ EMBODIED NUMBER LINE ═════════ -->
+<div id="view-embodied" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🚶 Yer Sayı Doğrusu</span>
+  </div>
+  <div class="page" id="embodied-body"></div>
+</div>
+
+<!-- ═══════════════════ MATH TALK GENİŞ ═══════════════ -->
+<div id="view-mtext" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('learn')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">💬 Sayı Sohbeti+</span>
+  </div>
+  <div class="page" id="mtext-body"></div>
+</div>
+
+<!-- ═══════════════════ HATA RAPORU ═══════════════════ -->
+<div id="view-errreport" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('dyscalculia')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">🔍 Hata Deseni</span>
+  </div>
+  <div class="page" id="errreport-body"></div>
+</div>
+
+<!-- ═══════════════════ A11Y AYARLARI ════════════════ -->
+<div id="view-a11y" class="view">
+  <div class="navbar">
+    <button class="nav-action-btn" onclick="App.show('profile')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="navbar-title" style="font-size:1.2rem">♿ Erişilebilirlik</span>
+  </div>
+  <div class="page" id="a11y-body"></div>
+</div>
+
+<!-- ═══════════════════ ÇOCUK MODU ═══════════════════ -->
+<div id="view-kids" class="view">
+  <div class="navbar">
+    <span class="navbar-title" style="font-size:1.2rem">🌟 Çocuk Modu</span>
+    <div class="spacer"></div>
+    <button class="btn btn-soft btn-sm" onclick="App._kidsExit()">🔓 Çıkış</button>
+  </div>
+  <div class="page" id="kids-body"></div>
 </div>
 
 <!-- ═══════════════════ NOTIFICATIONS ════════════════ -->

@@ -1,21 +1,30 @@
 /* ═══════════════════════════════════════════════════════════
    ABMAT — Design Tokens
-   Renkler, boşluklar, tipografi, gölgeler, animasyonlar
+   Renk paleti: Diskalkuli Derneği marka renkleriyle hizalı
+   (Yeşil #2E7D32 + Kahve #A0522D — derneğin logo paleti).
+   Token isimleri (--teal/--orange) geriye uyumluluk için
+   korundu; yalnızca değerler dernek paletine taşındı.
 ═══════════════════════════════════════════════════════════ */
 
 :root {
-  --teal:     #0D9488; --teal-d:#0F766E; --teal-l:#2DD4BF; --teal-a:rgba(13,148,136,.1);
-  --orange:   #F4622A; --orange-d:#C24A1A; --orange-a:rgba(244,98,42,.1);
+  /* "Teal" → Dernek Yeşili (logo ağacı) */
+  --teal:     #2E7D32; --teal-d:#1B5E20; --teal-l:#66BB6A; --teal-a:rgba(46,125,50,.1);
+  /* "Orange" → Dernek Kahvesi (logo çerçeve + kök) */
+  --orange:   #A0522D; --orange-d:#7B3A1E; --orange-a:rgba(160,82,45,.12);
+  /* Vurgular */
   --blue:     #1A7FA6; --blue-a:rgba(26,127,166,.1);
-  --amber:    #D97706; --amber-a:rgba(245,158,11,.1);
+  --amber:    #BF6A3A; --amber-a:rgba(191,106,58,.12);
   --purple:   #7C3D9F; --purple-a:rgba(124,61,159,.1);
-  --danger:   #DC2626; --success:#16A34A;
-  /* Yüzeyler */
-  --bg:       #F2F8F7; --surface:#FFFFFF; --raised:#E8F5F3; --overlay:rgba(0,0,0,.5);
+  --danger:   #C62828; --success:#388E3C;
+  /* Yüzeyler — derneğin sıcak nötr arkaplanı */
+  --bg:       #FAFAF8; --surface:#FFFFFF; --raised:#E8F5E9; --overlay:rgba(0,0,0,.5);
   /* Metin */
-  --text:     #111F1E; --text2:#2D4844; --muted:#6B8F8B; --hint:#9DB8B5;
-  /* Kenarlık */
-  --border:   rgba(13,148,136,.15); --border2:rgba(13,148,136,.25);
+  --text:     #1B2620; --text2:#37433C; --muted:#6B6259; --hint:#9A8F84;
+  /* Kenarlık (dernek yeşili tonunda) */
+  --border:   rgba(46,125,50,.16); --border2:rgba(46,125,50,.28);
+  /* Dernek brand alias (yeni token isimleri — opsiyonel kullanım) */
+  --brand-green:#2E7D32; --brand-green-d:#1B5E20; --brand-green-l:#66BB6A;
+  --brand-brown:#A0522D; --brand-brown-d:#7B3A1E; --brand-brown-l:#BF6A3A;
   /* Aynı adlar — eski token uyumu */
   --c-primary:var(--teal); --c-primary-d:var(--teal-d); --c-primary-l:var(--teal-l);
   --c-primary-a:var(--teal-a); --c-orange:var(--orange); --c-orange-d:var(--orange-d);
@@ -25,8 +34,8 @@
   --c-green:var(--teal-d); --c-green-l:var(--teal-l); --c-green-a:var(--teal-a);
   --c-bg:var(--bg); --c-surface:var(--surface); --c-raised:var(--raised);
   --c-text:var(--text); --c-text-2:var(--text2); --c-muted:var(--muted);
-  --c-border:var(--border); --c-coral:#E8735A; --c-warn:var(--amber);
-  --c-surface-2:#EDF8F6;
+  --c-border:var(--border); --c-coral:#BF6A3A; --c-warn:var(--amber);
+  --c-surface-2:#F1F8F2;
   /* Radius */
   --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-full:999px;
   /* Spacing */
@@ -46,5 +55,5 @@
   /* Shadows */
   --sh-xs:0 1px 3px rgba(0,0,0,.06); --sh-sm:0 2px 8px rgba(0,0,0,.08);
   --sh-md:0 4px 16px rgba(0,0,0,.1); --sh-lg:0 8px 32px rgba(0,0,0,.14);
-  --sh-btn:0 4px 12px rgba(13,148,136,.3); --sh-cta:0 4px 14px rgba(244,98,42,.3);
+  --sh-btn:0 4px 12px rgba(46,125,50,.3); --sh-cta:0 4px 14px rgba(160,82,45,.3);
 }

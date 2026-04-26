@@ -886,7 +886,8 @@
       "ageGroups": [
         "G1",
         "G2",
-        "G3"
+        "G3",
+        "G4"
       ],
       "tymm_outcomes": [
         "MAT.2.1.4",
@@ -916,7 +917,8 @@
       "ageGroups": [
         "G1",
         "G2",
-        "G3"
+        "G3",
+        "G4"
       ],
       "tymm_outcomes": [
         "MAT.1.2.3",
@@ -934,7 +936,8 @@
       "ageGroups": [
         "G1",
         "G2",
-        "G3"
+        "G3",
+        "G4"
       ],
       "tymm_outcomes": [
         "MAT.2.3.1",
