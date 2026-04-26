@@ -4154,6 +4154,12 @@ class MatEvdeApp {
       <div class="modal-overlay" onclick="if(event.target===this)App._closeModal()" role="presentation">
         <div class="modal" role="dialog" aria-modal="true" aria-label="Bilgi penceresi" tabindex="-1">
           <div class="modal-handle" aria-hidden="true"></div>
+          <button type="button" aria-label="Kapat" onclick="App._closeModal()"
+            style="position:absolute;top:.55rem;right:.65rem;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.06);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--text);z-index:5;transition:background .15s"
+            onmouseover="this.style.background='rgba(0,0,0,.12)'"
+            onmouseout="this.style.background='rgba(0,0,0,.06)'">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
           <div class="modal-body">${html}</div>
           ${footer?`<div class="modal-footer">${footer}</div>`:''}
         </div>
