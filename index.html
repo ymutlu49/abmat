@@ -58,13 +58,13 @@
 
     <!-- Butonlar -->
     <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:.6rem">
-      <button onclick="App.start()"
+      <button onclick="App._showLogin()"
         style="width:100%;padding:.95rem;background:#2E7D32;color:#fff;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 6px 18px rgba(46,125,50,.32);-webkit-tap-highlight-color:transparent;transition:transform .08s,opacity .08s"
         ontouchstart="this.style.transform='scale(.97)';this.style.opacity='.9'"
         ontouchend="this.style.transform='';this.style.opacity=''"
         onmousedown="this.style.transform='scale(.97)';this.style.opacity='.9'"
         onmouseup="this.style.transform='';this.style.opacity=''">
-        Başla →
+        Üye Girişi →
       </button>
       <button onclick="App.demo()"
         style="width:100%;padding:.8rem;background:rgba(46,125,50,.08);color:#1B5E20;border:1.5px solid rgba(46,125,50,.25);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
@@ -74,10 +74,10 @@
         onmouseup="this.style.opacity=''">
         Demo Modu
       </button>
-      <button onclick="App._showLogin()"
-        style="width:100%;padding:.6rem;background:transparent;color:#6B6259;border:none;font-family:var(--ff-body);font-size:.82rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:.01em">
-        Zaten hesabım var →
-      </button>
+      <p style="font-size:.7rem;color:#6B6259;margin:.5rem 0 0;line-height:1.5;text-align:center">
+        Diskalkuli Derneği üyelerine özeldir.<br>
+        <span style="color:#9A8F84">Üyelik bilgisi için: <strong>diskalkulidernegi.org</strong></span>
+      </p>
     </div>
   </div>
 
@@ -172,13 +172,15 @@
         <div style="flex:1;height:0.5px;background:var(--border)"></div>
       </div>
 
-      <!-- Yeni kullanıcı CTA -->
-      <button onclick="App.start()"
-        style="width:100%;padding:.85rem;background:transparent;color:var(--teal);border:1.5px solid rgba(13,148,136,.3);border-radius:14px;font-family:var(--ff-body);font-size:.9375rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
-        ontouchstart="this.style.background='var(--teal-a)'"
-        ontouchend="this.style.background='transparent'">
-        Yeni Hesap Oluştur
-      </button>
+      <!-- Üyelik bilgisi (kayıt akışı kaldırıldı — sadece dernek üyeleri girer) -->
+      <div style="text-align:center;padding:0 .5rem">
+        <p style="font-size:.78rem;color:var(--text2);margin:0 0 .35rem;line-height:1.5">
+          Bu uygulama <strong>Diskalkuli Derneği üyelerine</strong> özeldir.
+        </p>
+        <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">
+          Üyelik için <a href="https://diskalkulidernegi.org/uyelik-basvurusu/" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none;font-weight:700">diskalkulidernegi.org</a> üzerinden başvurabilir, giriş bilgilerini dernekten talep edebilirsin.
+        </p>
+      </div>
 
     </div>
   </div>

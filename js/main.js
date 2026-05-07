@@ -13,6 +13,14 @@ const App = new MatEvdeApp();
 // bu adım gereklidir.
 window.App = App;
 
+/* AUTO-BOOT: sayfa yüklendiğinde merkezî auth token'ını kontrol et;
+   geçerli token varsa splash'ı atla, dashboard'a git. Token yoksa splash kalır. */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => App.start(), { once: true });
+} else {
+  App.start();
+}
+
 /* ══════════════════════════════════════════════════════════
    PWA — Service Worker kaydı
    Sessiz hata yönetimi: kayıt başarısız olursa app normal çalışır.

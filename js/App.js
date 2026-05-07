@@ -36,6 +36,7 @@ import { ChildModeService }      from './services/ChildModeService.js';
 import { ExportService }         from './services/ExportService.js';
 import { ContentService }        from './services/ContentService.js';
 import { AuthService }           from './services/AuthService.js';
+import { RemoteAuthService }     from './services/RemoteAuthService.js';
 
 // ── Alt uygulama: Beceri Köprüsü ──────────────────────────
 import { createSkillBridge } from './skill-bridge/index.js';
@@ -84,6 +85,9 @@ class MatEvdeApp {
     });
     this._content    = new ContentService(this._storage);
     this._auth       = new AuthService(this._storage);
+    /* Merkezî üye auth (Diskalkuli Derneği). Lokal AuthService yerine bu kullanılır;
+       lokal AuthService eski kod yolları için fallback olarak duruyor. */
+    this._remoteAuth = new RemoteAuthService();
     // _s alias servislerin storage'a kısa erişimi için (CorsiView kullanır)
     this._s = this._storage;
     // A11y body class uygulamasını DOM hazır olunca yap
@@ -382,29 +386,24 @@ class MatEvdeApp {
     this._starting = true;
     setTimeout(()=>{ this._starting = false; }, 500);
 
-    /* Önce: aktif oturum var mı? (Beni hatırla) */
-    const sessUser = this._auth?.currentUser?.();
-    if(sessUser){
-      this._loginSuccess(sessUser);
+    /* MERKEZÎ AUTH: Sadece dernek üyeleri girer.
+       Yerel oturum / signup akışı kaldırıldı — direkt remote login ekranına yönlendir.
+       Demo modu hariç (App.demo() kendi yolunda gider). */
+    const remoteSess = this._remoteAuth?.current?.();
+    if (remoteSess) {
+      // Token yerel olarak hâlâ geçerli — sunucudan da doğrula (best-effort, async)
+      this._remoteAuth.verifyStored().then(fresh => {
+        if (!fresh) {
+          this._toast('Oturumun süresi doldu, tekrar giriş yap.', 'err');
+          setTimeout(() => this.show('splash'), 800);
+        }
+      }).catch(() => { /* çevrimdışı: tolere et */ });
+      this._loginSuccessRemote(remoteSess);
       return;
     }
 
-    /* Kayıtlı kullanıcı var mı? → Giriş paneli */
-    const users = this._auth ? this._auth.getUsers() : this._eGetUsers();
-    const hasRealUsers = users.some(u=>u.active&&u.username!=='yonetici');
-    const saved = this._storage.get('parent');
-    if(hasRealUsers && !saved?.onboardingComplete){
-      this._showLogin(); return;
-    }
-    if(saved?.onboardingComplete){
-      this._parent = saved;
-      this._childId = saved.children?.[0]?.id||null;
-      this.show('dashboard');
-    } else {
-      this._ob = { step:0, name:'', email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
-      this.show('onboarding');
-      this._renderOb();
-    }
+    // Token yok → splash göster (kullanıcı "Üye Girişi" veya "Demo Modu" seçer)
+    this.show('splash');
   }
 
   demo(){
@@ -4494,11 +4493,16 @@ class MatEvdeApp {
   _renderLoginUsers(){
     const el = document.getElementById('login-user-list');
     if(!el) return;
-    // Varsayılan 'yonetici' hesabını ve şifresiz single-user flow'u gizle
+    // MERKEZÎ AUTH: yerel kullanıcı listesi yok — bu bölümü gizle
+    el.innerHTML = '';
+    const divider = document.getElementById('login-divider');
+    if(divider) divider.style.display = 'none';
+    return;
+    // ↓↓↓ Aşağısı eski yerel kullanıcı listesi — kullanılmıyor (dead code) ↓↓↓
+    // eslint-disable-next-line no-unreachable
     const users = this._auth.getUsers().filter(u =>
       u.active && u.username !== 'yonetici'
     );
-    const divider = document.getElementById('login-divider');
     if(users.length === 0){
       el.innerHTML = '<div style="background:var(--raised);border-radius:var(--r-md);padding:.75rem;margin-bottom:.75rem;text-align:center">'
         + '<p style="font-size:var(--t-sm);color:var(--muted)">Kayıtlı hesap bulunamadı.</p>'
@@ -4546,46 +4550,39 @@ class MatEvdeApp {
     const emailInput = document.getElementById('login-email');
     const pwdInput   = document.getElementById('login-pwd');
     const submitBtn  = document.getElementById('login-submit-btn');
-    const rememberEl = document.getElementById('login-remember');
     if(!emailInput || !pwdInput) return;
     const identifier = emailInput.value.trim();
     const pwd        = pwdInput.value;
-    const remember   = !!rememberEl?.checked;
     if(!identifier || !pwd){
-      this._toast('Kullanıcı adı/e-posta ve şifre gerekli','err');
+      this._toast('Kullanıcı adı ve şifre gerekli','err');
       return;
     }
-    // UI lock
     if(submitBtn){ submitBtn.disabled = true; submitBtn.style.opacity = '.6'; submitBtn.textContent = 'Doğrulanıyor…'; }
     const errEmail = document.getElementById('login-email-err');
     const errPwd   = document.getElementById('login-pwd-err');
     if(errEmail) errEmail.style.display = 'none';
     if(errPwd){ errPwd.style.display = 'none'; errPwd.textContent = 'Şifre hatalı.'; }
     try {
-      const r = await this._auth.login(identifier, pwd, { remember });
-      if(r.ok){
-        this._loginSuccess(r.user);
+      // MERKEZÎ AUTH: dernek sunucusuna sor
+      const r = await this._remoteAuth.login(identifier, pwd);
+      if (r.ok) {
+        this._loginSuccessRemote({
+          username: r.username,
+          name: r.name,
+          expiresAt: r.expiresAt,
+        });
       } else {
-        if(r.reason === 'not_found'){
-          if(errEmail){ errEmail.style.display = 'block'; errEmail.textContent = 'Bu kullanıcı bulunamadı.'; }
-          emailInput.style.borderColor = 'var(--danger)';
-        } else if(r.reason === 'disabled'){
-          if(errEmail){ errEmail.style.display = 'block'; errEmail.textContent = 'Bu hesap pasifleştirilmiş.'; }
-          emailInput.style.borderColor = 'var(--danger)';
-        } else if(r.reason === 'locked'){
-          const min = Math.ceil(r.retryAfterSec / 60);
-          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = `🔒 Hesap geçici olarak kilitli. ${r.retryAfterSec < 60 ? r.retryAfterSec + ' saniye' : min + ' dakika'} sonra tekrar deneyin.`; }
-        } else if(r.reason === 'bad_password'){
-          if(errPwd){
-            errPwd.style.display = 'block';
-            errPwd.textContent = r.attemptsLeft > 0
-              ? `Şifre hatalı. Kalan deneme: ${r.attemptsLeft}`
-              : 'Şifre hatalı. Hesap kilitlenmek üzere.';
-          }
+        if (r.reason === 'invalid_credentials') {
+          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = 'Kullanıcı adı veya şifre hatalı.'; }
           pwdInput.style.borderColor = 'var(--danger)';
           pwdInput.value = ''; pwdInput.focus();
+        } else if (r.reason === 'locked') {
+          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = '🔒 Çok fazla başarısız deneme. 15 dakika sonra tekrar deneyin.'; }
+        } else if (r.reason === 'network_error') {
+          this._toast(r.message || 'Sunucuya ulaşılamıyor', 'err');
+        } else {
+          this._toast(r.message || 'Giriş başarısız', 'err');
         }
-        this._renderLoginUsers();
       }
     } catch(e) {
       this._toast(e.message || 'Giriş hatası', 'err');
@@ -4594,8 +4591,60 @@ class MatEvdeApp {
     }
   }
 
+  /**
+   * Remote auth başarılı olunca: parent profil var mı bak; yoksa minimal profil
+   * oluştur ve onboarding'i atlayıp dashboard'a git.
+   */
+  _loginSuccessRemote(sess) {
+    const id = 'm_' + (sess.username || 'uye');
+    const saved = this._storage.get('parent_' + id) || this._storage.get('parent');
+    if (saved?.onboardingComplete) {
+      this._parent = {
+        ...saved,
+        id,
+        name: sess.name || saved.name,
+        email: saved.email || '',
+        username: sess.username,
+        role: 'üye',
+      };
+    } else {
+      // İlk giriş — minimal profil oluştur, onboarding'e gönder ki çocuk bilgileri girilsin
+      this._parent = {
+        id,
+        name: sess.name || sess.username,
+        email: '',
+        username: sess.username,
+        role: 'üye',
+        onboardingComplete: false,
+        children: [],
+        anxietyProfile: null,
+        parentingStyle: 'autonomy',
+        weeklyCheckIns: [],
+        badges: [],
+        teacherMessages: [],
+        weeklyPlans: [],
+      };
+    }
+    this._storage.set('parent_' + id, this._parent);
+    this._storage.set('parent', this._parent);
+    this._childId = this._parent.children?.[0]?.id || null;
+
+    if (this._parent.onboardingComplete) {
+      this.show('dashboard');
+      setTimeout(() => this._toast('Hoş geldiniz, ' + this._parent.name + '! 👋', 'ok'), 400);
+    } else {
+      this._ob = { step:0, name:this._parent.name, email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
+      this.show('onboarding');
+      this._renderOb();
+    }
+  }
+
   _logout(){
-    this._auth?.logout();
+    // Hem yerel hem merkezî auth oturumunu kapat
+    try { this._auth?.logout(); } catch {}
+    if (this._remoteAuth) {
+      this._remoteAuth.logout().catch(() => {});
+    }
     this._parent = null; this._childId = null;
     this._toast('Çıkış yapıldı');
     setTimeout(() => this.show('splash'), 300);
