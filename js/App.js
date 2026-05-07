@@ -5365,7 +5365,7 @@ class MatEvdeApp {
     } catch(e) { /* sessiz */ }
   }
 
-  /** Tek tipli snapshot kaydet — _save*/_inlineDel/_add* sonunda çağrılır. */
+  /** Tek tipli snapshot kaydet — _saveX / _inlineDelX / _addX sonunda çağrılır. */
   _persistContent(type){
     try {
       if(type === 'activities') this._content.save('activities', this._repo._data);
