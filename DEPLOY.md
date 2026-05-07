@@ -1,10 +1,10 @@
-# ABMAT — cPanel Deploy Rehberi
+# ABMATO — cPanel Deploy Rehberi
 
 > Hedef sunucu: **diskalkulidernegi.org** (cPanel)
 > Repo: https://github.com/ymutlu49/abmat
 > Sonuç URL (önerilen): https://abmat.diskalkulidernegi.org
 
-ABMAT statik bir PWA'dır — build adımı yok. Sadece dosyaları sunucuya koyman yeterli. 3 yöntem var; **Git Version Control** en profesyonel olanı çünkü her `git push`tan sonra tek tıkla güncelleme yapabilirsin.
+ABMATO statik bir PWA'dır — build adımı yok. Sadece dosyaları sunucuya koyman yeterli. 3 yöntem var; **Git Version Control** en profesyonel olanı çünkü her `git push`tan sonra tek tıkla güncelleme yapabilirsin.
 
 ---
 
@@ -54,13 +54,13 @@ ABMAT statik bir PWA'dır — build adımı yok. Sadece dosyaları sunucuya koym
 #### 🥉 Yöntem 3: FTP / SFTP (FileZilla)
 
 1. FileZilla ile cPanel FTP bilgileriyle bağlan
-2. Yerel `ABMAT/` klasörünün içeriğini sunucudaki `/public_html/abmat/`'a yükle
+2. Yerel `ABMATO/` klasörünün içeriğini sunucudaki `/public_html/abmat/`'a yükle
 3. Bitti
 
 ### Adım 4 — Test
 - https://abmat.diskalkulidernegi.org adresine git
 - DevTools → Application → Service Workers: `service-worker.js` aktif olmalı
-- DevTools → Application → Manifest: ABMAT görünmeli
+- DevTools → Application → Manifest: ABMATO görünmeli
 - "Add to Home Screen" mobilden çalışmalı
 
 ---
@@ -76,7 +76,7 @@ WordPress kurulu ana sitenle çakışmaması için alt dizin kullanmak istiyorsa
    RewriteEngine On
    RewriteRule ^abmat/ - [L]
    ```
-   Böylece `/abmat/...` istekleri ABMAT'ın kendi `.htaccess`'ine düşer.
+   Böylece `/abmat/...` istekleri ABMATO'ın kendi `.htaccess`'ine düşer.
 4. Test: https://www.diskalkulidernegi.org/abmat/
 
 ---
@@ -127,8 +127,8 @@ Sunucuda (cPanel):
 
 ## F. Domain Yönlendirme (opsiyonel)
 
-`www.diskalkulidernegi.org` üzerinden ABMAT'a yönlendirme istersen:
-- WordPress'te bir menü öğesi: "ABMAT — Anne-Baba Matematik Okulu" → `https://abmat.diskalkulidernegi.org`
+`www.diskalkulidernegi.org` üzerinden ABMATO'a yönlendirme istersen:
+- WordPress'te bir menü öğesi: "ABMATO — Anne-Baba Matematik Okulu" → `https://abmat.diskalkulidernegi.org`
 - Ya da ana sayfaya banner: "Çocuğunuzla evde matematik" + buton
 
-İletişim ipucu: ABMAT Hakkında sayfasında derneğin web URL'si, üyelik ve bağış bağlantıları zaten var (`AboutView.js`).
+İletişim ipucu: ABMATO Hakkında sayfasında derneğin web URL'si, üyelik ve bağış bağlantıları zaten var (`AboutView.js`).

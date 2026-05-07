@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — MathTalkExtView (Genişletilmiş Math Talk Sözlüğü)
+   ABMATO — MathTalkExtView (Genişletilmiş Math Talk Sözlüğü)
    60+ tetikleyici cümle, 6 bağlamda. Filtreleyip rastgele
    soru çıkarır. Math-talk-extended.js verisi üzerine inşa.
 ══════════════════════════════════════════════════════════ */

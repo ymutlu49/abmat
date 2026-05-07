@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — ErrorPatternService
+   ABMATO — ErrorPatternService
    Çocuğun pratikteki yanlış cevaplarından desen çıkarır:
      • magnitude_confusion  → 6/9 ya da 2/5 karışıklığı (rakam yansıma)
      • near_miss            → ±1 hatalar (parmak sayma kayması)

@@ -1,4 +1,4 @@
-/* ABMAT — AnxietyTracker */
+/* ABMATO — AnxietyTracker */
 
 class AnxietyTracker {
   constructor(storage){ this._s = storage }

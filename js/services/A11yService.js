@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — A11yService
+   ABMATO — A11yService
    Erişilebilirlik servisleri:
      • Kullanıcı ayarları (kontrast, font boyu, disleksi font,
        azaltılmış hareket, zaman baskısız mod)

@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: Factory
+/* ABMATO — Beceri Köprüsü: Factory
    Bağımlılıkları bir araya getirir ve çalışmaya hazır bir SkillBridgeApp döndürür. */
 
 import { SkillProgressStore } from './SkillProgressStore.js';

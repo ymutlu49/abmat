@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — EmbodiedNumberLineView
+   ABMATO — EmbodiedNumberLineView
    "Yer sayı doğrusu" etkinlik kartı: çocuk yere çizilmiş sayı
    doğrusu üzerinde fiziksel olarak yürüyerek tahmin yapar.
    Kanıt: Fischer vd. (2011); Walk the Number Line — embodied

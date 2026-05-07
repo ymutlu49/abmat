@@ -1,4 +1,4 @@
-/* ABMAT — localStorage sarmalayıcı servisi */
+/* ABMATO — localStorage sarmalayıcı servisi */
 
 class StorageService {
   constructor(ns='matevde_v2'){ this._ns=ns }

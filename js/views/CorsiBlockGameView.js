@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — CorsiBlockGameView
+   ABMATO — CorsiBlockGameView
    Klasik Corsi blok dizi hatırlama görevi (görsel-uzamsal WM).
    9 blok ekranda; sistem N tanesini sırayla yakar; çocuk
    aynı sırayla tekrar tıklar. Her başarıda dizi uzar.

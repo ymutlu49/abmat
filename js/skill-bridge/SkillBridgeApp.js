@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: SkillBridgeApp */
+/* ABMATO — Beceri Köprüsü: SkillBridgeApp */
 
 class SkillBridgeApp {
   #view;

@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: SkillRepository */
+/* ABMATO — Beceri Köprüsü: SkillRepository */
 
 class SkillRepository {
   #modules;

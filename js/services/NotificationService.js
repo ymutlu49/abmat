@@ -1,4 +1,4 @@
-/* ABMAT — NotificationService */
+/* ABMATO — NotificationService */
 
 class NotificationService {
   constructor(storage){ this._s=storage }
@@ -27,7 +27,7 @@ class NotificationService {
   _defaults(){
     return [
       { id:'n1', emoji:'📚', title:'Haftalık İpucu', text:'Bu hafta "Mutfakta Sayıyoruz" etkinliğini denediniz mi?', date:new Date(Date.now()-3600000).toISOString(), read:false },
-      { id:'n2', emoji:'🎉', title:'Harika Başlangıç!', text:'ABMAT\'a hoş geldiniz. İlk etkinliğinizi yapın ve rozetinizi kazanın!', date:new Date(Date.now()-86400000).toISOString(), read:false },
+      { id:'n2', emoji:'🎉', title:'Harika Başlangıç!', text:'ABMATO\'a hoş geldiniz. İlk etkinliğinizi yapın ve rozetinizi kazanın!', date:new Date(Date.now()-86400000).toISOString(), read:false },
     ];
   }
 }

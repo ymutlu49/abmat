@@ -1,4 +1,4 @@
-/* ABMAT — Service Worker
+/* ABMATO — Service Worker
  *
  * Strateji:
  *   - Statik varlıklar (CSS, JS, fontlar): cache-first
@@ -193,7 +193,7 @@ self.addEventListener('fetch', (event) => {
      sayede gerçek push aboneliği olmadan da test edilebilir.
 ══════════════════════════════════════════════════════════ */
 self.addEventListener('push', (event) => {
-  let payload = { title: 'ABMAT', body: 'Bir hatırlatıcınız var', url: '/' };
+  let payload = { title: 'ABMATO', body: 'Bir hatırlatıcınız var', url: '/' };
   if(event.data){
     try { payload = { ...payload, ...event.data.json() }; }
     catch { payload.body = event.data.text(); }
@@ -224,7 +224,7 @@ self.addEventListener('notificationclick', (event) => {
 self.addEventListener('message', (event) => {
   const msg = event.data || {};
   if(msg.type === 'show-notif'){
-    self.registration.showNotification(msg.title || 'ABMAT', {
+    self.registration.showNotification(msg.title || 'ABMATO', {
       body: msg.body || '',
       icon: './icons/icon-192.png',
       badge: './icons/icon-192.png',

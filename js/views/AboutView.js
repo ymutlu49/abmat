@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — AboutView
-   Diskalkuli Derneği tanıtım & ABMAT hakkında.
+   ABMATO — AboutView
+   Diskalkuli Derneği tanıtım & ABMATO hakkında.
    Hedef: derneği görünür kılmak, üyelik & destek davetlerini
    tek bir profesyonel sayfada toplamak.
 ══════════════════════════════════════════════════════════ */
@@ -48,7 +48,7 @@ export class AboutView extends BaseView {
           <p style="font-size:var(--t-md);line-height:1.65">
             Diskalkulili (sayısal öğrenme güçlüğü olan) bireylere ve ailelerine bilimsel,
             erişilebilir ve kaygısız matematik destek modelleri sunmak; diskalkuli farkındalığını
-            Türkiye'de yaygınlaştırmak. <strong>ABMAT</strong> bu vizyonun ev tarafıdır.
+            Türkiye'de yaygınlaştırmak. <strong>ABMATO</strong> bu vizyonun ev tarafıdır.
           </p>
         </div>
       </div>
@@ -110,12 +110,12 @@ export class AboutView extends BaseView {
         </div>
       </div>
 
-      <!-- ABMAT Künye -->
+      <!-- ABMATO Künye -->
       <div class="card" style="margin-bottom:1rem">
         <div class="card-body">
           <h3 style="color:var(--teal-d);margin-bottom:.45rem">📱 Bu Uygulama Hakkında</h3>
           <p style="font-size:var(--t-md);line-height:1.65;margin-bottom:.5rem">
-            <strong>ABMAT — Anne-Baba Matematik Okulu</strong>, okul öncesi ve ilkokul çocukları
+            <strong>ABMATO — Anne-Baba Matematik Okulu</strong>, okul öncesi ve ilkokul çocukları
             için kanıt-temelli, kaygı dostu, TYMM (MEB 2024) müfredatı uyumlu matematik etkinlikleri sunar.
           </p>
           <p style="font-size:var(--t-sm);line-height:1.6;color:var(--text2);margin-bottom:.4rem">

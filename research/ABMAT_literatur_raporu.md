@@ -1,6 +1,6 @@
-# ABMAT — Literatür ve Ürün Araştırma Raporu
+# ABMATO — Literatür ve Ürün Araştırma Raporu
 _Hazırlanma tarihi: 2026-04-10_
-_Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı araştırma_
+_Amaç: ABMATO uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı araştırma_
 
 > **Metot notu:** Aramalar doğrudan WebSearch üzerinden yapılmıştır. Her bulgu için bulunabilen en erken kaynak URL'si aşağıda belirtilmiştir. Bu rapor bir "hipotez seti" değil, doğrulanmış atıflara dayalıdır. Yine de kesin rakamları (effect size vb.) atıf vermeden önce kaynağın tam metninden doğrulayın.
 
@@ -27,8 +27,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Sidney, Scheibe et al. (2025) — Effective interventions for math anxiety.** En güncel derleme: Etkin müdahaleler üç gruba ayrılıyor: (1) bilişsel yeniden çerçeveleme (reappraisal), (2) expressive writing (yazarak boşaltma), (3) matematik-dışı rahatlama (nefes, mindfulness). Kısa (10 dakikadan az), dijitalde ölçeklenebilir müdahalelerin genel etki büyüklüğü d=0.20-0.35 bandında.
 [Sidney et al. 2025](https://journals.sagepub.com/doi/abs/10.1177/09637214241300111)
 
-**Pratik çıkarımlar (ABMAT):**
-- **Kaygıyı bypass et, tedavi etme.** ABMAT'ın mevcut "kaygı dostu etkinlikler" yaklaşımı doğru hat; bunu güçlendir.
+**Pratik çıkarımlar (ABMATO):**
+- **Kaygıyı bypass et, tedavi etme.** ABMATO'ın mevcut "kaygı dostu etkinlikler" yaklaşımı doğru hat; bunu güçlendir.
 - Expressive writing modülü eklenebilir (kısa, 5 dakikalık "matematik hakkında hislerinizi yazın" formatı — Park, Ramirez, Beilock 2014 tekrarlamaları var).
 - "Ödev yardımı yapma, etkinlik yap" çerçevelemesi literatürle tam uyumlu.
 - Null bulguları (Cosso) raporun kurucuya sunumunda şeffaflıkla aktar — böylece "kanıt temelli" iddiası inandırıcı olur.
@@ -46,15 +46,15 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Cahoon et al. (2024) — Ev müdahalesi meta-analizi (3-5 yaş).** Ev tabanlı erken okuryazarlık/matematik müdahalelerinin derlemesi. Video modelleme + aktivite kitleri + SMS bildirim kombinasyonlarının tek başına bildirime göre daha etkili olduğunu gösteriyor.
 [Cahoon et al. 2024](https://journals.sagepub.com/doi/full/10.3102/00346543231212491)
 
-**Skwarchuk, LeFevre (2014) formal/informal modeli.** Çocukların erken sayı becerilerinde formal (açık öğretim) ve informal (oyun, günlük hayat) etkinliklerin birbirini tamamladığını gösteriyor. Bu, ABMAT'ın hem yapılandırılmış planlayıcı hem de "günlük rutinde matematik" yaklaşımına kanıt temeli sağlıyor.
+**Skwarchuk, LeFevre (2014) formal/informal modeli.** Çocukların erken sayı becerilerinde formal (açık öğretim) ve informal (oyun, günlük hayat) etkinliklerin birbirini tamamladığını gösteriyor. Bu, ABMATO'ın hem yapılandırılmış planlayıcı hem de "günlük rutinde matematik" yaklaşımına kanıt temeli sağlıyor.
 [Skwarchuk & LeFevre 2014](https://pubmed.ncbi.nlm.nih.gov/24462995/)
 
 **Zhao et al. (2023) — Child Development boylamsal analiz.** 4-6 yaş boylamsal video gözlem + anket verisiyle: erken "home learning support" ev matematik ortamının çocuk becerisinde öngörücü olmasını aracılık ediyor.
 [Zhao et al. 2023](https://srcd.onlinelibrary.wiley.com/doi/10.1111/cdev.13971)
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - Meta-analiz etki büyüklükleri küçük (r~0.13) — **tek başına aktivite listesi yetmez**. Çokkanallı destek (ebeveyn eğitimi + etkinlikler + bildirimler + öğretmen köprüsü) gerekli.
-- Formal/informal ayrımı yapma; her ikisi de değerli. ABMAT'ın kategori şeridi (Sayı, Ölçme, Günlük, Oyun, Mutfak) bu çok yönlülüğü zaten destekliyor.
+- Formal/informal ayrımı yapma; her ikisi de değerli. ABMATO'ın kategori şeridi (Sayı, Ölçme, Günlük, Oyun, Mutfak) bu çok yönlülüğü zaten destekliyor.
 - Video modelleme ekleme: Kısa (60 sn) ebeveyn-çocuk etkinlik videoları, yazılı talimatlardan daha etkili görünüyor (Cahoon 2024).
 
 ---
@@ -76,11 +76,11 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - TIP: "Akşam yemeğinde tabakları sayın. Önce siz, sonra çocuğunuz."
 - GROWTH: "Harika! Bu hafta 3 kere saydınız, çocuğunuz artık 5'e kadar daha hızlı. Hadi haftaya 7'ye uzatalım."
 
-**Pratik çıkarımlar (ABMAT):**
-- **Kritik**: ABMAT yerel web uygulaması, ama Ready4K'nın SMS dağıtım kanalı ABD'de en güçlü düşük-SES müdahale formatı. Türkiye'de WhatsApp kullanımı yüksek — aynı format WhatsApp/SMS köprüsü ile uyarlanabilir.
+**Pratik çıkarımlar (ABMATO):**
+- **Kritik**: ABMATO yerel web uygulaması, ama Ready4K'nın SMS dağıtım kanalı ABD'de en güçlü düşük-SES müdahale formatı. Türkiye'de WhatsApp kullanımı yüksek — aynı format WhatsApp/SMS köprüsü ile uyarlanabilir.
 - Haftalık 3 mesaj dozu iyi bir başlangıç.
-- Kişiselleştirme (çocuk ismi, yaş, son yapılan etkinlik) etki büyüklüğünü %63 artırıyor — ABMAT bunu uygulayabilir.
-- ABMAT'ın mevcut SMS Bridge modülü (view-sms) bu literatürle tam hizalı, sadece **demo değil canlı hale getirilmeli**.
+- Kişiselleştirme (çocuk ismi, yaş, son yapılan etkinlik) etki büyüklüğünü %63 artırıyor — ABMATO bunu uygulayabilir.
+- ABMATO'ın mevcut SMS Bridge modülü (view-sms) bu literatürle tam hizalı, sadece **demo değil canlı hale getirilmeli**.
 
 ---
 
@@ -95,8 +95,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Preschool teachers' mathematical questions during shared picture book reading (2023).** Hangi soru tipleri öğretmen açıklaması gerektiriyor vs. çocuğun keşfine izin veriyor — soru taksonomisi önerisi.
 [2023 question taxonomy](https://link.springer.com/article/10.1007/s11858-023-01544-w)
 
-**Pratik çıkarımlar (ABMAT):**
-- ABMAT'ın `_bookLibrary` (25+ Türkçe kitap) iyi bir başlangıç. Ancak:
+**Pratik çıkarımlar (ABMATO):**
+- ABMATO'ın `_bookLibrary` (25+ Türkçe kitap) iyi bir başlangıç. Ancak:
   - Her kitaba **soru tipi etiketi** ekle: "Kapalı uçlu", "Açık uçlu — sayı", "Açık uçlu — akıl yürütme"
   - Ebeveyne **kaç kez, nasıl sık** okunması gerektiği konusunda somut yönerge (Purpura 4 kez × 4 hafta modeli uygulanabilir)
   - "Math talk kalitesi" mikro-eğitimi ekle (hangi sorular etkili)
@@ -114,9 +114,9 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **DePascale & Ramani — The Role of Math Games Systematic Review.** Masa oyunlarının erken matematik için sistematik derlemesi; lineer, sayısal, oyuncu-dostu olanlar en güçlü kanıta sahip.
 [DePascale & Ramani review](https://jnc.psychopen.eu/index.php/jnc/article/download/14897/14897.html?inline=1)
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - Basit **DIY lineer sayı tahtası** şablonu ekle: PDF indirilebilir, evde kağıt + düğme ile oyun. Maliyet=0, kanıt temeli çok güçlü.
-- Bu zaten ABMAT'ın "Her Bütçeye Uygun" mesajıyla uyumlu.
+- Bu zaten ABMATO'ın "Her Bütçeye Uygun" mesajıyla uyumlu.
 - Oyun süresi kritik: en az 15 dk × 4 kez / hafta → 1 aylık bir "Sayı Çizgisi Meydan Okuması" olarak çerçevelenebilir.
 
 ---
@@ -135,8 +135,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Spatial thinking as the missing piece (2022, npj Science of Learning).** Uzamsal düşüncenin matematik müfredatında sistemik olarak ihmal edildiği, çerçeveleme önerisi.
 [npj SoL 2022](https://www.nature.com/articles/s41539-022-00128-9)
 
-**Pratik çıkarımlar (ABMAT):**
-- ABMAT'ın mevcut uzamsal modülü (`view-spatial`) doğru yolda. Ancak:
+**Pratik çıkarımlar (ABMATO):**
+- ABMATO'ın mevcut uzamsal modülü (`view-spatial`) doğru yolda. Ancak:
   - **Dijital mini-oyunlar yerine fiziksel etkinliklere** öncelik ver (kanıt daha güçlü)
   - Çocuk yaşına göre **ilerleme**: okul öncesi → blok kopyalama; 1-2. sınıf → tangram; 3-4. sınıf → perspektif çizimi ve haritalama
   - Uzamsal etkinlikleri "matematik başarısı için gizli anahtar" olarak çerçevele (Hawes meta-analizi etki büyüklüğü g=0.28 aktarılabilir)
@@ -154,9 +154,9 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **AI-Enhanced Dyscalculia Screening: A Survey (2024, PMC).** Son 3 yılda makine öğrenmesi tabanlı tarama araçlarına geçiş eğilimi.
 [AI screening review 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11241753/)
 
-**Mutlu (Yılmaz Mutlu) — Türkiye'de diskalkuli tanılama.** ABMAT yazarının kendi alanı. Türkiye bağlamında tarama araçları ve müdahale eksiği olduğu için ABMAT bu boşluğu doldurabilir.
+**Mutlu (Yılmaz Mutlu) — Türkiye'de diskalkuli tanılama.** ABMATO yazarının kendi alanı. Türkiye bağlamında tarama araçları ve müdahale eksiği olduğu için ABMATO bu boşluğu doldurabilir.
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - **KRİTİK YASAL SINIR:** Parent-facing uygulama tanı koyamaz. Ancak **"kırmızı bayraklar" listesi** + "RAM'e başvurun" yönlendirmesi güvenli ve değerlidir.
 - Mevcut `view-dyscalculia` modülü bir "awareness" aracı olarak iyi. Ama:
   - Somut yaş-bazlı **kontrol listesi** ekle (3-4 yaş: parmak sayma yok; 5-6 yaş: 1-10 sırası bozuk; 7-8 yaş: basamak değer karıştırma; vb.)
@@ -179,7 +179,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Camerer et al. (2018) — replication concerns.** Birkaç replikasyon çalışması etki bulamadı; effect slightly negative. **Kritik:** Bu, tekniğin herkesçe işe yaramayacağı anlamına gelmiyor ama abartılmış beklentiyi törpülemek lazım.
 [2018 replication issues](https://pmc.ncbi.nlm.nih.gov/articles/PMC8192598/)
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - "Nefes egzersizi" modülünün yanına **5 dakikalık expressive writing egzersizi** ekle ("Matematik hakkında şimdi ne hissediyorsunuz? Yazın, kaydedin").
 - Etki büyüklüğünü abartma. "Bir araştırma %100 işe yarayacağını söylüyor" deme; "Bazı ailelere yardımcı oluyor, denemeye değer" çerçevelemesi daha dürüst.
 
@@ -196,7 +196,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Parent-child math talk guide (White Rose 2025).** Dialogic okuma modeli — soruyla başla, bekle, genişlet — picture book ve günlük etkinliklerde etkili.
 [White Rose 2025](https://eprints.whiterose.ac.uk/id/eprint/229148/1/education-15-00805.pdf)
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - Her etkinlik sayfasında "Nasıl soracağım?" alt başlığı: 3 örnek soru (1 açık, 1 kapalı, 1 yansıtıcı).
 - Ebeveyne "sor, bekle (3 saniye), genişlet" (3W: Wonder, Wait, Widen) mikro-eğitimi. 60 saniyelik bir içerik kartı yeterli.
 
@@ -213,8 +213,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Çalışma destek kaynakları (masa, kitap, teknoloji)
 - İnternet erişimi + ayrı çalışma odası
 
-**Pratik çıkarımlar (ABMAT):**
-- Türkiye'nin matematik başarısında olumlu eğilim var; ABMAT bu ivmeyi destekleyecek bir araç olarak konumlandırılabilir.
+**Pratik çıkarımlar (ABMATO):**
+- Türkiye'nin matematik başarısında olumlu eğilim var; ABMATO bu ivmeyi destekleyecek bir araç olarak konumlandırılabilir.
 - Ama socioeconomic gradient devam ediyor — düşük-SES ailelere özel mesajlaşma **en yüksek marjinal getiri**yi üretir.
 
 ---
@@ -240,7 +240,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 4. Sonuç: "Özel Eğitim Gereksinimli" raporu + Özel Eğitim Destek Eğitimi hakkı
 [MEB ORGM RAM Yönergesi](https://orgm.meb.gov.tr/meb_iys_dosyalar/2020_08/31230315_RAM_YONERGESY.pdf) · [e-Devlet RAMDEVU](https://www.turkiye.gov.tr/meb-ramdevu-sistemi)
 
-**Pratik çıkarımlar (ABMAT):**
+**Pratik çıkarımlar (ABMATO):**
 - Diskalkuli modülüne **"e-Devlet RAMDEVU üzerinden randevu alın"** adımı ekle + il seçimli direkt link.
 - Mutlu'nun multiple filter modelini basitleştirip parent-facing bir **kontrol listesi** üret.
 - Mevcut MARS-R temelli ölçek yerine **9 maddelik Türkçe AMAS-T** değerlendirmesine geç.
@@ -268,9 +268,9 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Boylamsal: Uygulama kullanımı azalsa bile kazanım korundu
 [Common Sense review](https://www.commonsensemedia.org/app-reviews/bedtime-math) · [UChicago haber](https://socialsciences.uchicago.edu/news/math-app-produces-long-term-benefits-for-children-parents)
 
-**ABMAT için çalınabilir fikirler:**
+**ABMATO için çalınabilir fikirler:**
 1. **Günün Problemi akışı** — Bedtime Math tarzı tek bir günlük problem + 3 seviye. Dashboard'da sabit yer, 5 dakikalık commitment.
-2. **Üç zorluk seviyesi** — ABMAT'ın mevcut yaş grubu etiketlemesi bu modele benzer; daha güçlü vurgulanabilir.
+2. **Üç zorluk seviyesi** — ABMATO'ın mevcut yaş grubu etiketlemesi bu modele benzer; daha güçlü vurgulanabilir.
 3. **Yatmadan önce matematik çerçevesi** — Türk kültüründe masal öncesi "mini hikaye + matematik sorusu" rutinine dönüştürülebilir.
 
 ---
@@ -294,7 +294,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Evidence for ESSA: "Strong" kanıt
 [CEPA Stanford](https://cepa.stanford.edu/content/one-step-time-effects-early-literacy-text-messaging-program-parents-preschoolers) · [ParentPowered research](https://ready4k.com/research/) · [Evidence for ESSA](https://evidenceforessa.org/program/parentpowered-ready4k/)
 
-**ABMAT için çalınabilir fikirler:**
+**ABMATO için çalınabilir fikirler:**
 1. **WhatsApp/SMS kanalı** — En yüksek etkili, en düşük friksiyonlu dağıtım. Türkiye'de WhatsApp kullanımı çok yüksek.
 2. **FACT / TIP / GROWTH üçlüsü** — Her etkinlik için "Neden yapıyoruz?" (FACT) + "Nasıl?" (TIP) + "Ne değişti?" (GROWTH) yapısı.
 3. **Kişiselleştirme** — Çocuk adı, yaş, son aktivite mevcut state'te var.
@@ -312,9 +312,9 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Aktivite şablonu: Başlık + Yaş + Matematik konusu + Talimatlar
 - İspanyolca versiyon
 
-**ABMAT için:**
+**ABMATO için:**
 1. **4 ana bağlam kategorisi** — Pedagojik kategorilere ek bir bağlam kategorisi: Mutfakta / Yolda / Uyku öncesi / Oyun sırasında.
-2. **Parent educator toolkit** — Öğretmenler için "ABMAT Rehberi" (uzun vade).
+2. **Parent educator toolkit** — Öğretmenler için "ABMATO Rehberi" (uzun vade).
 
 ---
 
@@ -328,7 +328,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Dağıtım: App + SMS + Alexa + print
 - Ücretsiz, reklamsız
 
-**ABMAT için:**
+**ABMATO için:**
 1. **Brainy Background paragraf formatı** — Her etkinliğin tip alanı: "Neden bu etkinlik çalışır? Çünkü çocuğun beyni…"
 2. **Bağlam-bazlı ipucu kartları** — "Şu an nerede?" → ilgili 1 dk aktivite.
 3. **Zero-setup etiketi** — Etkinlikleri hazırlıksız / 5 dk hazırlık / araç lazım olarak işaretle.
@@ -344,8 +344,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Kanıt:** Wilson et al. (2006) — subitizing hızı +birkaç yüz ms, çıkarma doğruluğu **+%23**
 [Wilson et al. 2006](https://pubmed.ncbi.nlm.nih.gov/16734906/)
 
-**ABMAT için:**
-1. **Subitizing mini oyunu** — ABMAT diskalkuli modülüne HTML5 canvas ile nokta tanıma oyunu.
+**ABMATO için:**
+1. **Subitizing mini oyunu** — ABMATO diskalkuli modülüne HTML5 canvas ile nokta tanıma oyunu.
 2. **Protokol şeffaflığı** — "5 hafta × 4 gün × 30 dk" dozajını ebeveynle paylaş.
 
 ---
@@ -359,7 +359,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 - Aylık özet
 [Khan Parent Dashboard](https://support.khanacademy.org/hc/en-us/articles/360039664491-What-can-I-do-from-the-Khan-Academy-Parent-Dashboard)
 
-**ABMAT için:**
+**ABMATO için:**
 1. **Haftalık e-posta özeti** — Otomatik haftalık özet. EmailJS ile client-side mümkün.
 2. **Konu-bazlı ilerleme** — TYMM kategorileri bazında güçlü/zayıf alanlar.
 
@@ -372,7 +372,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 **Kanıt:** Boaler et al. — mathematical mindset müdahalesi **d=0.91** (2.8 yıl okul gelişimine eşdeğer)
 [Stanford GSE](https://ed.stanford.edu/news/cultivating-growth-mindset-math) · [YouCubed](https://www.youcubed.org/resource/growth-mindset/)
 
-**ABMAT için:**
+**ABMATO için:**
 1. **Growth mindset modülü** — Ebeveyn Akademisi'ne: "Çocuğunuza matematik zekası değil çaba hakkında konuşun." Somut cümleler.
 2. **Low-floor-high-ceiling etiketi** — Hangi etkinlikler hem küçüklere hem büyüklere çalışır.
 
@@ -385,7 +385,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 
 **Big Ideas:** Sayı hissi, uzamsal ilişkiler, ölçme, geometrik şekiller, örüntü, veri.
 
-**ABMAT için:**
+**ABMATO için:**
 1. **Büyük Fikirler kavram haritası** — "Şu an öğrendiğimiz kavramın büyük fikir ailesi nedir?"
 2. **Family Math Night rehberi** — Evde 1 saatlik mini matematik etkinliği kiti.
 
@@ -404,7 +404,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 | MEB EBA | Resmi platform | Mixed | Okul öncesi zayıf, parent-facing yok |
 | Morpa / Okulistik / Vitamin | Ücretli K-12 | Child (parent dashboard) | Okul öncesi zayıf, matematik kaygısına odak yok |
 
-**Türkiye pazar boşluğu — ABMAT'ın konumlanması:**
+**Türkiye pazar boşluğu — ABMATO'ın konumlanması:**
 
 > **Şu anda Türkiye'de NE YOK:**
 > 1. Parent-as-coach odaklı, kanıt temelli uygulama
@@ -413,7 +413,7 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 > 4. TYMM 2024 ile açıkça hizalanmış evde matematik rehberi
 > 5. Ücretsiz + Türkçe + parent-facing + okul öncesi odaklı
 
-**ABMAT, bu 5 boşluğun tamamını dolduran ilk uygulamadır.** Farklılaştırıcı: "Türkiye'nin Bedtime Math + DREME Family Math + Ready4K birleşimi."
+**ABMATO, bu 5 boşluğun tamamını dolduran ilk uygulamadır.** Farklılaştırıcı: "Türkiye'nin Bedtime Math + DREME Family Math + Ready4K birleşimi."
 
 ---
 
@@ -429,8 +429,8 @@ _Amaç: ABMAT uygulamasını kanıt temelli olarak iyileştirmek için kapsamlı
 
 **Penn çalışması (gamification):** Kısa vadede **+%40** katılım; uzun vadede otonomi ve içsel motivasyon **azalıyor**.
 
-**KRİTİK NOKTA — ABMAT için:**
-ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-trip streak sistemi bu grupta **kontra-prodüktif** — "matematik yapamadım, kötü ebeveynim" duygusunu pekiştirir.
+**KRİTİK NOKTA — ABMATO için:**
+ABMATO'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-trip streak sistemi bu grupta **kontra-prodüktif** — "matematik yapamadım, kötü ebeveynim" duygusunu pekiştirir.
 
 **Alternatif:**
 - "Freeze day", haftalık ritim, sezon-bazlı dönüm noktaları
@@ -455,7 +455,7 @@ ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-tr
 - SMS + implementation intention meta-analizinde anlamlı etki
 [Gollwitzer implementation intentions](https://cancercontrol.cancer.gov/sites/default/files/2020-06/goal_intent_attain.pdf)
 
-**ABMAT için pratik:**
+**ABMATO için pratik:**
 - Haftada **2-3 bildirim** ideal aralık. Pazartesi sabah (haftalık kurulum) + Perşembe akşam (son şans).
 - Format: **"Akşam yemeğinde → Tabakları sayın"** (if-then, 20 karakter civarı).
 - Opt-out kolay olmalı. "Bildirim sıklığını azalt (haftada 1)" profil altında görünür.
@@ -473,7 +473,7 @@ ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-tr
 - WhatsApp mesaj etkileşimi sonrası ebeveynler **%78.8** ek içerik talep etti
 [Malezya WhatsApp trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC11087859/)
 
-**ABMAT için:**
+**ABMATO için:**
 1. **WhatsApp paylaşım butonu** — Her etkinliğin sonunda `wa.me/?text=` deeplink. Viral büyüme.
 2. **WhatsApp broadcast kanalı** — Ayrı WhatsApp Business hesabı, haftalık FACT+TIP+GROWTH yayını.
 3. WhatsApp grupları: moderasyon maliyeti yüksek, şimdilik önerilmez.
@@ -482,7 +482,7 @@ ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-tr
 
 ### 3.4 Onboarding optimizasyonu
 
-**Mevcut ABMAT onboarding (gözlem):**
+**Mevcut ABMATO onboarding (gözlem):**
 4 adım: İsim → Kaygı soruları (8 madde) → Yaş grubu → Ebeveynlik stili — ~3-5 dakika.
 **Problem:** 8 kaygı sorusu time-to-value'yu geciktiriyor.
 
@@ -491,7 +491,7 @@ ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-tr
 - Heavy anketleri (kaygı ölçeği) değer gördükten sonra sun
 - Kişisel bilgiyi mümkün olduğu kadar ertele
 
-**ABMAT için öneri:**
+**ABMATO için öneri:**
 - Onboarding'i 3 adıma indirge: İsim → Çocuk yaş grubu → İlk etkinlik önerisi.
 - Kaygı ölçeğini 1. gün profil kartı üzerinden "Başlangıç değerlendirmesi yapmak ister misiniz? (2 dk)" olarak sun.
 
@@ -499,7 +499,7 @@ ABMAT'ın hedef kitlesi **zaten kaygılı ebeveynler**. Duolingo tarzı guilt-tr
 
 ### 3.5 PWA + offline-first
 
-**ABMAT halihazırda PWA'ya yakın:**
+**ABMATO halihazırda PWA'ya yakın:**
 - ES modül yapısı ✓
 - Tek HTML shell ✓
 - Service worker YOK
@@ -635,7 +635,7 @@ Her öneri için: **Etki tahmini** (kanıta dayalı), **Çaba**, **Kanıt kayna�
 
 - **R18.** Video modelleme (60 sn ebeveyn-çocuk etkinlik videoları) — YouTube embedleme veya kendi içerik üretimi. Cahoon 2024 meta-analizi destekliyor ama çaba yüksek.
 - **R19.** Çoklu dil (Kürtçe, Arapça) — Düşük-SES Doğu illerinde kritik olabilir; ama içerik çeviri ve doğrulama maliyeti yüksek.
-- **R20.** Öğretmen dashboard'u / okul-ev köprüsü canlandırma — Sheldon & Epstein 2005 aile-okul partnerliği etkisi. ABMAT'ta zaten bir mock view var; gerçek çift yönlü kanala dönüştürülmesi için sunucu gerekli.
+- **R20.** Öğretmen dashboard'u / okul-ev köprüsü canlandırma — Sheldon & Epstein 2005 aile-okul partnerliği etkisi. ABMATO'ta zaten bir mock view var; gerçek çift yönlü kanala dönüştürülmesi için sunucu gerekli.
 - **R21.** Multi-child profil — Kardeş ailelerde etkinlik yaş farkı yönetimi. UI iş yükü yüksek.
 
 ---
@@ -651,10 +651,10 @@ Hedef kitle zaten kaygılı. "7 günlük seriniz bozuldu 😢" bildirimi kötü 
 Parent-facing uygulama klinik tanı koyamaz. Yalnızca "kırmızı bayraklar" ve kurumsal yönlendirme (RAM) yapılmalı. Yanlış bir "çocuğunuzda diskalkuli olabilir" mesajı ebeveyn paniğine ve yanlış öz-tanıya yol açar.
 
 ### ❌ D3. Drill odaklı child-facing mod
-"Mental arithmetic drill" çocuk uygulamalarının piyasası dolu. ABMAT'ın konumlanması tam tersi: parent-as-coach. Child-facing mod eklemek marka özünü sulandırır.
+"Mental arithmetic drill" çocuk uygulamalarının piyasası dolu. ABMATO'ın konumlanması tam tersi: parent-as-coach. Child-facing mod eklemek marka özünü sulandırır.
 
 ### ❌ D4. Ebeveyn kaygısını "tedavi ettiğimiz" iddiası
-Bedtime Math RCT bulgusu çok net: **Kaygı azalmadı**, etkili olan tutum değişikliği + bypass. ABMAT da "kaygınızı biz iyileştireceğiz" demek yerine "bu etkinlikler kaygınızdan bağımsız çalışır" diye çerçevelemeli.
+Bedtime Math RCT bulgusu çok net: **Kaygı azalmadı**, etkili olan tutum değişikliği + bypass. ABMATO da "kaygınızı biz iyileştireceğiz" demek yerine "bu etkinlikler kaygınızdan bağımsız çalışır" diye çerçevelemeli.
 
 ### ❌ D5. Çok uzun onboarding anketleri
 3-5 dakika anket yerine 60 saniyede ilk değer. Kaygı ölçeği sonraya ertelenmeli.
@@ -663,10 +663,10 @@ Bedtime Math RCT bulgusu çok net: **Kaygı azalmadı**, etkili olan tutum deği
 Rozet sistemi ince ayar ister. Çok fazla rozet = anlamsızlaşma. Mevcut 6 rozet seti makul — genişletirken itinayla.
 
 ### ❌ D7. Hayalî kanıt iddiaları
-ABMAT'ın kanıt kaynaklarını **her zaman doğrulanabilir URL ile** sun. "Araştırmalar gösteriyor ki" yerine "Schaeffer et al. 2018 çalışmasına göre (bkz. link)". Güvenilirlik = dağıtım için kritik.
+ABMATO'ın kanıt kaynaklarını **her zaman doğrulanabilir URL ile** sun. "Araştırmalar gösteriyor ki" yerine "Schaeffer et al. 2018 çalışmasına göre (bkz. link)". Güvenilirlik = dağıtım için kritik.
 
 ### ❌ D8. "Okul öncesi müfredatı değiştiriyoruz" çerçevesi
-ABMAT MEB müfredatının tamamlayıcısıdır, alternatifi değildir. Öğretmenlere ve MEB'e karşı ittifak pozisyonu sürdürülmeli. "Öğretmenle iş birliği" modülü bu yönde zaten iyi çerçevelenmiş.
+ABMATO MEB müfredatının tamamlayıcısıdır, alternatifi değildir. Öğretmenlere ve MEB'e karşı ittifak pozisyonu sürdürülmeli. "Öğretmenle iş birliği" modülü bu yönde zaten iyi çerçevelenmiş.
 
 ---
 

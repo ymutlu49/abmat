@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — ChildModeService
+   ABMATO — ChildModeService
    Çocuk modu durumu + opsiyonel PIN ile ebeveyn kilidi.
    Çocuk modu açıkken yetişkin ekranlarına erişim sınırlanır
    (KidsModeView render edilir, navigasyon kısıtlanır).

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   ABMAT — Uygulama Giriş Noktası
+   ABMATO — Uygulama Giriş Noktası
    ES modül olarak yüklenir; DOM hazır olduğunda uygulamayı başlatır.
 ═══════════════════════════════════════════════════════════ */
 
@@ -22,10 +22,10 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('./service-worker.js')
       .then((reg) => {
-        // console.log('[ABMAT] SW registered', reg.scope);
+        // console.log('[ABMATO] SW registered', reg.scope);
       })
       .catch((err) => {
-        console.warn('[ABMAT] SW registration failed:', err);
+        console.warn('[ABMATO] SW registration failed:', err);
       });
   });
 }

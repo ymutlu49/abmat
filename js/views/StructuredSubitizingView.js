@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — StructuredSubitizingView
+   ABMATO — StructuredSubitizingView
    Yapılandırılmış desenlerle subitizing oyunu.
    Mevcut rastgele dağıtımlı versiyona ek olarak:
      • dice    — zar deseni (1-6)

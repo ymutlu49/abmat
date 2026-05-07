@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — ContentService
+   ABMATO — ContentService
    Yönetici tarafından düzenlenen / eklenen / silinen içerikleri
    localStorage'a kalıcı yazar. Snapshot yaklaşımı:
      • Bir koleksiyon (örn. activities) ilk değiştirildiği anda

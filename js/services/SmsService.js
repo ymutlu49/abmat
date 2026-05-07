@@ -1,4 +1,4 @@
-/* ABMAT — SmsService */
+/* ABMATO — SmsService */
 
 class SmsService {
   static WEEKLY_TASKS = [

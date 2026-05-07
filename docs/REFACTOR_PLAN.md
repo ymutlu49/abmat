@@ -1,4 +1,4 @@
-# ABMAT — App.js Refactor Planı
+# ABMATO — App.js Refactor Planı
 
 ## Sorun
 

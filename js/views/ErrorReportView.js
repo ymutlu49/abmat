@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — ErrorReportView
+   ABMATO — ErrorReportView
    ErrorPatternService analiz çıktısını ekrana basar.
    Anlamlı desen yoksa "yeterli veri yok" mesajı.
 ══════════════════════════════════════════════════════════ */

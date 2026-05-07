@@ -1,4 +1,4 @@
-/* ABMAT — Etkinlik deposu
+/* ABMATO — Etkinlik deposu
    Saf sorgu arayüzü; veri js/data/activities.js dosyasından enjekte edilir. */
 
 import { ACTIVITIES } from '../data/activities.js';

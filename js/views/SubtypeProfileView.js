@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — SubtypeProfileView
+   ABMATO — SubtypeProfileView
    Diskalkuli alt-tip profilini gösterir + dominant alt-tipe
    göre özelleştirilmiş öneriler.
    Birikimli skor: SubtypeService.profile.scores

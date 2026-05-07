@@ -1,4 +1,4 @@
-# ABMAT — Anne-Baba Matematik Okulu
+# ABMATO — Anne-Baba Matematik Okulu
 
 Okul öncesi ve ilkokul matematiğinde ebeveyn-çocuk etkileşimini destekleyen, araştırma temelli, mobil web uygulaması.
 
@@ -7,7 +7,7 @@ Okul öncesi ve ilkokul matematiğinde ebeveyn-çocuk etkileşimini destekleyen,
 Tek dosya HTML iken OOP prensiplerine uygun, dağıtıma hazır modüler bir yapıya taşındı:
 
 ```
-ABMAT/
+ABMATO/
 ├── index.html                  HTML kabuğu + görünüm konteynerları
 ├── css/
 │   ├── tokens.css              Tasarım token'ları (renk, boşluk, tipografi)
@@ -78,14 +78,14 @@ ES modülleri `file://` protokolü ile çalışmaz; yerel bir HTTP sunucusu gere
 
 ### Python ile (önerilen)
 ```bash
-cd ABMAT
+cd ABMATO
 python -m http.server 8080
 ```
 Tarayıcıdan: `http://localhost:8080/`
 
 ### Node.js ile
 ```bash
-cd ABMAT
+cd ABMATO
 npx serve
 ```
 
@@ -100,7 +100,7 @@ Hiçbir build adımı gerekmez — tüm dosyalar tarayıcı tarafından doğruda
 ```bash
 git init
 git add .
-git commit -m "ABMAT yapılandırıldı"
+git commit -m "ABMATO yapılandırıldı"
 git branch -M main
 git remote add origin https://github.com/<kullanici>/abmat.git
 git push -u origin main
@@ -108,19 +108,19 @@ git push -u origin main
 Repo ayarlarından Pages → Branch: `main`, Folder: `/ (root)`.
 
 ### Netlify
-1. https://app.netlify.com/drop sayfasına ABMAT klasörünü sürükleyip bırakın.
+1. https://app.netlify.com/drop sayfasına ABMATO klasörünü sürükleyip bırakın.
 2. Veya repo'yu bağlayın: Build command — boş; Publish directory — `/`.
 
 ### Vercel
 ```bash
 npm i -g vercel
-cd ABMAT
+cd ABMATO
 vercel
 ```
 Framework preset: "Other". Build command — boş. Output directory — `./`.
 
 ### Herhangi bir statik sunucu
-Tüm `ABMAT/` klasörünü sunucuya yüklemek yeterlidir. Nginx/Apache ile ek konfigürasyon gerekmez.
+Tüm `ABMATO/` klasörünü sunucuya yüklemek yeterlidir. Nginx/Apache ile ek konfigürasyon gerekmez.
 
 ## Tarayıcı Uyumluluğu
 

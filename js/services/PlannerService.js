@@ -1,4 +1,4 @@
-/* ABMAT — PlannerService */
+/* ABMATO — PlannerService */
 
 import { AgeGroup } from '../core/constants.js';
 

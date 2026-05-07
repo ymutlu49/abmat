@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — StrategyView
+   ABMATO — StrategyView
    Diskalkuli için kanıt-temelli strateji modülleri:
      • make10        — 10'a tamamlama (toplama olgu hatırlama)
      • doubles       — İkilemeler ve neredeyse ikilemeler

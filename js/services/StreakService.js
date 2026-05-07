@@ -1,4 +1,4 @@
-/* ABMAT — StreakService
+/* ABMATO — StreakService
  *
  * R5 refactor: Duolingo-tarzı ardışık gün "streak" yerine haftalık ritim modeli.
  * Hedef kitlemiz zaten kaygılı ebeveynler olduğu için "serin bozuldu" tarzı

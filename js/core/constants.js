@@ -1,4 +1,4 @@
-/* ABMAT — Çekirdek sabitler */
+/* ABMATO — Çekirdek sabitler */
 
 const AgeGroup = Object.freeze({
   PRESCHOOL:'preschool', G1:'grade_1', G2:'grade_2', G3:'grade_3', G4:'grade_4'

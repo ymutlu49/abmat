@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — SubtypeService
+   ABMATO — SubtypeService
    Diskalkuli alt-tip profili:
      • NUMBER_SENSE (sayı hissi açığı) — magnitude comparison odaklı
      • FACT_RETRIEVAL (olgu hatırlama) — strateji + retrieval practice

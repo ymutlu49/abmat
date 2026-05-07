@@ -1,6 +1,6 @@
 import { AgeGroup, Category } from '../core/constants.js';
 
-/* ABMAT — Etkinlik veri seti (TYMM etiketli) */
+/* ABMATO — Etkinlik veri seti (TYMM etiketli) */
 
 export const ACTIVITIES = [
       { id:'a01', emoji:'🥕', title:'Mutfakta Sayıyoruz',

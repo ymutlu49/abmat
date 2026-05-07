@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — MagnitudeGameView
+   ABMATO — MagnitudeGameView
    "Hangisi daha büyük?" magnitude comparison oyunu.
    Kanıt: Butterworth (2010); Wilson & Dehaene (2006).
    Sayı hissi açığı (number sense) için tek tek en güçlü egzersiz.

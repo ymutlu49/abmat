@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — BaseView
+   ABMATO — BaseView
    View kontrolcüsü için minimal arayüz. Her view şunu sağlamalı:
      - static render(app)  : tek sorumluluk, DOM'a HTML yazar
      - opsiyonel static mount(app) : event binding / post-render işi

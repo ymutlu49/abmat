@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — AdminPanelView
+   ABMATO — AdminPanelView
    Tek merkezi yönetici paneli: tüm içerik tiplerini listeler,
    her tipte arama + "+ Yeni" + satır bazlı Düzenle/Sil.
    Sadece role=admin|editor erişebilir (App._canEdit gate).

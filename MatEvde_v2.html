@@ -6,15 +6,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ABMAT">
+<meta name="apple-mobile-web-app-title" content="ABMATO">
 <meta name="theme-color" content="#0D9488">
-<title>ABMAT</title>
+<title>ABMATO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   ABMAT — Mobil Uygulama Tasarım Sistemi
+   ABMATO — Mobil Uygulama Tasarım Sistemi
    Yaklaşım: iOS/Android HIG, native hisiyat, thumb zone
 ═══════════════════════════════════════════════════════════ */
 
@@ -560,7 +560,7 @@ button{cursor:pointer;border:none;background:none}
     </div>
 
     <!-- İsim -->
-    <div style="font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:600;letter-spacing:.16em;color:#fff;line-height:1;margin-bottom:.45rem">ABMAT</div>
+    <div style="font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:600;letter-spacing:.16em;color:#fff;line-height:1;margin-bottom:.45rem">ABMATO</div>
     <div style="font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1.5rem">Anne-Baba Matematik Okulu</div>
 
     <!-- Açıklama — küçük puntoyla -->
@@ -610,7 +610,7 @@ button{cursor:pointer;border:none;background:none}
       <button onclick="App.show('splash')" style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;flex-shrink:0">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <span style="font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.7)">ABMAT</span>
+      <span style="font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.7)">ABMATO</span>
     </div>
     <div style="padding:.25rem 1.25rem 1.5rem;text-align:center">
       <h2 style="color:#fff;font-size:1.625rem;font-weight:900;margin:0;letter-spacing:-.02em;line-height:1.15">Giriş Yap</h2>
@@ -695,7 +695,7 @@ button{cursor:pointer;border:none;background:none}
 <!-- ═══════════════════ DASHBOARD ═════════════════════ -->
 <div id="view-dashboard" class="view">
   <div class="navbar">
-    <span style="font-family:var(--ff-mono);font-size:.95rem;font-weight:700;letter-spacing:.14em;color:var(--teal)">ABMAT</span>
+    <span style="font-family:var(--ff-mono);font-size:.95rem;font-weight:700;letter-spacing:.14em;color:var(--teal)">ABMATO</span>
     <div class="spacer"></div>
     <button class="nav-action-btn" onclick="App.show('notifications')" id="notif-btn">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1578,7 +1578,7 @@ class NotificationService {
   _defaults(){
     return [
       { id:'n1', emoji:'📚', title:'Haftalık İpucu', text:'Bu hafta "Mutfakta Sayıyoruz" etkinliğini denediniz mi?', date:new Date(Date.now()-3600000).toISOString(), read:false },
-      { id:'n2', emoji:'🎉', title:'Harika Başlangıç!', text:'ABMAT\'a hoş geldiniz. İlk etkinliğinizi yapın ve rozetinizi kazanın!', date:new Date(Date.now()-86400000).toISOString(), read:false },
+      { id:'n2', emoji:'🎉', title:'Harika Başlangıç!', text:'ABMATO\'a hoş geldiniz. İlk etkinliğinizi yapın ve rozetinizi kazanın!', date:new Date(Date.now()-86400000).toISOString(), read:false },
     ];
   }
 }
@@ -1818,7 +1818,7 @@ class MatEvdeApp {
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
       { id:'lm13', emoji:'♻️', title:'Her Bütçeye Uygun Matematik', sub:'Fırsat eşitliği ve ev ortamı', dur:'7 dk', level:1, text:'Düşük sosyoekonomik düzeyli ailelerin çocukları evde matematik desteği alınca başarı farkı kapanıyor (Verdine ve ark., 2014). Pahalı materyale gerek yok: kuru bakliyat, gazete, yumurta kartonları, kapak ve düğmeler sayma, sınıflama, örüntü ve ölçme için yeterli. En etkili materyal ebeveynin dikkatidir. 5 dakika kaliteli soru-cevap, 1 saatlik desteksiz çalışma kitabından daha etkilidir.' },
       { id:'lm14', emoji:'🌟', title:'Başarı Hikayeleri', sub:'Gerçek ailelerden deneyimler', dur:'5 dk', level:1, text:'Araştırmacılar farklı profilden ailelerle yaptıkları çalışmalarda ortak bir örüntü bulmuştur: başarıyı getiren aktivite değil, ebeveynin tutumudur. Matematiği eğlenceli ve anlamlı olarak çerçeveleyen her aile — gelir ve eğitim düzeyinden bağımsız — çocuklarında olumlu matematik tutumu geliştirmiştir (Muir, 2012; Skwarchuk, 2009). Siz de bu hikayelerin parçasısınız.', isSpecial:'stories' },
-      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMAT etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
+      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
 
     // ── Resimli Kitap Kütüphanesi ──────────────────────────
     this._bookLibrary = [
@@ -1959,7 +1959,7 @@ class MatEvdeApp {
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler'};
+      const titles = {'dashboard': 'ABMATO — Ana Sayfa', 'activities': 'ABMATO — Etkinlikler', 'learn': 'ABMATO — Akademi', 'progress': 'ABMATO — Gelişim', 'planner': 'ABMATO — Planlayıcı', 'teacher': 'ABMATO — Öğretmen İletişimi', 'skill': 'ABMATO — Beceri Köprüsü', 'books': 'ABMATO — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMATO — Sayı Sohbeti', 'dyscalculia': 'ABMATO — Diskalkuli Bilgi', 'tymm': 'ABMATO — TYMM Müfredat', 'spatial': 'ABMATO — Uzamsal Düşünme', 'breathing': 'ABMATO — Nefes Egzersizi', 'profile': 'ABMATO — Profil', 'sms': 'ABMATO — Haftalık Görev', 'stories': 'ABMATO — Başarı Hikayeleri', 'notifications': 'ABMATO — Bildirimler'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -2166,7 +2166,7 @@ class MatEvdeApp {
     ];
     el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
       <h2>Destek Tarzınız</h2>
-      <p class="muted" style="margin:.35rem 0 .6rem;font-size:var(--t-md)">Şu anki yaklaşımınızı seçin. ABMAT, özerklik destekleyici yaklaşımı temel alır ve tüm etkinlikler bu felsefeyle tasarlanmıştır.</p>
+      <p class="muted" style="margin:.35rem 0 .6rem;font-size:var(--t-md)">Şu anki yaklaşımınızı seçin. ABMATO, özerklik destekleyici yaklaşımı temel alır ve tüm etkinlikler bu felsefeyle tasarlanmıştır.</p>
       <p style="font-size:var(--t-xs);color:var(--muted);background:var(--raised);border-radius:var(--r-sm);padding:.5rem .75rem;margin-bottom:1.1rem;line-height:1.6">📚 <em>Kaynak: Deci & Ryan (2000) Öz-Belirleme Kuramı · Grolnick & Ryan (1989) · Soenens & Vansteenkiste (2010)</em></p>
       <div style="display:flex;flex-direction:column;gap:.85rem">
         ${opts.map(o=>`
@@ -2668,7 +2668,7 @@ class MatEvdeApp {
       '</div></div>').join('') +
       '<div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);text-align:center;border:1.5px dashed var(--border)">' +
         '<p style="font-size:var(--t-md);font-weight:700;margin-bottom:.3rem">Siz de paylaşın 💬</p>' +
-        '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55">ABMAT ile yaşadığınız güzel bir anı gözlem notunuza ekleyin. Her etkinliğin altında not alanı var.</p>' +
+        '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55">ABMATO ile yaşadığınız güzel bir anı gözlem notunuza ekleyin. Her etkinliğin altında not alanı var.</p>' +
       '</div>' +
     '</div>';
   }
@@ -2692,7 +2692,7 @@ class MatEvdeApp {
       <!-- Başlık -->
       <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.03));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.5rem;border:1.5px solid rgba(17,138,178,.25)">
         <h3 style="color:var(--blue);margin-bottom:.4rem">🎓 TYMM Müfredat Çerçevesi</h3>
-        <p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Türkiye Yüzyılı Maarif Modeli 2024 beceri çerçevesiyle ABMAT etkinliklerinin hizası. Tüm veriler resmi MEB belgelerinden doğrulanmıştır.</p>
+        <p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Türkiye Yüzyılı Maarif Modeli 2024 beceri çerçevesiyle ABMATO etkinliklerinin hizası. Tüm veriler resmi MEB belgelerinden doğrulanmıştır.</p>
         <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem">
           <span class="chip chip-blue">OÖEP 2024</span>
           <span class="chip chip-green">İlkokul Mat. Prog. 2024</span>
@@ -3964,7 +3964,7 @@ class MatEvdeApp {
       <!-- Phone mockup -->
       <div class="phone-frame" style="margin-bottom:1.4rem">
         <div class="phone-screen">
-          <div class="sms-header">📱 ABMAT Görevi</div>
+          <div class="sms-header">📱 ABMATO Görevi</div>
           <div class="sms-body">
             <div class="sms-msg" style="background:#e8e8ed">${task.text}</div>
             <div class="sms-msg out" style="margin-top:.3rem">Teşekkürler! Bugün deneyeceğiz 🎉</div>
@@ -4284,7 +4284,7 @@ class MatEvdeApp {
         <!-- App info -->
         <div class="card card-sm">
           <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
-            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Versiyon</span><span class="mono" style="font-size:var(--t-sm)">ABMAT v1.0</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Versiyon</span><span class="mono" style="font-size:var(--t-sm)">ABMATO v1.0</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Etkinlik bankası</span><span>${this._repo.all().length} etkinlik</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Kategoriler</span><span>${Object.keys(this._CatLabels).length} kategori</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Rozet sistemi</span><span>${BadgeEngine.DEFS.length} rozet</span></div>
@@ -4534,7 +4534,7 @@ class MatEvdeApp {
 
 
   /* ══════════════════════════════════════════════════════════
-     ABMAT — INLINE DÜZENLEME SİSTEMİ
+     ABMATO — INLINE DÜZENLEME SİSTEMİ
      Profil → "✏️ Düzenleme Modunu Aç" → kart altında ✏️/🗑 çıkar
   ══════════════════════════════════════════════════════════ */
 
@@ -4947,7 +4947,7 @@ window.App = App;
 
 /* ══ Beceri Köprüsü: Veri ══ */
 /**
- * ABMAT — Beceri Köprüsü (SkillBridge)
+ * ABMATO — Beceri Köprüsü (SkillBridge)
  * Veri katmanı: Modül tanımları ve içerik deposu
  *
  * Tasarım ilkeleri:
@@ -6144,7 +6144,7 @@ if (typeof module !== 'undefined') {
 
 /* ══ Beceri Köprüsü: Servis ══ */
 /**
- * ABMAT — Beceri Köprüsü: Servis Katmanı
+ * ABMATO — Beceri Köprüsü: Servis Katmanı
  *
  * Sınıflar ve sorumlulukları:
  *  SkillProgressStore   → LocalStorage okuma/yazma (salt depolama)

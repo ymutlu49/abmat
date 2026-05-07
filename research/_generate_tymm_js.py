@@ -28,7 +28,7 @@ def js_arr(items):
 data = json.loads(SRC.read_text(encoding="utf-8"))
 
 lines = [
-    "/* ABMAT — TYMM İlkokul Matematik 2024 · Öğrenme Çıktıları (111 kazanım)",
+    "/* ABMATO — TYMM İlkokul Matematik 2024 · Öğrenme Çıktıları (111 kazanım)",
     "   Kaynak: MEB TYMM 2024 İlkokul Matematik Dersi Öğretim Programı (onaylı PDF)",
     "   Resmi PDF'ten doğrudan çıkarılmıştır — kazanım metinleri, süreç bileşenleri",
     "   ve ders saatleri PDF ile birebir uyumludur.",

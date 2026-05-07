@@ -1,4 +1,4 @@
-/* ABMAT — TeacherMessageService */
+/* ABMATO — TeacherMessageService */
 
 class TeacherMessageService {
   constructor(storage){ this._s = storage }

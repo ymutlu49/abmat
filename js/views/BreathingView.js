@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — BreathingView
+   ABMATO — BreathingView
    Kaygı yönetimi / 4-4-6 nefes tekniği sayfası.
    Örnek / ref: App.js monolitinden çıkarılan ilk view.
 

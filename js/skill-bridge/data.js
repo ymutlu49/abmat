@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: Veri katmanı
+/* ABMATO — Beceri Köprüsü: Veri katmanı
    Modül tanımları ve ENUMlar (Saf veri, side-effect yok)
    Kaynak: Diskalkuli Derneği / MEB TYMM 2024 hizalanmış */
 

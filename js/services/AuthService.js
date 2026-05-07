@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — AuthService
+   ABMATO — AuthService
    Profesyonel kimlik doğrulama altyapısı:
 
    • Şifre hash: PBKDF2-SHA256, 100k iter, 16 byte salt, 32 byte key

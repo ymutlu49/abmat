@@ -1,4 +1,4 @@
-/* ABMAT — BadgeEngine */
+/* ABMATO — BadgeEngine */
 
 import { AnxietyLevel } from '../core/constants.js';
 

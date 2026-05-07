@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — Genişletilmiş Math Talk Sözlüğü
+   ABMATO — Genişletilmiş Math Talk Sözlüğü
    Levine ve ark. (2010) → ev içi math talk → erken sayı becerisi.
    60+ tetikleyici cümle, gün içine dağılmış 6 bağlamda:
    • mutfak / banyo / yatma / araba-yol / market / oyun

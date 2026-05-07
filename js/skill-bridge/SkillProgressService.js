@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: SkillProgressService */
+/* ABMATO — Beceri Köprüsü: SkillProgressService */
 
 class SkillProgressService {
   #store;

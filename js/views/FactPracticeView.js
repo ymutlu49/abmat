@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — FactPracticeView
+   ABMATO — FactPracticeView
    Spaced retrieval practice (Leitner) UI'sı.
    Çocuk vadesi gelen olgu kartlarını cevaplar; doğru → kutu+1,
    yanlış → kutu=1 (yarın yine). Mezun olan kartlar 30 gün sonra döner.

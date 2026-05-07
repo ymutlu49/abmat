@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   ABMAT — MatEvdeApp (Ana koordinatör)
+   ABMATO — MatEvdeApp (Ana koordinatör)
    Tüm servisler, view render ve event işlemlerinin birleştiği yer.
    Görünüm bazlı alt-kontrolcüler için bölünmeye hazır yapı.
 ═══════════════════════════════════════════════════════════ */
@@ -171,13 +171,13 @@ class MatEvdeApp {
       { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
       { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
       { id:'lm11', emoji:'💬', title:'Sayı Sohbeti+ (Genişletilmiş)', sub:'60+ tetikleyici, 6 bağlam, 3 yaş grubu', dur:'10 dk', level:2, text:'Mutfak, banyo, yatma, yol, market ve oyun bağlamlarında 60+ rehber soru. Yaş ve bağlama göre filtrelenir; rastgele soru çeker; sesli okur (TTS).', isSpecial:'mtext' },
-      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz, üyelik, iletişim', dur:'5 dk', level:1, text:'ABMAT, Diskalkuli Derneği işbirliğiyle geliştirilmektedir. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. Üyelik, bağış ve iletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
+      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz, üyelik, iletişim', dur:'5 dk', level:1, text:'ABMATO, Diskalkuli Derneği işbirliğiyle geliştirilmektedir. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. Üyelik, bağış ve iletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
       { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
 
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
       { id:'lm13', emoji:'♻️', title:'Her Bütçeye Uygun Matematik', sub:'Fırsat eşitliği ve ev ortamı', dur:'7 dk', level:1, text:'Düşük sosyoekonomik düzeyli ailelerin çocukları evde matematik desteği alınca başarı farkı kapanıyor (Verdine ve ark., 2014). Pahalı materyale gerek yok: kuru bakliyat, gazete, yumurta kartonları, kapak ve düğmeler sayma, sınıflama, örüntü ve ölçme için yeterli. En etkili materyal ebeveynin dikkatidir. 5 dakika kaliteli soru-cevap, 1 saatlik desteksiz çalışma kitabından daha etkilidir.' },
       { id:'lm14', emoji:'🌟', title:'Başarı Hikayeleri', sub:'Gerçek ailelerden deneyimler', dur:'5 dk', level:1, text:'Araştırmacılar farklı profilden ailelerle yaptıkları çalışmalarda ortak bir örüntü bulmuştur: başarıyı getiren aktivite değil, ebeveynin tutumudur. Matematiği eğlenceli ve anlamlı olarak çerçeveleyen her aile — gelir ve eğitim düzeyinden bağımsız — çocuklarında olumlu matematik tutumu geliştirmiştir (Muir, 2012; Skwarchuk, 2009). Siz de bu hikayelerin parçasısınız.', isSpecial:'stories' },
-      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMAT etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
+      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
 
     // ── Resimli Kitap Kütüphanesi ──────────────────────────
     this._bookLibrary = [
@@ -321,7 +321,7 @@ class MatEvdeApp {
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMAT — Ana Sayfa', 'activities': 'ABMAT — Etkinlikler', 'learn': 'ABMAT — Akademi', 'progress': 'ABMAT — Gelişim', 'planner': 'ABMAT — Planlayıcı', 'teacher': 'ABMAT — Öğretmen İletişimi', 'skill': 'ABMAT — Beceri Köprüsü', 'books': 'ABMAT — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMAT — Sayı Sohbeti', 'dyscalculia': 'ABMAT — Diskalkuli Bilgi', 'tymm': 'ABMAT — TYMM Müfredat', 'spatial': 'ABMAT — Uzamsal Düşünme', 'breathing': 'ABMAT — Nefes Egzersizi', 'profile': 'ABMAT — Profil', 'sms': 'ABMAT — Haftalık Görev', 'stories': 'ABMAT — Başarı Hikayeleri', 'notifications': 'ABMAT — Bildirimler', 'magnitude': 'ABMAT — Hangisi Büyük?', 'struct-sub': 'ABMAT — Yapılı Sayma', 'corsi': 'ABMAT — Hafıza Blokları', 'fact': 'ABMAT — Aralıklı Tekrar', 'strategies': 'ABMAT — Stratejiler', 'subtype': 'ABMAT — Alt-Tip Profili', 'embodied': 'ABMAT — Yer Sayı Doğrusu', 'mtext': 'ABMAT — Sayı Sohbeti+', 'errreport': 'ABMAT — Hata Deseni', 'a11y': 'ABMAT — Erişilebilirlik', 'kids': 'ABMAT — Çocuk Modu', 'admin': 'ABMAT — Yönetici Paneli', 'about': 'ABMAT — Diskalkuli Derneği'};
+      const titles = {'dashboard': 'ABMATO — Ana Sayfa', 'activities': 'ABMATO — Etkinlikler', 'learn': 'ABMATO — Akademi', 'progress': 'ABMATO — Gelişim', 'planner': 'ABMATO — Planlayıcı', 'teacher': 'ABMATO — Öğretmen İletişimi', 'skill': 'ABMATO — Beceri Köprüsü', 'books': 'ABMATO — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMATO — Sayı Sohbeti', 'dyscalculia': 'ABMATO — Diskalkuli Bilgi', 'tymm': 'ABMATO — TYMM Müfredat', 'spatial': 'ABMATO — Uzamsal Düşünme', 'breathing': 'ABMATO — Nefes Egzersizi', 'profile': 'ABMATO — Profil', 'sms': 'ABMATO — Haftalık Görev', 'stories': 'ABMATO — Başarı Hikayeleri', 'notifications': 'ABMATO — Bildirimler', 'magnitude': 'ABMATO — Hangisi Büyük?', 'struct-sub': 'ABMATO — Yapılı Sayma', 'corsi': 'ABMATO — Hafıza Blokları', 'fact': 'ABMATO — Aralıklı Tekrar', 'strategies': 'ABMATO — Stratejiler', 'subtype': 'ABMATO — Alt-Tip Profili', 'embodied': 'ABMATO — Yer Sayı Doğrusu', 'mtext': 'ABMATO — Sayı Sohbeti+', 'errreport': 'ABMATO — Hata Deseni', 'a11y': 'ABMATO — Erişilebilirlik', 'kids': 'ABMATO — Çocuk Modu', 'admin': 'ABMATO — Yönetici Paneli', 'about': 'ABMATO — Diskalkuli Derneği'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -558,7 +558,7 @@ class MatEvdeApp {
     ];
     el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
       <h2>Destek Tarzınız</h2>
-      <p class="muted" style="margin:.35rem 0 .6rem;font-size:var(--t-md)">Şu anki yaklaşımınızı seçin. ABMAT, özerklik destekleyici yaklaşımı temel alır ve tüm etkinlikler bu felsefeyle tasarlanmıştır.</p>
+      <p class="muted" style="margin:.35rem 0 .6rem;font-size:var(--t-md)">Şu anki yaklaşımınızı seçin. ABMATO, özerklik destekleyici yaklaşımı temel alır ve tüm etkinlikler bu felsefeyle tasarlanmıştır.</p>
       <p style="font-size:var(--t-xs);color:var(--muted);background:var(--raised);border-radius:var(--r-sm);padding:.5rem .75rem;margin-bottom:1.1rem;line-height:1.6">📚 <em>Kaynak: Deci & Ryan (2000) Öz-Belirleme Kuramı · Grolnick & Ryan (1989) · Soenens & Vansteenkiste (2010)</em></p>
       <div style="display:flex;flex-direction:column;gap:.85rem">
         ${opts.map(o=>`
@@ -1728,7 +1728,7 @@ class MatEvdeApp {
       '</div></div>').join('') +
       '<div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-md) var(--s-lg);text-align:center;border:1.5px dashed var(--border)">' +
         '<p style="font-size:var(--t-md);font-weight:700;margin-bottom:.3rem">Siz de paylaşın 💬</p>' +
-        '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55">ABMAT ile yaşadığınız güzel bir anı gözlem notunuza ekleyin. Her etkinliğin altında not alanı var.</p>' +
+        '<p style="font-size:var(--t-sm);color:var(--muted);line-height:1.55">ABMATO ile yaşadığınız güzel bir anı gözlem notunuza ekleyin. Her etkinliğin altında not alanı var.</p>' +
       '</div>' +
     '</div>';
   }
@@ -1778,7 +1778,7 @@ class MatEvdeApp {
       <!-- Başlık -->
       <div style="background:linear-gradient(135deg,rgba(17,138,178,.1),rgba(17,138,178,.03));border-radius:var(--r-lg);padding:var(--s-lg);margin-bottom:1.5rem;border:1.5px solid rgba(17,138,178,.25)">
         <h3 style="color:var(--blue);margin-bottom:.4rem">🎓 TYMM Müfredat Çerçevesi</h3>
-        <p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Türkiye Yüzyılı Maarif Modeli 2024 beceri çerçevesiyle ABMAT etkinliklerinin hizası. Tüm veriler resmi MEB belgelerinden doğrulanmıştır.</p>
+        <p style="font-size:var(--t-md);line-height:1.65;color:var(--muted)">Türkiye Yüzyılı Maarif Modeli 2024 beceri çerçevesiyle ABMATO etkinliklerinin hizası. Tüm veriler resmi MEB belgelerinden doğrulanmıştır.</p>
         <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.65rem">
           <span class="chip chip-blue">OÖEP 2024</span>
           <span class="chip chip-green">İlkokul Mat. Prog. 2024</span>
@@ -2448,7 +2448,7 @@ class MatEvdeApp {
       '',
       '💡 ' + a.tip,
       '',
-      '— ABMAT · Anne-Baba Matematik Okulu',
+      '— ABMATO · Anne-Baba Matematik Okulu',
       'https://ymutlu49.github.io/abmat/',
     ];
     const text = parts.join('\n');
@@ -3619,7 +3619,7 @@ class MatEvdeApp {
       <!-- Phone mockup -->
       <div class="phone-frame" style="margin-bottom:1.4rem">
         <div class="phone-screen">
-          <div class="sms-header">📱 ABMAT Görevi</div>
+          <div class="sms-header">📱 ABMATO Görevi</div>
           <div class="sms-body">
             <div class="sms-msg" style="background:#e8e8ed">${task.text}</div>
             <div class="sms-msg out" style="margin-top:.3rem">Teşekkürler! Bugün deneyeceğiz 🎉</div>
@@ -3960,7 +3960,7 @@ class MatEvdeApp {
         <!-- App info -->
         <div class="card card-sm">
           <div class="card-body" style="display:flex;flex-direction:column;gap:.55rem">
-            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Versiyon</span><span class="mono" style="font-size:var(--t-sm)">ABMAT v1.0</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Versiyon</span><span class="mono" style="font-size:var(--t-sm)">ABMATO v1.0</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Etkinlik bankası</span><span>${this._repo.all().length} etkinlik</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Kategoriler</span><span>${Object.keys(this._CatLabels).length} kategori</span></div>
             <div style="display:flex;justify-content:space-between;font-size:var(--fs-sm)"><span class="muted">Rozet sistemi</span><span>${BadgeEngine.DEFS.length} rozet</span></div>
@@ -4397,7 +4397,7 @@ class MatEvdeApp {
       setTimeout(()=>URL.revokeObjectURL(url), 1000);
       this._toast('Yedek dosyası indirildi ✓','ok');
     } catch(err) {
-      console.error('[ABMAT] Export failed:', err);
+      console.error('[ABMATO] Export failed:', err);
       this._toast('Yedek oluşturulamadı','err');
     }
   }
@@ -4409,7 +4409,7 @@ class MatEvdeApp {
         <div style="font-size:2.6rem;margin-bottom:.3rem">📥</div>
         <h2>Yedekten Geri Yükle</h2>
         <p class="muted" style="margin:.6rem auto 1.1rem;max-width:280px;font-size:var(--t-md);line-height:1.55">
-          Yükleyeceğiniz yedek dosyası mevcut tüm ABMAT verilerinin yerini alır.
+          Yükleyeceğiniz yedek dosyası mevcut tüm ABMATO verilerinin yerini alır.
           Mevcut durumun kaybolmasını istemiyorsanız önce "Dışa Aktar" ile yedek alın.
         </p>
         <input type="file" id="abmat-import-file" accept="application/json,.json"
@@ -4443,7 +4443,7 @@ class MatEvdeApp {
           this.show('splash');
         }
       } catch(err) {
-        console.error('[ABMAT] Import failed:', err);
+        console.error('[ABMATO] Import failed:', err);
         this._toast(`Hatalı yedek: ${err.message||'okunamadı'}`,'err');
       }
     };
@@ -4471,14 +4471,14 @@ class MatEvdeApp {
       const ok = await this._triggerInstall();
       if(ok) this._toast('Ana ekrana eklendi ✓','ok');
     } catch(err){
-      console.warn('[ABMAT] Install prompt failed:', err);
+      console.warn('[ABMATO] Install prompt failed:', err);
     }
     this._updateInstallButton();
   }
 
 
   /* ══════════════════════════════════════════════════════════
-     ABMAT — INLINE DÜZENLEME SİSTEMİ
+     ABMATO — INLINE DÜZENLEME SİSTEMİ
      Profil → "✏️ Düzenleme Modunu Aç" → kart altında ✏️/🗑 çıkar
   ══════════════════════════════════════════════════════════ */
 

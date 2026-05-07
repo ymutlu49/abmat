@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — SpacedRetrievalService (Leitner kutuları)
+   ABMATO — SpacedRetrievalService (Leitner kutuları)
    Sayı olgularını (toplama / çarpma) zamana yayılmış pratikle
    uzun süreli akıcılığa taşıma sistemi.
 

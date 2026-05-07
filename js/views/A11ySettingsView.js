@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — A11ySettingsView
+   ABMATO — A11ySettingsView
    Profil sayfasından açılan erişilebilirlik ayar paneli.
    Tercihler localStorage'da; A11yService.apply() ile body class'a uygulanır.
 ══════════════════════════════════════════════════════════ */

@@ -1,4 +1,4 @@
-/* ABMAT — RecommendationEngine */
+/* ABMATO — RecommendationEngine */
 
 import { AnxietyLevel, Category } from '../core/constants.js';
 

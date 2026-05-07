@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — KidsModeView
+   ABMATO — KidsModeView
    Çocuk modu UI: büyük tuşlar, sade dil, sadece çocuğun
    kullanabileceği oyunlar. Çıkış için ebeveyn PIN'i (varsa).
 ══════════════════════════════════════════════════════════ */

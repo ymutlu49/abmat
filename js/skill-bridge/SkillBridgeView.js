@@ -1,4 +1,4 @@
-/* ABMAT — Beceri Köprüsü: SkillBridgeView */
+/* ABMATO — Beceri Köprüsü: SkillBridgeView */
 
 class SkillBridgeView {
   #container;

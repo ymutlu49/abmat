@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   ABMAT — ExportService
+   ABMATO — ExportService
    İlerleme verisini öğretmen/RAM ile paylaşılabilir formatlara
    çevirir: CSV (Excel) ve yazdırılabilir HTML (PDF için).
 ══════════════════════════════════════════════════════════ */
@@ -44,7 +44,7 @@ class ExportService {
     const childName = child?.name || 'Çocuk';
     const childAge = child?.ageGroup || '-';
     return {
-      title: `ABMAT İlerleme Raporu — ${childName}`,
+      title: `ABMATO İlerleme Raporu — ${childName}`,
       generatedAt: today,
       child: { name: childName, ageGroup: childAge },
       parent: { name: parent?.name || 'Ebeveyn' },
@@ -116,7 +116,7 @@ ${tableErr}
 </table>
 
 <h2>📝 Notlar</h2>
-<p style="color:#666">Bu rapor ABMAT — Anne-Baba Matematik Okulu uygulaması tarafından oluşturulmuştur. Diskalkuli tanısı ancak RAM (Rehberlik ve Araştırma Merkezi) tarafından konulabilir; bu rapor öğretmen ve aile arasında bilgi paylaşımı amaçlıdır.</p>
+<p style="color:#666">Bu rapor ABMATO — Anne-Baba Matematik Okulu uygulaması tarafından oluşturulmuştur. Diskalkuli tanısı ancak RAM (Rehberlik ve Araştırma Merkezi) tarafından konulabilir; bu rapor öğretmen ve aile arasında bilgi paylaşımı amaçlıdır.</p>
 <button onclick="window.print()" style="background:#0D9488;color:#fff;border:none;padding:.7rem 1.4rem;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem">🖨️ Yazdır / PDF Kaydet</button>
 </body></html>`);
     w.document.close();

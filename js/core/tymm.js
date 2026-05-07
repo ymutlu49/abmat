@@ -1,4 +1,4 @@
-/* ABMAT — TYMM veri yapısı (Türkiye Yüzyılı Maarif Modeli, MEB 2024)
+/* ABMATO — TYMM veri yapısı (Türkiye Yüzyılı Maarif Modeli, MEB 2024)
  *
  *   Kaynaklar:
  *    - Okul Öncesi: MEB TEGM (2024) OÖEP — tegm.meb.gov.tr, tymm.meb.gov.tr

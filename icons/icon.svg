@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ABMATO logo">
+  <!-- Arka plan — teal gradient daire -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F8C82"/>
+      <stop offset="100%" stop-color="#085049"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- A harfi — ABMATO logosu -->
+  <path d="M117 395 L256 117 L395 395"
+        stroke="white" stroke-width="38"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M170 309 L342 309"
+        stroke="white" stroke-width="38"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Küçük matematik işareti (artı) sağ üstte -->
+  <circle cx="410" cy="140" r="48" fill="rgba(255,255,255,0.25)"/>
+  <path d="M390 140 L430 140 M410 120 L410 160"
+        stroke="white" stroke-width="10"
+        stroke-linecap="round" fill="none"/>
+</svg>

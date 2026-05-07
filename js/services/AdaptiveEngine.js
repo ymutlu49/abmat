@@ -1,4 +1,4 @@
-/* ABMAT — AdaptiveEngine */
+/* ABMATO — AdaptiveEngine */
 
 class AdaptiveEngine {
   constructor(storage){ this._s = storage }

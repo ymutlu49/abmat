@@ -18,3 +18,7 @@ npm-debug.log*
 
 # Claude iş alanı
 .claude/
+
+# Build artifacts
+deploy.zip
+*.zip
