@@ -39,6 +39,17 @@
   <!-- Status bar -->
   <div style="height:env(safe-area-inset-top);min-height:44px;flex-shrink:0;position:relative;z-index:1"></div>
 
+  <!-- Erişilebilirlik hızlı geçiş (yazı büyüt) -->
+  <button onclick="App.toggleLargeText()" aria-label="Yazıyı büyüt veya küçült"
+    style="position:absolute;top:calc(env(safe-area-inset-top) + .55rem);right:.75rem;z-index:5;
+      min-width:44px;min-height:44px;padding:.4rem .7rem;border-radius:14px;
+      background:rgba(46,125,50,.08);color:#1B5E20;border:1.5px solid rgba(46,125,50,.22);
+      font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:900;letter-spacing:.04em;
+      cursor:pointer;-webkit-tap-highlight-color:transparent;
+      display:inline-flex;align-items:center;gap:.25rem;line-height:1">
+    <span style="font-size:.75rem;font-weight:700">A</span><span style="font-size:1.05rem;font-weight:900">A</span>
+  </button>
+
   <!-- Üst: Logo + İsim -->
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2rem 1rem;position:relative;z-index:1;text-align:center">
 
@@ -58,25 +69,17 @@
 
     <!-- Butonlar -->
     <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:.6rem">
-      <button onclick="App._showLogin()"
+      <button onclick="App.beginFree()"
         style="width:100%;padding:.95rem;background:#2E7D32;color:#fff;border:none;border-radius:16px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 6px 18px rgba(46,125,50,.32);-webkit-tap-highlight-color:transparent;transition:transform .08s,opacity .08s"
         ontouchstart="this.style.transform='scale(.97)';this.style.opacity='.9'"
         ontouchend="this.style.transform='';this.style.opacity=''"
         onmousedown="this.style.transform='scale(.97)';this.style.opacity='.9'"
         onmouseup="this.style.transform='';this.style.opacity=''">
-        Üye Girişi →
+        Hemen Başla →
       </button>
-      <button onclick="App.demo()"
-        style="width:100%;padding:.8rem;background:rgba(46,125,50,.08);color:#1B5E20;border:1.5px solid rgba(46,125,50,.25);border-radius:16px;font-family:var(--ff-body);font-size:.875rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent"
-        ontouchstart="this.style.opacity='.75'"
-        ontouchend="this.style.opacity=''"
-        onmousedown="this.style.opacity='.75'"
-        onmouseup="this.style.opacity=''">
-        Demo Modu
-      </button>
-      <p style="font-size:.7rem;color:#6B6259;margin:.5rem 0 0;line-height:1.5;text-align:center">
-        Diskalkuli Derneği üyelerine özeldir.<br>
-        <span style="color:#9A8F84">Üyelik bilgisi için: <strong>diskalkulidernegi.org</strong></span>
+      <p style="font-size:.72rem;color:#2E7D32;margin:.5rem 0 0;line-height:1.55;text-align:center;font-weight:700">
+        💚 Tamamen ücretsiz<br>
+        <span style="color:#6B6259;font-weight:500">Üyelik veya kayıt gerekmez · Tüm veriler cihazınızda kalır</span>
       </p>
     </div>
   </div>
@@ -87,102 +90,6 @@
       Okul Öncesi &amp; İlkokul<br>
       <span style="color:#9A8F84;font-weight:500">Prof. Dr. Yılmaz Mutlu</span>
     </p>
-  </div>
-
-</div>
-
-<!-- ═══════════════════ GİRİŞ PANELİ ═══════════════════════ -->
-<div id="view-login" class="view" style="background:var(--bg)">
-
-  <!-- Üst alan — Dernek yeşili -->
-  <div style="background:linear-gradient(160deg,#388E3C,#1B5E20);padding-top:env(safe-area-inset-top);flex-shrink:0">
-    <div style="padding:.6rem .875rem .8rem;display:flex;align-items:center;gap:.6rem">
-      <button onclick="App.show('splash')" style="width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.12);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;flex-shrink:0">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <img src="icons/dernek-logo-small.png" alt="" aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0">
-      <span style="font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.85)">ABMATO</span>
-    </div>
-    <div style="padding:.25rem 1.25rem 1.5rem;text-align:center">
-      <h2 style="color:#fff;font-size:1.625rem;font-weight:900;margin:0;letter-spacing:-.02em;line-height:1.15">Giriş Yap</h2>
-      <p style="color:rgba(255,255,255,.65);font-size:.8125rem;margin:.3rem 0 0">Hesabınızı seçin veya bilgilerinizi girin</p>
-    </div>
-  </div>
-
-  <!-- Form alanı — beyaz zemin, yumuşak köşeler üstte -->
-  <div style="flex:1;background:var(--bg);border-radius:20px 20px 0 0;margin-top:-16px;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative">
-    <div style="padding:1.25rem 1.1rem calc(2rem + env(safe-area-inset-bottom))">
-
-      <!-- Kayıtlı kullanıcılar -->
-      <div id="login-user-list"></div>
-
-      <!-- Ayraç -->
-      <div id="login-divider" style="display:flex;align-items:center;gap:.5rem;margin:.9rem 0">
-        <div style="flex:1;height:0.5px;background:var(--border)"></div>
-        <span style="font-size:.65rem;color:var(--hint);font-weight:700;letter-spacing:.06em">E-POSTA İLE GİRİŞ</span>
-        <div style="flex:1;height:0.5px;background:var(--border)"></div>
-      </div>
-
-      <!-- Ad / E-posta alanı -->
-      <div style="margin-bottom:.65rem">
-        <label style="display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.3rem">Kullanıcı Adı veya E-posta</label>
-        <input id="login-email" type="email" placeholder="ornek@mail.com" autocomplete="email"
-          style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.82rem .9rem;font-family:var(--ff-body);font-size:1rem;color:var(--text);outline:none;-webkit-appearance:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s"
-          oninput="this.style.borderColor='';this.style.boxShadow='';document.getElementById('login-email-err').style.display='none'"
-          onfocus="this.style.borderColor='#0D9488';this.style.boxShadow='0 0 0 3px rgba(13,148,136,.1)'"
-          onblur="if(!this.value)this.style.borderColor='';this.style.boxShadow=''">
-        <p id="login-email-err" style="display:none;font-size:.72rem;color:var(--danger);margin:.25rem 0 0">Bu kullanıcı bulunamadı.</p>
-      </div>
-
-      <!-- Şifre -->
-      <div style="margin-bottom:.7rem">
-        <label style="display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.3rem">Şifre</label>
-        <div style="position:relative">
-          <input id="login-pwd" type="password" placeholder="••••••" autocomplete="current-password"
-            style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.82rem 2.5rem .82rem .9rem;font-family:var(--ff-body);font-size:1rem;color:var(--text);outline:none;-webkit-appearance:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s"
-            oninput="this.style.borderColor='';this.style.boxShadow='';document.getElementById('login-pwd-err').style.display='none'"
-            onfocus="this.style.borderColor='var(--teal)';this.style.boxShadow='0 0 0 3px rgba(46,125,50,.1)'"
-            onblur="if(!this.value)this.style.borderColor='';this.style.boxShadow=''"
-            onkeydown="if(event.key==='Enter')App._loginSubmit()">
-          <button type="button" id="login-pwd-toggle" aria-label="Şifreyi göster"
-            onclick="(function(b){var i=document.getElementById('login-pwd');if(!i)return;var v=i.type==='password';i.type=v?'text':'password';b.textContent=v?'🙈':'👁';b.setAttribute('aria-label',v?'Şifreyi gizle':'Şifreyi göster');})(this)"
-            style="position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;padding:.45rem;line-height:1;-webkit-tap-highlight-color:transparent;opacity:.65">👁</button>
-        </div>
-        <p id="login-pwd-err" style="display:none;font-size:.72rem;color:var(--danger);margin:.25rem 0 0">Şifre hatalı.</p>
-      </div>
-
-      <!-- Beni hatırla -->
-      <label style="display:flex;align-items:center;gap:.45rem;margin-bottom:1rem;cursor:pointer;font-size:.78rem;color:var(--text2);user-select:none">
-        <input type="checkbox" id="login-remember" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer">
-        Beni hatırla <span style="color:var(--muted);font-size:.7rem">(30 gün)</span>
-      </label>
-
-      <!-- CTA -->
-      <button id="login-submit-btn" onclick="App._loginSubmit()"
-        style="width:100%;padding:.9rem;background:var(--teal);color:#fff;border:none;border-radius:14px;font-family:var(--ff-body);font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;box-shadow:0 4px 12px rgba(46,125,50,.28);-webkit-tap-highlight-color:transparent;margin-bottom:1rem"
-        ontouchstart="this.style.transform='scale(.97)';this.style.opacity='.88'"
-        ontouchend="this.style.transform='';this.style.opacity=''">
-        Giriş Yap
-      </button>
-
-      <!-- Ayraç -->
-      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
-        <div style="flex:1;height:0.5px;background:var(--border)"></div>
-        <span style="font-size:.65rem;color:var(--hint);font-weight:700;letter-spacing:.06em">VEYA</span>
-        <div style="flex:1;height:0.5px;background:var(--border)"></div>
-      </div>
-
-      <!-- Üyelik bilgisi (kayıt akışı kaldırıldı — sadece dernek üyeleri girer) -->
-      <div style="text-align:center;padding:0 .5rem">
-        <p style="font-size:.78rem;color:var(--text2);margin:0 0 .35rem;line-height:1.5">
-          Bu uygulama <strong>Diskalkuli Derneği üyelerine</strong> özeldir.
-        </p>
-        <p style="font-size:.72rem;color:var(--muted);margin:0;line-height:1.5">
-          Üyelik için <a href="https://diskalkulidernegi.org/uyelik-basvurusu/" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none;font-weight:700">diskalkulidernegi.org</a> üzerinden başvurabilir, giriş bilgilerini dernekten talep edebilirsin.
-        </p>
-      </div>
-
-    </div>
   </div>
 
 </div>
@@ -202,13 +109,17 @@
     <img src="./icons/dernek-logo.png" alt="Diskalkuli Derneği" title="Diskalkuli Derneği iş birliğiyle" style="width:44px;height:44px;border-radius:50%;background:#fff;padding:0;border:1.5px solid var(--teal-l);flex-shrink:0;margin-right:.6rem;box-shadow:0 2px 6px rgba(46,125,50,.18);object-fit:contain">
     <span style="font-family:var(--ff-mono);font-size:1.05rem;font-weight:800;letter-spacing:.14em;color:var(--teal-d)">ABMATO</span>
     <div class="spacer"></div>
+    <button class="nav-action-btn" onclick="App.toggleLargeText()" aria-label="Yazıyı büyüt veya küçült" title="Yazıyı büyüt"
+      style="font-family:var(--ff-body);font-weight:900;letter-spacing:.02em;color:var(--teal-d)">
+      <span style="font-size:.7rem;line-height:1">A</span><span style="font-size:.95rem;line-height:1;margin-left:-1px">A</span>
+    </button>
     <button class="nav-action-btn" onclick="App.show('notifications')" id="notif-btn">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>
       </svg>
       <span id="notif-dot" class="nav-dot" style="display:none"></span>
     </button>
-    <button class="nav-action-btn" onclick="App.show('profile')">
+    <button class="nav-action-btn" onclick="App.show('profile')" aria-label="Profil">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>

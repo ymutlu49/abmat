@@ -36,7 +36,6 @@ import { ChildModeService }      from './services/ChildModeService.js';
 import { ExportService }         from './services/ExportService.js';
 import { ContentService }        from './services/ContentService.js';
 import { AuthService }           from './services/AuthService.js';
-import { RemoteAuthService }     from './services/RemoteAuthService.js';
 
 // ── Alt uygulama: Beceri Köprüsü ──────────────────────────
 import { createSkillBridge } from './skill-bridge/index.js';
@@ -85,9 +84,6 @@ class MatEvdeApp {
     });
     this._content    = new ContentService(this._storage);
     this._auth       = new AuthService(this._storage);
-    /* Merkezî üye auth (Diskalkuli Derneği). Lokal AuthService yerine bu kullanılır;
-       lokal AuthService eski kod yolları için fallback olarak duruyor. */
-    this._remoteAuth = new RemoteAuthService();
     // _s alias servislerin storage'a kısa erişimi için (CorsiView kullanır)
     this._s = this._storage;
     // A11y body class uygulamasını DOM hazır olunca yap
@@ -175,13 +171,20 @@ class MatEvdeApp {
       { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
       { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
       { id:'lm11', emoji:'💬', title:'Sayı Sohbeti+ (Genişletilmiş)', sub:'60+ tetikleyici, 6 bağlam, 3 yaş grubu', dur:'10 dk', level:2, text:'Mutfak, banyo, yatma, yol, market ve oyun bağlamlarında 60+ rehber soru. Yaş ve bağlama göre filtrelenir; rastgele soru çeker; sesli okur (TTS).', isSpecial:'mtext' },
-      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz, üyelik, iletişim', dur:'5 dk', level:1, text:'ABMATO, Diskalkuli Derneği işbirliğiyle geliştirilmektedir. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. Üyelik, bağış ve iletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
+      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz ve iletişim', dur:'5 dk', level:1, text:'ABMATO, Diskalkuli Derneği işbirliğiyle geliştirilmiş ve tamamen ücretsiz olarak sunulmaktadır. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. İletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
       { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
 
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
       { id:'lm13', emoji:'♻️', title:'Her Bütçeye Uygun Matematik', sub:'Fırsat eşitliği ve ev ortamı', dur:'7 dk', level:1, text:'Düşük sosyoekonomik düzeyli ailelerin çocukları evde matematik desteği alınca başarı farkı kapanıyor (Verdine ve ark., 2014). Pahalı materyale gerek yok: kuru bakliyat, gazete, yumurta kartonları, kapak ve düğmeler sayma, sınıflama, örüntü ve ölçme için yeterli. En etkili materyal ebeveynin dikkatidir. 5 dakika kaliteli soru-cevap, 1 saatlik desteksiz çalışma kitabından daha etkilidir.' },
       { id:'lm14', emoji:'🌟', title:'Başarı Hikayeleri', sub:'Gerçek ailelerden deneyimler', dur:'5 dk', level:1, text:'Araştırmacılar farklı profilden ailelerle yaptıkları çalışmalarda ortak bir örüntü bulmuştur: başarıyı getiren aktivite değil, ebeveynin tutumudur. Matematiği eğlenceli ve anlamlı olarak çerçeveleyen her aile — gelir ve eğitim düzeyinden bağımsız — çocuklarında olumlu matematik tutumu geliştirmiştir (Muir, 2012; Skwarchuk, 2009). Siz de bu hikayelerin parçasısınız.', isSpecial:'stories' },
-      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },    ];
+      { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },
+
+      // ── Diskalkuli Derneği "Ebeveyn Rehber Kitabı" temelli modüller ──
+      { id:'lm-belirti', emoji:'🔍', title:'Diskalkuli Belirtileri', sub:'Çocuğumda nelere dikkat etmeliyim?', dur:'8 dk', level:2, text:'Diskalkulik çocuklarda sık görülen somut işaretler: (1) Sayıları sezgisel kavrayamama, sayı doğrusunda yer bulmada zorluk. (2) Basit aritmetik işlemleri akılda tutamama — toplama-çıkarmayı bile parmakla devam ettirir. (3) Saati okumakta, gün-hafta-ay-yıl ilişkisinde güçlük. (4) Sağ-sol karıştırma, yön duygusu zayıflığı. (5) Bir mesafeyi (10 m mi 20 m mi) tahmin edememe. (6) Oyunlarda puan tutamama, finansal işlemleri (alışveriş sepeti) kavrayamama. (7) Matematik konularını/formülleri hatırlamada zorluk. (8) Parmakla sayma eğiliminin uzun süre devam etmesi. Bu işaretler tek başına bir tanı değildir — ama 3+ tanesi tutarlıysa Rehberlik ve Araştırma Merkezi (RAM) değerlendirmesi düşünülebilir. Kaynak: Mutlu & Çalışkan, Diskalkuli Derneği (2023).' },
+      { id:'lm-tani', emoji:'🎯', title:'Erken Tanılama ve RAM Süreci', sub:'Ne zaman uzman desteği?', dur:'10 dk', level:2, text:'Diskalkulik çocuklar ilkokuldan itibaren yaşıtlarının gerisinde kalır; zaman ilerledikçe fark artar (Mutlu & Olkun, 2019). Erken tanı bu farkın büyümesini önler. Süreç dört aşamada: (1) FARKINA VARMA — ebeveyn/öğretmen akranlara göre belirgin gerilik gözler. (2) İLK YÖNLENDİRME — sınıf öğretmeniyle konuşun, çocuğun günlük performansını kayıt altına aldırın. (3) RAM BAŞVURUSU — e-Devlet üzerinden Rehberlik ve Araştırma Merkezi\'ne randevu alın. Süreç ücretsizdir, 60 gün içinde değerlendirme tamamlanır. (4) BİREYSEL EĞİTİM PLANI — tanı sonrası okuldaki destek eğitim odası ve özel eğitim hizmetlerinden yararlanılır. Tanı koyma yararı: çocuk yaşadığını anlar, ebeveyn nedenleri öğrenir, öğretmen gereksiz müdahalelerden kaçınır, depresyon riski azalır. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi.' },
+      { id:'lm-cra', emoji:'🧱', title:'Somut → Soyut: CRA Yaklaşımı', sub:'En etkili öğretim sıralaması', dur:'12 dk', level:2, text:'Bilimsel dayanaklı en güçlü yaklaşımlardan biri: Somut → Yarı-Somut → Soyut (CRA, Bruner). Üç aşamada öğretim:\n\n1) SOMUT: Yeni bir kavramı her zaman gerçek nesnelerle başlatın — fasulye, mercimek, lego, kapak, parmak. Örnek: "5+3" için 5 fasulye + 3 fasulye birleştirip sayalım.\n\n2) YARI-SOMUT: Aynı kavram resimlerle modellenir. "5+3" için kağıda 5 daire + 3 daire çizin, birleştirip sayın. Çocuk hem nesneyi görsel olarak hatırlar hem soyuta köprü kurar.\n\n3) SOYUT: Yalnızca sembollerle çalışın: "5 + 3 = 8". Çocuk bu noktaya rahat hissetmeden geçmesin.\n\nÖnemli: Soyuta geçerken bir önceki aşamayı yanında bulundurun — fasulye ve çizimle birlikte semboller. Bu, diskalkulik çocuklarda kalıcılığı önemli ölçüde artırır. Pratik: Bu hafta yapacağınız her yeni matematik etkinliğinde önce malzeme, sonra çizim, sonra sayı sembolü sırasına uyun. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi; Bruner, 1966.' },
+      { id:'lm-bellek', emoji:'🧠', title:'Çalışma Belleği Desteği', sub:'Diskalkulinin merkezindeki zorluk', dur:'10 dk', level:2, text:'Çalışma belleği, beynin "anlık not defteri"dir — bir bilgiyi (örn. 27) zihinde tutarken aynı anda başka bir şey yapma yeteneği (üzerine 8 ekleme). Araştırmalar diskalkulik çocuklarda bu belleğin akranlarından zayıf olduğunu gösteriyor (Geary ve ark., 2012). Bu yüzden çocuk basit gibi görünen işlemleri bile yapmakta zorlanır — sayıyı hatırlayamaz, ortada unutur.\n\nNe yapabilirsiniz?\n\n• İŞLEMİ GÖRSELLEŞTİRİN: "27 + 8" için 27\'yi kağıda yazın, çocuk üzerine eklesin — bellek yükü dışarı çıkar.\n\n• PARÇALA: Tek bir uzun işlem yerine küçük parçalara bölün: "Önce 27 + 3 = 30, sonra +5 = 35".\n\n• PARMAKLA SAYMAYI DESTEKLEYİN: Diskalkulili çocuklar için parmak bir tercih değil, çalışma belleğinin yedeği. Engellemeyin.\n\n• TEKRARLAYIN: Aynı tür problemi 4-5 farklı bağlamda yapın (mutfak, market, oyun). Tekrar = pekiştirme = bellek genişletme.\n\n• ZAMAN BASKISI YAPMAYIN: Süre baskısı çalışma belleğini daha da daraltır. "Düşünmen için zamanın var" deyin.\n\nKaynak: Baddeley (2003), Geary ve ark. (2012); Diskalkuli Derneği Ebeveyn Rehberi.' },
+    ];
 
     // ── Resimli Kitap Kütüphanesi ──────────────────────────
     this._bookLibrary = [
@@ -386,46 +389,35 @@ class MatEvdeApp {
     this._starting = true;
     setTimeout(()=>{ this._starting = false; }, 500);
 
-    /* MERKEZÎ AUTH: Sadece dernek üyeleri girer.
-       Yerel oturum / signup akışı kaldırıldı — direkt remote login ekranına yönlendir.
-       Demo modu hariç (App.demo() kendi yolunda gider). */
-    const remoteSess = this._remoteAuth?.current?.();
-    if (remoteSess) {
-      // Token yerel olarak hâlâ geçerli — sunucudan da doğrula (best-effort, async)
-      this._remoteAuth.verifyStored().then(fresh => {
-        if (!fresh) {
-          this._toast('Oturumun süresi doldu, tekrar giriş yap.', 'err');
-          setTimeout(() => this.show('splash'), 800);
-        }
-      }).catch(() => { /* çevrimdışı: tolere et */ });
-      this._loginSuccessRemote(remoteSess);
+    /* ÜCRETSİZ: Üyelik / giriş şartı yok. Kayıtlı profil varsa dashboard'a,
+       yoksa splash'a (Hemen Başla) yönlendir. */
+    const saved = this._storage.get('parent');
+    if (saved?.onboardingComplete) {
+      this._parent = saved;
+      this._childId = saved.children?.[0]?.id || null;
+      this.show('dashboard');
       return;
     }
-
-    // Token yok → splash göster (kullanıcı "Üye Girişi" veya "Demo Modu" seçer)
     this.show('splash');
   }
 
-  demo(){
-    const id = 'demo';
-    const cid = 'demo-child';
-    this._parent = {
-      id, name:'Zeynep', email:'', onboardingComplete:true,
-      children:[{ id:cid, name:'Ali', ageGroup:AgeGroup.G2, completedActivities:['a01','a02','a03'], badges:[] }],
-      anxietyProfile:{ level:AnxietyLevel.MEDIUM, score:54, assessedAt:new Date() },
-      parentingStyle:ParentingStyle.AUTONOMY,
-      weeklyCheckIns:[],
-      badges:[{ id:'first', emoji:'🌱', label:'İlk Adım', earnedAt:new Date() }],
-      teacherMessages:[], weeklyPlans:[{ date:new Date() }],
-      dyscModuleDone:false,
-    };
-    this._childId = cid;
-    this._storage.set('parent', this._parent);
-    // Demo streak verisi
-    this._streakSvc._s.set('streak', { count:3, lastDate:new Date().toDateString(), longestStreak:5, todayDone:true });
-    this._notifSvc.addNotif({ emoji:'🤝', title:'Öğretmenden Not', text:'Bu hafta kesirler konusunu işliyoruz. Evde "Pizzayı Paylaş" etkinliğini deneyebilirsiniz.' });
-    this.show('dashboard');
-    this._toast('Demo modda hoşgeldin! 👋');
+  /**
+   * Splash'taki "Hemen Başla" butonu: doğrudan onboarding'e gönderir.
+   * Üyelik/giriş yok — uygulama tamamen ücretsiz.
+   */
+  beginFree(){
+    this._ob = { step:0, name:'', email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
+    this.show('onboarding');
+    this._renderOb();
+  }
+
+  /**
+   * "Aa" hızlı erişim: yazıyı büyüt/küçült (a11y-large toggle).
+   * Splash ve dashboard navbar'ından çağrılır.
+   */
+  toggleLargeText(){
+    const next = this._a11y.toggle('large');
+    this._toast(next.large ? '🔍 Büyük yazı modu açık' : '🔍 Normal yazı modu', 'ok');
   }
 
   /* ══════════════════════════════════════════════
@@ -491,7 +483,7 @@ class MatEvdeApp {
   _obStep2(el){
     el.innerHTML=`<div style="padding:1.8rem 1.5rem 2rem;max-width:100%;margin:0 auto">
       <div class="center" style="margin-bottom:1.4rem"><div style="font-size:3rem">👧🏻</div><h2 style="margin-top:.5rem">Çocuğunuzu Tanıyalım</h2></div>
-      <div class="field" style="margin-bottom:1.2rem"><label>Çocuğunuzun Adı</label><input class="input" id="ob-cname" placeholder="Örn: Ali" value="${this._esc(this._ob.childName)}"></div>
+      <div class="field" style="margin-bottom:1.2rem"><label>Çocuğunuzun Adı <span style="font-weight:400;color:var(--muted)">(isteğe bağlı)</span></label><input class="input" id="ob-cname" placeholder="Örn: Ali" value="${this._esc(this._ob.childName)}"></div>
       <div class="field"><label>Sınıf / Yaş Grubu</label>
         <div style="display:flex;flex-direction:column;gap:.55rem;margin-top:.25rem">
           ${Object.entries(this._AGLabels).map(([k,v])=>`
@@ -596,16 +588,38 @@ class MatEvdeApp {
     // R6 — 3 adımlı onboarding: 0=İsim · 1=Çocuk · 2=Stil
     const {step}=this._ob;
     if(step===0){
-      const n=document.getElementById('ob-name')?.value.trim();
-      if(!n){ this._toast('Adınızı girin','err'); return; }
+      const inp=document.getElementById('ob-name');
+      const n=inp?.value.trim();
+      if(!n){
+        this._toast('Lütfen adınızı girin','err');
+        if(inp){
+          inp.style.borderColor='var(--danger)';
+          inp.style.boxShadow='0 0 0 3px rgba(220,38,38,.12)';
+          inp.focus();
+          inp.scrollIntoView({ behavior:'smooth', block:'center' });
+        }
+        return;
+      }
       this._ob.name=n;
       this._ob.email=document.getElementById('ob-email')?.value.trim()||'';
     }
     if(step===1){
+      if(!this._ob.ageGroup){
+        this._toast('Lütfen çocuğunuzun yaş grubunu seçin','err');
+        const body=document.getElementById('ob-body');
+        body?.scrollTo({ top:body.scrollHeight, behavior:'smooth' });
+        // Yaş kartlarını kısa süre vurgula
+        const cards=document.querySelectorAll('[onclick*="_agSel"]');
+        cards.forEach(c=>{
+          const orig=c.style.borderColor;
+          c.style.borderColor='var(--danger)';
+          c.style.transition='border-color .2s';
+          setTimeout(()=>{ c.style.borderColor=orig; }, 1500);
+        });
+        return;
+      }
       const n=document.getElementById('ob-cname')?.value.trim();
-      if(!n){ this._toast('Çocuğunuzun adını girin','err'); return; }
-      if(!this._ob.ageGroup){ this._toast('Yaş grubunu seçin','err'); return; }
-      this._ob.childName=n;
+      this._ob.childName = n || 'Çocuğum';
     }
     this._ob.step++;
     this._renderOb();
@@ -830,7 +844,7 @@ class MatEvdeApp {
         <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:42px;height:42px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
         <div style="flex:1;min-width:0">
           <div style="font-size:var(--t-sm);font-weight:800;color:var(--teal-d)">Diskalkuli Derneği iş birliğiyle 💚</div>
-          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">"Herkes Matematik Öğrenebilir" · Hakkında, üyelik & destek →</p>
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">"Herkes Matematik Öğrenebilir" · Hakkında & iletişim →</p>
         </div>
         <span style="color:var(--muted);flex-shrink:0;font-size:1.2rem">›</span>
       </div>
@@ -4039,7 +4053,7 @@ class MatEvdeApp {
             <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:46px;height:46px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
             <div style="flex:1;min-width:0">
               <strong style="font-size:var(--t-md);color:var(--teal-d);display:block">Diskalkuli Derneği</strong>
-              <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.45">Hakkında, üyelik, bağış ve iletişim</p>
+              <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.45">Hakkında & iletişim</p>
             </div>
             <button class="btn btn-soft btn-sm" onclick="App.show('about')" style="flex-shrink:0">→</button>
           </div>
@@ -4240,10 +4254,10 @@ class MatEvdeApp {
         <div class="modal" role="dialog" aria-modal="true" aria-label="Bilgi penceresi" tabindex="-1">
           <div class="modal-handle" aria-hidden="true"></div>
           <button type="button" aria-label="Kapat" onclick="App._closeModal()"
-            style="position:absolute;top:.55rem;right:.65rem;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.06);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--text);z-index:5;transition:background .15s"
+            style="position:absolute;top:.4rem;right:.5rem;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.06);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--text);z-index:5;transition:background .15s"
             onmouseover="this.style.background='rgba(0,0,0,.12)'"
             onmouseout="this.style.background='rgba(0,0,0,.06)'">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
           </button>
           <div class="modal-body">${html}</div>
           ${footer?`<div class="modal-footer">${footer}</div>`:''}
@@ -4315,7 +4329,12 @@ class MatEvdeApp {
     t.setAttribute('role', type === 'err' ? 'alert' : 'status');
     t.setAttribute('aria-live', type === 'err' ? 'assertive' : 'polite');
     document.getElementById('toasts').appendChild(t);
-    t.addEventListener('animationend',()=>t.remove());
+    // Hata 3.5s, bilgi 2.4s görünür kalır; sonra .hide → fade out
+    const dur = type === 'err' ? 3500 : 2400;
+    setTimeout(() => {
+      t.classList.add('hide');
+      setTimeout(() => t.remove(), 260);
+    }, dur);
   }
 
   /* ══════════════════════════════════════════════
@@ -4482,179 +4501,23 @@ class MatEvdeApp {
   ══════════════════════════════════════════════════════════ */
 
   /* ══════════════════════════════════════════════════════════
-     GİRİŞ SİSTEMİ
+     OTURUM SONLANDIRMA
+     (Üyelik / giriş şartı yok — uygulama tamamen ücretsiz.)
   ══════════════════════════════════════════════════════════ */
 
-  _showLogin(){
-    this.show('login');
-    this._renderLoginUsers();
-  }
-
-  _renderLoginUsers(){
-    const el = document.getElementById('login-user-list');
-    if(!el) return;
-    // MERKEZÎ AUTH: yerel kullanıcı listesi yok — bu bölümü gizle
-    el.innerHTML = '';
-    const divider = document.getElementById('login-divider');
-    if(divider) divider.style.display = 'none';
-    return;
-    // ↓↓↓ Aşağısı eski yerel kullanıcı listesi — kullanılmıyor (dead code) ↓↓↓
-    // eslint-disable-next-line no-unreachable
-    const users = this._auth.getUsers().filter(u =>
-      u.active && u.username !== 'yonetici'
-    );
-    if(users.length === 0){
-      el.innerHTML = '<div style="background:var(--raised);border-radius:var(--r-md);padding:.75rem;margin-bottom:.75rem;text-align:center">'
-        + '<p style="font-size:var(--t-sm);color:var(--muted)">Kayıtlı hesap bulunamadı.</p>'
-        + '<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.2rem">E-posta ile giriş yapın veya yeni hesap oluşturun.</p>'
-        + '</div>';
-      if(divider) divider.style.display = 'none';
-      return;
-    }
-    if(divider) divider.style.display = 'flex';
-    el.innerHTML = '<p style="font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 .6rem;letter-spacing:.05em;text-transform:uppercase">Hesaplar</p>'
-      + users.map(u => {
-        const lockSec = u.lockedUntil && Date.now() < new Date(u.lockedUntil).getTime()
-          ? Math.ceil((new Date(u.lockedUntil).getTime() - Date.now()) / 1000) : 0;
-        const lastLogin = u.lastLoginAt ? this._relTime(u.lastLoginAt) : 'henüz giriş yok';
-        return `<button onclick="App._loginAsUser('${u.username}')"
-          style="width:100%;display:flex;align-items:center;gap:.8rem;padding:.7rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:var(--ff-body);margin-bottom:.4rem;-webkit-tap-highlight-color:transparent;text-align:left;box-shadow:0 1px 3px rgba(0,0,0,.05);box-sizing:border-box;${lockSec?'opacity:.6':''}"
-          ontouchstart="this.style.background='var(--raised)'" ontouchend="this.style.background='var(--surface)'">
-          <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-d));display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;flex-shrink:0">
-            ${this._admEsc(u.name.charAt(0).toUpperCase())}
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:.9375rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.35rem">
-              ${this._admEsc(u.name)}
-              ${u.role==='admin'?'<span style="font-size:.7rem">👑</span>':''}
-              ${lockSec?`<span style="font-size:.65rem;color:var(--danger)">🔒 ${lockSec}s</span>`:''}
-            </div>
-            <div style="font-size:.72rem;color:var(--muted);margin-top:.05rem">@${u.username} · ${lastLogin}</div>
-          </div>
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>`;
-      }).join('');
-  }
-
-  _loginAsUser(username){
-    const u = this._auth.findByUsername(username);
-    if(!u || !u.active) return;
-    /* Şifre alanına ad doldur ve odaklan */
-    const emailInput = document.getElementById('login-email');
-    const pwdInput   = document.getElementById('login-pwd');
-    if(emailInput) emailInput.value = username;
-    if(pwdInput){ pwdInput.value = ''; pwdInput.focus(); }
-  }
-
-  async _loginSubmit(){
-    const emailInput = document.getElementById('login-email');
-    const pwdInput   = document.getElementById('login-pwd');
-    const submitBtn  = document.getElementById('login-submit-btn');
-    if(!emailInput || !pwdInput) return;
-    const identifier = emailInput.value.trim();
-    const pwd        = pwdInput.value;
-    if(!identifier || !pwd){
-      this._toast('Kullanıcı adı ve şifre gerekli','err');
-      return;
-    }
-    if(submitBtn){ submitBtn.disabled = true; submitBtn.style.opacity = '.6'; submitBtn.textContent = 'Doğrulanıyor…'; }
-    const errEmail = document.getElementById('login-email-err');
-    const errPwd   = document.getElementById('login-pwd-err');
-    if(errEmail) errEmail.style.display = 'none';
-    if(errPwd){ errPwd.style.display = 'none'; errPwd.textContent = 'Şifre hatalı.'; }
-    try {
-      // MERKEZÎ AUTH: dernek sunucusuna sor
-      const r = await this._remoteAuth.login(identifier, pwd);
-      if (r.ok) {
-        this._loginSuccessRemote({
-          username: r.username,
-          name: r.name,
-          expiresAt: r.expiresAt,
-        });
-      } else {
-        if (r.reason === 'invalid_credentials') {
-          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = 'Kullanıcı adı veya şifre hatalı.'; }
-          pwdInput.style.borderColor = 'var(--danger)';
-          pwdInput.value = ''; pwdInput.focus();
-        } else if (r.reason === 'locked') {
-          if(errPwd){ errPwd.style.display = 'block'; errPwd.textContent = '🔒 Çok fazla başarısız deneme. 15 dakika sonra tekrar deneyin.'; }
-        } else if (r.reason === 'network_error') {
-          this._toast(r.message || 'Sunucuya ulaşılamıyor', 'err');
-        } else {
-          this._toast(r.message || 'Giriş başarısız', 'err');
-        }
-      }
-    } catch(e) {
-      this._toast(e.message || 'Giriş hatası', 'err');
-    } finally {
-      if(submitBtn){ submitBtn.disabled = false; submitBtn.style.opacity = ''; submitBtn.textContent = 'Giriş Yap'; }
-    }
-  }
-
-  /**
-   * Remote auth başarılı olunca: parent profil var mı bak; yoksa minimal profil
-   * oluştur ve onboarding'i atlayıp dashboard'a git.
-   */
-  _loginSuccessRemote(sess) {
-    const id = 'm_' + (sess.username || 'uye');
-    const saved = this._storage.get('parent_' + id) || this._storage.get('parent');
-    if (saved?.onboardingComplete) {
-      this._parent = {
-        ...saved,
-        id,
-        name: sess.name || saved.name,
-        email: saved.email || '',
-        username: sess.username,
-        role: 'üye',
-      };
-    } else {
-      // İlk giriş — minimal profil oluştur, onboarding'e gönder ki çocuk bilgileri girilsin
-      this._parent = {
-        id,
-        name: sess.name || sess.username,
-        email: '',
-        username: sess.username,
-        role: 'üye',
-        onboardingComplete: false,
-        children: [],
-        anxietyProfile: null,
-        parentingStyle: 'autonomy',
-        weeklyCheckIns: [],
-        badges: [],
-        teacherMessages: [],
-        weeklyPlans: [],
-      };
-    }
-    this._storage.set('parent_' + id, this._parent);
-    this._storage.set('parent', this._parent);
-    this._childId = this._parent.children?.[0]?.id || null;
-
-    if (this._parent.onboardingComplete) {
-      this.show('dashboard');
-      setTimeout(() => this._toast('Hoş geldiniz, ' + this._parent.name + '! 👋', 'ok'), 400);
-    } else {
-      this._ob = { step:0, name:this._parent.name, email:'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
-      this.show('onboarding');
-      this._renderOb();
-    }
-  }
-
   _logout(){
-    // Hem yerel hem merkezî auth oturumunu kapat
+    // Sadece yerel kullanıcı oturumunu (cihaz üzerindeki admin/editor login'i) kapat
     try { this._auth?.logout(); } catch {}
-    if (this._remoteAuth) {
-      this._remoteAuth.logout().catch(() => {});
-    }
     this._parent = null; this._childId = null;
     this._toast('Çıkış yapıldı');
     setTimeout(() => this.show('splash'), 300);
   }
 
   _loginSuccess(u){
-    /* Kullanıcıyı _parent'a bağla — localStorage'dan veriyi yükle */
+    /* Cihaz üzerinde admin/editor olarak yerel giriş yapıldığında çağrılır.
+       Üyelik akışı değildir — yalnızca içerik düzenleme yetkisi içindir. */
     const saved = this._storage.get('parent_' + u.id) || this._storage.get('parent');
     if(saved?.onboardingComplete){
-      // Profil verisindeki rol/ad/email vb. bilgileri auth user'dan güncelle (tek kaynak)
       this._parent = { ...saved, id: u.id, name: u.name, email: u.email || saved.email, role: u.role, username: u.username };
       this._storage.set('parent', this._parent);
       this._storage.set('parent_' + u.id, this._parent);
@@ -4662,7 +4525,6 @@ class MatEvdeApp {
       this.show('dashboard');
       setTimeout(() => this._toast('Hoş geldiniz, ' + this._parent.name + '! 👋', 'ok'), 400);
     } else {
-      /* Bu kullanıcı için onboarding */
       this._ob = { step:0, name:u.name, email:u.email||'', childName:'', ageGroup:'', style:'autonomy', anxiety:{}, resources:[] };
       this.show('onboarding');
       this._renderOb();

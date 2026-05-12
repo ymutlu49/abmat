@@ -5,6 +5,11 @@ const AgeGroup = Object.freeze({
 });
 const AnxietyLevel = Object.freeze({ LOW:'low', MEDIUM:'medium', HIGH:'high' });
 const ParentingStyle = Object.freeze({ AUTONOMY:'autonomy', CONTROLLING:'controlling', MIXED:'mixed', UNKNOWN:'unknown' });
-const Category = Object.freeze({ NUMBER:'number_sense', GEOMETRY:'geometry', MEASUREMENT:'measurement', PATTERNS:'patterns', PROBLEM:'problem_solving', DAILY:'daily_life', SPATIAL:'spatial_reasoning' });
+const Category = Object.freeze({
+  NUMBER:'number_sense', GEOMETRY:'geometry', MEASUREMENT:'measurement',
+  PATTERNS:'patterns', PROBLEM:'problem_solving', DAILY:'daily_life',
+  SPATIAL:'spatial_reasoning', KITCHEN:'kitchen', MARKET:'market',
+  TIME:'time', GAME:'game', NATURE:'nature'
+});
 
 export { AgeGroup, AnxietyLevel, ParentingStyle, Category };

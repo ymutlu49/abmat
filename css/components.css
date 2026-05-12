@@ -17,14 +17,14 @@
 }
 .navbar-title{font-size:1.0625rem;font-weight:700;color:var(--text);letter-spacing:-.01em}
 .nav-action-btn{
-  width:34px;height:34px;border-radius:9px;
+  width:44px;height:44px;border-radius:11px;
   background:var(--raised);border:0.5px solid var(--border);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;color:var(--muted);flex-shrink:0;
   -webkit-tap-highlight-color:transparent;
   position:relative;transition:opacity var(--dur-fast);
 }
-.nav-action-btn svg{width:16px;height:16px;stroke-width:2;flex-shrink:0}
+.nav-action-btn svg{width:18px;height:18px;stroke-width:2;flex-shrink:0}
 .nav-action-btn:active{opacity:.6}
 
 /* ── Tab bar (Bottom Nav) ────────────────────────────────── */
@@ -171,6 +171,7 @@
   z-index:300;
   display:flex;align-items:flex-end;justify-content:center;
   animation:fadeIn .15s;
+  pointer-events:auto;          /* #modals container pointer-events:none — burada geri açıyoruz */
 }
 .modal{
   background:var(--surface);
@@ -248,18 +249,19 @@
 /* ── Toast ───────────────────────────────────────────────── */
 .toast{
   position:absolute;bottom:calc(5.5rem + env(safe-area-inset-bottom));left:50%;
-  transform:translateX(-50%) translateY(10px);
-  background:rgba(17,31,30,.9);color:#fff;
-  padding:.6rem 1.1rem;border-radius:var(--r-full);
-  font-size:.875rem;font-weight:700;z-index:400;
-  white-space:nowrap;opacity:0;
-  transition:all var(--dur-med) var(--spring);
+  transform:translateX(-50%);
+  background:rgba(17,31,30,.92);color:#fff;
+  padding:.7rem 1.2rem;border-radius:var(--r-full);
+  font-size:.9rem;font-weight:700;z-index:400;
+  white-space:nowrap;opacity:1;
   pointer-events:none;max-width:85%;text-align:center;
   backdrop-filter:blur(8px);
+  box-shadow:0 6px 20px rgba(0,0,0,.18);
+  transition:opacity .22s ease, transform .22s ease;
 }
-.toast.ok{background:rgba(13,148,136,.92)}
-.toast.err{background:rgba(220,38,38,.92)}
-.toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:rgba(46,125,50,.94)}
+.toast.err{background:rgba(220,38,38,.94)}
+.toast.hide{opacity:0;transform:translateX(-50%) translateY(14px)}
 
 /* ── Scroll top ──────────────────────────────────────────── */
 .scroll-top-btn{position:absolute;bottom:calc(5.5rem + env(safe-area-inset-bottom));right:.875rem;width:38px;height:38px;background:var(--surface);border:0.5px solid var(--border2);border-radius:50%;box-shadow:var(--sh-sm);font-size:.9rem;color:var(--muted);cursor:pointer;opacity:0;transition:opacity var(--dur-med);display:flex;align-items:center;justify-content:center}

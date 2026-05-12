@@ -18,8 +18,6 @@ const PILLARS = [
 
 const SOSYAL = [
   { ad: 'Web Sitesi',  url: DERNEK_URL,                          icon: '🌐', label: 'diskalkulidernegi.org' },
-  { ad: 'Üye Ol',      url: DERNEK_URL + '/uye-ol',              icon: '✍️', label: 'Üyelik Başvurusu' },
-  { ad: 'Bağış Yap',   url: DERNEK_URL + '/bagis',               icon: '💚', label: 'Çalışmalarımıza destek' },
   { ad: 'İletişim',    url: 'mailto:info@diskalkulidernegi.org', icon: '✉️', label: 'info@diskalkulidernegi.org' },
 ];
 
@@ -69,24 +67,14 @@ export class AboutView extends BaseView {
         </div>
       </div>
 
-      <!-- Üyelik / Destek CTA -->
+      <!-- Ücretsiz uygulama bilgisi -->
       <div style="background:linear-gradient(135deg,rgba(46,125,50,.1),rgba(46,125,50,.04));border-radius:var(--r-lg);padding:1.1rem 1.2rem;margin-bottom:1.2rem;border:1.5px solid rgba(46,125,50,.25)">
-        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem">
+        <div style="display:flex;align-items:center;gap:.8rem">
           <span style="font-size:2rem">💚</span>
           <div>
-            <strong style="font-size:var(--t-lg);color:var(--teal-d);display:block">Bize Katılın</strong>
-            <p style="font-size:var(--t-sm);color:var(--text2);margin-top:.15rem">Diskalkuli Derneği üyeliği veya bağış ile çalışmalarımıza destek olabilirsiniz.</p>
+            <strong style="font-size:var(--t-lg);color:var(--teal-d);display:block">Tamamen Ücretsiz</strong>
+            <p style="font-size:var(--t-sm);color:var(--text2);margin-top:.15rem;line-height:1.55">ABMATO; üyelik, kayıt veya ödeme şartı olmaksızın herkesin kullanımına açıktır. Amacımız diskalkuli farkındalığını ve ev tabanlı matematik desteğini yaygınlaştırmaktır.</p>
           </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.6rem">
-          <a href="${DERNEK_URL}/uye-ol" target="_blank" rel="noopener" class="btn btn-primary"
-             style="text-decoration:none;text-align:center;padding:.7rem;font-size:var(--t-sm);font-weight:800">
-            ✍️ Üye Ol
-          </a>
-          <a href="${DERNEK_URL}/bagis" target="_blank" rel="noopener" class="btn"
-             style="background:rgba(46,125,50,.08);color:var(--teal-d);border:1.5px solid rgba(46,125,50,.3);text-decoration:none;text-align:center;padding:.7rem;font-size:var(--t-sm);font-weight:800;border-radius:var(--r-md)">
-            💚 Bağış
-          </a>
         </div>
       </div>
 

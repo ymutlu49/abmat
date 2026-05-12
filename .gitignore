@@ -22,3 +22,9 @@ npm-debug.log*
 # Build artifacts
 deploy.zip
 *.zip
+
+# Yerel yedek snapshot (cPanel deploy ABMAT/ kökünden yapılır)
+deploy/
+
+# Kaynak PDF'ler (yerel; 68 MB — repo'da tutulmaz)
+kaynaklar/
