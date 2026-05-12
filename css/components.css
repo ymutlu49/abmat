@@ -213,9 +213,12 @@
 .modal-footer-row > .btn-orange{flex:2}
 .modal-done-pill{
   flex:2;display:flex;align-items:center;justify-content:center;gap:.4rem;
-  padding:.85rem;background:var(--teal-a);
-  border-radius:14px;border:1px solid rgba(13,148,136,.2);
-  color:var(--teal-d);font-weight:800;font-size:.9375rem;
+  padding:.85rem;background:var(--teal-d);
+  border-radius:14px;border:1px solid var(--teal-d);
+  color:#fff;font-weight:900;font-size:.95rem;
+  letter-spacing:.02em;
+  text-shadow:0 1px 2px rgba(0,0,0,.25);
+  box-shadow:0 3px 10px rgba(27,94,32,.3);
 }
 .backdrop{position:absolute;inset:0;z-index:280;background:rgba(0,0,0,.5);animation:fadeIn .15s}
 
@@ -250,17 +253,20 @@
 .toast{
   position:absolute;bottom:calc(5.5rem + env(safe-area-inset-bottom));left:50%;
   transform:translateX(-50%);
-  background:rgba(17,31,30,.92);color:#fff;
-  padding:.7rem 1.2rem;border-radius:var(--r-full);
-  font-size:.9rem;font-weight:700;z-index:400;
+  background:rgba(17,31,30,.96);
+  color:#ffffff !important;
+  padding:.75rem 1.25rem;border-radius:var(--r-full);
+  font-size:.95rem;font-weight:900;z-index:400;
+  letter-spacing:.01em;
+  text-shadow:0 1px 2px rgba(0,0,0,.45);
   white-space:nowrap;opacity:1;
   pointer-events:none;max-width:85%;text-align:center;
   backdrop-filter:blur(8px);
-  box-shadow:0 6px 20px rgba(0,0,0,.18);
+  box-shadow:0 6px 20px rgba(0,0,0,.22);
   transition:opacity .22s ease, transform .22s ease;
 }
-.toast.ok{background:rgba(46,125,50,.94)}
-.toast.err{background:rgba(220,38,38,.94)}
+.toast.ok{background:rgba(27,94,32,.96);color:#ffffff !important}
+.toast.err{background:rgba(176,28,28,.96);color:#ffffff !important}
 .toast.hide{opacity:0;transform:translateX(-50%) translateY(14px)}
 
 /* ── PWA Install Banner ──────────────────────────────────── */

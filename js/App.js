@@ -258,7 +258,8 @@ class MatEvdeApp {
       // ═══ EBEVEYN & EĞİTİMCİ KAYNAKLARI ═══
       { id:'b08', emoji:'💚', title:'Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı', author:'Doç. Dr. Yılmaz Mutlu & Dr. Emir Feridun Çalışkan',
         publisher:'Diskalkuli Derneği (AB destekli — Sivil Düşün Programı)',
-        link:'https://diskalkulidernegi.org/',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Ebeveyn-Rehber-Kitabi-.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
         mathConcepts:['Diskalkuli farkındalığı','Tanılama','RAM süreci','Evde matematik'],
         mathQuestions:['Diskalkuli ne demek?','Ne tür belirtiler vardır?','Ben evde nasıl destek olabilirim?'],
@@ -266,9 +267,10 @@ class MatEvdeApp {
         forParents:true },
 
       { id:'b09', emoji:'🎲', title:'Oyunlarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Öğr. Gör. İhsan Söylemez',
-        publisher:'Vizetek / Diskalkuli Derneği (AB destekli)', isbn:'9786057523792',
+        publisher:'Diskalkuli Derneği / Vizetek (AB destekli)', isbn:'9786057523792',
         cover:'./icons/books/b-oyunlarla-mat.jpg',
-        link:'https://vizetek.com.tr/urun/Matematik-Ogrenme-Guclugu-Yasayan-Cocuklar-Icin-Oyunlarla-Matematik-107',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Oyunlarla-Matematik.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
         mathConcepts:['Oyun temelli öğrenme','Sayı hissi','Toplama-çıkarma','Çarpma'],
         mathQuestions:['Hangi oyun çocuğumun düzeyine uygun?','Materyali nasıl uyarlayabilirim?','Kaygıyı azaltan oyun stratejisi nedir?'],
@@ -277,7 +279,8 @@ class MatEvdeApp {
 
       { id:'b10', emoji:'✋', title:'Parmaklarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Dr. Ali Fuad Yasul',
         publisher:'Diskalkuli Derneği (AB destekli)',
-        link:'https://diskalkulidernegi.org/',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Parmaklarla-Matematik-Kitabi.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
         mathConcepts:['Parmakla sayma','Sayı hissi','PabSay yöntemi','İşlem stratejileri'],
         mathQuestions:['Parmakla sayma engellenmeli mi?','Pabsay nedir, nasıl kullanılır?','24\'e kadar parmakla nasıl sayılır?'],
@@ -302,6 +305,47 @@ class MatEvdeApp {
         mathConcepts:['Matematik öğretim yaklaşımları','Sınıf içi etkinlik','Görselleştirme','Açık uçlu problemler'],
         mathQuestions:['Çocuğa "doğru cevap" değil "süreç" nasıl sorulur?','Görsel matematik neden önemli?','Sayı doğrusunda görselleştirme nasıl çalışır?'],
         tip:'Jo Boaler\'ın matematik eğitimi devrimini özetleyen kapsamlı eseri. Sınıfta ve evde uygulanabilir somut yaklaşımlarla "matematiği bir kapı, kale duvarı değil" yapma rehberi.',
+        forParents:true },
+
+      // ═══ DİSKALKULİ DERNEĞİ EK ARAŞTIRMA RAPORLARI ═══
+      { id:'b13', emoji:'📖', title:'Rakamların Ötesindeki Hikayeler: Diskalkuli ile Yaşayanlar', author:'Diskalkuli Derneği',
+        publisher:'Diskalkuli Derneği (AB destekli)',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Diskalkuli-ile-yasayanlar.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Yaşanmış deneyimler','Diskalkuli farkındalığı','Aile hikayeleri'],
+        mathQuestions:['Diskalkulili bireyler nasıl bir hayat sürüyor?','Hangi stratejiler işe yaradı?','Ben nasıl destek olabilirim?'],
+        tip:'Diskalkuli ile yaşayanların kendi seslerinden hikayeler. Tanı koymanın ötesinde, gerçek hayatın deneyimleri. Aileler ve eğitimciler için güçlü bir farkındalık kaynağı.',
+        forParents:true },
+
+      { id:'b14', emoji:'⚖️', title:'Sosyal Adalet Bağlamında Matematik Öğrenme Güçlüğü', author:'Diskalkuli Derneği', year:2024,
+        publisher:'Diskalkuli Derneği',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2024/01/Sosyal-Adalet-Baglaminda-MOG.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Eğitimde eşitlik','Erişilebilirlik','Hak temelli yaklaşım'],
+        mathQuestions:['Diskalkuli bir hak meselesi midir?','Eğitim politikası nasıl olmalı?','Düşük gelirli ailelerin durumu?'],
+        tip:'Matematik öğrenme güçlüğüne sosyal adalet perspektifinden bakan kapsamlı rapor. Tanılama ve destek hizmetlerine erişimde fırsat eşitsizliklerini ele alır.',
+        forParents:true },
+
+      { id:'b15', emoji:'🧩', title:'Diskalkulik Çocukların Yaşadıkları Sorunlar ve Çözüm Önerileri', author:'Diskalkuli Derneği',
+        publisher:'Diskalkuli Derneği',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/DISKALKULIK-COCUKLARIN-YASADIKLARI-SORUNLAR-VE-COZUM-ONERILERI.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Sorun tespit','Pratik çözümler','Aile-okul iş birliği'],
+        mathQuestions:['Çocuğum sınıfta hangi zorlukları yaşıyor?','Öğretmenle nasıl iş birliği kurulur?','Evde günlük rutin nasıl olmalı?'],
+        tip:'Diskalkulik çocukların okul, ev ve sosyal yaşamda karşılaştıkları somut güçlükler ve uygulanabilir çözüm önerileri. Hızlı başvuru kaynağı.',
+        forParents:true },
+
+      { id:'b16', emoji:'🔬', title:'Diskalkuli Çalışmaları - I', author:'Diskalkuli Derneği',
+        publisher:'Diskalkuli Derneği',
+        link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/diskalkuli-calismalari-1.pdf',
+        linkLabel:'📕 Ücretsiz PDF',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Akademik araştırmalar','Saha bulguları','Müdahale yöntemleri'],
+        mathQuestions:['En son araştırma bulguları neler?','Hangi yöntemler kanıt-temelli?','Türkiye\'deki durum ne?'],
+        tip:'Diskalkuli alanında Türkiye\'de yürütülen araştırmaların ilk derleme cildi. Eğitimciler ve akademisyenler için temel kaynak.',
         forParents:true },
     ];
 
@@ -2147,7 +2191,7 @@ class MatEvdeApp {
                       </div>`).join('')}
                   </div>
                 </div>` : ''}
-              ${b.link ? `<a href="${b.link}" target="_blank" rel="noopener" class="btn btn-soft btn-block" style="margin-top:.8rem;text-decoration:none;font-size:var(--t-sm)">📖 Yayınevi Sayfası →</a>` : ''}
+              ${b.link ? `<a href="${b.link}" target="_blank" rel="noopener" class="btn btn-soft btn-block" style="margin-top:.8rem;text-decoration:none;font-size:var(--t-sm)">${b.linkLabel || '📖 Yayınevi Sayfası →'}</a>` : ''}
               ${this._editBar(b.id,'book')}
             </div>
           </div>`).join('')}
@@ -4483,6 +4527,10 @@ class MatEvdeApp {
   _toast(msg, type=''){
     const t=document.createElement('div');
     t.className=`toast ${type}`;
+    // Inline style — CSS cache veya specificity sorunlarına karşı garanti beyaz
+    t.style.color = '#ffffff';
+    t.style.fontWeight = '900';
+    t.style.textShadow = '0 1px 2px rgba(0,0,0,.45)';
     t.textContent=msg;
     // A11y: screen reader announcement
     t.setAttribute('role', type === 'err' ? 'alert' : 'status');
