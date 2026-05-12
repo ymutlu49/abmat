@@ -180,7 +180,7 @@ class MatEvdeApp {
       { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },
 
       // ── Diskalkuli Derneği "Ebeveyn Rehber Kitabı" temelli modüller ──
-      { id:'lm-belirti', emoji:'🔍', title:'Diskalkuli Belirtileri', sub:'Çocuğumda nelere dikkat etmeliyim?', dur:'8 dk', level:2, text:'Diskalkulik çocuklarda sık görülen somut işaretler: (1) Sayıları sezgisel kavrayamama, sayı doğrusunda yer bulmada zorluk. (2) Basit aritmetik işlemleri akılda tutamama — toplama-çıkarmayı bile parmakla devam ettirir. (3) Saati okumakta, gün-hafta-ay-yıl ilişkisinde güçlük. (4) Sağ-sol karıştırma, yön duygusu zayıflığı. (5) Bir mesafeyi (10 m mi 20 m mi) tahmin edememe. (6) Oyunlarda puan tutamama, finansal işlemleri (alışveriş sepeti) kavrayamama. (7) Matematik konularını/formülleri hatırlamada zorluk. (8) Parmakla sayma eğiliminin uzun süre devam etmesi. Bu işaretler tek başına bir tanı değildir — ama 3+ tanesi tutarlıysa Rehberlik ve Araştırma Merkezi (RAM) değerlendirmesi düşünülebilir. Kaynak: Mutlu & Çalışkan, Diskalkuli Derneği (2023).' },
+      { id:'lm-belirti', emoji:'🔍', title:'Diskalkuli Belirti Kontrol Listesi', sub:'Tıklamalı tarama — 1 dakikada', dur:'2 dk', level:2, isSpecial:'screener', text:'8 maddelik tıklamalı kontrol listesi. Son 3-6 ayda çocuğunuzda gözlemlediklerinizi işaretleyin, anında değerlendirme + RAM süreç rehberi alın. Bu bir tanı değildir — uzman değerlendirmesi için yönlendiricidir.' },
       { id:'lm-tani', emoji:'🎯', title:'Erken Tanılama ve RAM Süreci', sub:'Ne zaman uzman desteği?', dur:'10 dk', level:2, text:'Diskalkulik çocuklar ilkokuldan itibaren yaşıtlarının gerisinde kalır; zaman ilerledikçe fark artar (Mutlu & Olkun, 2019). Erken tanı bu farkın büyümesini önler. Süreç dört aşamada: (1) FARKINA VARMA — ebeveyn/öğretmen akranlara göre belirgin gerilik gözler. (2) İLK YÖNLENDİRME — sınıf öğretmeniyle konuşun, çocuğun günlük performansını kayıt altına aldırın. (3) RAM BAŞVURUSU — e-Devlet üzerinden Rehberlik ve Araştırma Merkezi\'ne randevu alın. Süreç ücretsizdir, 60 gün içinde değerlendirme tamamlanır. (4) BİREYSEL EĞİTİM PLANI — tanı sonrası okuldaki destek eğitim odası ve özel eğitim hizmetlerinden yararlanılır. Tanı koyma yararı: çocuk yaşadığını anlar, ebeveyn nedenleri öğrenir, öğretmen gereksiz müdahalelerden kaçınır, depresyon riski azalır. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi.' },
       { id:'lm-cra', emoji:'🧱', title:'Somut → Soyut: CRA Yaklaşımı', sub:'En etkili öğretim sıralaması', dur:'12 dk', level:2, text:'Bilimsel dayanaklı en güçlü yaklaşımlardan biri: Somut → Yarı-Somut → Soyut (CRA, Bruner). Üç aşamada öğretim:\n\n1) SOMUT: Yeni bir kavramı her zaman gerçek nesnelerle başlatın — fasulye, mercimek, lego, kapak, parmak. Örnek: "5+3" için 5 fasulye + 3 fasulye birleştirip sayalım.\n\n2) YARI-SOMUT: Aynı kavram resimlerle modellenir. "5+3" için kağıda 5 daire + 3 daire çizin, birleştirip sayın. Çocuk hem nesneyi görsel olarak hatırlar hem soyuta köprü kurar.\n\n3) SOYUT: Yalnızca sembollerle çalışın: "5 + 3 = 8". Çocuk bu noktaya rahat hissetmeden geçmesin.\n\nÖnemli: Soyuta geçerken bir önceki aşamayı yanında bulundurun — fasulye ve çizimle birlikte semboller. Bu, diskalkulik çocuklarda kalıcılığı önemli ölçüde artırır. Pratik: Bu hafta yapacağınız her yeni matematik etkinliğinde önce malzeme, sonra çizim, sonra sayı sembolü sırasına uyun. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi; Bruner, 1966.' },
       { id:'lm-bellek', emoji:'🧠', title:'Çalışma Belleği Desteği', sub:'Diskalkulinin merkezindeki zorluk', dur:'10 dk', level:2, text:'Çalışma belleği, beynin "anlık not defteri"dir — bir bilgiyi (örn. 27) zihinde tutarken aynı anda başka bir şey yapma yeteneği (üzerine 8 ekleme). Araştırmalar diskalkulik çocuklarda bu belleğin akranlarından zayıf olduğunu gösteriyor (Geary ve ark., 2012). Bu yüzden çocuk basit gibi görünen işlemleri bile yapmakta zorlanır — sayıyı hatırlayamaz, ortada unutur.\n\nNe yapabilirsiniz?\n\n• İŞLEMİ GÖRSELLEŞTİRİN: "27 + 8" için 27\'yi kağıda yazın, çocuk üzerine eklesin — bellek yükü dışarı çıkar.\n\n• PARÇALA: Tek bir uzun işlem yerine küçük parçalara bölün: "Önce 27 + 3 = 30, sonra +5 = 35".\n\n• PARMAKLA SAYMAYI DESTEKLEYİN: Diskalkulili çocuklar için parmak bir tercih değil, çalışma belleğinin yedeği. Engellemeyin.\n\n• TEKRARLAYIN: Aynı tür problemi 4-5 farklı bağlamda yapın (mutfak, market, oyun). Tekrar = pekiştirme = bellek genişletme.\n\n• ZAMAN BASKISI YAPMAYIN: Süre baskısı çalışma belleğini daha da daraltır. "Düşünmen için zamanın var" deyin.\n\nKaynak: Baddeley (2003), Geary ve ark. (2012); Diskalkuli Derneği Ebeveyn Rehberi.' },
@@ -420,6 +420,55 @@ class MatEvdeApp {
   toggleLargeText(){
     const next = this._a11y.toggle('large');
     this._toast(next.large ? '🔍 Büyük yazı modu açık' : '🔍 Normal yazı modu', 'ok');
+  }
+
+  /* ── Service Worker güncelleme uyarısı ───────────────────
+     main.js, yeni SW indirildiğinde bu metodu çağırır.
+     Alt-banner ile "Yeni sürüm hazır — Yenile" gösteriyoruz.
+   ─────────────────────────────────────────────────────── */
+  _showUpdateReady(worker){
+    if(this._updateBannerShown) return;
+    this._updateBannerShown = true;
+    this._pendingSwWorker = worker || null;
+    const root = document.getElementById('app-root');
+    if(!root) return;
+    const el = document.createElement('div');
+    el.id = 'sw-update-banner';
+    el.className = 'sw-update-banner';
+    el.setAttribute('role', 'alert');
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML = `
+      <span class="sw-update-icon" aria-hidden="true">🔄</span>
+      <div class="sw-update-text">
+        <strong>Yeni sürüm hazır</strong>
+        <span>Etkinlikler ve düzeltmeler güncellendi</span>
+      </div>
+      <button type="button" class="sw-update-dismiss" onclick="App._dismissUpdate()">Sonra</button>
+      <button type="button" class="sw-update-go" onclick="App._applyUpdate()">Yenile</button>
+    `;
+    root.appendChild(el);
+    // CSS transition tetikle
+    void el.offsetHeight;
+    el.classList.add('visible');
+  }
+  _dismissUpdate(){
+    const el = document.getElementById('sw-update-banner');
+    if(el){ el.classList.remove('visible'); setTimeout(() => el.remove(), 280); }
+  }
+  /**
+   * Bekleyen SW'a skipWaiting mesajı gönder — controllerchange'de
+   * main.js sayfayı otomatik yeniler.
+   */
+  _applyUpdate(){
+    const w = this._pendingSwWorker;
+    try {
+      if(w?.postMessage) w.postMessage({ type: 'skipWaiting' });
+      // Fallback: registration üzerinden
+      navigator.serviceWorker?.getRegistration?.().then(reg => {
+        reg?.waiting?.postMessage?.({ type: 'skipWaiting' });
+      });
+    } catch(e) { console.warn('[ABMATO] update apply failed:', e); }
+    this._toast('🔄 Yenileniyor...', 'ok');
   }
 
   /* ══════════════════════════════════════════════
@@ -757,7 +806,13 @@ class MatEvdeApp {
         <div>
           <p style="font-size:var(--t-xs);font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">${greet}</p>
           <h2 style="font-size:1.4375rem;font-weight:900;color:var(--text);margin:.15rem 0 0;line-height:1.15;letter-spacing:-.02em">${this._esc(p.name)}</h2>
-          <p style="font-size:var(--t-sm);color:var(--muted);margin-top:.2rem;font-weight:600">${this._esc(c.name)} · ${this._AGLabels[c.ageGroup]}</p>
+          ${(p.children?.length||1) > 1
+            ? `<button onclick="App._openChildSwitcher()" aria-label="Aktif çocuğu değiştir"
+                style="margin-top:.25rem;display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .55rem;background:var(--teal-a);border:1px solid var(--border);border-radius:var(--r-full);font-family:var(--ff-body);font-size:var(--t-sm);color:var(--teal-d);font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent">
+                👶 ${this._esc(c.name)} · ${this._AGLabels[c.ageGroup]} <span style="font-size:.7rem;margin-left:.1rem">▾</span>
+              </button>`
+            : `<p style="font-size:var(--t-sm);color:var(--muted);margin-top:.2rem;font-weight:600">${this._esc(c.name)} · ${this._AGLabels[c.ageGroup]}</p>`
+          }
         </div>
         <button onclick="App.show('notifications')" style="width:38px;height:38px;border-radius:11px;background:var(--surface);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:1rem" ontouchstart="this.style.opacity='.6'" ontouchend="this.style.opacity=''">
           🔔<span id="notif-dot" class="nav-dot" style="display:none"></span>
@@ -1538,7 +1593,8 @@ class MatEvdeApp {
   ══════════════════════════════════════════════ */
 
   _renderActs(){
-    this._showSkeleton('act-body', 4);
+    if(!this._skipSkeletonOnce) this._showSkeleton('act-body', 4);
+    this._skipSkeletonOnce = false;
     const c = this._getChild();
     const all = c ? this._repo.byAgeGroup(c.ageGroup) : this._repo.all();
     const done = new Set(c?.completedActivities||[]);
@@ -1549,9 +1605,16 @@ class MatEvdeApp {
     if(this._filter.spatialOnly) filtered = filtered.filter(a=>a.category===Category.SPATIAL);
     if(this._filter.context)  filtered = filtered.filter(a=>(a.context||[]).includes(this._filter.context));
     if(this._filter.difficulty) filtered = filtered.filter(a=>a.difficulty===this._filter.difficulty);
+    if(this._filter.favOnly){
+      const favs = this._getFavorites();
+      filtered = filtered.filter(a => favs.includes(a.id));
+    }
     if(this._filter.searchTerm) {
-      const t = this._filter.searchTerm.toLowerCase();
-      filtered = filtered.filter(a=>a.title.toLowerCase().includes(t)||a.tags.some(g=>g.includes(t)));
+      const t = this._filter.searchTerm.toLocaleLowerCase('tr-TR');
+      filtered = filtered.filter(a => {
+        const hay = (a.title + ' ' + (a.desc || '') + ' ' + (a.tags || []).join(' ') + ' ' + (a.materials || []).join(' ')).toLocaleLowerCase('tr-TR');
+        return hay.includes(t);
+      });
     }
 
     // Bağlam etiketi label'ları
@@ -1566,13 +1629,14 @@ class MatEvdeApp {
         <input class="input" placeholder="🔍 Etkinlik ara…" value="${this._filter.searchTerm}" oninput="App._search(this.value)" style="padding:.7rem 1rem;font-size:var(--t-lg)">
       </div>
       <!-- Active filters -->
-      ${this._filter.category||this._filter.anxOnly||this._filter.spatialOnly||this._filter.context||this._filter.difficulty?`
+      ${this._filter.category||this._filter.anxOnly||this._filter.spatialOnly||this._filter.context||this._filter.difficulty||this._filter.favOnly?`
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem">
         ${this._filter.category?`<span class="chip chip-orange">${this._CatEmoji[this._filter.category]} ${this._CatLabels[this._filter.category]} <button onclick="App._clearCatFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.anxOnly?`<span class="chip chip-orange">💛 Kaygı Dostu <button onclick="App._clearAnxFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.spatialOnly?`<span class="chip chip-blue">🧭 Uzamsal <button onclick="App._clearSpatialFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.context?`<span class="chip chip-green">${ctxLabels[this._filter.context]||this._filter.context} <button onclick="App._clearContextFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
         ${this._filter.difficulty?`<span class="chip chip-muted">${this._filter.difficulty==='easy'?'🟢 Kolay':this._filter.difficulty==='medium'?'🟡 Orta':'🔴 İleri'} <button onclick="App._clearDifficultyFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
+        ${this._filter.favOnly?`<span class="chip chip-yellow">⭐ Favoriler <button onclick="App._clearFavFilter()" style="background:none;border:none;cursor:pointer;font-size:var(--t-lg);padding-left:.25rem">×</button></span>`:''}
       </div>`:''}
       <!-- Count -->
       <p class="muted" style="font-size:var(--t-sm);margin-bottom:.85rem">${filtered.length} etkinlik</p>
@@ -1598,6 +1662,10 @@ class MatEvdeApp {
         ].map(d => `<button onclick="App._setDifficultyFilter('${d.k}')" class="chip ${this._filter.difficulty===d.k?'chip-orange':'chip-muted'}" style="cursor:pointer;border:none;padding:.4rem .8rem;flex:1">${d.label}</button>`).join('')}
       </div>
       <div style="display:flex;flex-direction:column;gap:.5rem">
+        <label style="display:flex;align-items:center;gap:.6rem;font-size:var(--t-md);font-weight:700;cursor:pointer">
+          <input type="checkbox" ${this._filter.favOnly?'checked':''} onchange="App._toggleFavFilter()" style="width:16px;height:16px;accent-color:var(--amber)">
+          ⭐ Yalnızca Favoriler (${this._getFavorites().length})
+        </label>
         <label style="display:flex;align-items:center;gap:.6rem;font-size:var(--t-md);font-weight:700;cursor:pointer">
           <input type="checkbox" ${this._filter.anxOnly?'checked':''} onchange="App._toggleAnxFilter()" style="width:16px;height:16px;accent-color:var(--teal)">
           💛 Yalnızca Kaygı Dostu Etkinlikler
@@ -2246,9 +2314,19 @@ class MatEvdeApp {
   }
   _clearCatFilter(){ this._filter.category=null; this._renderActs(); }
   _toggleAnxFilter(){ this._filter.anxOnly=!this._filter.anxOnly; this._renderActs(); }
+  _toggleFavFilter(){ this._filter.favOnly=!this._filter.favOnly; this._renderActs(); }
+  _clearFavFilter(){ this._filter.favOnly=false; this._renderActs(); }
   _clearAnxFilter(){ this._filter.anxOnly=false; this._renderActs(); }
   _setAnxFilter(){ this._filter.anxOnly=true; this.show('activities'); }
-  _search(v){ this._filter.searchTerm=v; this._renderActs(); }
+  _search(v){
+    this._filter.searchTerm = v;
+    // Arama sırasında skeleton flicker yapmasın
+    clearTimeout(this._searchDebounce);
+    this._searchDebounce = setTimeout(() => {
+      this._skipSkeletonOnce = true;
+      this._renderActs();
+    }, 120);
+  }
 
   _actCard(activity, isDone){
     if(isDone===undefined){ const c=this._getChild(); isDone=(c?.completedActivities||[]).includes(activity.id); }
@@ -2365,6 +2443,13 @@ class MatEvdeApp {
     const footer = `
       <div class="modal-footer-row" style="flex-wrap:wrap;gap:.4rem">
         <button class="btn btn-ghost" onclick="App._closeModal()" aria-label="Kapat">Kapat</button>
+        <button id="act-fav-btn" class="btn btn-soft" onclick="App._toggleFavorite('${id}')"
+          aria-label="${this._isFavorite(id)?'Favoriden çıkar':'Favorilere ekle'}"
+          aria-pressed="${this._isFavorite(id)?'true':'false'}"
+          title="${this._isFavorite(id)?'Favoriden çıkar':'Favorilere ekle'}"
+          style="flex:0 0 auto;min-width:48px;font-size:1.1rem">
+          <span aria-hidden="true">${this._isFavorite(id)?'⭐':'☆'}</span>
+        </button>
         <button class="btn btn-soft" onclick="App._shareActivityOnWhatsApp('${id}')" aria-label="WhatsApp'ta paylaş" title="WhatsApp'ta paylaş" style="flex:0 0 auto;min-width:48px">
           <span aria-hidden="true">📤</span>
         </button>
@@ -3829,6 +3914,7 @@ class MatEvdeApp {
     if(m.isSpecial==='skill')     { this.show('skill');       return; }
     if(m.isSpecial==='mtext')     { this.show('mtext');       return; }
     if(m.isSpecial==='about')     { this.show('about');       return; }
+    if(m.isSpecial==='screener')  { this._openDiskalkuliScreener(); return; }
     this._openModal(`
       <div class="center" style="margin-bottom:1.2rem">
         <div style="font-size:3rem;margin-bottom:.3rem">${m.emoji}</div>
@@ -3969,6 +4055,38 @@ class MatEvdeApp {
                   <div style="font-size:var(--t-xs);font-weight:700;margin-top:.15rem">${b.label}</div>
                 </div>`).join('')}
               </div>`}
+          </div>
+        </div>
+
+        <!-- Çocuklar yönetimi -->
+        <div class="card">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
+              <h3 style="margin:0">👨‍👩‍👧‍👦 Çocuklarım</h3>
+              <span class="muted" style="font-size:var(--t-xs);font-weight:700">${(p.children||[]).length} çocuk</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.7rem">
+              ${(p.children||[]).map(ch => {
+                const isActive = ch.id === this._childId;
+                return `
+                  <div style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;background:${isActive?'var(--teal-a)':'var(--surface)'};border:1.5px solid ${isActive?'var(--teal)':'var(--border)'};border-radius:var(--r-md)">
+                    <button onclick="App._setActiveChild('${ch.id}')" aria-label="Bu çocuğu aktif yap"
+                      style="flex:1;display:flex;align-items:center;gap:.6rem;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;text-align:left">
+                      <span style="font-size:1.4rem">${isActive?'👤':'👶'}</span>
+                      <div style="flex:1;min-width:0">
+                        <strong style="display:block;font-size:var(--t-md);color:var(--text)">${this._esc(ch.name)}</strong>
+                        <span style="font-size:var(--t-xs);color:var(--muted)">${this._AGLabels[ch.ageGroup]||'—'} · ${(ch.completedActivities||[]).length} etkinlik</span>
+                      </div>
+                      ${isActive?'<span style="color:var(--teal);font-weight:900;margin-right:.3rem">✓ Aktif</span>':''}
+                    </button>
+                    ${(p.children||[]).length > 1
+                      ? `<button onclick="App._removeChildPrompt('${ch.id}')" aria-label="${this._esc(ch.name)} sil"
+                          style="background:rgba(220,38,38,.08);border:none;color:var(--danger);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;-webkit-tap-highlight-color:transparent">🗑</button>`
+                      : ''}
+                  </div>`;
+              }).join('')}
+            </div>
+            <button class="btn btn-soft btn-block" onclick="App._addChildPrompt()" style="font-size:var(--t-sm);font-weight:800">+ Yeni Çocuk Ekle</button>
           </div>
         </div>
 
@@ -4573,6 +4691,260 @@ class MatEvdeApp {
       this._toast('Tarayıcı henüz hazır değil — birkaç saniye sonra tekrar dene','err');
     }
   }
+  /* ══════════════════════════════════════════════
+     FAVORİLER ("Sonra Dene" listesi)
+     localStorage 'favorites' anahtarında ID dizisi tutulur.
+  ══════════════════════════════════════════════ */
+  _getFavorites(){
+    return this._storage.get('favorites', []) || [];
+  }
+  _isFavorite(id){
+    return this._getFavorites().includes(id);
+  }
+  _toggleFavorite(id){
+    const favs = this._getFavorites();
+    const i = favs.indexOf(id);
+    if(i >= 0){
+      favs.splice(i, 1);
+      this._storage.set('favorites', favs);
+      this._toast('Favorilerden çıkarıldı', 'ok');
+    } else {
+      favs.push(id);
+      this._storage.set('favorites', favs);
+      this._toast('⭐ Favorilere eklendi', 'ok');
+    }
+    // Modal açıksa butonu yenile (sadece favori butonunu)
+    const btn = document.getElementById('act-fav-btn');
+    if(btn){
+      const nowFav = this._isFavorite(id);
+      btn.setAttribute('aria-pressed', nowFav ? 'true' : 'false');
+      btn.innerHTML = nowFav ? '<span aria-hidden="true">⭐</span>' : '<span aria-hidden="true">☆</span>';
+      btn.title = nowFav ? 'Favoriden çıkar' : 'Favorilere ekle';
+    }
+    // Aktif view etkinlikler ise yeniden render
+    if(this._activeView === 'activities'){
+      this._skipSkeletonOnce = true;
+      this._renderActs();
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     ÇOKLU ÇOCUK YÖNETİMİ
+     - _setActiveChild(id)   : aktif çocuğu değiştir
+     - _addChildPrompt()     : yeni çocuk modalı
+     - _addChild(name, age)  : çocuk ekle (persistant)
+     - _removeChild(id)      : çocuk sil (onayla)
+     - _openChildSwitcher()  : dashboard'dan açılan switcher modalı
+  ══════════════════════════════════════════════ */
+  _setActiveChild(id){
+    const p = this._parent; if(!p?.children?.length) return;
+    const found = p.children.find(c => c.id === id);
+    if(!found) return;
+    this._childId = id;
+    this._storage.set('parent', p);
+    this._toast(`👶 Aktif: ${found.name}`, 'ok');
+    this._closeModal();
+    if(this._activeView === 'dashboard') this._renderDash();
+    else if(this._activeView === 'profile') this._renderProfile();
+    else if(this._activeView === 'activities') this._renderActs();
+  }
+  _addChildPrompt(){
+    this._openModal(`
+      <div style="padding:.3rem .3rem 0">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:2.4rem">👶</div>
+          <h3 style="margin:.4rem 0">Yeni Çocuk Ekle</h3>
+          <p style="font-size:.82rem;color:var(--muted);line-height:1.5">Aynı uygulamada tüm çocuklarının ilerlemesini takip edebilirsin.</p>
+        </div>
+        <div class="field">
+          <label>Çocuğun adı</label>
+          <input id="new-child-name" class="input" placeholder="Örn: Zeynep" autofocus>
+        </div>
+        <div class="field">
+          <label>Sınıf / Yaş grubu</label>
+          <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.3rem">
+            ${Object.entries(this._AGLabels).map(([k,v], i)=>`
+              <label style="display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer;background:var(--surface)">
+                <input type="radio" name="new-child-age" value="${k}" ${i===0?'checked':''} style="accent-color:var(--teal)">
+                <span style="font-size:.95rem">${v}</span>
+              </label>`).join('')}
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:1rem">
+          <button class="btn btn-ghost" style="flex:1" onclick="App._closeModal()">İptal</button>
+          <button class="btn btn-primary" style="flex:1.4" onclick="App._submitAddChild()">Ekle</button>
+        </div>
+      </div>
+    `);
+  }
+  _submitAddChild(){
+    const nameInp = document.getElementById('new-child-name');
+    const ageRadio = document.querySelector('input[name="new-child-age"]:checked');
+    const name = (nameInp?.value || '').trim();
+    if(!name){
+      this._toast('Çocuğun adını gir','err');
+      if(nameInp){ nameInp.style.borderColor='var(--danger)'; nameInp.focus(); }
+      return;
+    }
+    const ageGroup = ageRadio?.value || 'grade_1';
+    this._addChild(name, ageGroup);
+  }
+  _addChild(name, ageGroup){
+    const p = this._parent;
+    if(!p) return;
+    if(!Array.isArray(p.children)) p.children = [];
+    const id = 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+    p.children.push({ id, name, ageGroup, completedActivities:[], badges:[] });
+    this._childId = id;
+    this._storage.set('parent', p);
+    this._closeModal();
+    this._toast(`✓ ${name} eklendi`, 'ok');
+    if(this._activeView === 'dashboard') this._renderDash();
+    else if(this._activeView === 'profile') this._renderProfile();
+  }
+  _removeChildPrompt(id){
+    const c = this._parent?.children?.find(x => x.id === id);
+    if(!c) return;
+    if(this._parent.children.length <= 1){
+      this._toast('Tek çocuk silinemez','err'); return;
+    }
+    this._openModal(`
+      <div style="padding:.5rem .3rem;text-align:center">
+        <div style="font-size:2.4rem">⚠️</div>
+        <h3 style="margin:.5rem 0">${this._esc(c.name)} silinsin mi?</h3>
+        <p style="font-size:.85rem;color:var(--muted);line-height:1.55;margin-bottom:1.2rem">${this._esc(c.name)} için kaydedilen tüm tamamlanan etkinlikler ve rozetler kaybolacak. Bu geri alınamaz.</p>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-ghost" style="flex:1" onclick="App._closeModal()">Vazgeç</button>
+          <button class="btn btn-danger" style="flex:1" onclick="App._removeChild('${id}')">Evet, Sil</button>
+        </div>
+      </div>
+    `);
+  }
+  _removeChild(id){
+    const p = this._parent;
+    if(!p?.children?.length) return;
+    const idx = p.children.findIndex(c => c.id === id);
+    if(idx < 0) return;
+    const removed = p.children[idx];
+    p.children.splice(idx, 1);
+    if(this._childId === id) this._childId = p.children[0]?.id || null;
+    this._storage.set('parent', p);
+    this._closeModal();
+    this._toast(`${removed.name} silindi`, 'ok');
+    if(this._activeView === 'dashboard') this._renderDash();
+    else if(this._activeView === 'profile') this._renderProfile();
+  }
+  _openChildSwitcher(){
+    const p = this._parent;
+    if(!p?.children?.length) return;
+    const active = this._childId;
+    this._openModal(`
+      <div style="padding:.3rem .3rem 0">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:2.4rem">👨‍👩‍👧‍👦</div>
+          <h3 style="margin:.4rem 0">Çocuk Seç</h3>
+          <p style="font-size:.82rem;color:var(--muted)">${p.children.length} çocuk kayıtlı</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.45rem">
+          ${p.children.map(c => `
+            <button onclick="App._setActiveChild('${c.id}')"
+              style="display:flex;align-items:center;gap:.75rem;padding:.8rem .9rem;background:${c.id===active?'var(--teal-a)':'var(--surface)'};border:1.5px solid ${c.id===active?'var(--teal)':'var(--border)'};border-radius:var(--r-md);cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent">
+              <span style="font-size:1.6rem">${c.id===active?'👤':'👶'}</span>
+              <div style="flex:1;min-width:0">
+                <strong style="display:block;font-size:.95rem;color:var(--text)">${this._esc(c.name)}</strong>
+                <span style="font-size:.75rem;color:var(--muted)">${this._AGLabels[c.ageGroup]||'—'} · ${(c.completedActivities||[]).length} etkinlik</span>
+              </div>
+              ${c.id===active?'<span style="color:var(--teal);font-weight:900">✓</span>':'<span style="color:var(--muted)">›</span>'}
+            </button>
+          `).join('')}
+        </div>
+        <button class="btn btn-soft btn-block" style="margin-top:1rem;font-weight:800" onclick="App._closeModal();App._addChildPrompt()">+ Yeni Çocuk Ekle</button>
+      </div>
+    `);
+  }
+
+  /* ══════════════════════════════════════════════
+     DİSKALKULİ BELİRTİ TARAMA — TIKLAMALI CHECKLIST
+     lm-belirti modülünden açılır. 8 madde — 3+ işaret RAM önerir.
+  ══════════════════════════════════════════════ */
+  get _screenerItems(){
+    return [
+      'Sayıları sezgisel kavramakta güçlük çekiyor (sayı doğrusunda nerede olduğunu bilmek zor)',
+      'Basit toplama-çıkarmayı parmakla yapıyor ve uzun süredir bu alışkanlığı bırakamıyor',
+      'Saati okumakta, gün-hafta-ay ilişkisinde belirgin zorluk yaşıyor',
+      'Sağ-sol karıştırıyor, yön duygusu zayıf',
+      'Bir mesafeyi (10 m mi 20 m mi?) veya bir miktarı (5 mi 50 mi?) gözle tahmin edemiyor',
+      'Oyunlarda puan tutmakta zorlanıyor, alışveriş sepetindeki toplamı kavrayamıyor',
+      'Matematik konularını ve kuralları kısa sürede unutuyor',
+      'Aynı yaştaki arkadaşlarına göre matematik dersinde belirgin geride',
+    ];
+  }
+  _openDiskalkuliScreener(){
+    this._screenerState = this._screenerItems.map(() => false);
+    const items = this._screenerItems;
+    this._openModal(`
+      <div style="padding:.3rem .3rem 0">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:2.4rem">🔍</div>
+          <h3 style="margin:.4rem 0">Diskalkuli Belirti Kontrol Listesi</h3>
+          <p style="font-size:.82rem;color:var(--muted);line-height:1.55;max-width:340px;margin:0 auto">Son 3-6 ayda çocuğunuzda gözlemlediklerinizi işaretleyin. Tanı değil — yönlendirici bir araçtır.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          ${items.map((it, i) => `
+            <label class="screener-item">
+              <input type="checkbox" onchange="App._screenerToggle(${i}, this.checked)">
+              <span>${this._esc(it)}</span>
+            </label>
+          `).join('')}
+        </div>
+        <div id="screener-result" class="screener-result screener-result-empty">
+          ⬆️ Madde işaretledikçe değerlendirme burada görünecek
+        </div>
+        <p style="font-size:.7rem;color:var(--hint);margin-top:.9rem;line-height:1.5;text-align:center">
+          Kaynak: Mutlu &amp; Çalışkan (2023), Diskalkuli Derneği Ebeveyn Rehber Kitabı
+        </p>
+      </div>
+    `);
+  }
+  _screenerToggle(i, val){
+    if(!this._screenerState) return;
+    this._screenerState[i] = !!val;
+    this._updateScreenerResult();
+  }
+  _updateScreenerResult(){
+    const el = document.getElementById('screener-result');
+    if(!el || !this._screenerState) return;
+    const checked = this._screenerState.filter(Boolean).length;
+    const total = this._screenerState.length;
+    el.classList.remove('screener-result-empty','screener-result-low','screener-result-mid','screener-result-high');
+    if(checked === 0){
+      el.classList.add('screener-result-empty');
+      el.innerHTML = '⬆️ Madde işaretledikçe değerlendirme burada görünecek';
+      return;
+    }
+    let level, advice, klass, cta = '';
+    if(checked <= 2){
+      level = '🟢 Düşük belirti';
+      advice = 'Bu belirtiler her çocukta zaman zaman görülebilir. ABMATO etkinlikleriyle desteklemeye devam edin.';
+      klass = 'screener-result-low';
+    } else if(checked <= 4){
+      level = '🟡 Orta düzey belirti';
+      advice = 'Öğretmeniyle konuşmanız iyi olur. Akademi\'de "Matematik Kaygısı", "Çalışma Belleği" ve "CRA Yaklaşımı" modüllerine bakın. Belirtiler 3 aydan uzun sürerse RAM değerlendirmesi düşünebilirsiniz.';
+      klass = 'screener-result-mid';
+    } else {
+      level = '🔴 Yüksek — uzman değerlendirmesi öneriyoruz';
+      advice = 'Bu işaretler diskalkulinin habercisi olabilir. Rehberlik ve Araştırma Merkezi (RAM) ücretsiz eğitsel değerlendirme yapar — başvuru e-Devlet üzerindendir, 60 gün içinde sonuçlanır. Erken müdahale uzun vadede büyük fark yaratır.';
+      klass = 'screener-result-high';
+      cta = `<button class="btn btn-primary btn-block" style="margin-top:.9rem;font-size:.88rem" onclick="App._closeModal();App._openLearn('lm-tani')">📋 RAM Süreç Rehberini Aç →</button>`;
+    }
+    el.classList.add(klass);
+    el.innerHTML = `
+      <div style="font-weight:800;font-size:1.02rem;margin-bottom:.4rem">${checked} / ${total} işaret · ${level}</div>
+      <p style="font-size:.85rem;color:var(--text2);line-height:1.55;margin:0">${advice}</p>
+      ${cta}
+    `;
+  }
+
   _showIosInstallModal(){
     this._openModal(`
       <div style="padding:1.2rem 1.1rem .5rem">

@@ -295,6 +295,74 @@
 .pwa-install-go{background:var(--teal);color:#fff;box-shadow:0 3px 10px rgba(46,125,50,.3)}
 .pwa-install-go:active{transform:scale(.96)}
 
+/* ── SW Update Banner ───────────────────────────────────── */
+.sw-update-banner{
+  position:absolute;
+  left:12px;right:12px;
+  bottom:calc(env(safe-area-inset-bottom) + 12px);
+  z-index:550;
+  background:var(--surface);
+  border:1.5px solid var(--blue);
+  border-radius:var(--r-lg);
+  padding:.85rem .95rem;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+  display:flex;align-items:center;gap:.7rem;
+  transform:translateY(140%);
+  transition:transform .28s var(--spring), opacity .2s ease;
+  opacity:0;
+}
+.sw-update-banner.visible{transform:translateY(0);opacity:1}
+.sw-update-icon{font-size:1.6rem;flex-shrink:0;line-height:1;animation:swIconSpin 2.2s linear infinite}
+@keyframes swIconSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.sw-update-text{flex:1;min-width:0;line-height:1.3}
+.sw-update-text strong{display:block;font-size:.92rem;color:var(--text);font-weight:800}
+.sw-update-text span{display:block;font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.sw-update-dismiss,.sw-update-go{
+  flex-shrink:0;min-height:40px;padding:.5rem .8rem;
+  border-radius:10px;border:none;cursor:pointer;
+  font-family:var(--ff-body);font-size:.82rem;font-weight:800;
+  -webkit-tap-highlight-color:transparent;
+}
+.sw-update-dismiss{background:transparent;color:var(--muted);padding:.5rem .5rem}
+.sw-update-go{background:var(--blue);color:#fff;box-shadow:0 3px 10px rgba(26,127,166,.3)}
+.sw-update-go:active{transform:scale(.96)}
+
+/* ── Diskalkuli Screener (Tıklamalı Kontrol Listesi) ─── */
+.screener-item{
+  display:flex;align-items:flex-start;gap:.7rem;
+  padding:.7rem .85rem;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-md);
+  cursor:pointer;
+  transition:border-color .15s, background .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.screener-item:hover{border-color:var(--teal-l)}
+.screener-item input[type="checkbox"]{
+  flex-shrink:0;
+  width:22px;height:22px;
+  accent-color:var(--teal);
+  margin-top:1px;
+  cursor:pointer;
+}
+.screener-item input[type="checkbox"]:checked + span{color:var(--teal-d);font-weight:700}
+.screener-item span{
+  flex:1;font-size:.92rem;line-height:1.45;color:var(--text);
+}
+.screener-result{
+  margin-top:1.2rem;
+  padding:1rem 1.1rem;
+  border-radius:var(--r-md);
+  text-align:center;
+  border:1.5px solid var(--border);
+  background:var(--raised);
+}
+.screener-result-empty{font-size:.85rem;color:var(--muted);font-style:italic;border-style:dashed}
+.screener-result-low{background:rgba(46,125,50,.08);border-color:var(--teal-l)}
+.screener-result-mid{background:rgba(191,106,58,.1);border-color:var(--amber)}
+.screener-result-high{background:rgba(220,38,38,.06);border-color:var(--danger)}
+
 /* ── Scroll top ──────────────────────────────────────────── */
 .scroll-top-btn{position:absolute;bottom:calc(5.5rem + env(safe-area-inset-bottom));right:.875rem;width:38px;height:38px;background:var(--surface);border:0.5px solid var(--border2);border-radius:50%;box-shadow:var(--sh-sm);font-size:.9rem;color:var(--muted);cursor:pointer;opacity:0;transition:opacity var(--dur-med);display:flex;align-items:center;justify-content:center}
 .scroll-top-btn.visible{opacity:1}

@@ -30,11 +30,35 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('./service-worker.js')
       .then((reg) => {
-        // console.log('[ABMATO] SW registered', reg.scope);
+        // Sayfa açıldığında zaten bekleyen yeni sürüm varsa kullanıcıya hemen söyle
+        if (reg.waiting && navigator.serviceWorker.controller) {
+          window.App?._showUpdateReady?.(reg.waiting);
+        }
+        // Yeni güncelleme bulunduğunda
+        reg.addEventListener('updatefound', () => {
+          const installing = reg.installing;
+          if (!installing) return;
+          installing.addEventListener('statechange', () => {
+            if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+              // Yeni SW kuruldu ama eski aktif — kullanıcıya bildir
+              window.App?._showUpdateReady?.(installing);
+            }
+          });
+        });
+        // Saatte bir update kontrolü
+        setInterval(() => { try { reg.update(); } catch {} }, 60 * 60 * 1000);
       })
       .catch((err) => {
         console.warn('[ABMATO] SW registration failed:', err);
       });
+
+    // Yeni SW aktif olduğunda sayfayı tek seferlik yenile
+    let _refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (_refreshing) return;
+      _refreshing = true;
+      window.location.reload();
+    });
   });
 }
 
