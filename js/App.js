@@ -2408,7 +2408,15 @@ class MatEvdeApp {
     this._searchDebounce = setTimeout(() => {
       this._skipSkeletonOnce = true;
       this._renderActs();
-    }, 120);
+      // Input yeniden render edildi — focus + cursor pozisyonunu geri yükle
+      // (aksi halde kullanıcı her karakterde input'a tekrar tıklamak zorunda kalır)
+      const inp = document.querySelector('#act-body input');
+      if(inp){
+        inp.focus();
+        const end = inp.value.length;
+        try { inp.setSelectionRange(end, end); } catch {}
+      }
+    }, 180);
   }
 
   _actCard(activity, isDone){
