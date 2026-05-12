@@ -187,92 +187,122 @@ class MatEvdeApp {
     ];
 
     // ── Resimli Kitap Kütüphanesi ──────────────────────────
+    // Tüm kitaplar yayın doğrulaması (kitapyurdu / yayınevi sitesi) sonrası listelendi.
+    // Mutlu yazarları Diskalkuli Derneği'nin AB destekli (EU Civil Society) yayınlarıdır.
     this._bookLibrary = [
-      // ── Türkçe Resimli Kitap Listesi ─────────────────────────────
-      // Kaynak: Türk çocuk edebiyatı ve matematik odaklı kitaplar
-      // Her kitapta: Türkçe yazar, Türkçe özgün/çeviri, matematik bağlantısı
-
-      // OKUL ÖNCESİ & 1. SINIF
-      { id:'b01', emoji:'🐛', title:'Çok Aç Tırtıl', author:'Eric Carle (Can Çocuk)',
+      // ═══ OKUL ÖNCESİ & 1. SINIF ═══
+      { id:'b01', emoji:'🐛', title:'Aç Tırtıl', author:'Eric Carle (çev. Fatih Erdoğan)',
+        publisher:'Mavibulut Yayıncılık', isbn:'9789757549215',
+        cover:'./icons/books/b-ac-tirtil.jpg',
+        link:'https://www.kitapyurdu.com/kitap/ac-tirtil/240673.html',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
-        mathConcepts:['Sayma','Sıralı sayılar','Haftanın günleri','Toplama'],
-        mathQuestions:['Pazartesi kaç tane yedi?','Cumartesi ile Pazartesi arasında fark ne?','Hepsi toplam kaç tane yedi?'],
-        tip:'Türkiye genelinde okul kütüphanelerinde bulunan klasik. Günler ve sayma için mükemmel.' },
+        mathConcepts:['Sayma 1-10','Sıralı sayılar','Haftanın günleri','Toplama'],
+        mathQuestions:['Pazartesi kaç tane yedi?','Cumartesi ile Pazartesi arasındaki fark ne?','Hepsi toplam kaç tane yedi?'],
+        tip:'1969\'dan beri dünya klasiği. Türkçeye Fatih Erdoğan çevirisiyle 1994\'te kazandırıldı. Günler ve sayma için ideal.' },
 
-      { id:'b02', emoji:'🐑', title:'Koyun Sayarken', author:'Mem Fox / Judy Horacek (Uçanbalık)',
+      { id:'b02', emoji:'🐭', title:'Küçük Fare Bidi', author:'Feridun Oral',
+        publisher:'Yapı Kredi Yayınları',
+        link:'https://www.yapikrediyayinlari.com.tr/kucuk-fare-bidi.aspx',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
-        mathConcepts:['Sayma','10a kadar sayılar','Azalma'],
-        mathQuestions:['Kaç koyun kaldı?','Her sayfada kaç azaldı?','Başta kaç tane vardı?'],
-        tip:'Uyku vakti için ideal. Geriye sayma çıkarmanın temelini kurar.' },
+        mathConcepts:['Sayma','Büyüklük karşılaştırması','Uzamsal ilişki'],
+        mathQuestions:['Kaç tane var?','Bidi en küçük mü en büyük mü?','Hangisi daha uzakta?'],
+        tip:'Feridun Oral Türk resimli kitap edebiyatının duayenlerinden. IBBY Türkiye tarafından 2012\'de uluslararası Andersen Ödülü\'ne aday gösterildi.' },
 
-      { id:'b03', emoji:'🐞', title:'Bir Delikten Bakmak', author:'Aytül Akal (Altın Kitaplar)',
-        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
-        mathConcepts:['Şekil tanıma','Geometri','Gözlem'],
-        mathQuestions:['Bu delikten ne şekil görünüyor?','Daire ve kare arasındaki fark ne?','Kaç köşesi var?'],
-        tip:'Türk yazardan geometri farkındalığı için. Gözlem ve şekil keşfi.' },
+      // ═══ 1. - 2. SINIF ═══
+      { id:'b03', emoji:'🐉', title:'Pirinç Lapası ve Küçük Ejderha', author:'Feridun Oral',
+        publisher:'Yapı Kredi Yayınları', isbn:'9789750853142',
+        cover:'./icons/books/b-pirinc-lapasi.jpg',
+        link:'https://www.yapikrediyayinlari.com.tr/pirinc-lapasi-ve-kucuk-ejderha.aspx',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2],
+        mathConcepts:['Sayma','Ölçü','Karşılaştırma','Paylaşma'],
+        mathQuestions:['Pirinçten kaç kase yapıldı?','Ejderha kaç kase yedi sence?','Eşit paylaşırsak kişi başına ne düşer?'],
+        tip:'Aynı yemekten sıkılan küçük ejderhanın yeni tatlara macerası. Yemek paylaşma, ölçü ve sayma sohbetleri için doğal bağlam.' },
 
-      { id:'b04', emoji:'🦆', title:'Küçük Sarı Ördek', author:'Feridun Oral (Yapı Kredi)',
-        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
-        mathConcepts:['Sayma','Renk-sayı ilişkisi','Sıralama'],
-        mathQuestions:['Kaç tane ördek var?','Sıralamayı tersine çevirsek?','En büyük hangisi?'],
-        tip:'Feridun Oral Türk çocuk edebiyatının en sevilen isimleri arasında.' },
+      { id:'b04', emoji:'📏', title:'Müge Her Şeyi Ölçüyor (Matematik Her Yerde)', author:'Linda W. Aber',
+        publisher:'TÜBİTAK Yayınları', isbn:'9786053121855',
+        cover:'./icons/books/b-muge-olcuyor.jpg',
+        link:'https://yayinlar.tubitak.gov.tr/cocuk-genclik-kitapligi/904-muge-her-seyi-olcuyor-matematik-her-yerde.html',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Ölçme','Birim seçimi','Tahmin'],
+        mathQuestions:['Müge ne ölçüyor?','Sen kendi odanı neyle ölçersin?','Bir karış ile bir metre arasındaki fark ne?'],
+        tip:'TÜBİTAK\'ın "Matematik Her Yerde" dizisinden. Anneannesine yardım etmek için "ölçü dedektifi" olan Müge\'nin macerası. Türkiye\'nin önde gelen popüler bilim yayıncısı.' },
 
-      { id:'b05', emoji:'🌙', title:'Ay Nereden Doğar?', author:'Aytül Akal (Altın Kitaplar)',
-        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1],
-        mathConcepts:['Büyük/küçük','Karşılaştırma','Uzamsal ilişki'],
-        mathQuestions:['Ay mı büyük Güneş mi?','Nereden doğdu, nereye gitti?','Yukarı mı aşağı mı?'],
-        tip:'Uzamsal düşünme ve karşılaştırma kavramları için.' },
+      // ═══ 2. - 3. SINIF ═══
+      { id:'b05', emoji:'🐘', title:'Uyurgezer Fil ile Büyükannem', author:'Behiç Ak',
+        publisher:'Can Çocuk Yayınları', isbn:'9789750707612',
+        cover:'./icons/books/b-uyurgezer-fil.jpg',
+        link:'https://cancocuk.com/',
+        ageGroups:[AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Veri toplama','Karşılaştırma','Sayma'],
+        mathQuestions:['Kaç farklı şehirden geçtiler?','En çok hangi sesi duydular?','Yolculuk kaç gün sürdü olabilir?'],
+        tip:'Behiç Ak\'ın çok ödüllü çocuk romanı. Japonya, Kore, Almanya ve Çin\'de de yayımlandı. Türk çocuk edebiyatının klasiği.' },
 
-      // 1. - 2. SINIF
-      { id:'b06', emoji:'🍎', title:'Elma Kurdu', author:'Nurten Arca (Tudem)',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2],
-        mathConcepts:['Bölme','Paylaşım','Kesir girişi'],
-        mathQuestions:['Elmayı eşit bölebilir miyiz?','Yarısı ne kadar?','4 kişiye nasıl paylaştırırsın?'],
-        tip:'Türk yazardan paylaşım ve bölme için somut bağlam.' },
-
-      { id:'b07', emoji:'🌻', title:'Tohumun Büyük Yolculuğu', author:'İlknur Özdemir (Can Çocuk)',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2],
-        mathConcepts:['Ölçme','Büyüme','Zaman'],
-        mathQuestions:['Kaç günde büyüdü?','Dün ne kadardı, bugün ne kadar?','Farkı hesaplayabilir misin?'],
-        tip:'Ölçme ve zaman kavramı için. Evde tohum yetiştirme etkinliğiyle birleştirilebilir.' },
-
-      { id:'b08', emoji:'🎒', title:'Okula Giden Çanta', author:'Behiç Ak (Yapı Kredi)',
-        ageGroups:[AgeGroup.G1,AgeGroup.G2],
-        mathConcepts:['Sayma','Sınıflama','Toplama'],
-        mathQuestions:['Çantada kaç eşya var?','Hangi eşyalar aynı türden?','Toplam ağırlığı ne olabilir?'],
-        tip:'Behiç Ak Türk çocuk edebiyatının klasiği.' },
-
-      // 2. - 3. SINIF
-      { id:'b09', emoji:'🏪', title:'Recep Ustanın Dükkanı', author:'Aytül Akal (Altın Kitaplar)',
-        ageGroups:[AgeGroup.G2,AgeGroup.G3],
-        mathConcepts:['Para hesabı','Toplama-çıkarma','Gerçek hayat matematiği'],
-        mathQuestions:['Kaç lira verdi?','Para üstü ne kadar?','Toplam ne kadar ödemeli?'],
-        tip:'Market ve para matematiği için mükemmel Türkçe kaynak.' },
-
-      { id:'b10', emoji:'🌈', title:'Renklerin Savaşı', author:'Feridun Oral (Yapı Kredi)',
-        ageGroups:[AgeGroup.G2,AgeGroup.G3],
-        mathConcepts:['Sınıflama','Veri','Grafik'],
-        mathQuestions:['Hangi renk en çok var?','Grafiğe döksek nasıl görünür?','Azdan çoğa sırala'],
-        tip:'Veri toplama ve grafik oluşturma için yaratıcı bağlam.' },
-
-      { id:'b11', emoji:'🗺️', title:'Meraklı Çocuklar Dünyayı Keşfediyor', author:'Ömer Seyfettin uyarlaması',
+      { id:'b06', emoji:'🌬️', title:'Rüzgârın Üzerindeki Şehir', author:'Behiç Ak',
+        publisher:'Can Çocuk Yayınları', year:2016,
+        cover:'./icons/books/b-ruzgar-sehir.jpg',
+        link:'https://cancocuk.com/kitap-detay/580',
         ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
-        mathConcepts:['Ölçek','Mesafe','Koordinat'],
-        mathQuestions:['Haritada bu yer nerede?','Gerçekte ne kadar uzak?','Ölçek ne anlama geliyor?'],
-        tip:'Koordinat ve harita ölçeği için. Uzamsal düşünme.' },
+        mathConcepts:['Uzamsal düşünme','Mesafe','Veri'],
+        mathQuestions:['Şehir kaç metre yukarıda?','Dünyada kaç farklı ülke gezdiler?','Bir saatte ne kadar yol almışlar olabilir?'],
+        tip:'Bir rüzgâr küçük bir kasabanın insanlarını gökyüzüne savurur. Uzamsal hayal gücü ve mesafe-zaman muhakemesi için yaratıcı bağlam.' },
 
-      // 3. - 4. SINIF
-      { id:'b12', emoji:'🔢', title:'Sayıların Gizemli Dünyası', author:'Yılmaz Özdil (Remzi)',
-        ageGroups:[AgeGroup.G3,AgeGroup.G4],
-        mathConcepts:['Büyük sayılar','Örüntü','Sayı tarihi'],
-        mathQuestions:['Milyar kaç sıfırdır?','Bu sayı örüntüsü nereye gidiyor?','En büyük sayı var mı?'],
-        tip:'Sayı tarihi ve örüntü farkındalığı için. 3-4. sınıfa uygun.' },
+      { id:'b07', emoji:'🛒', title:'Uçan Salı', author:'Müge İplikçi',
+        publisher:'Günışığı Kitaplığı', isbn:'9789944717403', year:2010,
+        cover:'./icons/books/b-ucan-sali.jpg',
+        link:'https://gunisigikitapligi.com/kitaplar/ucan-sali/',
+        ageGroups:[AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Para','Toplama-çıkarma','Pazar matematiği'],
+        mathQuestions:['Pazardaki sayıları kim tutuyor?','Bir tezgâhta kaç çeşit ürün var?','Para üstü nasıl hesaplanır?'],
+        tip:'Müge İplikçi\'nin ilk çocuk kitabı. Kadıköy\'ün eski Salı Pazarı\'nda geçen bir hayal yolculuğu. Para, alışveriş ve pazar matematiği için doğal bağlam.' },
 
-      { id:'b13', emoji:'⏰', title:'Zamanın Sırrı', author:'Müge İplikçi (Altın Kitaplar)',
-        ageGroups:[AgeGroup.G3,AgeGroup.G4],
-        mathConcepts:['Zaman','Saatler','Hesaplama'],
-        mathQuestions:['Kaç saat geçti?','Toplantı ne zaman bitiyor?','2 saat 45 dakika sonra saat kaç?'],
-        tip:'Zaman ve saat hesabı için hikaye bağlamı.' },
+      // ═══ EBEVEYN & EĞİTİMCİ KAYNAKLARI ═══
+      { id:'b08', emoji:'💚', title:'Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı', author:'Doç. Dr. Yılmaz Mutlu & Dr. Emir Feridun Çalışkan',
+        publisher:'Diskalkuli Derneği (AB destekli — Sivil Düşün Programı)',
+        link:'https://diskalkulidernegi.org/',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Diskalkuli farkındalığı','Tanılama','RAM süreci','Evde matematik'],
+        mathQuestions:['Diskalkuli ne demek?','Ne tür belirtiler vardır?','Ben evde nasıl destek olabilirim?'],
+        tip:'Tüm ebeveynler için temel kaynak. Diskalkuli belirtilerinden RAM başvurusuna, etkili eğitsel müdahale yöntemlerinden ev etkinliklerine kadar kapsamlı rehber. ABMATO bu kitabın dijital uzantısıdır.',
+        forParents:true },
+
+      { id:'b09', emoji:'🎲', title:'Oyunlarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Öğr. Gör. İhsan Söylemez',
+        publisher:'Vizetek / Diskalkuli Derneği (AB destekli)', isbn:'9786057523792',
+        cover:'./icons/books/b-oyunlarla-mat.jpg',
+        link:'https://vizetek.com.tr/urun/Matematik-Ogrenme-Guclugu-Yasayan-Cocuklar-Icin-Oyunlarla-Matematik-107',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Oyun temelli öğrenme','Sayı hissi','Toplama-çıkarma','Çarpma'],
+        mathQuestions:['Hangi oyun çocuğumun düzeyine uygun?','Materyali nasıl uyarlayabilirim?','Kaygıyı azaltan oyun stratejisi nedir?'],
+        tip:'Matematik öğrenme güçlüğü yaşayan çocuklar için 20 eğitsel oyun. Beş temel ilkeye dayanır: katılım, beceri-şans dengesi, matematik-merkezli, uyarlanabilir, ev-okul bağlantısı.',
+        forParents:true },
+
+      { id:'b10', emoji:'✋', title:'Parmaklarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Dr. Ali Fuad Yasul',
+        publisher:'Diskalkuli Derneği (AB destekli)',
+        link:'https://diskalkulidernegi.org/',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
+        mathConcepts:['Parmakla sayma','Sayı hissi','PabSay yöntemi','İşlem stratejileri'],
+        mathQuestions:['Parmakla sayma engellenmeli mi?','Pabsay nedir, nasıl kullanılır?','24\'e kadar parmakla nasıl sayılır?'],
+        tip:'Mutlu\'nun geliştirdiği PabSay (Parmak Boğumlarıyla Sayma) yöntemi dahil, parmak hissi ve aritmetik becerileri arasındaki sinirbilim temelli ilişki. Diskalkulik çocuklar için parmakla sayma bir engellenmesi gereken alışkanlık değil, çalışma belleğinin somut desteğidir.',
+        forParents:true },
+
+      { id:'b11', emoji:'💡', title:'Sınırsız Zihin: Sınırları Aşarak Öğren, Yönet ve Yaşa', author:'Jo Boaler (çev. Zeynep Nur Ayanoğlu)',
+        publisher:'Koç Üniversitesi Yayınları (KÜY)', isbn:'9786057685445', year:2020,
+        cover:'./icons/books/b-sinirsiz-zihin.jpg',
+        link:'https://press.ku.edu.tr/kitap/sinirsiz-zihin/',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Büyüme zihni (growth mindset)','Sabit zihin yanılgısı','Matematik kaygısı','Nörobilim ve öğrenme'],
+        mathQuestions:['"Ben matematikten anlamam" cümlesi neden zararlı?','Hata nasıl beyin büyümesi sağlar?','Sınırsız öğrenme için 6 anahtar nedir?'],
+        tip:'Stanford eğitim profesörü Jo Boaler\'ın temel eseri. Beyin sabit değil, değişebilir. Matematik kaygısının çocuğa nasıl geçtiğini ve bunu nasıl tersine çevireceğinizi öğreten yetişkin başucu kitabı. Her ebeveynin okuması önerilir.',
+        forParents:true },
+
+      { id:'b12', emoji:'📐', title:'Konumuz: Matematik', author:'Jo Boaler',
+        publisher:'Nika Yayınevi', isbn:'9786257653312', year:2021,
+        cover:'./icons/books/b-konumuz-matematik.jpg',
+        link:'https://www.kitapyurdu.com/kitap/konumuz-matematik-/603666.html',
+        ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
+        mathConcepts:['Matematik öğretim yaklaşımları','Sınıf içi etkinlik','Görselleştirme','Açık uçlu problemler'],
+        mathQuestions:['Çocuğa "doğru cevap" değil "süreç" nasıl sorulur?','Görsel matematik neden önemli?','Sayı doğrusunda görselleştirme nasıl çalışır?'],
+        tip:'Jo Boaler\'ın matematik eğitimi devrimini özetleyen kapsamlı eseri. Sınıfta ve evde uygulanabilir somut yaklaşımlarla "matematiği bir kapı, kale duvarı değil" yapma rehberi.',
+        forParents:true },
     ];
 
     // ── Sayı Sohbeti Konuşma Kartları ──────────────────────────
@@ -2086,29 +2116,38 @@ class MatEvdeApp {
       <!-- Books -->
       <div style="display:flex;flex-direction:column;gap:1rem">
         ${books.map(b=>`
-          <div class="card">
+          <div class="card book-card">
             <div class="card-body">
+              ${b.forParents ? `<div style="display:inline-flex;align-items:center;gap:.3rem;background:var(--teal-a);color:var(--teal-d);font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:var(--r-full);margin-bottom:.6rem;letter-spacing:.02em">👨‍👩‍👧 EBEVEYN İÇİN</div>` : ''}
               <div style="display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.75rem">
-                <div style="font-size:2.5rem;flex-shrink:0;line-height:1">${b.emoji}</div>
-                <div style="flex:1">
-                  <strong style="font-size:var(--t-lg)">${b.title}</strong>
-                  <p class="muted" style="font-size:var(--t-sm);margin-top:.1rem">${b.author}</p>
-                  <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem">
-                    ${b.mathConcepts.map(c=>`<span class="chip chip-orange" style="font-size:var(--t-xs)">${c}</span>`).join('')}
+                ${b.cover
+                  ? `<img src="${b.cover}" alt="${this._esc(b.title)} kapak" loading="lazy"
+                       style="width:72px;height:104px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.18);background:var(--raised)"
+                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                     <div style="display:none;font-size:2.4rem;width:72px;height:104px;align-items:center;justify-content:center;background:var(--raised);border-radius:6px;flex-shrink:0">${b.emoji}</div>`
+                  : `<div style="font-size:2.4rem;width:72px;height:104px;display:flex;align-items:center;justify-content:center;background:var(--raised);border-radius:6px;flex-shrink:0">${b.emoji}</div>`}
+                <div style="flex:1;min-width:0">
+                  <strong style="font-size:var(--t-lg);line-height:1.25;display:block">${b.title}</strong>
+                  <p class="muted" style="font-size:var(--t-sm);margin-top:.15rem;line-height:1.4">${b.author}</p>
+                  ${b.publisher ? `<p style="font-size:var(--t-xs);color:var(--hint);margin-top:.1rem;font-weight:600">${b.publisher}${b.year?' · '+b.year:''}</p>` : ''}
+                  <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.5rem">
+                    ${(b.mathConcepts||[]).map(c=>`<span class="chip chip-orange" style="font-size:var(--t-xs)">${c}</span>`).join('')}
                   </div>
-                  ${b.tip ? `<p style="font-size:var(--t-sm);color:var(--muted);margin-top:.4rem;font-style:italic">💡 ${b.tip}</p>` : ''}
                 </div>
               </div>
-              <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-sm)">
-                <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.55rem">Okurken sorabileceğiniz sorular:</p>
-                <div style="display:flex;flex-direction:column;gap:.4rem">
-                  ${b.mathQuestions.map((q,i)=>`
-                    <div style="display:flex;gap:.5rem;align-items:flex-start">
-                      <span style="width:18px;height:18px;border-radius:50%;background:var(--teal);color:#fff;font-size:var(--t-xs);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">${i+1}</span>
-                      <p style="font-size:var(--t-md);line-height:1.5;font-style:italic">"${q}"</p>
-                    </div>`).join('')}
-                </div>
-              </div>
+              ${b.tip ? `<p style="font-size:var(--t-sm);color:var(--muted);margin:0 0 .8rem;line-height:1.55;font-style:italic">💡 ${b.tip}</p>` : ''}
+              ${(b.mathQuestions||[]).length ? `
+                <div style="background:var(--raised);border-radius:var(--r-md);padding:var(--s-sm) var(--s-sm)">
+                  <p style="font-size:var(--t-sm);font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.55rem">${b.forParents?'Düşünebilirsiniz:':'Okurken sorabileceğiniz sorular:'}</p>
+                  <div style="display:flex;flex-direction:column;gap:.4rem">
+                    ${b.mathQuestions.map((q,i)=>`
+                      <div style="display:flex;gap:.5rem;align-items:flex-start">
+                        <span style="width:18px;height:18px;border-radius:50%;background:var(--teal);color:#fff;font-size:var(--t-xs);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem">${i+1}</span>
+                        <p style="font-size:var(--t-md);line-height:1.5;font-style:italic">"${q}"</p>
+                      </div>`).join('')}
+                  </div>
+                </div>` : ''}
+              ${b.link ? `<a href="${b.link}" target="_blank" rel="noopener" class="btn btn-soft btn-block" style="margin-top:.8rem;text-decoration:none;font-size:var(--t-sm)">📖 Yayınevi Sayfası →</a>` : ''}
               ${this._editBar(b.id,'book')}
             </div>
           </div>`).join('')}
