@@ -2191,7 +2191,7 @@ class MatEvdeApp {
                       </div>`).join('')}
                   </div>
                 </div>` : ''}
-              ${b.link ? `<a href="${b.link}" target="_blank" rel="noopener" class="btn btn-soft btn-block" style="margin-top:.8rem;text-decoration:none;font-size:var(--t-sm)">${b.linkLabel || '📖 Yayınevi Sayfası →'}</a>` : ''}
+              ${b.link ? `<a href="${b.link}" target="_blank" rel="noopener noreferrer" class="btn btn-soft btn-block" style="margin-top:.8rem;text-decoration:none;font-size:var(--t-sm)" onclick="return App._openExternal('${b.link}', event)">${b.linkLabel || '📖 Yayınevi Sayfası →'}</a>` : ''}
               ${this._editBar(b.id,'book')}
             </div>
           </div>`).join('')}
@@ -4786,6 +4786,31 @@ class MatEvdeApp {
       this._toast('Tarayıcı henüz hazır değil — birkaç saniye sonra tekrar dene','err');
     }
   }
+  /**
+   * Dış linki güvenli şekilde aç — PWA standalone modda
+   * <a target="_blank"> bazı tarayıcılarda sessizce engelleniyor.
+   * Üç katmanlı fallback: window.open → location.href → kullanıcıya kopya
+   */
+  _openExternal(url, ev){
+    try { ev?.preventDefault?.(); } catch {}
+    try {
+      const w = window.open(url, '_blank', 'noopener,noreferrer');
+      if(w){ try { w.opener = null; } catch {} return false; }
+      // popup engellendi — aynı sekmede aç (PDF için tarayıcı viewer açar)
+      window.location.href = url;
+      return false;
+    } catch(e){
+      // En son çare: prompt ile URL'yi kopyalanabilir göster
+      try {
+        navigator.clipboard?.writeText?.(url);
+        this._toast?.('Bağlantı kopyalandı — tarayıcıya yapıştırın','ok');
+      } catch {
+        prompt('Bu bağlantıyı kopyalayıp tarayıcınıza yapıştırın:', url);
+      }
+      return false;
+    }
+  }
+
   /* ══════════════════════════════════════════════
      FAVORİLER ("Sonra Dene" listesi)
      localStorage 'favorites' anahtarında ID dizisi tutulur.
