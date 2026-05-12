@@ -327,6 +327,8 @@ class MatEvdeApp {
       // Sayfayı en başa kaydır
       el.querySelector('.page')?.scrollTo?.(0,0);
       el.scrollTo?.(0,0);
+      // PWA install banner — sadece splash/dashboard'da görünmesi gerekir
+      this._maybeShowInstallBanner?.();
       // Sayfa başlığını güncelle
       const titles = {'dashboard': 'ABMATO — Ana Sayfa', 'activities': 'ABMATO — Etkinlikler', 'learn': 'ABMATO — Akademi', 'progress': 'ABMATO — Gelişim', 'planner': 'ABMATO — Planlayıcı', 'teacher': 'ABMATO — Öğretmen İletişimi', 'skill': 'ABMATO — Beceri Köprüsü', 'books': 'ABMATO — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMATO — Sayı Sohbeti', 'dyscalculia': 'ABMATO — Diskalkuli Bilgi', 'tymm': 'ABMATO — TYMM Müfredat', 'spatial': 'ABMATO — Uzamsal Düşünme', 'breathing': 'ABMATO — Nefes Egzersizi', 'profile': 'ABMATO — Profil', 'sms': 'ABMATO — Haftalık Görev', 'stories': 'ABMATO — Başarı Hikayeleri', 'notifications': 'ABMATO — Bildirimler', 'magnitude': 'ABMATO — Hangisi Büyük?', 'struct-sub': 'ABMATO — Yapılı Sayma', 'corsi': 'ABMATO — Hafıza Blokları', 'fact': 'ABMATO — Aralıklı Tekrar', 'strategies': 'ABMATO — Stratejiler', 'subtype': 'ABMATO — Alt-Tip Profili', 'embodied': 'ABMATO — Yer Sayı Doğrusu', 'mtext': 'ABMATO — Sayı Sohbeti+', 'errreport': 'ABMATO — Hata Deseni', 'a11y': 'ABMATO — Erişilebilirlik', 'kids': 'ABMATO — Çocuk Modu', 'admin': 'ABMATO — Yönetici Paneli', 'about': 'ABMATO — Diskalkuli Derneği'};
       if(titles[name]) document.title = titles[name];
@@ -4479,6 +4481,8 @@ class MatEvdeApp {
     // Profil ekranında PWA install satırını yeniden hesapla
     const row = document.getElementById('pwa-install-row');
     if(row) row.style.display = this._pwaInstallReady ? 'block' : 'none';
+    // Banner'ı da güncelle (her view'de tetikleyici olay)
+    this._maybeShowInstallBanner();
   }
 
   async _installPwa(){
@@ -4492,6 +4496,112 @@ class MatEvdeApp {
       console.warn('[ABMATO] Install prompt failed:', err);
     }
     this._updateInstallButton();
+  }
+
+  /* ── PWA Install Banner ──────────────────────────────────
+     Splash veya dashboard'da bottom banner ile davet eder.
+     Android Chrome/Edge: beforeinstallprompt yakalandığında "Yükle" native prompt'u açar.
+     iOS Safari: API yok — adım adım görsel modal gösterir.
+  ──────────────────────────────────────────────────────── */
+  _isIOS(){
+    return /iPhone|iPad|iPod/.test(navigator.userAgent || '');
+  }
+  _isStandalone(){
+    // Zaten yüklü olarak çalışıyor mu?
+    return window.matchMedia?.('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+  }
+  _isInstallDismissed(){
+    try {
+      const ts = parseInt(localStorage.getItem('pwa_install_dismissed_at') || '0', 10);
+      if(!ts) return false;
+      // 24 saat hatırla
+      return (Date.now() - ts) < 24 * 60 * 60 * 1000;
+    } catch { return false; }
+  }
+  _dismissInstall(){
+    try { localStorage.setItem('pwa_install_dismissed_at', String(Date.now())); } catch {}
+    const el = document.getElementById('pwa-install-banner');
+    if(el){
+      el.classList.remove('visible');
+      setTimeout(() => { el.hidden = true; }, 300);
+    }
+  }
+  /**
+   * Yükleme banner'ını uygun koşullarda göster:
+   *  - Henüz yüklü değil (standalone değil)
+   *  - 24 saat içinde dismiss edilmedi
+   *  - Şu anki view splash veya dashboard
+   *  - Android: beforeinstallprompt yakalanmış olmalı
+   *  - iOS Safari: doğrudan gösterilir (API yok ama modal verilebilir)
+   */
+  _maybeShowInstallBanner(){
+    const el = document.getElementById('pwa-install-banner');
+    if(!el) return;
+    if(this._isStandalone() || this._isInstallDismissed()){
+      el.hidden = true; el.classList.remove('visible'); return;
+    }
+    const okView = this._activeView === 'splash' || this._activeView === 'dashboard';
+    const canInstall = this._isIOS() || this._pwaInstallReady;
+    if(!okView || !canInstall){
+      el.hidden = true; el.classList.remove('visible'); return;
+    }
+    el.hidden = false;
+    // Bir sonraki frame'de visible class ekle (CSS geçişi için)
+    setTimeout(() => el.classList.add('visible'), 50);
+  }
+  /**
+   * "Yükle" tıklandı: Android'de native prompt; iOS'ta görsel rehber modal.
+   */
+  async _doInstall(){
+    if(this._isIOS()){
+      this._showIosInstallModal();
+      return;
+    }
+    if(typeof this._triggerInstall === 'function'){
+      try {
+        const ok = await this._triggerInstall();
+        if(ok){
+          this._toast('Ana ekrana eklendi ✓','ok');
+          this._dismissInstall();
+        }
+      } catch(err){
+        console.warn('[ABMATO] Install prompt failed:', err);
+      }
+      this._updateInstallButton();
+    } else {
+      this._toast('Tarayıcı henüz hazır değil — birkaç saniye sonra tekrar dene','err');
+    }
+  }
+  _showIosInstallModal(){
+    this._openModal(`
+      <div style="padding:1.2rem 1.1rem .5rem">
+        <div style="text-align:center;margin-bottom:1rem">
+          <div style="font-size:2.6rem;margin-bottom:.3rem">📲</div>
+          <h3 style="margin:0">Telefonuna kur — iPhone/iPad</h3>
+          <p style="font-size:.85rem;color:var(--muted);margin-top:.4rem;line-height:1.5">
+            Safari uygulamadan ana ekrana eklemek için:
+          </p>
+        </div>
+        <ol style="padding-left:1.2rem;margin:0;display:flex;flex-direction:column;gap:.85rem">
+          <li style="font-size:.95rem;line-height:1.55">
+            Ekranın alt çubuğundaki
+            <strong style="display:inline-flex;align-items:center;gap:.25rem;background:var(--raised);padding:.15rem .5rem;border-radius:8px;border:1px solid var(--border)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 12v8h16v-8"/></svg>
+              Paylaş
+            </strong>
+            butonuna dokun.
+          </li>
+          <li style="font-size:.95rem;line-height:1.55">
+            Açılan listede aşağı kaydır → <strong>"Ana Ekrana Ekle"</strong> seçeneğine dokun.
+          </li>
+          <li style="font-size:.95rem;line-height:1.55">
+            Sağ üstte <strong>"Ekle"</strong> tıkla. Bitti! Uygulama ana ekranda. 🎉
+          </li>
+        </ol>
+        <button class="btn btn-soft btn-block" style="margin-top:1.2rem" onclick="App._dismissInstall();App._closeModal()">Anladım</button>
+      </div>
+    `);
   }
 
 

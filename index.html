@@ -414,6 +414,16 @@
 <!-- OVERLAYS -->
 <div id="toasts"></div>
 <div id="modals" style="position:absolute;inset:0;pointer-events:none;z-index:300"></div>
+<!-- PWA install banner (Android Chrome/Edge için native prompt; iOS Safari için modal) -->
+<div id="pwa-install-banner" class="pwa-install-banner" role="dialog" aria-label="Uygulamayı telefona kurma daveti" hidden>
+  <span class="pwa-install-icon" aria-hidden="true">📲</span>
+  <div class="pwa-install-text">
+    <strong>Uygulamayı telefonuna kur</strong>
+    <span>Tek tıkla ana ekranında — çevrimdışı da çalışır</span>
+  </div>
+  <button type="button" class="pwa-install-dismiss" onclick="App._dismissInstall()" aria-label="Şimdi değil">Sonra</button>
+  <button type="button" class="pwa-install-go" onclick="App._doInstall()">Yükle</button>
+</div>
 <!-- Scroll to top -->
 <button id="scroll-top-btn" class="scroll-top-btn" onclick="document.querySelector('.view.active .page')?.scrollTo({top:0,behavior:'smooth'})" aria-label="Yukarı çık">↑</button>
 <canvas id="confetti-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:9997;display:none"></canvas>
