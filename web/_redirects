@@ -1,0 +1,4 @@
+# Cloudflare Pages — yönlendirmeler
+# Kaldırılan kategori toplu PDF yollarını kütüphaneye yönlendir
+# (çok sayıda etkinliğin tek seferde indirilmesini engellemek için).
+/etkinlikler/kategori/*   /etkinlikler   301
