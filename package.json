@@ -1,0 +1,11 @@
+{
+  "name": "abmato",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ABMATO — Anne-Baba Matematik Okulu · web sitesi + uygulama (Diskalkuli Derneği)",
+  "scripts": {
+    "build": "node build-site.mjs",
+    "deploy": "node build-site.mjs && wrangler pages deploy dist --project-name abmato --branch main --commit-dirty=true"
+  }
+}

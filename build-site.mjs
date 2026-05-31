@@ -18,6 +18,7 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generateContent } from './generate-content.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const DIST = join(ROOT, 'dist');
@@ -74,6 +75,10 @@ async function main() {
   await cp(WEB, DIST, { recursive: true });
   log('web/ → dist/ kopyalandı');
 
+  // 2·0) İçerik sayfalarını uygulama verisinden üret (etkinlikler, beceri köprüsü, sohbet)
+  const contentRoutes = await generateContent(DIST);
+  log(contentRoutes.length + ' içerik sayfası üretildi (uygulama verisinden)');
+
   // 2a) Varlık sürümleme (cache-busting): site.css / site.js → içerik hash'li ad
   // Böylece her içerik değişiminde URL değişir; immutable cache güvenle kullanılır, asla bayatlamaz.
   const assetMap = {};
@@ -128,6 +133,17 @@ async function main() {
     `ABMATO build\nUTC: ${new Date().toISOString()}\n`,
     'utf8'
   );
+
+  // 5) Sitemap.xml — statik sayfalar + üretilen içerik rotaları (etkinlik detayları dâhil)
+  const BASE = ['/', '/hakkinda', '/bilim', '/ozellikler', '/diskalkuli', '/ebeveyn', '/kaynaklar', '/dernek', '/app/'];
+  const lastmod = new Date().toISOString().slice(0, 10);
+  const allRoutes = [...BASE, ...contentRoutes];
+  const sm =
+    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    allRoutes.map((r) => `  <url><loc>https://abmato.com${r}</loc><lastmod>${lastmod}</lastmod></url>`).join('\n') +
+    '\n</urlset>\n';
+  await writeFile(join(DIST, 'sitemap.xml'), sm, 'utf8');
+  log(allRoutes.length + ' URL ile sitemap.xml güncellendi');
 
   const size = (await dirSize(DIST)) / (1024 * 1024);
   process.stdout.write(
