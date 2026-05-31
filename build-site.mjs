@@ -13,7 +13,8 @@
      node build-site.mjs
    ═══════════════════════════════════════════════════════════════ */
 
-import { rm, cp, mkdir, readdir, stat, writeFile, readFile } from 'node:fs/promises';
+import { rm, cp, mkdir, readdir, stat, writeFile, readFile, rename } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -73,6 +74,19 @@ async function main() {
   await cp(WEB, DIST, { recursive: true });
   log('web/ → dist/ kopyalandı');
 
+  // 2a) Varlık sürümleme (cache-busting): site.css / site.js → içerik hash'li ad
+  // Böylece her içerik değişiminde URL değişir; immutable cache güvenle kullanılır, asla bayatlamaz.
+  const assetMap = {};
+  for (const rel of ['assets/css/site.css', 'assets/js/site.js']) {
+    const full = join(DIST, rel);
+    if (!existsSync(full)) continue;
+    const hash = createHash('sha256').update(await readFile(full)).digest('hex').slice(0, 10);
+    const hashedRel = rel.replace(/\.(css|js)$/, '.' + hash + '.$1');
+    await rename(full, join(DIST, hashedRel));
+    assetMap['/' + rel] = '/' + hashedRel;
+  }
+  log('varlıklar sürümlendi: ' + Object.values(assetMap).map((v) => v.split('/').pop()).join(', '));
+
   // 2b) Ortak parçaları enjekte et: <!--#head-->, <!--#header-->, <!--#footer-->
   const partialsDir = join(DIST, '_partials');
   const partials = {};
@@ -90,6 +104,7 @@ async function main() {
       .replace(/<!--\s*#head\s*-->/g, partials.head)
       .replace(/<!--\s*#header\s*-->/g, partials.header)
       .replace(/<!--\s*#footer\s*-->/g, partials.footer));
+    for (const [from, to] of Object.entries(assetMap)) html = html.split(from).join(to);
     await writeFile(file, html, 'utf8');
   }
   await rm(partialsDir, { recursive: true, force: true });
