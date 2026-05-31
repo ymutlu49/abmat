@@ -82,8 +82,8 @@ async function main() {
   // İçerik PDF'leri (her etkinlik için indirilebilir A4) — pdfkit varsa
   try {
     const { generatePdfs } = await import('./generate-pdfs.mjs');
-    const np = await generatePdfs(DIST);
-    if (np) log(np + ' etkinlik PDF üretildi (indirilebilir)');
+    const r = await generatePdfs(DIST);
+    if (r && r.individual) log(r.individual + ' bireysel + ' + r.category + ' kategori PDF üretildi (indirilebilir)');
   } catch (e) {
     log('⚠ PDF üretimi atlandı: ' + (e && e.message));
   }

@@ -71,17 +71,21 @@ function activitiesIndex() {
   const cards = ACTIVITIES.map((a) => {
     const text = escA([a.title, a.desc, (a.tags || []).join(' ')].join(' ').toLowerCase());
     const ages = a.ageGroups.join(' ');
-    return `<a class="ac-card" href="/etkinlikler/${a.id}" data-cat="${a.category}" data-age="${ages}" data-text="${text}">
-      <span class="ac-emoji" aria-hidden="true">${a.emoji}</span>
-      <span class="ac-cat">${CAT[a.category]?.emoji || ''} ${escH(CAT[a.category]?.ad || a.category)}</span>
-      <h3>${escH(a.title)}</h3>
-      <p>${escH(a.desc)}</p>
-      <div class="ac-meta">${a.ageGroups.map((g) => `<span class="tag">${AGE_SHORT[g] || g}</span>`).join('')}<span class="tag">⏱ ${a.dur} dk</span>${a.anxFriendly ? '<span class="tag tag-ok">🌿 kaygı dostu</span>' : ''}</div>
-    </a>`;
+    return `<div class="ac-card-wrap" data-cat="${a.category}" data-age="${ages}" data-text="${text}">
+      <a class="ac-card" href="/etkinlikler/${a.id}">
+        <span class="ac-emoji" aria-hidden="true">${a.emoji}</span>
+        <span class="ac-cat">${CAT[a.category]?.emoji || ''} ${escH(CAT[a.category]?.ad || a.category)}</span>
+        <h3>${escH(a.title)}</h3>
+        <p>${escH(a.desc)}</p>
+        <div class="ac-meta">${a.ageGroups.map((g) => `<span class="tag">${AGE_SHORT[g] || g}</span>`).join('')}<span class="tag">⏱ ${a.dur} dk</span>${a.anxFriendly ? '<span class="tag tag-ok">🌿 kaygı dostu</span>' : ''}</div>
+      </a>
+      <a class="ac-pdf" href="/etkinlikler/${a.id}.pdf" download title="Bu etkinliği PDF indir" aria-label="PDF indir">PDF</a>
+    </div>`;
   }).join('\n');
 
   const catButtons = Object.entries(CAT).map(([k, v]) =>
     `<button type="button" class="fchip" data-filter-cat="${k}">${v.emoji} ${escH(v.ad)}</button>`).join('');
+  const catLabelsJson = JSON.stringify(Object.fromEntries(Object.entries(CAT).map(([k, v]) => [k, v.ad])));
 
   const body = `
   <section class="section section--tint" style="padding-block:clamp(2.2rem,5vw,3.2rem)">
@@ -98,10 +102,23 @@ function activitiesIndex() {
   <section class="section" style="padding-top:1.5rem">
     <div class="container">
       <div class="filterbar">
-        <input type="search" id="ac-search" class="fsearch" placeholder="🔎 Etkinlik ara… (ör. kesir, market, sayma)" aria-label="Etkinlik ara">
+        <input type="search" id="ac-search" class="fsearch" placeholder="🔎 Etkinlik ara… (ör. kesir, market, sayma, fasulye)" aria-label="Etkinlik ara">
         <div class="fchips" role="group" aria-label="Kategori filtresi">
+          <span class="fchips-label">Kategori</span>
           <button type="button" class="fchip is-active" data-filter-cat="all">Tümü</button>
           ${catButtons}
+        </div>
+        <div class="fchips" role="group" aria-label="Yaş filtresi">
+          <span class="fchips-label">Yaş</span>
+          <button type="button" class="fchip fchip-age is-active" data-filter-age="all">Tümü</button>
+          <button type="button" class="fchip fchip-age" data-filter-age="preschool">Okul Öncesi</button>
+          <button type="button" class="fchip fchip-age" data-filter-age="grade_1">1. Sınıf</button>
+          <button type="button" class="fchip fchip-age" data-filter-age="grade_2">2. Sınıf</button>
+          <button type="button" class="fchip fchip-age" data-filter-age="grade_3">3. Sınıf</button>
+          <button type="button" class="fchip fchip-age" data-filter-age="grade_4">4. Sınıf</button>
+        </div>
+        <div class="filter-actions">
+          <a id="cat-pdf" class="btn btn-accent" href="#" download style="display:none;font-size:.85rem;padding:.5rem 1.1rem"></a>
         </div>
       </div>
       <p class="muted mt-2" id="ac-count" aria-live="polite"></p>
@@ -124,27 +141,39 @@ ${cards}
 
   <script>
   (function(){
-    var grid=document.getElementById('ac-grid'), cards=[].slice.call(grid.querySelectorAll('.ac-card'));
-    var search=document.getElementById('ac-search'), count=document.getElementById('ac-count'), empty=document.getElementById('ac-empty');
-    var cat='all';
+    var CATL=${catLabelsJson};
+    var grid=document.getElementById('ac-grid'), cards=[].slice.call(grid.querySelectorAll('.ac-card-wrap'));
+    var search=document.getElementById('ac-search'), count=document.getElementById('ac-count'),
+        empty=document.getElementById('ac-empty'), catPdf=document.getElementById('cat-pdf');
+    var cat='all', age='all';
     function apply(){
-      var q=(search.value||'').trim().toLowerCase(), n=0;
+      var q=(search.value||'').trim().toLowerCase(), n=0, catCount=0;
       cards.forEach(function(c){
-        var okCat = cat==='all' || c.getAttribute('data-cat')===cat;
+        var cc=c.getAttribute('data-cat');
+        if(cc===cat) catCount++;
+        var okCat = cat==='all' || cc===cat;
+        var okAge = age==='all' || c.getAttribute('data-age').split(' ').indexOf(age)>-1;
         var okText = !q || c.getAttribute('data-text').indexOf(q)>-1;
-        var show = okCat && okText;
+        var show = okCat && okAge && okText;
         c.style.display = show ? '' : 'none';
         if(show) n++;
       });
       count.textContent = n + ' etkinlik gösteriliyor';
       empty.style.display = n? 'none':'block';
+      if(cat==='all'){ catPdf.style.display='none'; }
+      else { catPdf.style.display=''; catPdf.href='/etkinlikler/kategori/'+cat+'.pdf';
+        catPdf.textContent='⬇ "'+(CATL[cat]||cat)+'" kategorisini PDF indir ('+catCount+')'; }
     }
-    document.querySelectorAll('[data-filter-cat]').forEach(function(b){
-      b.addEventListener('click', function(){
-        document.querySelectorAll('[data-filter-cat]').forEach(function(x){x.classList.remove('is-active')});
-        b.classList.add('is-active'); cat=b.getAttribute('data-filter-cat'); apply();
+    function bind(sel, set){
+      document.querySelectorAll(sel).forEach(function(b){
+        b.addEventListener('click', function(){
+          document.querySelectorAll(sel).forEach(function(x){x.classList.remove('is-active')});
+          b.classList.add('is-active'); set(b); apply();
+        });
       });
-    });
+    }
+    bind('[data-filter-cat]', function(b){ cat=b.getAttribute('data-filter-cat'); });
+    bind('[data-filter-age]', function(b){ age=b.getAttribute('data-filter-age'); });
     search.addEventListener('input', apply); apply();
   })();
   </script>`;
