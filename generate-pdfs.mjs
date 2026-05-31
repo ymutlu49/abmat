@@ -138,12 +138,16 @@ async function renderActivity(doc, a, ML, W) {
 
 function drawFooters(doc, ML, W, leftText) {
   const range = doc.bufferedPageRange();
+  const H = doc.page.height;
   for (let i = 0; i < range.count; i++) {
     doc.switchToPage(range.start + i);
     doc.page.margins.bottom = 0;
-    doc.font('reg').fontSize(8).fillColor(MUT)
-      .text(`${leftText}      ·      Diskalkuli Derneği      ·      "Herkes Matematik Öğrenebilir"`,
-        ML, doc.page.height - 38, { width: W, align: 'center', lineBreak: false });
+    doc.moveTo(ML, H - 48).lineTo(ML + W, H - 48).lineWidth(0.6).strokeColor(LINE).stroke();
+    doc.font('bold').fontSize(8.5).fillColor(GREEN)
+      .text('Prof. Dr. Yılmaz Mutlu', ML, H - 42, { width: W, align: 'center', lineBreak: false });
+    doc.font('reg').fontSize(7.5).fillColor(MUT)
+      .text(`${leftText}   ·   Diskalkuli Derneği   ·   "Herkes Matematik Öğrenebilir"`,
+        ML, H - 30, { width: W, align: 'center', lineBreak: false });
   }
 }
 
@@ -173,47 +177,25 @@ async function activityPdf(a, outPath) {
   await finalize(doc, outPath);
 }
 
-async function categoryPdf(catKey, list, outPath) {
-  const doc = newDoc(`${CAT[catKey] || catKey} — ABMATO Etkinlikleri`);
-  doc.registerFont('reg', FONT_REG); doc.registerFont('bold', FONT_BOLD);
-  const ML = doc.page.margins.left, W = doc.page.width - ML - doc.page.margins.right;
-  for (let i = 0; i < list.length; i++) {
-    if (i > 0) doc.addPage();
-    await renderActivity(doc, list[i], ML, W);
-  }
-  drawFooters(doc, ML, W, `abmato.com/etkinlikler · ${CAT[catKey] || catKey} (${list.length} etkinlik)`);
-  await finalize(doc, outPath);
-}
-
 export async function generatePdfs(DIST) {
   if (!existsSync(FONT_REG)) {
     console.warn('  ⚠ PDF atlandı: Arial fontu bulunamadı (' + FONT_REG + ')');
-    return { individual: 0, category: 0 };
+    return { individual: 0 };
   }
+  // Yalnızca bireysel (tek etkinlik) PDF'ler — toplu/kategori indirme bilinçli olarak yok.
   const dir = join(DIST, 'etkinlikler');
-  const catDir = join(dir, 'kategori');
-  await mkdir(catDir, { recursive: true });
-
+  await mkdir(dir, { recursive: true });
   let n = 0;
   for (const a of ACTIVITIES) { await activityPdf(a, join(dir, `${a.id}.pdf`)); n++; }
-
-  const byCat = {};
-  for (const a of ACTIVITIES) (byCat[a.category] = byCat[a.category] || []).push(a);
-  let c = 0;
-  for (const [k, list] of Object.entries(byCat)) { await categoryPdf(k, list, join(catDir, `${k}.pdf`)); c++; }
-
-  return { individual: n, category: c };
+  return { individual: n };
 }
 
 /* Doğrudan çalıştırılırsa test üret */
 if (process.argv[1] && process.argv[1].endsWith('generate-pdfs.mjs')) {
   const testDir = join(process.cwd(), 'dist', 'etkinlikler');
-  await mkdir(join(testDir, 'kategori'), { recursive: true });
+  await mkdir(testDir, { recursive: true });
   for (const id of ['a01', 'a05']) {
     const a = ACTIVITIES.find((x) => x.id === id);
     if (a) { await activityPdf(a, join(testDir, `${a.id}.pdf`)); console.log('birey:', a.id); }
   }
-  const kitchen = ACTIVITIES.filter((a) => a.category === 'kitchen');
-  await categoryPdf('kitchen', kitchen, join(testDir, 'kategori', 'kitchen.pdf'));
-  console.log('kategori: kitchen (' + kitchen.length + ')');
 }

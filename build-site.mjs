@@ -83,7 +83,7 @@ async function main() {
   try {
     const { generatePdfs } = await import('./generate-pdfs.mjs');
     const r = await generatePdfs(DIST);
-    if (r && r.individual) log(r.individual + ' bireysel + ' + r.category + ' kategori PDF üretildi (indirilebilir)');
+    if (r && r.individual) log(r.individual + ' etkinlik PDF üretildi (tek tek indirilebilir)');
   } catch (e) {
     log('⚠ PDF üretimi atlandı: ' + (e && e.message));
   }

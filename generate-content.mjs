@@ -85,7 +85,6 @@ function activitiesIndex() {
 
   const catButtons = Object.entries(CAT).map(([k, v]) =>
     `<button type="button" class="fchip" data-filter-cat="${k}">${v.emoji} ${escH(v.ad)}</button>`).join('');
-  const catLabelsJson = JSON.stringify(Object.fromEntries(Object.entries(CAT).map(([k, v]) => [k, v.ad])));
 
   const body = `
   <section class="section section--tint" style="padding-block:clamp(2.2rem,5vw,3.2rem)">
@@ -117,9 +116,6 @@ function activitiesIndex() {
           <button type="button" class="fchip fchip-age" data-filter-age="grade_3">3. Sınıf</button>
           <button type="button" class="fchip fchip-age" data-filter-age="grade_4">4. Sınıf</button>
         </div>
-        <div class="filter-actions">
-          <a id="cat-pdf" class="btn btn-accent" href="#" download style="display:none;font-size:.85rem;padding:.5rem 1.1rem"></a>
-        </div>
       </div>
       <p class="muted mt-2" id="ac-count" aria-live="polite"></p>
       <div class="ac-grid" id="ac-grid">
@@ -141,17 +137,13 @@ ${cards}
 
   <script>
   (function(){
-    var CATL=${catLabelsJson};
     var grid=document.getElementById('ac-grid'), cards=[].slice.call(grid.querySelectorAll('.ac-card-wrap'));
-    var search=document.getElementById('ac-search'), count=document.getElementById('ac-count'),
-        empty=document.getElementById('ac-empty'), catPdf=document.getElementById('cat-pdf');
+    var search=document.getElementById('ac-search'), count=document.getElementById('ac-count'), empty=document.getElementById('ac-empty');
     var cat='all', age='all';
     function apply(){
-      var q=(search.value||'').trim().toLowerCase(), n=0, catCount=0;
+      var q=(search.value||'').trim().toLowerCase(), n=0;
       cards.forEach(function(c){
-        var cc=c.getAttribute('data-cat');
-        if(cc===cat) catCount++;
-        var okCat = cat==='all' || cc===cat;
+        var okCat = cat==='all' || c.getAttribute('data-cat')===cat;
         var okAge = age==='all' || c.getAttribute('data-age').split(' ').indexOf(age)>-1;
         var okText = !q || c.getAttribute('data-text').indexOf(q)>-1;
         var show = okCat && okAge && okText;
@@ -160,9 +152,6 @@ ${cards}
       });
       count.textContent = n + ' etkinlik gösteriliyor';
       empty.style.display = n? 'none':'block';
-      if(cat==='all'){ catPdf.style.display='none'; }
-      else { catPdf.style.display=''; catPdf.href='/etkinlikler/kategori/'+cat+'.pdf';
-        catPdf.textContent='⬇ "'+(CATL[cat]||cat)+'" kategorisini PDF indir ('+catCount+')'; }
     }
     function bind(sel, set){
       document.querySelectorAll(sel).forEach(function(b){
