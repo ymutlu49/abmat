@@ -96,6 +96,17 @@
             <a class="btn btn-primary btn-lg" href="https://diskalkulidernegi.org/bagis-yap/" target="_blank" rel="noopener">💚 Bağış Yap ↗</a>
             <a class="btn btn-ghost btn-lg" href="https://diskalkulidernegi.org/diskalkuli-dernegi-uyelik-basvurusu/" target="_blank" rel="noopener">👥 Üye Ol ↗</a>
           </div>
+
+          <!-- IBAN / banka bağışı -->
+          <div style="margin-top:1.2rem;background:var(--green-50);border:1.5px solid var(--line-2);border-radius:var(--r);padding:1.1rem 1.2rem">
+            <div style="font-weight:800;color:var(--green-dd);display:flex;align-items:center;gap:.5rem"><span aria-hidden="true">🏦</span> Banka havalesi ile bağış</div>
+            <div class="muted" style="font-size:.88rem;margin-top:.15rem">Türkiye İş Bankası · Diskalkuli Derneği</div>
+            <div class="flex wrap aic" style="gap:.55rem;margin-top:.7rem">
+              <code style="font-family:var(--ff-mono);font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;letter-spacing:.01em">TR87 0006 4000 0018 8000 9558 00</code>
+              <button type="button" class="btn btn-ghost" style="padding:.55rem 1rem;font-size:.9rem" onclick="if(navigator.clipboard){navigator.clipboard.writeText('TR870006400000188000955800').then(()=>{this.textContent='Kopyalandı ✓';setTimeout(()=>{this.textContent='IBAN Kopyala'},1800)})}">IBAN Kopyala</button>
+            </div>
+            <div class="note note--amber" style="margin-top:.85rem;padding:.7rem .9rem;font-size:.93rem"><span class="ni" aria-hidden="true">⚠️</span><div>Havale / EFT <strong>açıklama</strong> kısmına lütfen <strong>mutlaka “Bağış”</strong> yazınız.</div></div>
+          </div>
         </div>
       </div>
 
