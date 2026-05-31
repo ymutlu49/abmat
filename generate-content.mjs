@@ -90,7 +90,7 @@ function activitiesIndex() {
       <div class="section-head" style="margin:1rem 0 0;max-width:820px">
         <span class="eyebrow">${ACTIVITIES.length} etkinlik · 12 kategori</span>
         <h1>Etkinlik kütüphanesi</h1>
-        <p class="lead">Her etkinlik; malzeme listesi, adım adım yönerge, “nasıl soracağım?” ipucu ve TYMM kazanım etiketleriyle. Çoğu evde bulunan malzemelerle, 5–20 dakikada.</p>
+        <p class="lead">Her etkinlik; malzeme listesi, adım adım yönerge, “nasıl soracağım?” ipucu ve TYMM kazanım etiketleriyle. Çoğu evde bulunan malzemelerle, 5–20 dakikada. <strong>Her birini yazdırılabilir PDF olarak indirebilirsiniz.</strong></p>
       </div>
     </div>
   </section>
@@ -212,9 +212,11 @@ function activityDetail(a, prev, next) {
       ${tags ? `<div class="mt-3 flex wrap gap">${tags}</div>` : ''}
 
       <div class="hero-cta mt-4">
-        <a class="btn btn-primary btn-lg" href="/app/">Uygulamada interaktif aç →</a>
+        <a class="btn btn-accent btn-lg" href="/etkinlikler/${a.id}.pdf" download><span aria-hidden="true">⬇</span> PDF olarak indir</a>
+        <a class="btn btn-primary btn-lg" href="/app/">Uygulamada aç →</a>
         <a class="btn btn-ghost btn-lg" href="/etkinlikler">← Tüm etkinlikler</a>
       </div>
+      <p class="muted mt-2" style="font-size:.85rem">Yazdırılabilir A4 etkinlik kartı — malzeme, adımlar ve ipucu tek sayfada.</p>
 
       <nav class="prevnext mt-4" aria-label="Etkinlikler arası gezinme">
         ${prev ? `<a href="/etkinlikler/${prev.id}" class="pn"><span class="muted">← Önceki</span><strong>${prev.emoji} ${escH(prev.title)}</strong></a>` : '<span></span>'}

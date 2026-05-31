@@ -79,6 +79,15 @@ async function main() {
   const contentRoutes = await generateContent(DIST);
   log(contentRoutes.length + ' içerik sayfası üretildi (uygulama verisinden)');
 
+  // İçerik PDF'leri (her etkinlik için indirilebilir A4) — pdfkit varsa
+  try {
+    const { generatePdfs } = await import('./generate-pdfs.mjs');
+    const np = await generatePdfs(DIST);
+    if (np) log(np + ' etkinlik PDF üretildi (indirilebilir)');
+  } catch (e) {
+    log('⚠ PDF üretimi atlandı: ' + (e && e.message));
+  }
+
   // 2a) Varlık sürümleme (cache-busting): site.css / site.js → içerik hash'li ad
   // Böylece her içerik değişiminde URL değişir; immutable cache güvenle kullanılır, asla bayatlamaz.
   const assetMap = {};

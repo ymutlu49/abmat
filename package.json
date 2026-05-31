@@ -7,5 +7,8 @@
   "scripts": {
     "build": "node build-site.mjs",
     "deploy": "node build-site.mjs && wrangler pages deploy dist --project-name abmato --branch main --commit-dirty=true"
+  },
+  "dependencies": {
+    "pdfkit": "^0.18.0"
   }
 }
