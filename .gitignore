@@ -28,3 +28,9 @@ deploy/
 
 # Kaynak PDF'ler (yerel; 68 MB — repo'da tutulmaz)
 kaynaklar/
+
+# Web sitesi build çıktısı (Cloudflare Pages publish dizini)
+dist/
+
+# OG görseli üretim şablonu (yerel makineye özel mutlak yol içerir)
+_og-template.html

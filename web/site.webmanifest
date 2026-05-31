@@ -1,0 +1,23 @@
+{
+  "name": "ABMATO — Anne-Baba Matematik Okulu",
+  "short_name": "ABMATO",
+  "description": "Okul öncesi ve ilkokul için kanıt temelli, kaygı dostu, TYMM uyumlu evde matematik. Diskalkuli Derneği.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#1B5E20",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["education", "kids", "parenting"],
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/assets/img/dernek-logo-small.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/dernek-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/dernek-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Uygulamayı Aç", "url": "/app/" },
+    { "name": "Diskalkuli Rehberi", "url": "/diskalkuli.html" }
+  ]
+}

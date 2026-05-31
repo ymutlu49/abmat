@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ABMATO">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2E7D32"/>
+      <stop offset="1" stop-color="#1B5E20"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#g)"/>
+  <path d="M119 392 L256 119 L393 392" stroke="#fff" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M171 305 L341 305" stroke="#fff" stroke-width="40" stroke-linecap="round" fill="none"/>
+  <circle cx="409" cy="139" r="46" fill="rgba(255,255,255,.28)"/>
+  <path d="M390 139 H428 M409 120 V158" stroke="#fff" stroke-width="11" stroke-linecap="round" fill="none"/>
+</svg>
