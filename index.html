@@ -431,4 +431,16 @@
 </div>
 
 <script type="module" src="js/main.js"></script>
+<!-- HÇMÖ tek-giriş (cross-apex SSO) — giriş yapılmışsa kullanıcıyı tanır -->
+<div id="hcmoChip" style="position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:8px;z-index:9998;font-family:Nunito,system-ui,sans-serif;font-weight:800;font-size:.78rem;display:none"></div>
+<script src="https://hercocukmatematikogrenebilir.com/sso/hcmo-sso.js?v=2"></script>
+<script>
+window.HCMO && HCMO.boot(function (who) {
+  if (!who) return;
+  var el = document.getElementById('hcmoChip'); if (!el) return;
+  var nm = (who.type === 'adult' ? who.user.name : who.student.alias) || '';
+  el.textContent = '👋 ' + nm;
+  el.style.cssText += ';display:inline-block;background:rgba(27,94,32,.95);color:#fff;padding:5px 11px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.25)';
+});
+</script>
 </html>
