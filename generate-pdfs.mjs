@@ -146,7 +146,7 @@ function drawFooters(doc, ML, W, leftText) {
     doc.font('bold').fontSize(8.5).fillColor(GREEN)
       .text('Prof. Dr. Yılmaz Mutlu', ML, H - 42, { width: W, align: 'center', lineBreak: false });
     doc.font('reg').fontSize(7.5).fillColor(MUT)
-      .text(`${leftText}   ·   Diskalkuli Derneği   ·   "Herkes Matematik Öğrenebilir"`,
+      .text(`${leftText}   ·   ABMATO · HÇMÖ   ·   "Herkes Matematik Öğrenebilir"`,
         ML, H - 30, { width: W, align: 'center', lineBreak: false });
   }
 }
@@ -154,7 +154,7 @@ function drawFooters(doc, ML, W, leftText) {
 function newDoc(title) {
   return new PDFDocument({
     size: 'A4', margin: 50, bufferPages: true,
-    info: { Title: clean(title), Author: 'ABMATO · Diskalkuli Derneği · Prof. Dr. Yılmaz Mutlu', Subject: 'Evde matematik etkinliği' },
+    info: { Title: clean(title), Author: 'ABMATO · HÇMÖ · Prof. Dr. Yılmaz Mutlu', Subject: 'Evde matematik etkinliği' },
   });
 }
 

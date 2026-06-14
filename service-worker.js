@@ -72,9 +72,7 @@ const CORE_ASSETS = [
   './js/skill-bridge/SkillBridgeView.js',
   './js/skill-bridge/SkillBridgeApp.js',
   './icons/icon.svg',
-  './icons/dernek-logo.png',
-  './icons/dernek-logo-round.png',
-  './icons/dernek-logo-small.png',
+  './icons/acm-mark.svg',
 ];
 
 // Install: çekirdek varlıkları cache'le

@@ -16,6 +16,9 @@
 deployment:
   tasks:
     # >>>>> KENDİ DEPLOY YOLUNUZA GÖRE GÜNCELLEYİN <<<<<
+    # TODO(yörünge): DEPLOYPATH halen eski derneğe ait cPanel kullanıcısını
+    #   (diskalkulidernek) işaret ediyor. Yörünge/abmato barındırması netleşince
+    #   bu yol güncellenmeli. Ürün domaini (abmato.com) korunur.
     # Subdomain için (önerilen):  /home/diskalkulidernek/public_html/abmat
     # Alt dizin için:             /home/diskalkulidernek/public_html/abmat
     - export DEPLOYPATH=/home/diskalkulidernek/public_html/abmat/

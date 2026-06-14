@@ -171,7 +171,7 @@ class MatEvdeApp {
       { id:'lm9', emoji:'📚', title:'Resimli Kitapla Matematik', sub:'Math talk rehberi', dur:'8 dk', level:1, text:'Resimli kitap okurken doğal matematik sohbetleri açılır: "Kaç tane vardı? Bir tane daha geldi, şimdi kaç oldu?" Bu müdahale, Purpura ve arkadaşlarının 2021 RCT çalışmasında çocukların sayı dili gelişimini anlamlı biçimde artırdı.', isSpecial:'books' },
       { id:'lm10', emoji:'💬', title:'Sayı Sohbeti: Anında Sohbet Kartları', sub:'Araba, mutfak, market — her yerde', dur:'5 dk', level:1, text:'Matematik konuşması yapmak için etkinlik başlatmanıza gerek yok. Arabayla giderken: "Kaç tane kırmızı araba gördük?", markette: "Hangi kutu daha ağır?", akşam yemeğinde: "Kaç kişi masada? Herkese kaçar tabak lazım?" Bu kısa konuşmalar birikince büyük fark yaratır.', isSpecial:'mathtalk' },
       { id:'lm11', emoji:'💬', title:'Sayı Sohbeti+ (Genişletilmiş)', sub:'60+ tetikleyici, 6 bağlam, 3 yaş grubu', dur:'10 dk', level:2, text:'Mutfak, banyo, yatma, yol, market ve oyun bağlamlarında 60+ rehber soru. Yaş ve bağlama göre filtrelenir; rastgele soru çeker; sesli okur (TTS).', isSpecial:'mtext' },
-      { id:'lm12', emoji:'💚', title:'Diskalkuli Derneği', sub:'Vizyonumuz ve iletişim', dur:'5 dk', level:1, text:'ABMATO, Diskalkuli Derneği işbirliğiyle geliştirilmiş ve tamamen ücretsiz olarak sunulmaktadır. "Herkes Matematik Öğrenebilir" ilkesiyle 2017\'den bu yana farkındalık çalışmaları yürütüyoruz. İletişim bilgileri için Hakkında sayfasına göz atın.', isSpecial:'about' },
+      { id:'lm12', emoji:'💚', title:'ABMATO Hakkında', sub:'Misyonumuz ve platform', dur:'5 dk', level:1, text:'ABMATO, Her Çocuk Matematik Öğrenebilir erken matematik öğrenme platformunun bir parçası olarak geliştirilmiş ve tamamen ücretsiz olarak sunulmaktadır. "Herkes Matematik Öğrenebilir" ilkesiyle, okul öncesi ve ilkokul çağındaki her çocuğun matematiğe kaygısız bir başlangıç yapmasını hedefliyoruz. Ayrıntılar için Hakkında sayfasına göz atın.', isSpecial:'about' },
       { id:'lm11', emoji:'🧘', title:'Kaygıyı Yönetin: Nefes Tekniği', sub:'Matematik yaparken sakin kalmak', dur:'6 dk', level:1, text:'Çocuğunuzla matematik yaparken gerginleştiğinizde: Derin nefes alın (4 saniye), tutun (4 saniye), verin (6 saniye). Bu tekniği çocuğunuza da öğretin. Araştırma bulgusu: ebeveyn kaygısı azaltılmadan ev aktivitelerinin etkisi sınırlı kalıyor (Cosso et al., 2023).', isSpecial:'breathing' },
 
       { id:'lm-skill', emoji:'📚', title:'Beceri Köprüsü', sub:'Adım adım matematik desteği', dur:'Kendi hızınızda', level:2, text:'Sayma, basamak değeri, toplama-çıkarma, sözel problem — 20 modül, her biri için ev yapımı araçlar ve özerklik destekleyici sorular.', isSpecial:'skill' },
@@ -179,16 +179,16 @@ class MatEvdeApp {
       { id:'lm14', emoji:'🌟', title:'Başarı Hikayeleri', sub:'Gerçek ailelerden deneyimler', dur:'5 dk', level:1, text:'Araştırmacılar farklı profilden ailelerle yaptıkları çalışmalarda ortak bir örüntü bulmuştur: başarıyı getiren aktivite değil, ebeveynin tutumudur. Matematiği eğlenceli ve anlamlı olarak çerçeveleyen her aile — gelir ve eğitim düzeyinden bağımsız — çocuklarında olumlu matematik tutumu geliştirmiştir (Muir, 2012; Skwarchuk, 2009). Siz de bu hikayelerin parçasısınız.', isSpecial:'stories' },
       { id:'lm12', emoji:'🎓', title:'TYMM Müfredat Çerçevesi', sub:'Okul öncesi ve ilkokul matematik', dur:'8 dk', level:2, text:'Türkiye Yüzyılı Maarif Modeli matematik becerileri ve ABMATO etkinliklerinin bu çerçeveyle hizası.', isSpecial:'tymm' },
 
-      // ── Diskalkuli Derneği "Ebeveyn Rehber Kitabı" temelli modüller ──
+      // ── "Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı" temelli modüller ──
       { id:'lm-belirti', emoji:'🔍', title:'Diskalkuli Belirti Kontrol Listesi', sub:'Tıklamalı tarama — 1 dakikada', dur:'2 dk', level:2, isSpecial:'screener', text:'8 maddelik tıklamalı kontrol listesi. Son 3-6 ayda çocuğunuzda gözlemlediklerinizi işaretleyin, anında değerlendirme + RAM süreç rehberi alın. Bu bir tanı değildir — uzman değerlendirmesi için yönlendiricidir.' },
-      { id:'lm-tani', emoji:'🎯', title:'Erken Tanılama ve RAM Süreci', sub:'Ne zaman uzman desteği?', dur:'10 dk', level:2, text:'Diskalkulik çocuklar ilkokuldan itibaren yaşıtlarının gerisinde kalır; zaman ilerledikçe fark artar (Mutlu & Olkun, 2019). Erken tanı bu farkın büyümesini önler. Süreç dört aşamada: (1) FARKINA VARMA — ebeveyn/öğretmen akranlara göre belirgin gerilik gözler. (2) İLK YÖNLENDİRME — sınıf öğretmeniyle konuşun, çocuğun günlük performansını kayıt altına aldırın. (3) RAM BAŞVURUSU — e-Devlet üzerinden Rehberlik ve Araştırma Merkezi\'ne randevu alın. Süreç ücretsizdir, 60 gün içinde değerlendirme tamamlanır. (4) BİREYSEL EĞİTİM PLANI — tanı sonrası okuldaki destek eğitim odası ve özel eğitim hizmetlerinden yararlanılır. Tanı koyma yararı: çocuk yaşadığını anlar, ebeveyn nedenleri öğrenir, öğretmen gereksiz müdahalelerden kaçınır, depresyon riski azalır. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi.' },
-      { id:'lm-cra', emoji:'🧱', title:'Somut → Soyut: CRA Yaklaşımı', sub:'En etkili öğretim sıralaması', dur:'12 dk', level:2, text:'Bilimsel dayanaklı en güçlü yaklaşımlardan biri: Somut → Yarı-Somut → Soyut (CRA, Bruner). Üç aşamada öğretim:\n\n1) SOMUT: Yeni bir kavramı her zaman gerçek nesnelerle başlatın — fasulye, mercimek, lego, kapak, parmak. Örnek: "5+3" için 5 fasulye + 3 fasulye birleştirip sayalım.\n\n2) YARI-SOMUT: Aynı kavram resimlerle modellenir. "5+3" için kağıda 5 daire + 3 daire çizin, birleştirip sayın. Çocuk hem nesneyi görsel olarak hatırlar hem soyuta köprü kurar.\n\n3) SOYUT: Yalnızca sembollerle çalışın: "5 + 3 = 8". Çocuk bu noktaya rahat hissetmeden geçmesin.\n\nÖnemli: Soyuta geçerken bir önceki aşamayı yanında bulundurun — fasulye ve çizimle birlikte semboller. Bu, diskalkulik çocuklarda kalıcılığı önemli ölçüde artırır. Pratik: Bu hafta yapacağınız her yeni matematik etkinliğinde önce malzeme, sonra çizim, sonra sayı sembolü sırasına uyun. Kaynak: Diskalkuli Derneği Ebeveyn Rehberi; Bruner, 1966.' },
-      { id:'lm-bellek', emoji:'🧠', title:'Çalışma Belleği Desteği', sub:'Diskalkulinin merkezindeki zorluk', dur:'10 dk', level:2, text:'Çalışma belleği, beynin "anlık not defteri"dir — bir bilgiyi (örn. 27) zihinde tutarken aynı anda başka bir şey yapma yeteneği (üzerine 8 ekleme). Araştırmalar diskalkulik çocuklarda bu belleğin akranlarından zayıf olduğunu gösteriyor (Geary ve ark., 2012). Bu yüzden çocuk basit gibi görünen işlemleri bile yapmakta zorlanır — sayıyı hatırlayamaz, ortada unutur.\n\nNe yapabilirsiniz?\n\n• İŞLEMİ GÖRSELLEŞTİRİN: "27 + 8" için 27\'yi kağıda yazın, çocuk üzerine eklesin — bellek yükü dışarı çıkar.\n\n• PARÇALA: Tek bir uzun işlem yerine küçük parçalara bölün: "Önce 27 + 3 = 30, sonra +5 = 35".\n\n• PARMAKLA SAYMAYI DESTEKLEYİN: Diskalkulili çocuklar için parmak bir tercih değil, çalışma belleğinin yedeği. Engellemeyin.\n\n• TEKRARLAYIN: Aynı tür problemi 4-5 farklı bağlamda yapın (mutfak, market, oyun). Tekrar = pekiştirme = bellek genişletme.\n\n• ZAMAN BASKISI YAPMAYIN: Süre baskısı çalışma belleğini daha da daraltır. "Düşünmen için zamanın var" deyin.\n\nKaynak: Baddeley (2003), Geary ve ark. (2012); Diskalkuli Derneği Ebeveyn Rehberi.' },
+      { id:'lm-tani', emoji:'🎯', title:'Erken Tanılama ve RAM Süreci', sub:'Ne zaman uzman desteği?', dur:'10 dk', level:2, text:'Diskalkulik çocuklar ilkokuldan itibaren yaşıtlarının gerisinde kalır; zaman ilerledikçe fark artar (Mutlu & Olkun, 2019). Erken tanı bu farkın büyümesini önler. Süreç dört aşamada: (1) FARKINA VARMA — ebeveyn/öğretmen akranlara göre belirgin gerilik gözler. (2) İLK YÖNLENDİRME — sınıf öğretmeniyle konuşun, çocuğun günlük performansını kayıt altına aldırın. (3) RAM BAŞVURUSU — e-Devlet üzerinden Rehberlik ve Araştırma Merkezi\'ne randevu alın. Süreç ücretsizdir, 60 gün içinde değerlendirme tamamlanır. (4) BİREYSEL EĞİTİM PLANI — tanı sonrası okuldaki destek eğitim odası ve özel eğitim hizmetlerinden yararlanılır. Tanı koyma yararı: çocuk yaşadığını anlar, ebeveyn nedenleri öğrenir, öğretmen gereksiz müdahalelerden kaçınır, depresyon riski azalır. Kaynak: Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı.' },
+      { id:'lm-cra', emoji:'🧱', title:'Somut → Soyut: CRA Yaklaşımı', sub:'En etkili öğretim sıralaması', dur:'12 dk', level:2, text:'Bilimsel dayanaklı en güçlü yaklaşımlardan biri: Somut → Yarı-Somut → Soyut (CRA, Bruner). Üç aşamada öğretim:\n\n1) SOMUT: Yeni bir kavramı her zaman gerçek nesnelerle başlatın — fasulye, mercimek, lego, kapak, parmak. Örnek: "5+3" için 5 fasulye + 3 fasulye birleştirip sayalım.\n\n2) YARI-SOMUT: Aynı kavram resimlerle modellenir. "5+3" için kağıda 5 daire + 3 daire çizin, birleştirip sayın. Çocuk hem nesneyi görsel olarak hatırlar hem soyuta köprü kurar.\n\n3) SOYUT: Yalnızca sembollerle çalışın: "5 + 3 = 8". Çocuk bu noktaya rahat hissetmeden geçmesin.\n\nÖnemli: Soyuta geçerken bir önceki aşamayı yanında bulundurun — fasulye ve çizimle birlikte semboller. Bu, diskalkulik çocuklarda kalıcılığı önemli ölçüde artırır. Pratik: Bu hafta yapacağınız her yeni matematik etkinliğinde önce malzeme, sonra çizim, sonra sayı sembolü sırasına uyun. Kaynak: Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı; Bruner, 1966.' },
+      { id:'lm-bellek', emoji:'🧠', title:'Çalışma Belleği Desteği', sub:'Diskalkulinin merkezindeki zorluk', dur:'10 dk', level:2, text:'Çalışma belleği, beynin "anlık not defteri"dir — bir bilgiyi (örn. 27) zihinde tutarken aynı anda başka bir şey yapma yeteneği (üzerine 8 ekleme). Araştırmalar diskalkulik çocuklarda bu belleğin akranlarından zayıf olduğunu gösteriyor (Geary ve ark., 2012). Bu yüzden çocuk basit gibi görünen işlemleri bile yapmakta zorlanır — sayıyı hatırlayamaz, ortada unutur.\n\nNe yapabilirsiniz?\n\n• İŞLEMİ GÖRSELLEŞTİRİN: "27 + 8" için 27\'yi kağıda yazın, çocuk üzerine eklesin — bellek yükü dışarı çıkar.\n\n• PARÇALA: Tek bir uzun işlem yerine küçük parçalara bölün: "Önce 27 + 3 = 30, sonra +5 = 35".\n\n• PARMAKLA SAYMAYI DESTEKLEYİN: Diskalkulili çocuklar için parmak bir tercih değil, çalışma belleğinin yedeği. Engellemeyin.\n\n• TEKRARLAYIN: Aynı tür problemi 4-5 farklı bağlamda yapın (mutfak, market, oyun). Tekrar = pekiştirme = bellek genişletme.\n\n• ZAMAN BASKISI YAPMAYIN: Süre baskısı çalışma belleğini daha da daraltır. "Düşünmen için zamanın var" deyin.\n\nKaynak: Baddeley (2003), Geary ve ark. (2012); Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı.' },
     ];
 
     // ── Resimli Kitap Kütüphanesi ──────────────────────────
     // Tüm kitaplar yayın doğrulaması (kitapyurdu / yayınevi sitesi) sonrası listelendi.
-    // Mutlu yazarları Diskalkuli Derneği'nin AB destekli (EU Civil Society) yayınlarıdır.
+    // Mutlu kitapları AB destekli (EU Civil Society) açık erişimli yayınlardır.
     this._bookLibrary = [
       // ═══ OKUL ÖNCESİ & 1. SINIF ═══
       { id:'b01', emoji:'🐛', title:'Aç Tırtıl', author:'Eric Carle (çev. Fatih Erdoğan)',
@@ -256,8 +256,10 @@ class MatEvdeApp {
         tip:'Müge İplikçi\'nin ilk çocuk kitabı. Kadıköy\'ün eski Salı Pazarı\'nda geçen bir hayal yolculuğu. Para, alışveriş ve pazar matematiği için doğal bağlam.' },
 
       // ═══ EBEVEYN & EĞİTİMCİ KAYNAKLARI ═══
+      // NOT: Aşağıdaki "link" alanları halen diskalkulidernegi.org üzerinde barınan
+      // açık-erişim PDF'lere işaret ediyor (ayrı barındırma kararı bekliyor); taşınınca güncellenmeli.
       { id:'b08', emoji:'💚', title:'Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı', author:'Doç. Dr. Yılmaz Mutlu & Dr. Emir Feridun Çalışkan',
-        publisher:'Diskalkuli Derneği (AB destekli — Sivil Düşün Programı)',
+        publisher:'Açık erişim (AB destekli — Sivil Düşün Programı)',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Ebeveyn-Rehber-Kitabi-.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
@@ -267,7 +269,7 @@ class MatEvdeApp {
         forParents:true },
 
       { id:'b09', emoji:'🎲', title:'Oyunlarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Öğr. Gör. İhsan Söylemez',
-        publisher:'Diskalkuli Derneği / Vizetek (AB destekli)', isbn:'9786057523792',
+        publisher:'Vizetek (AB destekli açık erişim)', isbn:'9786057523792',
         cover:'./icons/books/b-oyunlarla-mat.jpg',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Oyunlarla-Matematik.pdf',
         linkLabel:'📕 Ücretsiz PDF',
@@ -278,7 +280,7 @@ class MatEvdeApp {
         forParents:true },
 
       { id:'b10', emoji:'✋', title:'Parmaklarla Matematik', author:'Doç. Dr. Yılmaz Mutlu & Dr. Ali Fuad Yasul',
-        publisher:'Diskalkuli Derneği (AB destekli)',
+        publisher:'Açık erişim (AB destekli)',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Parmaklarla-Matematik-Kitabi.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3],
@@ -307,9 +309,9 @@ class MatEvdeApp {
         tip:'Jo Boaler\'ın matematik eğitimi devrimini özetleyen kapsamlı eseri. Sınıfta ve evde uygulanabilir somut yaklaşımlarla "matematiği bir kapı, kale duvarı değil" yapma rehberi.',
         forParents:true },
 
-      // ═══ DİSKALKULİ DERNEĞİ EK ARAŞTIRMA RAPORLARI ═══
-      { id:'b13', emoji:'📖', title:'Rakamların Ötesindeki Hikayeler: Diskalkuli ile Yaşayanlar', author:'Diskalkuli Derneği',
-        publisher:'Diskalkuli Derneği (AB destekli)',
+      // ═══ EK ARAŞTIRMA RAPORLARI (açık erişim) ═══
+      { id:'b13', emoji:'📖', title:'Rakamların Ötesindeki Hikayeler: Diskalkuli ile Yaşayanlar', author:'Açık erişim yayını',
+        publisher:'Açık erişim (AB destekli)',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/Diskalkuli-ile-yasayanlar.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
@@ -318,8 +320,8 @@ class MatEvdeApp {
         tip:'Diskalkuli ile yaşayanların kendi seslerinden hikayeler. Tanı koymanın ötesinde, gerçek hayatın deneyimleri. Aileler ve eğitimciler için güçlü bir farkındalık kaynağı.',
         forParents:true },
 
-      { id:'b14', emoji:'⚖️', title:'Sosyal Adalet Bağlamında Matematik Öğrenme Güçlüğü', author:'Diskalkuli Derneği', year:2024,
-        publisher:'Diskalkuli Derneği',
+      { id:'b14', emoji:'⚖️', title:'Sosyal Adalet Bağlamında Matematik Öğrenme Güçlüğü', author:'Açık erişim yayını', year:2024,
+        publisher:'Açık erişim',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2024/01/Sosyal-Adalet-Baglaminda-MOG.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
@@ -328,8 +330,8 @@ class MatEvdeApp {
         tip:'Matematik öğrenme güçlüğüne sosyal adalet perspektifinden bakan kapsamlı rapor. Tanılama ve destek hizmetlerine erişimde fırsat eşitsizliklerini ele alır.',
         forParents:true },
 
-      { id:'b15', emoji:'🧩', title:'Diskalkulik Çocukların Yaşadıkları Sorunlar ve Çözüm Önerileri', author:'Diskalkuli Derneği',
-        publisher:'Diskalkuli Derneği',
+      { id:'b15', emoji:'🧩', title:'Diskalkulik Çocukların Yaşadıkları Sorunlar ve Çözüm Önerileri', author:'Açık erişim yayını',
+        publisher:'Açık erişim',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/DISKALKULIK-COCUKLARIN-YASADIKLARI-SORUNLAR-VE-COZUM-ONERILERI.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
@@ -338,8 +340,8 @@ class MatEvdeApp {
         tip:'Diskalkulik çocukların okul, ev ve sosyal yaşamda karşılaştıkları somut güçlükler ve uygulanabilir çözüm önerileri. Hızlı başvuru kaynağı.',
         forParents:true },
 
-      { id:'b16', emoji:'🔬', title:'Diskalkuli Çalışmaları - I', author:'Diskalkuli Derneği',
-        publisher:'Diskalkuli Derneği',
+      { id:'b16', emoji:'🔬', title:'Diskalkuli Çalışmaları - I', author:'Açık erişim yayını',
+        publisher:'Açık erişim',
         link:'https://diskalkulidernegi.org/wp-content/uploads/2022/05/diskalkuli-calismalari-1.pdf',
         linkLabel:'📕 Ücretsiz PDF',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1,AgeGroup.G2,AgeGroup.G3,AgeGroup.G4],
@@ -404,7 +406,7 @@ class MatEvdeApp {
       // PWA install banner — sadece splash/dashboard'da görünmesi gerekir
       this._maybeShowInstallBanner?.();
       // Sayfa başlığını güncelle
-      const titles = {'dashboard': 'ABMATO — Ana Sayfa', 'activities': 'ABMATO — Etkinlikler', 'learn': 'ABMATO — Akademi', 'progress': 'ABMATO — Gelişim', 'planner': 'ABMATO — Planlayıcı', 'teacher': 'ABMATO — Öğretmen İletişimi', 'skill': 'ABMATO — Beceri Köprüsü', 'books': 'ABMATO — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMATO — Sayı Sohbeti', 'dyscalculia': 'ABMATO — Diskalkuli Bilgi', 'tymm': 'ABMATO — TYMM Müfredat', 'spatial': 'ABMATO — Uzamsal Düşünme', 'breathing': 'ABMATO — Nefes Egzersizi', 'profile': 'ABMATO — Profil', 'sms': 'ABMATO — Haftalık Görev', 'stories': 'ABMATO — Başarı Hikayeleri', 'notifications': 'ABMATO — Bildirimler', 'magnitude': 'ABMATO — Hangisi Büyük?', 'struct-sub': 'ABMATO — Yapılı Sayma', 'corsi': 'ABMATO — Hafıza Blokları', 'fact': 'ABMATO — Aralıklı Tekrar', 'strategies': 'ABMATO — Stratejiler', 'subtype': 'ABMATO — Alt-Tip Profili', 'embodied': 'ABMATO — Yer Sayı Doğrusu', 'mtext': 'ABMATO — Sayı Sohbeti+', 'errreport': 'ABMATO — Hata Deseni', 'a11y': 'ABMATO — Erişilebilirlik', 'kids': 'ABMATO — Çocuk Modu', 'admin': 'ABMATO — Yönetici Paneli', 'about': 'ABMATO — Diskalkuli Derneği'};
+      const titles = {'dashboard': 'ABMATO — Ana Sayfa', 'activities': 'ABMATO — Etkinlikler', 'learn': 'ABMATO — Akademi', 'progress': 'ABMATO — Gelişim', 'planner': 'ABMATO — Planlayıcı', 'teacher': 'ABMATO — Öğretmen İletişimi', 'skill': 'ABMATO — Beceri Köprüsü', 'books': 'ABMATO — Kitap & Sayı Sohbeti', 'mathtalk': 'ABMATO — Sayı Sohbeti', 'dyscalculia': 'ABMATO — Diskalkuli Bilgi', 'tymm': 'ABMATO — TYMM Müfredat', 'spatial': 'ABMATO — Uzamsal Düşünme', 'breathing': 'ABMATO — Nefes Egzersizi', 'profile': 'ABMATO — Profil', 'sms': 'ABMATO — Haftalık Görev', 'stories': 'ABMATO — Başarı Hikayeleri', 'notifications': 'ABMATO — Bildirimler', 'magnitude': 'ABMATO — Hangisi Büyük?', 'struct-sub': 'ABMATO — Yapılı Sayma', 'corsi': 'ABMATO — Hafıza Blokları', 'fact': 'ABMATO — Aralıklı Tekrar', 'strategies': 'ABMATO — Stratejiler', 'subtype': 'ABMATO — Alt-Tip Profili', 'embodied': 'ABMATO — Yer Sayı Doğrusu', 'mtext': 'ABMATO — Sayı Sohbeti+', 'errreport': 'ABMATO — Hata Deseni', 'a11y': 'ABMATO — Erişilebilirlik', 'kids': 'ABMATO — Çocuk Modu', 'admin': 'ABMATO — Yönetici Paneli', 'about': 'ABMATO — Hakkında'};
       if(titles[name]) document.title = titles[name];
     }
     const renders = {
@@ -966,16 +968,16 @@ class MatEvdeApp {
         </div>
       </div>`:''}
 
-      <!-- Diskalkuli Derneği işbirliği banner'ı -->
+      <!-- ABMATO / HÇMÖ tanıtım banner'ı -->
       <div onclick="App.show('about')" role="button" tabindex="0"
         style="background:linear-gradient(135deg,rgba(46,125,50,.08),rgba(46,125,50,.03));border:1.5px solid rgba(46,125,50,.22);border-radius:var(--r-lg);padding:.85rem 1rem;margin-bottom:1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;-webkit-tap-highlight-color:transparent;transition:var(--t)"
         onmouseover="this.style.borderColor='var(--teal-l)'"
         onmouseout="this.style.borderColor='rgba(46,125,50,.22)'"
         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();App.show('about')}">
-        <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:42px;height:42px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
+        <img src="./icons/acm-mark.svg" alt="" aria-hidden="true" style="width:42px;height:42px;border-radius:10px;background:#fff;padding:3px;flex-shrink:0;border:1px solid var(--border)">
         <div style="flex:1;min-width:0">
-          <div style="font-size:var(--t-sm);font-weight:800;color:var(--teal-d)">Diskalkuli Derneği iş birliğiyle 💚</div>
-          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">"Herkes Matematik Öğrenebilir" · Hakkında & iletişim →</p>
+          <div style="font-size:var(--t-sm);font-weight:800;color:var(--teal-d)">ABMATO hakkında 💚</div>
+          <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.1rem;line-height:1.5">"Herkes Matematik Öğrenebilir" · HÇMÖ platformu →</p>
         </div>
         <span style="color:var(--muted);flex-shrink:0;font-size:1.2rem">›</span>
       </div>
@@ -4258,13 +4260,13 @@ class MatEvdeApp {
           </div>
         </div>
 
-        <!-- v6 — Diskalkuli Derneği -->
+        <!-- v6 — ABMATO Hakkında -->
         <div class="card card-sm" style="border:1.5px solid var(--teal-l);background:linear-gradient(135deg,rgba(46,125,50,.06),rgba(46,125,50,.02))">
           <div class="card-body" style="display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem">
-            <img src="./icons/dernek-logo.png" alt="" aria-hidden="true" style="width:46px;height:46px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;border:1px solid var(--border)">
+            <img src="./icons/acm-mark.svg" alt="" aria-hidden="true" style="width:46px;height:46px;border-radius:11px;background:#fff;padding:3px;flex-shrink:0;border:1px solid var(--border)">
             <div style="flex:1;min-width:0">
-              <strong style="font-size:var(--t-md);color:var(--teal-d);display:block">Diskalkuli Derneği</strong>
-              <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.45">Hakkında & iletişim</p>
+              <strong style="font-size:var(--t-md);color:var(--teal-d);display:block">ABMATO Hakkında</strong>
+              <p style="font-size:var(--t-xs);color:var(--muted);margin-top:.15rem;line-height:1.45">Misyon & HÇMÖ platformu</p>
             </div>
             <button class="btn btn-soft btn-sm" onclick="App.show('about')" style="flex-shrink:0">→</button>
           </div>
@@ -5021,7 +5023,7 @@ class MatEvdeApp {
           ⬆️ Madde işaretledikçe değerlendirme burada görünecek
         </div>
         <p style="font-size:.7rem;color:var(--hint);margin-top:.9rem;line-height:1.5;text-align:center">
-          Kaynak: Mutlu &amp; Çalışkan (2023), Diskalkuli Derneği Ebeveyn Rehber Kitabı
+          Kaynak: Mutlu &amp; Çalışkan (2023), Gelişimsel Diskalkuli — Ebeveyn Rehber Kitabı
         </p>
       </div>
     `);

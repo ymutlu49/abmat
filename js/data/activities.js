@@ -451,7 +451,7 @@ export const ACTIVITIES = [
         sesAlt:'Karton yoksa gazete kesilir, rakamlar elle yazılır.',
         tymm_oo:['MAB6','MAB3'], tymm_il:['MAB1','MAB3'], tymm_t:['T1'], tymm_yas:['36-48','48-60'], tymm_outcomes:['MAT.1.1.1', 'MAT.1.1.2'], context:['outdoor', 'indoor', 'game'], difficulty:'hard' },
 
-      // 🎮 OYUNLARLA MATEMATİK (Diskalkuli Derneği kitabından)
+      // 🎮 OYUNLARLA MATEMATİK ("Oyunlarla Matematik" kitabından)
       { id:'g03', emoji:'🎯', title:'Haydi Eşleştir!',
         desc:'Sayıların farklı nokta gösterimlerini sayı kartlarıyla eşleştirme yarışı.',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.GAME, dur:15,
@@ -532,7 +532,7 @@ export const ACTIVITIES = [
         sesAlt:'Oyun kartı yoksa kâğıttan 1-9 arası rastgele 4 sayı çekilir.',
         tymm_il:['MAB1','MAB2'], tymm_t:['T2'], tymm_outcomes:['MAT.4.2.4','MAT.4.2.5'], context:['indoor','game'], difficulty:'hard' },
 
-      // ✋ PARMAKLARLA MATEMATİK (Diskalkuli Derneği kitabından)
+      // ✋ PARMAKLARLA MATEMATİK ("Parmaklarla Matematik" kitabından)
       { id:'f01', emoji:'⚡', title:'Şipşak Parmak Sayımı (Sanbil)',
         desc:'Bir el hızla parmak gösterir, çocuk saymadan söyler; böylece subitizing (sanbil) becerisini geliştirin.',
         ageGroups:[AgeGroup.PRESCHOOL,AgeGroup.G1], category:Category.NUMBER, dur:6,

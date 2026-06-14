@@ -179,4 +179,4 @@ Orijinal tek dosya (`MatEvde_v2.html`) proje klasöründe referans olarak korunm
 
 ## Lisans
 
-Prof. Dr. Yılmaz Mutlu — Anne-Baba Matematik Okulu / Diskalkuli Derneği
+Prof. Dr. Yılmaz Mutlu — Anne-Baba Matematik Okulu / Her Çocuk Matematik Öğrenebilir platformu

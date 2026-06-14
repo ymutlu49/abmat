@@ -1,8 +1,13 @@
 # ABMATO — cPanel Deploy Rehberi
 
-> Hedef sunucu: **diskalkulidernegi.org** (cPanel)
+> **Not:** Aşağıdaki adımlar eski derneğe ait `diskalkulidernegi.org`
+> cPanel sunucusunu hedef alıyor. Ürün domaini **abmato.com** korunur; üst-marka
+> artık **Her Çocuk Matematik Öğrenebilir** (hercocukmatematikogrenebilir.com). Yeni deploy hedefi
+> (umbrella/abmato barındırması) netleşene kadar bu yollar tarihsel referans olarak bırakıldı — güncellenmeli.
+>
+> Hedef sunucu: **diskalkulidernegi.org** (cPanel) — *eski, taşınacak*
 > Repo: https://github.com/ymutlu49/abmat
-> Sonuç URL (önerilen): https://abmat.diskalkulidernegi.org
+> Sonuç URL (önerilen): https://abmat.diskalkulidernegi.org — *eski, taşınacak*
 
 ABMATO statik bir PWA'dır — build adımı yok. Sadece dosyaları sunucuya koyman yeterli. 3 yöntem var; **Git Version Control** en profesyonel olanı çünkü her `git push`tan sonra tek tıkla güncelleme yapabilirsin.
 
@@ -131,4 +136,4 @@ Sunucuda (cPanel):
 - WordPress'te bir menü öğesi: "ABMATO — Anne-Baba Matematik Okulu" → `https://abmat.diskalkulidernegi.org`
 - Ya da ana sayfaya banner: "Çocuğunuzla evde matematik" + buton
 
-İletişim ipucu: ABMATO Hakkında sayfasında derneğin web URL'si, üyelik ve bağış bağlantıları zaten var (`AboutView.js`).
+İletişim ipucu: ABMATO Hakkında sayfası (`AboutView.js`) uygulamanın misyonunu ve Her Çocuk Matematik Öğrenebilir platform künyesini sunar.

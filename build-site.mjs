@@ -108,7 +108,7 @@ async function main() {
     partials[name] = (await readFile(join(partialsDir, name + '.html'), 'utf8')).trim();
   }
   // Temiz URL: yalnızca kendi sayfa slug'larımızdaki .html'i kaldır (dış linkler korunur)
-  const PAGE_SLUGS = /\/(index|hakkinda|bilim|ozellikler|diskalkuli|ebeveyn|kaynaklar|dernek|404)\.html\b/g;
+  const PAGE_SLUGS = /\/(index|hakkinda|bilim|ozellikler|diskalkuli|ebeveyn|kaynaklar|404)\.html\b/g;
   const cleanUrls = (s) => s.replace(PAGE_SLUGS, (m, slug) => (slug === 'index' ? '/' : '/' + slug));
 
   const htmlFiles = await walkHtml(DIST, ['app', '_partials', 'assets']);
@@ -144,7 +144,7 @@ async function main() {
   );
 
   // 5) Sitemap.xml — statik sayfalar + üretilen içerik rotaları (etkinlik detayları dâhil)
-  const BASE = ['/', '/hakkinda', '/bilim', '/ozellikler', '/diskalkuli', '/ebeveyn', '/kaynaklar', '/dernek', '/app/'];
+  const BASE = ['/', '/hakkinda', '/bilim', '/ozellikler', '/diskalkuli', '/ebeveyn', '/kaynaklar', '/app/'];
   const lastmod = new Date().toISOString().slice(0, 10);
   const allRoutes = [...BASE, ...contentRoutes];
   const sm =
