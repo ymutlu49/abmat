@@ -3,13 +3,12 @@
    Kaynak: MEB TYMM 2024 öğrenme çıktılarıyla hizalanmış */
 
 const SB_BOLUM = Object.freeze({
-  GIRIS:      'giris',
-  SAYI_HISSI: 'sayi_hissi',
-  ARACLAR:    'araclar',
-  BASAMAK:    'basamak',
-  ISLEM:      'islem',
-  OLGULAR:    'olgular',
-  SOZEL:      'sozel',
+  GIRIS:           'giris',
+  SANBIL:          'y01_sanbil',
+  SAYMA:           'y02_sayma',
+  KARSILASTIRMA:   'y03_karsilastirma',
+  BIRLESTIRME:     'y05_birlestirme',
+  TOPLAMA_CIKARMA: 'y04_toplama_cikarma',
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -61,13 +60,12 @@ const SB_ARAC = Object.freeze({
 // VERİ: Bölüm meta bilgileri
 // ─────────────────────────────────────────────────────────────
 const SB_BOLUM_META = Object.freeze({
-  [SB_BOLUM.GIRIS]:      { emoji: '🚀', ad: 'Neden Bu Yöntemler?',   renk: '#6366f1' },
-  [SB_BOLUM.SAYI_HISSI]: { emoji: '🔢', ad: 'Sayı Hissi Temelleri',  renk: '#f59e0b' },
-  [SB_BOLUM.ARACLAR]:    { emoji: '🛠️', ad: 'Matematik Araçları',    renk: '#10b981' },
-  [SB_BOLUM.BASAMAK]:    { emoji: '🏗️', ad: 'Basamak Değeri',        renk: '#3b82f6' },
-  [SB_BOLUM.ISLEM]:      { emoji: '➕', ad: 'Toplama ve Çıkarma',     renk: '#ef4444' },
-  [SB_BOLUM.OLGULAR]:    { emoji: '⚡', ad: 'Sayı Olguları',          renk: '#8b5cf6' },
-  [SB_BOLUM.SOZEL]:      { emoji: '📖', ad: 'Sözel Problemler',       renk: '#06b6d4' },
+  [SB_BOLUM.GIRIS]:           { emoji: '🚀', ad: 'Neden Bu Yöntemler?',                   renk: '#6366f1' },
+  [SB_BOLUM.SANBIL]:          { emoji: '⚡', ad: 'Y01 · Saymadan Anlık Bilme (Sanbil)',    renk: '#7c3aed' },
+  [SB_BOLUM.SAYMA]:           { emoji: '🌍', ad: 'Y02 · Sayma',                            renk: '#f59e0b' },
+  [SB_BOLUM.KARSILASTIRMA]:   { emoji: '⚖️', ad: 'Y03 · Karşılaştırma ve Sıralama',        renk: '#0d9488' },
+  [SB_BOLUM.BIRLESTIRME]:     { emoji: '🧱', ad: 'Y05 · Sayı Birleştirme (Parça-Bütün)',   renk: '#3b82f6' },
+  [SB_BOLUM.TOPLAMA_CIKARMA]: { emoji: '➕', ad: 'Y04 · Toplama ve Çıkarma',               renk: '#ef4444' },
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -114,8 +112,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-sayma1',
-    bolum: SB_BOLUM.SAYI_HISSI,
-    sira: 1,
+    bolum: SB_BOLUM.SAYMA,
+    sira: 2,
+    yorunge: { code: 'Y02', ad: 'Sayma', duzey: 'D4–D6 · Birebir Eşleyerek Sayan → 10’a Kadar Sayan' },
     emoji: '🫘',
     baslik: 'Sayma — Temel Beceriler',
     altBaslik: 'Somutlaştırma, birebir eşleme, sıralı sayma',
@@ -174,8 +173,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-sayma2',
-    bolum: SB_BOLUM.SAYI_HISSI,
-    sira: 2,
+    bolum: SB_BOLUM.SAYMA,
+    sira: 3,
+    yorunge: { code: 'Y02', ad: 'Sayma', duzey: 'D9–D13 · 10’dan Geriye Sayan → Ritim Tutarak Üzerine Sayan' },
     emoji: '🔄',
     baslik: 'İleri Sayma — Ritmik ve Üzerine Sayma',
     altBaslik: 'İleri-geri, üzerine sayma, sıralama',
@@ -231,8 +231,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-subitizing',
-    bolum: SB_BOLUM.SAYI_HISSI,
-    sira: 3,
+    bolum: SB_BOLUM.SANBIL,
+    sira: 1,
+    yorunge: { code: 'Y01', ad: 'Saymadan Anlık Bilme (Sanbil)', duzey: 'D5–D8 · Algısal Sanbil (4’e kadar) → Kavramsal Sanbil (7’ye kadar)' },
     emoji: '⚡',
     baslik: 'Şipşak Sayma (Subitizing)',
     altBaslik: 'Sayı örüntülerini tek bakışta tanıma',
@@ -291,8 +292,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-beslik',
-    bolum: SB_BOLUM.ARACLAR,
-    sira: 4,
+    bolum: SB_BOLUM.BIRLESTIRME,
+    sira: 7,
+    yorunge: { code: 'Y05', ad: 'Sayı Birleştirme (Parça-Bütün)', duzey: 'D4 · Sayı Kuran (önce 4, sonra 5)' },
     emoji: '5️⃣',
     baslik: 'Beşlik Kart (5-Çerçeve)',
     altBaslik: '5\'i parçalama, 5 uzmanı olma',
@@ -346,8 +348,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-onluk',
-    bolum: SB_BOLUM.ARACLAR,
-    sira: 5,
+    bolum: SB_BOLUM.BIRLESTIRME,
+    sira: 8,
+    yorunge: { code: 'Y05', ad: 'Sayı Birleştirme (Parça-Bütün)', duzey: 'D5–D6 · Sayı Kuran (7’ye kadar) → Sayı Kuran (10’a kadar)' },
     emoji: '🔟',
     baslik: 'Onluk Kart (10-Çerçeve)',
     altBaslik: '10\'u parçalama, 10 uzmanı olma',
@@ -402,8 +405,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-yuzluk',
-    bolum: SB_BOLUM.ARACLAR,
-    sira: 6,
+    bolum: SB_BOLUM.SAYMA,
+    sira: 4,
+    yorunge: { code: 'Y02', ad: 'Sayma', duzey: 'D11–D12 · Onar Ritmik Sayan (100’e kadar) → 100’e Kadar Sayan' },
     emoji: '💯',
     baslik: 'Yüzlük Tablo (100 Kart)',
     altBaslik: 'Sayılar arası örüntüler ve ilişkiler',
@@ -456,8 +460,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-onceson',
-    bolum: SB_BOLUM.ARACLAR,
-    sira: 7,
+    bolum: SB_BOLUM.KARSILASTIRMA,
+    sira: 6,
+    yorunge: { code: 'Y03', ad: 'Karşılaştırma ve Sıralama', duzey: 'D11–D15 · Zihinsel Sayı Doğrusu (5’e kadar) → Zihinsel Sayı Doğrusu (10’a kadar)' },
     emoji: '📏',
     baslik: 'Açık Sayı Doğrusu',
     altBaslik: 'Sayıların konumu ve ilişkisi',
@@ -514,8 +519,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-basamak1',
-    bolum: SB_BOLUM.BASAMAK,
-    sira: 8,
+    bolum: SB_BOLUM.BIRLESTIRME,
+    sira: 9,
+    yorunge: { code: 'Y05', ad: 'Sayı Birleştirme (Parça-Bütün)', duzey: 'D7 · Onluk ve Birliklerle Sayı Kuran' },
     emoji: '🏗️',
     baslik: 'Basamak Değeri — 20\'ye Kadar',
     altBaslik: 'Onluk ve birlikler, sayıları parçalama',
@@ -570,8 +576,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-basamak2',
-    bolum: SB_BOLUM.BASAMAK,
-    sira: 9,
+    bolum: SB_BOLUM.SAYMA,
+    sira: 5,
+    yorunge: { code: 'Y02', ad: 'Sayma', duzey: 'D16–D17 · Basamak Değerini Kavrayan → 100’ün Ötesine Sayan' },
     emoji: '🧱',
     baslik: 'Basamak Değeri — 100\'e ve Ötesine',
     altBaslik: 'Önceden gruplu modeller, 3 basamak',
@@ -627,8 +634,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-on-islem',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 10,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D3–D4 · Küçük Sayılarla Toplayıp Çıkaran → Sonucu Bulan' },
     emoji: '🔢',
     baslik: '10 İçinde Toplama ve Çıkarma',
     altBaslik: 'Boncuk rafı ile denklem ailelerini keşfetme',
@@ -682,8 +690,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-yirmi',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 11,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D7–D8 · Sayma Stratejileriyle Çözen → Parça-Bütün İlişkisi Kuran' },
     emoji: '➕',
     baslik: '20 İçinde Toplama',
     altBaslik: '5\'e ve 10\'a sabitleme stratejileri',
@@ -736,8 +745,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-cikarma1',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 12,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D6–D7 · Eksik Olanı Bulan → Sayma Stratejileriyle Çözen' },
     emoji: '➖',
     baslik: 'Çıkarma — Somut ve 10-Çerçeve',
     altBaslik: 'Al götür ve fark bulma stratejileri',
@@ -790,8 +800,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-cikarma2',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 13,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D7 · Sayma Stratejileriyle Çözen' },
     emoji: '📐',
     baslik: 'Çıkarma — Sayı Doğrusunda',
     altBaslik: 'Atlayarak çıkarma stratejileri',
@@ -843,8 +854,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-buyuk-islem',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 14,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D10–D12 · Bildiklerinden Türeten → Çok Basamaklı Toplayıp Çıkaran' },
     emoji: '🚀',
     baslik: 'Sayı Doğrusunda Büyük İşlemler',
     altBaslik: 'İki ve üç basamaklı toplama-çıkarma',
@@ -898,8 +910,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-zorlanma',
-    bolum: SB_BOLUM.ISLEM,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 15,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D7–D10 · Sayma Stratejileriyle Çözen → Bildiklerinden Türeten' },
     emoji: '🌉',
     baslik: '10\'u Köprü Olarak Kullanma',
     altBaslik: 'Zor toplama olgularını 10 üzerinden çözme',
@@ -955,8 +968,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-olgular1',
-    bolum: SB_BOLUM.OLGULAR,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 16,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D10 · Bildiklerinden Türeten' },
     emoji: '⚡',
     baslik: 'Toplama Olguları — Stratejiler',
     altBaslik: 'Sıfır, bir fazlası, iki fazlası, katlar',
@@ -1009,8 +1023,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-olgular2',
-    bolum: SB_BOLUM.OLGULAR,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 17,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D10–D11 · Bildiklerinden Türeten → Her Tür Problemi Çözen' },
     emoji: '🧠',
     baslik: 'Toplama Olguları — Uzmanlaşma',
     altBaslik: 'Olgu ailesi sırası ve kalıcı bellek',
@@ -1065,8 +1080,9 @@ const SB_MODULLER = Object.freeze([
   // ╚══════════════════════════════════════════════════════════╝
   {
     id: 'sb-sozel1',
-    bolum: SB_BOLUM.SOZEL,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 18,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D7–D8 · Sayma Stratejileriyle Çözen → Parça-Bütün İlişkisi Kuran' },
     emoji: '📖',
     baslik: 'Sözel Problem — Parça-Parça-Bütün',
     altBaslik: 'Problemi görselleştirme ve düzenleme',
@@ -1119,8 +1135,9 @@ const SB_MODULLER = Object.freeze([
 
   {
     id: 'sb-sozel2',
-    bolum: SB_BOLUM.SOZEL,
+    bolum: SB_BOLUM.TOPLAMA_CIKARMA,
     sira: 19,
+    yorunge: { code: 'Y04', ad: 'Toplama ve Çıkarma', duzey: 'D11 · Her Tür Problemi Çözen' },
     emoji: '✏️',
     baslik: 'Sözel Problem — Modelleme ve Kurma',
     altBaslik: 'Problem kurma, olgu aileleri, karşılaştırma',

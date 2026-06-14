@@ -164,6 +164,10 @@ class SkillBridgeView {
           ${mod.siniflar.map(s => `<span class="sb-sinif-chip">${s}</span>`).join('')}
           ${completed ? '<span class="sb-done-chip">✅ Tamamlandı</span>' : ''}
         </div>
+        ${mod.yorunge ? `<div class="sb-detail-yorunge" style="margin-top:.7rem;padding:.55rem .85rem;background:${meta.renk}14;border:1px solid ${meta.renk}55;border-radius:12px;font-size:.82rem;line-height:1.45;color:${meta.renk}">
+          🎯 <b>Öğrenme Yörüngesi · ${mod.yorunge.code} ${mod.yorunge.ad}</b><br>
+          <span style="color:var(--text,#334155);opacity:.9">${mod.yorunge.duzey}</span>
+        </div>` : ''}
       </div>
     `;
   }
