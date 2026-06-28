@@ -111,7 +111,12 @@ async function main() {
   const PAGE_SLUGS = /\/(index|hakkinda|bilim|ozellikler|diskalkuli|ebeveyn|kaynaklar|404)\.html\b/g;
   const cleanUrls = (s) => s.replace(PAGE_SLUGS, (m, slug) => (slug === 'index' ? '/' : '/' + slug));
 
+  // NuMap merkezli kapı: pazarlama sayfaları GÖRÜNÜR (chip + giriş daveti); üretilen İÇERİK
+  // sayfaları giriş-kapılı (gate). Marka=ABMATO. (PWA /app/ ayrı; index.html'inde zaten kapı var.)
+  const MARKETING = new Set(['index.html', 'hakkinda.html', 'bilim.html', 'ozellikler.html', 'diskalkuli.html', 'ebeveyn.html', 'kaynaklar.html', '404.html']);
+  const GATE_SRC = '<script src="https://getnumap.com/sso/numap-gate.js?v=1"></script>';
   const htmlFiles = await walkHtml(DIST, ['app', '_partials', 'assets']);
+  let gMkt = 0, gGate = 0;
   for (const file of htmlFiles) {
     let html = await readFile(file, 'utf8');
     html = cleanUrls(html
@@ -119,10 +124,15 @@ async function main() {
       .replace(/<!--\s*#header\s*-->/g, partials.header)
       .replace(/<!--\s*#footer\s*-->/g, partials.footer));
     for (const [from, to] of Object.entries(assetMap)) html = html.split(from).join(to);
+    const rel = file.slice(DIST.length + 1).replace(/\\/g, '/');
+    const isMarketing = !rel.includes('/') && MARKETING.has(rel);
+    const flags = '<script>window.NUMAP_GATE_BRAND="ABMATO";window.NUMAP_GATE_SUB="Anne-Baba Matematik Okulu";window.NUMAP_GATE_ACCENT="#2E7D32";' + (isMarketing ? 'window.NUMAP_GATE_MODE="chip";' : '') + '</script>';
+    if (!html.includes('numap-gate.js') && html.includes('</head>')) html = html.replace('</head>', '  ' + flags + GATE_SRC + '\n</head>');
+    isMarketing ? gMkt++ : gGate++;
     await writeFile(file, html, 'utf8');
   }
   await rm(partialsDir, { recursive: true, force: true });
-  log(htmlFiles.length + ' sayfaya ortak parçalar + temiz URL uygulandı');
+  log(htmlFiles.length + ' sayfa: ortak parça + temiz URL + NuMap kapısı (' + gMkt + ' pazarlama-görünür · ' + gGate + ' içerik-kapılı)');
 
   // 3) Uygulama → dist/app/
   const appOut = join(DIST, 'app');

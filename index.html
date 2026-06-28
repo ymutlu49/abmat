@@ -22,6 +22,9 @@
 <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
 <link rel="icon" type="image/svg+xml" href="icons/acm-mark.svg">
 <link rel="apple-touch-icon" href="icons/acm-mark.svg">
+<!-- NuMap merkezli giriş kapısı — uygulama içeriği giriş gerektirir (tanıtım abmato.com/ açık kalır) -->
+<script>window.NUMAP_GATE_BRAND="ABMATO";window.NUMAP_GATE_SUB="Anne-Baba Matematik Okulu";window.NUMAP_GATE_ACCENT="#2E7D32"</script>
+<script src="https://getnumap.com/sso/numap-gate.js?v=1"></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
@@ -79,7 +82,7 @@
       </button>
       <p style="font-size:.72rem;color:#2E7D32;margin:.5rem 0 0;line-height:1.55;text-align:center;font-weight:700">
         💚 Tamamen ücretsiz<br>
-        <span style="color:#6B6259;font-weight:500">Üyelik veya kayıt gerekmez · Tüm veriler cihazınızda kalır</span>
+        <span style="color:#6B6259;font-weight:500">Okul/eğitimci hesabınla bağlı · ilerlemen güvende</span>
       </p>
     </div>
   </div>
@@ -431,16 +434,7 @@
 </div>
 
 <script type="module" src="js/main.js"></script>
-<!-- HÇMÖ tek-giriş (cross-apex SSO) — giriş yapılmışsa kullanıcıyı tanır -->
-<div id="hcmoChip" style="position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:8px;z-index:9998;font-family:Nunito,system-ui,sans-serif;font-weight:800;font-size:.78rem;display:none"></div>
-<script src="https://hercocukmatematikogrenebilir.com/sso/hcmo-sso.js?v=2"></script>
-<script>
-window.HCMO && HCMO.boot(function (who) {
-  if (!who) return;
-  var el = document.getElementById('hcmoChip'); if (!el) return;
-  var nm = (who.type === 'adult' ? who.user.name : who.student.alias) || '';
-  el.textContent = '👋 ' + nm;
-  el.style.cssText += ';display:inline-block;background:rgba(27,94,32,.95);color:#fff;padding:5px 11px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.25)';
-});
-</script>
+<!-- NuMap kimlik/giriş: <head>'deki NuMap giriş kapısı (numap-gate.js) yönetir. Kapı, giriş sonrası #numapAuth'u doldurur. -->
+<style>#numapAuth:not(:empty){position:fixed;top:calc(env(safe-area-inset-top) + 6px);left:8px;z-index:9998;display:inline-flex;align-items:center;gap:7px;background:rgba(27,94,32,.95);color:#fff;padding:4px 5px 4px 12px;border-radius:999px;font:800 .76rem Nunito,system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)}#numapAuth .nm{color:#fff}#numapAuth small{opacity:.85}#numapAuth a{color:#fff;text-decoration:none;cursor:pointer}#numapAuth button{cursor:pointer;border:0;border-radius:999px;background:#fff;color:#1B5E20;font:700 .68rem Nunito,system-ui;padding:4px 10px}</style>
+<div id="numapAuth"></div>
 </html>

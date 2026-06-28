@@ -177,6 +177,22 @@ strong { font-weight: 800; color: var(--ink); }
 }
 .card h3 { margin-bottom: .5rem; }
 .card p { color: var(--ink-2); font-size: .98rem; }
+/* Yeşil (koyu) bölümlerdeki BEYAZ kartlarda metin koyu kalsın — bölümün açık metin rengi
+   karta sızıp okunmaz hale getirmesin. Gövde/liste koyu, başlıklar en koyu. */
+.section--green .card { color: var(--ink-2); }
+.section--green .card p,
+.section--green .card li,
+.section--green .card .prose,
+.section--green .card .muted { color: var(--ink-2); }
+.section--green .card h2,
+.section--green .card h3,
+.section--green .card h4 { color: var(--ink); }
+.section--green .card strong { color: var(--ink); }
+/* Aynı koruma beyaz "kanıt" kutuları için (index kanıt bölümü): h4 başlık koyu olsun */
+.section--green .evidence { color: var(--ink-2); }
+.section--green .evidence h2,
+.section--green .evidence h3,
+.section--green .evidence h4 { color: var(--ink); }
 
 /* İstatistik */
 .stat { text-align: center; }
@@ -211,6 +227,16 @@ strong { font-weight: 800; color: var(--ink); }
 /* Nav CTA — yüksek özgüllük ile beyaz yazı garanti (kontrast) */
 .nav-links a.btn--navcta { color: #fff; padding: .55rem 1.15rem; margin-left: .35rem; }
 .nav-links a.btn--navcta:hover { color: #fff; background: var(--green); }
+/* HÇMÖ giriş yuvası — nav içi, marka renkli (yüzen koyu pill DEĞİL) */
+.nav-auth { display: flex; align-items: center; }
+.numap-auth { display: inline-flex; align-items: center; gap: .1rem; }
+.numap-auth a { display: inline-flex; align-items: center; gap: .3rem; padding: .5rem .7rem; border-radius: var(--r-pill); font-weight: 800; font-size: .9rem; color: var(--green-d); white-space: nowrap; cursor: pointer; transition: background .15s var(--ease), color .15s; }
+.numap-auth a:hover { background: var(--green-50); text-decoration: none; }
+.numap-auth > span { display: inline-flex; align-items: center; gap: .35rem; font-weight: 800; font-size: .9rem; color: var(--ink); }
+.numap-auth .nm { color: var(--green-d); }
+.numap-auth #numap-out { cursor: pointer; border: 0; border-radius: var(--r-pill); background: var(--green); color: #fff; font-weight: 800; font-size: .82rem; padding: .42rem .8rem; margin-left: .15rem; transition: background .15s; }
+.numap-auth #numap-out:hover { background: var(--green-d); }
+@media (max-width: 1080px) { .nav-auth { width: 100%; padding-top: .35rem; border-top: 1px solid var(--line); margin-top: .35rem; } .numap-auth { flex-wrap: wrap; gap: .4rem; } .numap-auth a { font-size: 1.02rem; padding: .7rem 1rem; } }
 .nav-actions { display: flex; align-items: center; gap: .6rem; }
 .nav-toggle {
   display: none; width: 46px; height: 46px; border: 1px solid var(--line-2);
