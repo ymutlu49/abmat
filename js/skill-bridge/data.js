@@ -521,7 +521,7 @@ const SB_MODULLER = Object.freeze([
     id: 'sb-basamak1',
     bolum: SB_BOLUM.BIRLESTIRME,
     sira: 9,
-    yorunge: { code: 'Y05', ad: 'Sayı Birleştirme (Parça-Bütün)', duzey: 'D7 · Onluk ve Birliklerle Sayı Kuran' },
+    yorunge: { code: 'Y05', ad: 'Sayı Birleştirme (Parça-Bütün)', duzey: 'D7 · Sayı Kuran (20 ve ötesi); Onluk ve Birliklerle Sayı Kuran' },
     emoji: '🏗️',
     baslik: 'Basamak Değeri — 20\'ye Kadar',
     altBaslik: 'Onluk ve birlikler, sayıları parçalama',
