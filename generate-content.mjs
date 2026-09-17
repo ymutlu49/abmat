@@ -16,8 +16,17 @@ import { join } from 'node:path';
 import { ACTIVITIES } from './js/data/activities.js';
 import { SB_MODULLER, SB_BOLUM_META } from './js/skill-bridge/data.js';
 import { MATH_TALK_CONTEXTS, MATH_TALK_EXTENDED, ROUTINE_TRIGGERS } from './js/data/math-talk-extended.js';
+import { HOME_TRAJ } from './js/data/home-trajectory.js';
+import { ACT_TRAJ } from './js/data/activity-trajectory.js';
 
 const SITE = 'https://abmato.com';
+
+// Etkinlik ↔ öğrenme yörüngesi (ACT_TRAJ) yardımcıları
+const TRAJ_BY_KEY = HOME_TRAJ.trajectories;
+const activitiesForTraj = (key) => ACTIVITIES
+  .filter((a) => ACT_TRAJ[a.id] && ACT_TRAJ[a.id].traj.some((t) => t.traj === key))
+  .sort((a, b) => ((ACT_TRAJ[a.id].primary === key ? 0 : 1) - (ACT_TRAJ[b.id].primary === key ? 0 : 1)));
+const lvlLabel = (lv) => (lv && lv.length && lv[1] != null && lv[1] !== lv[0]) ? `D${lv[0]}–D${lv[1]}` : `D${lv[0]}`;
 
 const CAT = {
   number_sense:  { ad: 'Sayı & İşlem',        emoji: '🔢' },
@@ -71,13 +80,16 @@ function activitiesIndex() {
   const cards = ACTIVITIES.map((a) => {
     const text = escA([a.title, a.desc, (a.tags || []).join(' ')].join(' ').toLowerCase());
     const ages = a.ageGroups.join(' ');
-    return `<div class="ac-card-wrap" data-cat="${a.category}" data-age="${ages}" data-text="${text}">
+    const at = ACT_TRAJ[a.id];
+    const trajKeys = at ? at.traj.map((t) => t.traj).join(' ') : '';
+    const primName = at && TRAJ_BY_KEY[at.primary] ? TRAJ_BY_KEY[at.primary].name : '';
+    return `<div class="ac-card-wrap" data-cat="${a.category}" data-age="${ages}" data-traj="${trajKeys}" data-text="${text}">
       <a class="ac-card" href="/etkinlikler/${a.id}">
         <span class="ac-emoji" aria-hidden="true">${a.emoji}</span>
         <span class="ac-cat">${CAT[a.category]?.emoji || ''} ${escH(CAT[a.category]?.ad || a.category)}</span>
         <h3>${escH(a.title)}</h3>
         <p>${escH(a.desc)}</p>
-        <div class="ac-meta">${a.ageGroups.map((g) => `<span class="tag">${AGE_SHORT[g] || g}</span>`).join('')}<span class="tag">⏱ ${a.dur} dk</span>${a.anxFriendly ? '<span class="tag tag-ok">🌿 kaygı dostu</span>' : ''}</div>
+        <div class="ac-meta">${a.ageGroups.map((g) => `<span class="tag">${AGE_SHORT[g] || g}</span>`).join('')}<span class="tag">⏱ ${a.dur} dk</span>${a.anxFriendly ? '<span class="tag tag-ok">🌿 kaygı dostu</span>' : ''}${primName ? `<span class="tag" style="background:#ede9fe;color:#5b21b6">🎯 ${escH(primName)}</span>` : ''}</div>
       </a>
       <a class="ac-pdf" href="/etkinlikler/${a.id}.pdf" download title="Bu etkinliği PDF indir" aria-label="PDF indir">PDF</a>
     </div>`;
@@ -85,6 +97,11 @@ function activitiesIndex() {
 
   const catButtons = Object.entries(CAT).map(([k, v]) =>
     `<button type="button" class="fchip" data-filter-cat="${k}">${v.emoji} ${escH(v.ad)}</button>`).join('');
+  const trajOptions = Object.entries(HT_STRAND).map(([sk, sm]) => {
+    const keys = Object.keys(TRAJ_BY_KEY).filter((k) => TRAJ_BY_KEY[k].strand === sk);
+    if (!keys.length) return '';
+    return `<optgroup label="${sm.emoji} ${escH(sm.ad)}">` + keys.map((k) => `<option value="${k}">${escH(TRAJ_BY_KEY[k].name)}</option>`).join('') + '</optgroup>';
+  }).join('');
 
   const body = `
   <section class="section section--tint" style="padding-block:clamp(2.2rem,5vw,3.2rem)">
@@ -116,6 +133,13 @@ function activitiesIndex() {
           <button type="button" class="fchip fchip-age" data-filter-age="grade_3">3. Sınıf</button>
           <button type="button" class="fchip fchip-age" data-filter-age="grade_4">4. Sınıf</button>
         </div>
+        <div class="fchips" role="group" aria-label="Yörünge filtresi">
+          <span class="fchips-label">Yörünge</span>
+          <select id="ac-traj" aria-label="Öğrenme yörüngesine göre filtrele" style="padding:.5rem .7rem;border:1px solid var(--line,#d1d5db);border-radius:8px;font:inherit;background:#fff;max-width:100%">
+            <option value="all">Tüm öğrenme yörüngeleri</option>
+            ${trajOptions}
+          </select>
+        </div>
       </div>
       <p class="muted mt-2" id="ac-count" aria-live="polite"></p>
       <div class="ac-grid" id="ac-grid">
@@ -139,14 +163,16 @@ ${cards}
   (function(){
     var grid=document.getElementById('ac-grid'), cards=[].slice.call(grid.querySelectorAll('.ac-card-wrap'));
     var search=document.getElementById('ac-search'), count=document.getElementById('ac-count'), empty=document.getElementById('ac-empty');
-    var cat='all', age='all';
+    var trajSel=document.getElementById('ac-traj');
+    var cat='all', age='all', traj='all';
     function apply(){
       var q=(search.value||'').trim().toLowerCase(), n=0;
       cards.forEach(function(c){
         var okCat = cat==='all' || c.getAttribute('data-cat')===cat;
         var okAge = age==='all' || c.getAttribute('data-age').split(' ').indexOf(age)>-1;
+        var okTraj = traj==='all' || (c.getAttribute('data-traj')||'').split(' ').indexOf(traj)>-1;
         var okText = !q || c.getAttribute('data-text').indexOf(q)>-1;
-        var show = okCat && okAge && okText;
+        var show = okCat && okAge && okTraj && okText;
         c.style.display = show ? '' : 'none';
         if(show) n++;
       });
@@ -163,6 +189,7 @@ ${cards}
     }
     bind('[data-filter-cat]', function(b){ cat=b.getAttribute('data-filter-cat'); });
     bind('[data-filter-age]', function(b){ age=b.getAttribute('data-filter-age'); });
+    if(trajSel)trajSel.addEventListener('change', function(){ traj=trajSel.value; apply(); });
     search.addEventListener('input', apply); apply();
   })();
   </script>`;
@@ -191,6 +218,8 @@ function activityDetail(a, prev, next) {
   const materials = (a.materials || []).map((m) => `<li>${escH(m)}</li>`).join('');
   const outcomes = (a.tymm_outcomes || []).map((o) => `<span class="tag">${escH(o)}</span>`).join(' ');
   const tags = (a.tags || []).map((t) => `<span class="tag">#${escH(t)}</span>`).join(' ');
+  const at = ACT_TRAJ[a.id];
+  const trajSection = at ? `<div class="note mt-3" style="border-color:#ddd6fe;background:#f5f3ff"><span class="ni" aria-hidden="true">🎯</span><div><strong>Öğrenme yörüngesi (gelişimsel):</strong> ${at.traj.map((t) => { const tt = TRAJ_BY_KEY[t.traj]; return tt ? `<a href="/evde-destek/${t.traj}" style="color:#5b21b6;font-weight:600;text-decoration:none">${escH(tt.name)} (${lvlLabel(t.levels)})</a>` : ''; }).filter(Boolean).join(' · ')} — çocuğun düzeyine göre <a href="/evde-destek/${at.primary}" style="color:#5b21b6">evde destek etkinlikleri →</a></div></div>` : '';
 
   const jsonld = JSON.stringify({
     '@context': 'https://schema.org',
@@ -211,6 +240,7 @@ function activityDetail(a, prev, next) {
       <h1>${escH(a.title)}</h1>
       <p class="lead mt-2">${escH(a.desc)}</p>
       <div class="flex wrap gap mt-3">${chips}</div>
+      ${trajSection}
 
       <div class="grid grid-2 mt-4" style="align-items:start">
         <div class="card">
@@ -387,6 +417,7 @@ function hub() {
   <section class="section">
     <div class="container">
       <div class="grid grid-3">
+        <a class="card card-hover" href="/evde-destek"><div class="card__icon" aria-hidden="true">🏠</div><h3>Evde Destek</h3><p>20 yörünge, ${HOME_TRAJ.meta.levelCount} kazanım. Çocuğun düzeyine göre günlük hayat, oyun ve çalışma yaprağı etkinlikleri — adım adım, kazanıma bağlı.</p><p class="mt-2"><strong>Aç →</strong></p></a>
         <a class="card card-hover" href="/etkinlikler"><div class="card__icon" aria-hidden="true">📚</div><h3>Etkinlik Kütüphanesi</h3><p>${ACTIVITIES.length} etkinlik, 12 kategori. Kategori ve yaşa göre filtreleyin; malzeme + adımlar + ipucu.</p><p class="mt-2"><strong>Aç →</strong></p></a>
         <a class="card card-hover" href="/beceri-koprusu"><div class="card__icon" aria-hidden="true">🧱</div><h3>Beceri Köprüsü</h3><p>${SB_MODULLER.length} modül, somuttan soyuta (CRA). Beşlik/onluk kart, basamak değeri, sayı olguları.</p><p class="mt-2"><strong>Aç →</strong></p></a>
         <a class="card card-hover" href="/sayi-sohbeti"><div class="card__icon" aria-hidden="true">💬</div><h3>Sayı Sohbeti</h3><p>${MATH_TALK_EXTENDED.length}+ hazır soru, 6 bağlam. Günlük anları matematik sohbetine dönüştürün.</p><p class="mt-2"><strong>Aç →</strong></p></a>
@@ -566,6 +597,113 @@ function storiesPage() {
   });
 }
 
+/* ── EVDE DESTEK: yörünge/kazanım-bağlı ev etkinlikleri (ADIM Adım 6 kaynağı) ── */
+const HT_STRAND = {
+  sayi:     { ad: 'Sayı',             emoji: '🔢' },
+  islemler: { ad: 'İşlemler',         emoji: '➕' },
+  cebir:    { ad: 'Cebir & Örüntü',   emoji: '🔄' },
+  geometri: { ad: 'Geometri',         emoji: '🔺' },
+  uzamsal:  { ad: 'Uzamsal Düşünme',  emoji: '🧩' },
+  olcme:    { ad: 'Ölçme',            emoji: '📏' },
+  veri:     { ad: 'Veri',             emoji: '📊' },
+};
+const HT_CAT = {
+  gunluk: { ad: 'Günlük hayatta',       emoji: '🏠', pill: 'pill--amber' },
+  oyun:   { ad: 'Oyunla',               emoji: '🎲', pill: 'pill--blue' },
+  yaprak: { ad: 'Çalışma yaprağıyla',   emoji: '📝', pill: '' },
+};
+
+function htActBlock(cat, a) {
+  if (!a) return '';
+  const c = HT_CAT[cat];
+  const steps = (a.adim || []).map((s, i) => `<div class="step"><div class="step__n">${i + 1}</div><div><p>${escH(s)}</p></div></div>`).join('');
+  return `<div class="ht-act" style="margin:.9rem 0;padding-top:.6rem;border-top:1px dashed var(--line,#e5e7eb)">
+        <div class="flex wrap gap" style="margin-bottom:.35rem"><span class="pill ${c.pill}">${c.emoji} ${c.ad}</span><strong>${escH(a.t || '')}</strong></div>
+        ${steps ? `<div class="steps mt-1">${steps}</div>` : ''}
+        ${a.soyle ? `<div class="note note--green mt-1"><span class="ni" aria-hidden="true">🗣️</span><div><strong>Şunu söyleyin:</strong> ${escH(a.soyle)}</div></div>` : ''}
+        ${a.isaret ? `<p class="mt-1"><strong>✓ Başarı işareti:</strong> ${escH(a.isaret)}</p>` : ''}
+      </div>`;
+}
+
+function evdeDestekTrajectory(key) {
+  const t = HOME_TRAJ.trajectories[key];
+  const st = HT_STRAND[t.strand] || { ad: t.strand, emoji: '🎯' };
+  const accs = t.levels.map((l) => `<details class="acc">
+        <summary><span><span class="muted" style="font-weight:600">Düzey ${l.order}</span> · ${escH(l.kazanim)}</span></summary>
+        <div class="acc-body">${['gunluk', 'oyun', 'yaprak'].map((c) => htActBlock(c, l[c])).join('')}</div>
+      </details>`).join('\n');
+  const acts = activitiesForTraj(key);
+  const actSection = acts.length ? `<section class="section" style="padding-block:1rem"><div class="container container--narrow">
+      <div class="sb-sec" style="border-left:5px solid #7c3aed"><span class="eyebrow" style="color:#7c3aed">🧰 ABMATO etkinlikleri</span><h2>Bu yörünge için hazır etkinlikler</h2></div>
+      <p class="muted mt-2">Aşağıdaki ABMATO etkinlikleri bu yörüngeyi destekler — malzeme, adımlar ve indirilebilir PDF ile.</p>
+      <div class="grid grid-2 mt-3">${acts.map((a) => { const tt = ACT_TRAJ[a.id].traj.find((x) => x.traj === key) || {}; return `<a class="card ht-card" href="/etkinlikler/${a.id}" style="display:block;text-decoration:none"><div class="flex wrap gap" style="margin-bottom:.3rem">${ACT_TRAJ[a.id].primary === key ? '<span class="pill pill--purple">Birincil</span>' : ''}<span class="pill pill--amber">${lvlLabel(tt.levels || [])}</span><span class="pill">⏱ ${a.dur} dk</span></div><h3 style="margin:.2rem 0">${a.emoji} ${escH(a.title)}</h3><p class="muted" style="margin:0">${escH(a.desc)}</p></a>`; }).join('')}</div>
+    </div></section>` : '';
+  const body = `
+  <section class="section section--tint" style="padding-block:clamp(2.2rem,5vw,3.2rem)">
+    <div class="container container--narrow">
+      <nav class="crumb" aria-label="Konum"><a href="/">Ana sayfa</a> › <a href="/icerik">İçerik</a> › <a href="/evde-destek">Evde Destek</a> › ${escH(t.name)}</nav>
+      <div class="section-head" style="margin:1rem 0 0">
+        <span class="eyebrow">${st.emoji} ${escH(st.ad)} · ${t.code} · ${t.levels.length} kazanım</span>
+        <h1>${escH(t.name)} — Evde Destek</h1>
+        <p class="lead">Bu öğrenme yörüngesinin her düzeyi için eve özel, adım adım etkinlikler: <strong>günlük hayatta</strong>, <strong>oyunla</strong> ve <strong>çalışma yaprağıyla</strong>. Her etkinlik o düzeyin kazanımına doğrudan bağlıdır.</p>
+      </div>
+      <div class="note note--green" style="max-width:820px"><span class="ni" aria-hidden="true">🧭</span><div><strong>Nasıl kullanılır:</strong> Çocuğunuzun bulunduğu düzeyi açın; ne yapacağınız (adımlar), ne söyleyeceğiniz ve başarıyı nasıl anlayacağınız orada. Kaygısız, kısa ve olumlu tutun.</div></div>
+    </div>
+  </section>
+  <section class="section" style="padding-block:1.6rem"><div class="container container--narrow"><div class="mt-2">${accs}</div></div></section>
+  ${actSection}
+  <section class="section section--raised"><div class="container cta-band"><div class="card">
+    <h2>Çocuğun düzeyini bilmiyor musunuz?</h2>
+    <p class="mt-2">ADIM / Numap değerlendirmesi çocuğun tam düzeyini belirler; bu etkinlikler oraya göre önerilir.</p>
+    <div class="hero-cta jcc mt-3"><a class="btn btn-ondark btn-lg" href="/app/">Uygulamayı Aç →</a><a class="btn btn-outline-dark btn-lg" href="/evde-destek">Tüm yörüngeler</a></div>
+  </div></div></section>`;
+  return page({
+    title: `${t.name} — Evde Destek Etkinlikleri | ABMATO`,
+    desc: `${t.name} öğrenme yörüngesinin ${t.levels.length} düzeyi için eve özel, kazanıma bağlı matematik etkinlikleri: günlük hayat, oyun ve çalışma yaprağı. Adım adım veli yönergeleriyle.`,
+    canonical: SITE + '/evde-destek/' + key,
+    body,
+  });
+}
+
+function evdeDestek() {
+  const byStrand = {};
+  for (const key of Object.keys(HOME_TRAJ.trajectories)) {
+    const t = HOME_TRAJ.trajectories[key];
+    (byStrand[t.strand] = byStrand[t.strand] || []).push([key, t]);
+  }
+  const sections = Object.entries(HT_STRAND).map(([sk, sm]) => {
+    const items = byStrand[sk];
+    if (!items || !items.length) return '';
+    const cards = items.map(([key, t]) => `<a class="card ht-card" href="/evde-destek/${key}" style="display:block;text-decoration:none">
+        <div class="flex wrap gap" style="margin-bottom:.3rem"><span class="pill">${t.code}</span><span class="pill pill--amber">${t.levels.length} kazanım</span></div>
+        <h3 style="margin:.2rem 0">${escH(t.name)}</h3>
+        <p class="muted" style="margin:0">Günlük · Oyun · Yaprak — her düzey için adım adım ev etkinlikleri →</p>
+      </a>`).join('\n');
+    return `<section class="section" style="padding-block:1.4rem"><div class="container">
+      <div class="sb-sec" style="border-left:5px solid var(--green)"><span class="eyebrow">${sm.emoji} Şerit</span><h2>${escH(sm.ad)}</h2></div>
+      <div class="grid grid-3 mt-3">${cards}</div>
+    </div></section>`;
+  }).join('\n');
+  const body = `
+  <section class="section section--tint" style="padding-block:clamp(2.2rem,5vw,3.2rem)">
+    <div class="container">
+      <nav class="crumb" aria-label="Konum"><a href="/">Ana sayfa</a> › <a href="/icerik">İçerik</a> › Evde Destek</nav>
+      <div class="section-head" style="margin:1rem 0 0;max-width:860px">
+        <span class="eyebrow">20 öğrenme yörüngesi · ${HOME_TRAJ.meta.levelCount} kazanım · Clements & Sarama</span>
+        <h1>Evde Destek — Yörüngeye Göre Etkinlikler</h1>
+        <p class="lead">Çocuğun gelişim yörüngesindeki her kazanım için eve özel etkinlikler: <strong>günlük hayatta</strong>, <strong>oyunla</strong>, <strong>çalışma yaprağıyla</strong>. Hepsi adım adım veli yönergesi, ne söyleneceği ve başarı işaretiyle. ADIM bireysel öğretim planının Adım 6'sı da bu içerikten beslenir.</p>
+      </div>
+    </div>
+  </section>
+  ${sections}`;
+  return page({
+    title: 'Evde Destek — 20 Yörünge, 223 Kazanım için Ev Etkinlikleri | ABMATO',
+    desc: 'Clements & Sarama öğrenme yörüngelerinin 223 kazanımı için eve özel matematik etkinlikleri: günlük hayat, oyun, çalışma yaprağı. Adım adım veli yönergeleriyle, kazanıma bağlı.',
+    canonical: SITE + '/evde-destek',
+    body,
+  });
+}
+
 /* ── Ana üretim fonksiyonu ───────────────────────────────────── */
 export async function generateContent(DIST) {
   const routes = [];
@@ -590,6 +728,27 @@ export async function generateContent(DIST) {
     await write(`etkinlikler/${a.id}.html`, activityDetail(a, ACTIVITIES[i - 1], ACTIVITIES[i + 1]));
     routes.push(`/etkinlikler/${a.id}`);
   }
+
+  // Evde Destek — yörünge/kazanım-bağlı ev etkinlikleri (hub + 20 yörünge sayfası)
+  await write('evde-destek.html', evdeDestek());
+  routes.push('/evde-destek');
+  await mkdir(join(DIST, 'evde-destek'), { recursive: true });
+  for (const key of Object.keys(HOME_TRAJ.trajectories)) {
+    await write(`evde-destek/${key}.html`, evdeDestekTrajectory(key));
+    routes.push(`/evde-destek/${key}`);
+  }
+  // Yayımlanan veri (ADIM Adım 6 + diğer uygulamalar buradan çeker; CORS açık)
+  await mkdir(join(DIST, 'data'), { recursive: true });
+  const enriched = JSON.parse(JSON.stringify(HOME_TRAJ));
+  for (const key in enriched.trajectories) {
+    enriched.trajectories[key].activities = activitiesForTraj(key).map((a) => ({
+      id: a.id, title: a.title, emoji: a.emoji, dur: a.dur, ageGroups: a.ageGroups,
+      primary: ACT_TRAJ[a.id].primary === key,
+      levels: (ACT_TRAJ[a.id].traj.find((t) => t.traj === key) || {}).levels,
+      url: SITE + '/etkinlikler/' + a.id, pdf: SITE + '/etkinlikler/' + a.id + '.pdf',
+    }));
+  }
+  await write('data/home-by-trajectory.json', JSON.stringify(enriched));
 
   return routes;
 }

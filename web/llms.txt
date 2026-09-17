@@ -1,0 +1,34 @@
+# ABMATO — Anne-Baba Matematik Okulu
+
+> ABMATO (abmato.com), okul öncesi ve ilkokul çağındaki çocuklar için aile temelli,
+> kanıt temelli ve kaygı dostu evde matematik desteği sunan ücretsiz bir Türkçe
+> platformdur. Ebeveyni "öğretmen" değil, çocuğun yanındaki "koç" yapar.
+
+## Platform ne sunar?
+
+- **109 evde etkinlik:** Günlük malzemelerle yapılan, adım adım anlatılan
+  ebeveyn-çocuk matematik etkinlikleri; her etkinlik indirilebilir PDF ile.
+- **Öğrenme yörüngeleri temeli:** Tüm içerik Clements–Sarama öğrenme yörüngeleri
+  omurgasına (20 yörünge · 223 kazanım) bağlıdır; TYMM 2024 ile hizalıdır.
+- **Evde destek / ADIM Adım 6:** NuMap'in ADIM/BÖP müdahale sihirbazına ev
+  etkinliği kaynağı sağlar (abmato.com/data/home-by-trajectory.json) — okulda
+  yürütülen bireyselleştirilmiş öğretim planının ev ayağı.
+- **Diskalkuli rehberi:** Matematik öğrenme güçlüğü yaşayan çocukların aileleri
+  için rehber; RAM/RAMDEVU süreç bilgisi.
+- **PWA uygulaması (abmato.com/app/):** Çevrimdışı da çalışan etkinlik uygulaması.
+- Hem matematik öğrenme güçlüğü yaşayan hem normal gelişen çocuklar için —
+  tamamen ücretsiz.
+
+## Geliştirici
+
+- Prof. Dr. Yılmaz Mutlu — Muş Alparslan Üniversitesi Eğitim Fakültesi, Matematik
+  Eğitimi. Çalışma alanları: diskalkuli, matematik kaygısı, eğitsel sinirbilim,
+  matematiksel biliş.
+- Akademik profil (kanonik): https://hercocukmatematikogrenebilir.com/yilmaz-mutlu/
+
+## Kardeş siteler (Her Çocuk Matematik Öğrenebilir ekosistemi)
+
+- https://hercocukmatematikogrenebilir.com/ — platform merkezi (oyunlar ve araçlar)
+- https://getnumap.com/ — NuMap: sayısal beceri haritalama ve diskalkuli risk taraması
+- DokunSay — dokunmatik sayma ve sayı hissi uygulaması
+- GalakSay — uzay temalı sayısal beceri oyunu

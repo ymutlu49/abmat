@@ -114,7 +114,9 @@ async function main() {
   // NuMap merkezli kapı: pazarlama sayfaları GÖRÜNÜR (chip + giriş daveti); üretilen İÇERİK
   // sayfaları giriş-kapılı (gate). Marka=ABMATO. (PWA /app/ ayrı; index.html'inde zaten kapı var.)
   const MARKETING = new Set(['index.html', 'hakkinda.html', 'bilim.html', 'ozellikler.html', 'diskalkuli.html', 'ebeveyn.html', 'kaynaklar.html', '404.html']);
-  const GATE_SRC = '<script src="https://getnumap.com/sso/numap-gate.js?v=1"></script>';
+  // Same-origin YEREL geçit (abmato.com/numap-gate.js — web/numap-gate.js'ten kopyalanır).
+  // Çapraz-köken getnumap.com/sso/numap-gate.js bazı tarayıcılarda 503/bot-challenge alıyordu.
+  const GATE_SRC = '<script src="/numap-gate.js?v=2"></script>';
   const htmlFiles = await walkHtml(DIST, ['app', '_partials', 'assets']);
   let gMkt = 0, gGate = 0;
   for (const file of htmlFiles) {
