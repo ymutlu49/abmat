@@ -1,0 +1,42 @@
+name: Deploy to Cloudflare Pages (abmato.com)
+
+# main'e her push'ta abmato.com (Cloudflare Pages projesi: abmato) otomatik güncellenir.
+# Gerekli depo sırları (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   — "Cloudflare Pages: Edit" izinli API token
+#   CLOUDFLARE_ACCOUNT_ID  — Cloudflare hesap kimliği
+# Sırlar girilmemişse derleme yapılır, dağıtım adımı uyarıyla atlanır (iş akışı yeşil kalır).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # build-site.mjs → dist/ (136 içerik sayfası + 109 etkinlik PDF'i; font: Liberation Sans yedeği)
+      - run: npm run build
+      - id: cf
+        run: echo "enabled=${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.cf.outputs.enabled != 'true'
+        run: echo "::warning::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID tanımlı değil — abmato.com dağıtımı atlandı."
+      - if: steps.cf.outputs.enabled == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name abmato --branch main
