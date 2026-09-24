@@ -13,8 +13,17 @@ import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ACTIVITIES } from './js/data/activities.js';
 
-const FONT_REG = 'C:/Windows/Fonts/arial.ttf';
-const FONT_BOLD = 'C:/Windows/Fonts/arialbd.ttf';
+// Font: Windows'ta Arial; Linux/CI (GitHub Actions, Cloudflare build) ve macOS'ta ilk bulunan
+// Türkçe kapsamlı sans-serif (Liberation Sans metrik olarak Arial'a eş, DejaVu Sans yedek).
+const FONT_CANDIDATES = [
+  ['C:/Windows/Fonts/arial.ttf', 'C:/Windows/Fonts/arialbd.ttf'],
+  ['/Library/Fonts/Arial.ttf', '/Library/Fonts/Arial Bold.ttf'],
+  ['/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf', '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf'],
+  ['/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', '/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf'],
+  ['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'],
+];
+const fontPair = FONT_CANDIDATES.find(([r, b]) => existsSync(r) && existsSync(b));
+const [FONT_REG, FONT_BOLD] = fontPair || FONT_CANDIDATES[0];
 const SITE = 'https://abmato.com';
 
 const CAT = {
