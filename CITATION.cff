@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "ABMATO — Family-based home mathematics support platform"
+authors:
+  - family-names: Mutlu
+    given-names: "Yılmaz"
+    orcid: "https://orcid.org/0000-0002-4265-856X"
+    affiliation: "Muş Alparslan University, Faculty of Education, Mathematics Education"
+url: "https://abmato.com"
+repository-code: "https://github.com/ymutlu49/abmat"
+keywords:
+  - dyscalculia
+  - mathematics education
+  - mathematical learning difficulties
+  - learning trajectories
+  - diskalkuli
